@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            transition: all 0.3s;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background-color: #1a252f;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .sidebar-menu li {
+            list-style: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 15px;
+        }
+
+        .sidebar-menu li:hover {
+            background-color: #34495e;
+        }
+
+        .sidebar-menu li.active {
+            background-color: #3498db;
+        }
+
+        .sidebar-menu li i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            transition: all 0.3s;
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        /* Top Navigation Styles */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #333;
+            padding: 5px;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-icon i {
+            font-size: 20px;
+            color: #555;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* Profile Dropdown Styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-img-container {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .arrow-icon {
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            padding: 8px 0;
+            margin-top: 8px;
+            z-index: 1000;
+            display: none;
+            list-style: none;
+             padding-left: 0;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .dropdown-item i {
+            margin-right: 10px;
+            width: 18px;
+            text-align: center;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: #e9ecef;
+            margin: 8px 0;
+        }
+
+        .text-danger {
+            color: #dc3545 !important;
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            padding: 30px;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .card p {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .dropdown-menu li {
+            list-style: none;
+        }
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-250px);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .top-nav {
+                padding: 15px 20px;
+            }
+
+            .dropdown-menu {
+                min-width: 180px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Dashboard</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active"><i class="fas fa-home"></i> Home</li>
+            <li><i class="fas fa-chart-line"></i> Analytics</li>
+            <li><i class="fas fa-users"></i> Users</li>
+            <li><i class="fas fa-cog"></i> Settings</li>
+            <li><i class="fas fa-envelope"></i> Messages</li>
+            <li><i class="fas fa-calendar"></i> Calendar</li>
+            <li><i class="fas fa-file"></i> Reports</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <button class="toggle-sidebar" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-icons">
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="dropdown">
+                    <!-- Profile picture button -->
+                    <button class="profile-btn dropdown-toggle" type="button" id="accountDropdown">
+                        <div class="profile-img-container">
+                            <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
+                        </div>
+                        <i class="fas fa-chevron-down text-muted arrow-icon"></i>
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="accountDropdown">
+                        <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                        <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="fas fa-baby me-2"></i> My Baby</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fas fa-sign-out-alt me-2"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Hidden logout form -->
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <h2>Welcome to your Dashboard</h2>
+            <p>Here's an overview of your activities and statistics.</p>
+
+            <div class="card-container">
+                <div class="card">
+                    <h3>Total Users</h3>
+                    <p>1,234</p>
+                </div>
+                <div class="card">
+                    <h3>Revenue</h3>
+                    <p>$12,345</p>
+                </div>
+                <div class="card">
+                    <h3>Tasks</h3>
+                    <p>15 pending</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const toggleSidebar = document.getElementById('toggleSidebar');
+
+            // Toggle sidebar
+            toggleSidebar.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+
+                // Change icon based on state
+                const icon = this.querySelector('i');
+                if (sidebar.classList.contains('collapsed')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-indent');
+                } else {
+                    icon.classList.remove('fa-indent');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // For mobile view
+            function checkScreenSize() {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.add('collapsed');
+                    mainContent.classList.add('expanded');
+                    toggleSidebar.querySelector('i').classList.add('fa-bars');
+                } else {
+                    // Reset to default for larger screens
+                    sidebar.classList.remove('collapsed');
+                    mainContent.classList.remove('expanded');
+                }
+            }
+
+            // Check on load and resize
+            checkScreenSize();
+            window.addEventListener('resize', checkScreenSize);
+
+            // Add click event to menu items
+            const menuItems = document.querySelectorAll('.sidebar-menu li');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Profile dropdown functionality
+            const profileBtn = document.querySelector('.profile-btn');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            const arrowIcon = document.querySelector('.arrow-icon');
+
+            profileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+                arrowIcon.style.transform = dropdownMenu.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0)';
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                dropdownMenu.classList.remove('show');
+                arrowIcon.style.transform = 'rotate(0)';
+            });
+        });
+    </script>
+</body>
+</html>
