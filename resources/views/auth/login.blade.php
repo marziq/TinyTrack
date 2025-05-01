@@ -235,7 +235,7 @@
                     <div class="remember-forgot">
                         <div class="remember-me">
                             <input id="remember_me" type="checkbox" name="remember">
-                            <label for="remember_me" class="text-sm text-gray-600">Remember for 30 days</label>
+                            <label for="remember_me" class="text-sm text-gray-600">Remember me</label>
                         </div>
                         @if (Route::has('password.request'))
                             <a class="forgot-password" href="{{ route('password.request') }}">

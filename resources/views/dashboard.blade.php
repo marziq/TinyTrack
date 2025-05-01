@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baby Dashboard</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -45,15 +47,23 @@
         .sidebar a {
             text-decoration: none;
             color: #333;
-            padding: 10px 0;
-            display: block;
-            transition: background 0.3s;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            border-radius: 6px;
+            margin-bottom: 5px;
         }
 
         .sidebar a:hover {
             background-color: #bbdefb;
-            border-radius: 6px;
-            padding-left: 10px;
+            color: #0d47a1;
+        }
+
+        .sidebar a i {
+            width: 20px;
+            text-align: center;
         }
 
         .main {
@@ -61,6 +71,7 @@
             padding: 20px;
             position: relative;
             transition: margin-left 0.3s ease;
+            overflow-y: auto;
         }
 
         .sidebar.hidden + .main {
@@ -68,40 +79,56 @@
         }
 
         .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    position: relative;
-    }
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 10px 0;
+            position: relative;
+        }
 
-    .toggle-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #1976d2;
-    z-index: 20;
-    }
+        .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #1976d2;
+            z-index: 20;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
 
-    .topbar h1 {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0;
-    }
+        .toggle-btn:hover {
+            background-color: #e3f2fd;
+        }
 
-    .topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+        .topbar h1 {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
+            color: #333;
+            font-size: 24px;
+        }
 
-    }
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
 
         /* Notification Icon */
         .notification-icon {
             position: relative;
             cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .notification-icon:hover {
+            background-color: #e3f2fd;
         }
 
         .notification-icon i {
@@ -111,8 +138,8 @@
 
         .notification-badge {
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: 0;
+            right: 0;
             background-color: #e74c3c;
             color: white;
             border-radius: 50%;
@@ -122,6 +149,7 @@
             align-items: center;
             justify-content: center;
             font-size: 10px;
+            font-weight: bold;
         }
 
         /* Profile Dropdown */
@@ -134,10 +162,16 @@
             background: none;
             border: none;
             cursor: pointer;
-            padding: 0;
+            padding: 5px;
             display: flex;
             align-items: center;
             gap: 8px;
+            border-radius: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .profile-btn:hover {
+            background-color: #e3f2fd;
         }
 
         .profile-img-container {
@@ -196,6 +230,7 @@
             margin-right: 10px;
             width: 18px;
             text-align: center;
+            color: #555;
         }
 
         .dropdown-divider {
@@ -208,54 +243,115 @@
             color: #dc3545 !important;
         }
 
+        .text-danger:hover {
+            color: #c82333 !important;
+        }
+
         .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
         }
 
         .card {
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 25px;
+            border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
 
         .card h3 {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: #555;
+            font-size: 18px;
         }
 
         .card p {
             font-size: 24px;
             font-weight: bold;
             color: #1976d2;
+            margin-bottom: 0;
         }
 
+        .welcome-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
 
-        .sidebar.hidden {
-            opacity: 1;
-            pointer-events: auto;
+        .welcome-section h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section p {
+            color: #666;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                height: 100vh;
+                z-index: 100;
+            }
+
+            .sidebar.hidden {
+                transform: translateX(-100%);
+            }
+
+            .main {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .topbar h1 {
+                position: static;
+                transform: none;
+                margin-right: auto;
+                margin-left: 15px;
+                font-size: 20px;
+            }
+
+            .topbar {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .topbar-right {
+                margin-left: auto;
+            }
         }
     </style>
 </head>
 <body>
     <div class="sidebar" id="sidebar">
         <h2>My Dashboard</h2>
-        <a href="#"><i class="fa-solid fa-table-columns"></i> Overview</a>
+        <a href="{{route('dashboard')}}"><i class="fa-solid fa-table-columns"></i> Overview</a>
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
         <a href="#"><i class="fas fa-chart-line"></i> Growth</a>
+        <a href="#"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
+        <a href="#"><i class="fa-solid fa-bullseye"></i> Milestone</a>
         <a href="#"><i class="fas fa-calendar"></i> Calendar</a>
         <a href="#"><i class="fas fa-cog"></i> Settings</a>
     </div>
+
 
     <div class="main">
         <div class="topbar">
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1 style="text-align: center">Overview</h1>
+            <h1>Overview</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon">
@@ -273,22 +369,28 @@
                     </button>
 
                     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                        <li><a class="dropdown-item" href="{{route('mainpage')}}"><i class="fa-solid fa-house"></i></i> Home</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-baby me-2"></i> My Baby</a></li>
+                        <li><a class="dropdown-item" href="{{route('mainpage')}}"><i class="fa-solid fa-house"></i> Home</a></li>
+                        <li><a class="dropdown-item" href="{{route('mybaby')}}"><i class="fas fa-baby"></i> My Baby</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-address-card"></i> My Account</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
-                            <a class="dropdown-item text-danger" href="#">
-                                <i class="fas fa-sign-out-alt me-2"></i> Logout
-                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; width: 100%; text-align: left;">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </form>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <h2>Welcome, {{ Auth::user()->name }}</h2>
-        <p>Here's an overview of your baby's progress.</p>
-        <br>
+        <div class="welcome-section">
+            <h2>Welcome, {{ Auth::user()->name }}</h2>
+            <p>Here's an overview of your baby's progress.</p>
+        </div>
+
         <div class="cards">
             <div class="card">
                 <h3>Baby Age</h3>
@@ -305,35 +407,61 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('hidden');
 
             // Update the toggle button icon
-            const toggleBtns = document.querySelectorAll('.toggle-btn, .floating-toggle');
+            const toggleBtn = document.querySelector('.toggle-btn');
             const iconClass = sidebar.classList.contains('hidden') ? 'fa-bars' : 'fa-times';
-
-            toggleBtns.forEach(btn => {
-                btn.querySelector('i').className = `fas ${iconClass}`;
-            });
+            toggleBtn.querySelector('i').className = `fas ${iconClass}`;
         }
 
         // Profile dropdown functionality
-        const profileBtn = document.querySelector('.profile-btn');
-        const dropdownMenu = document.querySelector('.dropdown-menu');
-        const arrowIcon = document.querySelector('.arrow-icon');
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileBtn = document.querySelector('.profile-btn');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            const arrowIcon = document.querySelector('.arrow-icon');
 
-        profileBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            dropdownMenu.classList.toggle('show');
-            arrowIcon.style.transform = dropdownMenu.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0)';
+            if (profileBtn && dropdownMenu && arrowIcon) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle('show');
+                    arrowIcon.style.transform = dropdownMenu.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0)';
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function() {
+                    dropdownMenu.classList.remove('show');
+                    arrowIcon.style.transform = 'rotate(0)';
+                });
+            }
+
+            // Close dropdown when clicking on a dropdown item
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    dropdownMenu.classList.remove('show');
+                    arrowIcon.style.transform = 'rotate(0)';
+                });
+            });
         });
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function() {
-            dropdownMenu.classList.remove('show');
-            arrowIcon.style.transform = 'rotate(0)';
+        // Make the dropdown menu close when clicking outside
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.profile-btn') && !event.target.closest('.dropdown-menu')) {
+                const dropdowns = document.querySelectorAll('.dropdown-menu');
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                });
+                const arrows = document.querySelectorAll('.arrow-icon');
+                arrows.forEach(arrow => {
+                    arrow.style.transform = 'rotate(0)';
+                });
+            }
         });
     </script>
 </body>
