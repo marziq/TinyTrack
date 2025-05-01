@@ -22,7 +22,9 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
-
+Route::get('/dashboard/mybaby', function () {
+    return view('user/mybaby');
+})->name('mybaby');
 
 //admin stuff
 Route::get('/login-admin', function () {

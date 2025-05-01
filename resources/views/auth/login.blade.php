@@ -1,8 +1,8 @@
 <x-guest-layout>
     <style>
         /* Brand colors */
-        .text-primary { color: #789DBC; font-weight: bold; }
-        .text-secondary { color: #659287; font-weight: bold; }
+        .text-primary { color: #FF4880; font-weight: bold; }
+        .text-secondary { color: #4D65F9; font-weight: bold; }
 
         /* Layout */
         body{

@@ -67,7 +67,7 @@
             margin-left: -250px;
         }
 
-        .topbar {
+    .topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -95,7 +95,6 @@
     display: flex;
     align-items: center;
     gap: 20px;
-
     }
 
         /* Notification Icon */
@@ -243,8 +242,8 @@
 <body>
     <div class="sidebar" id="sidebar">
         <h2>My Dashboard</h2>
-        <a href="#"><i class="fa-solid fa-table-columns"></i> Overview</a>
-        <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
+        <a href="#"><i class="fa-solid fa-table-columns"></i></i> Overview</a>
+        <a href="#"><i class="fas fa-child"></i> My Baby</a>
         <a href="#"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="#"><i class="fas fa-calendar"></i> Calendar</a>
         <a href="#"><i class="fas fa-cog"></i> Settings</a>
@@ -255,7 +254,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1 style="text-align: center">Overview</h1>
+            <h1>My Baby</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon">
@@ -285,7 +284,6 @@
                 </div>
             </div>
         </div>
-
         <h2>Welcome, {{ Auth::user()->name }}</h2>
         <p>Here's an overview of your baby's progress.</p>
         <br>

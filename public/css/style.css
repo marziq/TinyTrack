@@ -682,11 +682,11 @@ h6,
 /*** Footer End ***/
 
 .text-primary {
-    color: #789DBC !important; /* Replace with your desired color */
+    color: #FF4880  !important; /* Replace with your desired color */
 }
 
 .text-secondary {
-    color: #659287 !important; /* Replace with your desired color */
+    color: #4D65F9 !important; /* Replace with your desired color */
 }
 .dropdown-menu .dropdown-item:hover {
     color: #ffffff !important; /* Change text color to white */
