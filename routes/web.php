@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BabyController;
 use App\Models\Baby;
 
+
 // Public routes
 Route::get('/', function () {
     return view('index');

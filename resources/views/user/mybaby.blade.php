@@ -437,10 +437,20 @@
         </div>
 
         <select class="baby-selector" id="babySelector" onchange="loadBabyData(this.value)">
-            <option value="">Select a baby...</option>
             @foreach(Auth::user()->babies as $baby)
-                <option value="{{ $baby->id }}">{{ $baby->name }} ({{ ucfirst($baby->gender) }}, {{ \Carbon\Carbon::parse($baby->birth_date)->diff(\Carbon\Carbon::now())->format('%y years, %m months') }})</option>
+                <option
+                    value="{{ $baby->id }}"
+                    data-name="{{ $baby->name }}"
+                    data-age="{{ \Carbon\Carbon::parse($baby->birth_date)->diff(\Carbon\Carbon::now())->format('%y years, %m months') }}"
+                    data-birthdate="{{ $baby->birth_date }}"
+                    data-gender="{{ ucfirst($baby->gender) }}"
+                    data-ethnicity="{{ $baby->ethnicity }}"
+                        data-photo="{{ asset('storage/' . $baby->baby_photo_path) }}"
+                >
+                    {{ $baby->name }} ({{ ucfirst($baby->gender) }}, {{ \Carbon\Carbon::parse($baby->birth_date)->diff(\Carbon\Carbon::now())->format('%y years, %m months') }})
+                </option>
             @endforeach
+
         </select>
         <hr>
         <div id="babyDashboard" style="display: none;">
@@ -657,26 +667,25 @@
 
         // Load baby data when selected from dropdown
         function loadBabyData(babyId) {
-            if (!babyId) {
+            const selector = document.getElementById('babySelector');
+            const selectedOption = selector.options[selector.selectedIndex];
+
+            if (!babyId || !selectedOption) {
                 document.getElementById('babyDashboard').style.display = 'none';
-                currentBabyId = null;
                 return;
             }
 
-            currentBabyId = babyId;
+            // Extract data attributes
+            document.getElementById('selectedBabyName').textContent = selectedOption.dataset.name;
+            document.getElementById('selectedBabyAge').textContent = selectedOption.dataset.age;
+            document.getElementById('selectedBabyBirthDate').textContent = "Birth Date: " + selectedOption.dataset.birthdate;
+            document.getElementById('selectedBabyGender').textContent = "Gender: " + selectedOption.dataset.gender;
+            document.getElementById('selectedBabyEthnicity').textContent = "Ethnicity: " + selectedOption.dataset.ethnicity;
+            document.getElementById('selectedBabyPhoto').src = selectedOption.dataset.photo;
 
-            // In a real app, you would fetch this data from your backend
-            // For this example, we'll use the data from the dropdown options
-            const babyOption = document.querySelector(`#babySelector option[value="${babyId}"]`);
-            const babyName = babyOption.text.split(' (')[0];
-
-            // Set the baby info (in a real app, you would fetch complete details from the server)
-            document.getElementById('selectedBabyName').textContent = babyName;
-            document.getElementById('selectedBabyAge').textContent = babyOption.text.match(/\((.*?)\)/)[1];
-
-            // Show the dashboard
             document.getElementById('babyDashboard').style.display = 'block';
         }
+
 
         // Edit the currently selected baby
         function editSelectedBaby() {
