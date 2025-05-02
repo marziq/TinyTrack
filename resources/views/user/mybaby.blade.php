@@ -374,6 +374,16 @@
             color: #666;
             font-size: 14px;
         }
+
+        .babyh1 {
+            text-align: center; /* Centers text horizontally */
+            margin: 0 auto; /* Centers the element horizontally */
+            display: flex;
+            justify-content: center; /* Centers content horizontally */
+            align-items: center; /* Centers content vertically */
+            height: 100%; /* Adjust height as needed */
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
@@ -381,11 +391,11 @@
         <h2>My Dashboard</h2>
         <a href="{{route('dashboard')}}"><i class="fa-solid fa-table-columns"></i> Overview</a>
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
-        <a href="#"><i class="fas fa-chart-line"></i> Growth</a>
-        <a href="#"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
-        <a href="#"><i class="fa-solid fa-bullseye"></i> Milestone</a>
-        <a href="#"><i class="fas fa-calendar"></i> Calendar</a>
-        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+        <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
+        <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
+        <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
+        <a href="{{route('calendar')}}"><i class="fas fa-calendar"></i> Calendar</a>
+        <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
     </div>
 
     <div class="main">
@@ -436,24 +446,30 @@
             </button>
         </div>
 
-        <select class="baby-selector" id="babySelector" onchange="loadBabyData(this.value)">
-            @foreach(Auth::user()->babies as $baby)
-                <option
-                    value="{{ $baby->id }}"
-                    data-name="{{ $baby->name }}"
-                    data-age="{{ \Carbon\Carbon::parse($baby->birth_date)->diff(\Carbon\Carbon::now())->format('%y years, %m months') }}"
-                    data-birthdate="{{ $baby->birth_date }}"
-                    data-gender="{{ ucfirst($baby->gender) }}"
-                    data-ethnicity="{{ $baby->ethnicity }}"
-                        data-photo="{{ asset('storage/' . $baby->baby_photo_path) }}"
-                >
-                    {{ $baby->name }} ({{ ucfirst($baby->gender) }}, {{ \Carbon\Carbon::parse($baby->birth_date)->diff(\Carbon\Carbon::now())->format('%y years, %m months') }})
-                </option>
-            @endforeach
-
+        <select id="babySelector"
+        onchange="loadBabyData(this.value)"
+        class="block w-64 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200 text-gray-700 truncate">
+        <option value="" disabled selected hidden>Select baby</option>
+        @foreach(Auth::user()->babies as $baby)
+        <option
+            value="{{ $baby->id }}"
+            data-name="{{ $baby->name }}"
+            data-age="{{ \Carbon\Carbon::parse($baby->birth_date)->diff(\Carbon\Carbon::now())->format('%y years, %m months') }}"
+            data-birthdate="{{ $baby->birth_date }}"
+            data-gender="{{ ucfirst($baby->gender) }}"
+            data-ethnicity="{{ $baby->ethnicity }}"
+            data-photo="{{ asset('storage/' . $baby->baby_photo_path) }}"
+        >
+            {{ $baby->name }} ({{ ucfirst($baby->gender) }}, {{ \Carbon\Carbon::parse($baby->birth_date)->diff(\Carbon\Carbon::now())->format('%y years, %m months') }})
+        </option>
+        @endforeach
         </select>
+
+
+
         <hr>
         <div id="babyDashboard" style="display: none;">
+            <h1 class="babyh1">Track {{ $baby->name }}'s Progress</h1>
             <div class="dashboard-grid">
                 <!-- Row 1 -->
                 <div class="baby-info-panel">
@@ -572,7 +588,15 @@
                             </div>
                             <div class="mb-3">
                                 <label for="babyEthnicity" class="form-label">Ethnicity</label>
-                                <input type="text" class="form-control" id="babyEthnicity" name="ethnicity">
+                                <select class="form-select" id="babyEthnicity" name="ethnicity" required>
+                                    <option value="" disabled selected hidden>Select Ethnicity</option>
+                                    <option value="Malay">Malay</option>
+                                    <option value="Chinese">Chinese</option>
+                                    <option value="Indian">Indian</option>
+                                    <option value="Orang Asli">Orang Asli</option>
+                                    <option value="Bumiputera Sabah">Bumiputera Sabah</option>
+                                    <option value="Bumiputera Sarawak">Bumiputera Sarawak</option>
+                                </select>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -588,6 +612,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+
+
         // Initialize modal globally
         let addBabyModal;
         let currentBabyId = null;
@@ -612,57 +638,40 @@
             });
 
             // Form submission handler
-            document.getElementById('babyForm')?.addEventListener('submit', async function(e) {
-                e.preventDefault();
+            document.getElementById('babyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-                const form = e.target;
-                const submitBtn = form.querySelector('button[type="submit"]');
-                const originalBtnText = submitBtn.innerHTML;
+            const form = e.target;
+            const formData = new FormData(form);
 
-                try {
-                    // Show loading state
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = `
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        ${submitBtn.textContent.includes('Save') ? 'Saving...' : 'Updating...'}
-                    `;
+            // For PUT requests, Laravel needs _method field
+            if (form.method.toLowerCase() === 'put') {
+                formData.append('_method', 'PUT');
+            }
 
-                    const formData = new FormData(form);
-                    const method = form.querySelector('input[name="_method"]')?.value || 'POST';
-
-                    const response = await fetch(form.action, {
-                        method: method,
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    });
-
-                    const data = await response.json();
-
-                    if (!response.ok) {
-                        let errorMsg = data.message || 'Server error occurred';
-                        if (data.errors) {
-                            errorMsg = Object.values(data.errors).join('\n');
-                        }
-                        throw new Error(errorMsg);
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST', // Always use POST when sending FormData
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     }
+                });
 
-                    if (data.success) {
-                        addBabyModal.hide();
-                        window.location.reload();
-                    } else {
-                        throw new Error(data.message || 'Operation failed');
-                    }
-                } catch (error) {
-                    console.error('Submission error:', error);
-                    alert(`Error: ${error.message}\n\nCheck console for details.`);
-                } finally {
-                    // Reset button state
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalBtnText;
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(Object.values(errorData.errors).join('\n'));
                 }
-            });
+
+                const data = await response.json();
+                alert('Baby updated successfully!');
+                window.location.reload(); // Or update UI as needed
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert(error.message);
+            }
+        });
         });
 
         // Load baby data when selected from dropdown
@@ -689,14 +698,32 @@
 
         // Edit the currently selected baby
         function editSelectedBaby() {
-            if (!currentBabyId) return;
-            editBaby(currentBabyId);
+        const selector = document.getElementById('babySelector');
+        const selectedOption = selector.options[selector.selectedIndex];
+
+
+
+         if (!selectedOption || !selectedOption.value) {
+        alert('Please select a baby to edit.');
+                return;
+            }
+
+            const babyId = selectedOption.value;
+            editBaby(babyId);
         }
 
         // Delete the currently selected baby
         function deleteSelectedBaby() {
-            if (!currentBabyId) return;
-            confirmDelete(currentBabyId);
+        const selector = document.getElementById('babySelector');
+        const selectedOption = selector.options[selector.selectedIndex];
+
+     if (!selectedOption || !selectedOption.value) {
+        alert('Please select a baby to delete.');
+        return;
+     }
+
+        const babyId = selectedOption.value;
+        confirmDelete(babyId);
         }
 
         // Open modal for adding new baby
@@ -715,70 +742,79 @@
         }
 
         // Open modal for editing baby
-        async function editBaby(babyId) {
-            try {
-                const response = await fetch(`/babies/${babyId}/edit`);
-                if (!response.ok) throw new Error('Failed to load baby data');
+     async function editBaby(babyId) {
+     try {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                const baby = await response.json();
-                const form = document.getElementById('babyForm');
-
-                // Set form values
-                form.action = `/babies/${baby.id}`;
-                document.getElementById('addBabyModalLabel').textContent = 'Edit Baby';
-                document.getElementById('babyId').value = baby.id;
-                document.getElementById('babyName').value = baby.name;
-                document.getElementById('babyBirthDate').value = baby.birth_date.split('T')[0];
-                document.getElementById('babyGender').value = baby.gender;
-                document.getElementById('babyEthnicity').value = baby.ethnicity || '';
-
-                // Set photo preview
-                const photoPreview = document.getElementById('photoPreview');
-                photoPreview.innerHTML = baby.baby_photo_path ?
-                    `<img src="/storage/${baby.baby_photo_path}" class="img-thumbnail rounded-circle" width="150" height="150">` :
-                    '';
-
-                // Set up PUT method
-                let methodInput = form.querySelector('input[name="_method"]');
-                if (!methodInput) {
-                    methodInput = document.createElement('input');
-                    methodInput.type = 'hidden';
-                    methodInput.name = '_method';
-                    form.appendChild(methodInput);
-                }
-                methodInput.value = 'PUT';
-
-                addBabyModal.show();
-            } catch (error) {
-                console.error('Error loading baby:', error);
-                alert('Failed to load baby data. Please try again.');
+        const response = await fetch(`/babies/${babyId}/edit`, {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
             }
+        });
+
+        if (!response.ok) throw new Error('Failed to load baby data');
+
+        const baby = await response.json();
+        const form = document.getElementById('babyForm');
+
+        // Populate the form with baby data
+        form.action = `/babies/${baby.id}`;
+        document.getElementById('addBabyModalLabel').textContent = 'Edit Baby';
+        document.getElementById('babyId').value = baby.id;
+        document.getElementById('babyName').value = baby.name;
+        document.getElementById('babyBirthDate').value = baby.birth_date.split('T')[0];
+        document.getElementById('babyGender').value = baby.gender;
+        document.getElementById('babyEthnicity').value = baby.ethnicity || '';
+
+        // Set photo preview
+        const photoPreview = document.getElementById('photoPreview');
+        photoPreview.innerHTML = baby.baby_photo_path
+            ? `<img src="/storage/${baby.baby_photo_path}" class="img-thumbnail rounded-circle" width="150" height="150">`
+            : '';
+
+        // Add hidden input for PUT method
+        let methodInput = form.querySelector('input[name="_method"]');
+        if (!methodInput) {
+            methodInput = document.createElement('input');
+            methodInput.type = 'hidden';
+            methodInput.name = '_method';
+            form.appendChild(methodInput);
+        }
+        methodInput.value = 'PUT';
+
+        addBabyModal.show();
+        } catch (error) {
+        console.error('Error loading baby:', error);
+        alert('Failed to load baby data. Please try again.');
+        }
         }
 
         // Delete baby confirmation
         async function confirmDelete(babyId) {
-            if (!confirm('Are you sure you want to delete this baby?')) return;
+     if (!confirm('Are you sure you want to delete this baby?')) return;
 
-            try {
-                const response = await fetch(`/babies/${babyId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    const error = await response.json().catch(() => null);
-                    throw new Error(error?.message || 'Failed to delete baby');
-                }
-
-                window.location.reload();
-            } catch (error) {
-                console.error('Delete error:', error);
-                alert(error.message);
+        try {
+        const response = await fetch(`/babies/${babyId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
+        });
+
+        if (!response.ok) {
+            const error = await response.json().catch(() => null);
+            throw new Error(error?.message || 'Failed to delete baby');
+        }
+
+        window.location.reload();
+        } catch (error) {
+        console.error('Delete error:', error);
+        alert(error.message);
+         }
         }
 
         // Toggle sidebar

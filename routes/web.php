@@ -26,6 +26,8 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
+
+
 // Admin routes
 Route::get('/login-admin', function () {
     return view('admin/login-admin');
@@ -48,6 +50,26 @@ Route::middleware([
     Route::get('/dashboard/mybaby', function () {
         return view('user/mybaby');
     })->name('mybaby');
+
+    Route::get('/dashboard/growth', function () {
+        return view('user/growth');
+    })->name('growth');
+
+    Route::get('/dashboard/tips', function () {
+        return view('user/tips');
+    })->name('tips');
+
+    Route::get('/dashboard/milestone', function () {
+        return view('user/milestone');
+    })->name('milestone');
+
+    Route::get('/dashboard/calendar', function () {
+        return view('user/calendar');
+    })->name('calendar');
+
+    Route::get('/dashboard/settings', function () {
+        return view('user/settings');
+    })->name('settings');
 
     // Baby resource routes
     Route::get('/babies/{id}', [BabyController::class, 'getBaby']); // Route to get baby details
