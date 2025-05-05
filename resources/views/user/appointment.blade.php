@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         * {
             margin: 0;
@@ -190,7 +191,7 @@
 
         .arrow-icon {
             font-size: 12px;
-            transition: transform 0.2s;
+            transition: transform 0.3s ease;
             color: #777;
         }
 
@@ -205,12 +206,17 @@
             padding: 8px 0;
             margin-top: 8px;
             z-index: 1000;
-            display: none;
             list-style: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            display: none;
         }
 
         .dropdown-menu.show {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .dropdown-item {
@@ -331,6 +337,128 @@
                 margin-left: auto;
             }
         }
+
+        .appointment-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .appointment-header h2 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .appointment-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .calendar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .calendar {
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #f5f5f5;
+        }
+
+        .calendar h4 {
+            font-size: 16px;
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .time-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .appointment-time-btn {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #1976d2;
+            background-color: #e3f2fd;
+            color: #1976d2;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .appointment-time-btn:hover {
+            background-color: #bbdefb;
+            transform: scale(1.05);
+        }
+
+        .appointment-time-btn.focus {
+            background-color: #1976d2;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Style for dropdown with arrow */
+        .form-control.small-select {
+            max-width: 300px;
+            appearance: none; /* Remove default browser styling */
+            -webkit-appearance: none; /* For Safari */
+            -moz-appearance: none; /* For Firefox */
+            background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="black" d="M2 0L0 2h4z"/></svg>') no-repeat right 10px center;
+            background-size: 10px 10px;
+            padding-right: 30px; /* Add space for the arrow */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control.small-select:focus {
+            border-color: #1976d2;
+            box-shadow: 0 0 8px rgba(25, 118, 210, 0.5);
+        }
+
+        /* Styling for the "Select Baby" section */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .btn {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #1565c0;
+        }
     </style>
 </head>
 <body>
@@ -341,7 +469,7 @@
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
         <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
-        <a href="{{route('calendar')}}"><i class="fas fa-calendar"></i> Calendar</a>
+        <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
         <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
     </div>
 
@@ -351,7 +479,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1>Overview</h1>
+            <h1>Appointment</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon">
@@ -371,7 +499,7 @@
                     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                         <li><a class="dropdown-item" href="{{route('mainpage')}}"><i class="fa-solid fa-house"></i> Home</a></li>
                         <li><a class="dropdown-item" href="{{route('mybaby')}}"><i class="fas fa-baby"></i> My Baby</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-address-card"></i> My Account</a></li>
+                        <li><a class="dropdown-item" href="{{route('myaccount')}}"><i class="fa-solid fa-address-card"></i> My Account</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
@@ -386,29 +514,57 @@
             </div>
         </div>
 
-        <div class="welcome-section">
-            <h2>Welcome, {{ Auth::user()->name }}</h2>
-            <p>Here's an overview of your baby's progress.</p>
-        </div>
+        <div class="appointment-container">
+            <div class="appointment-header">
+                <h2>Doctor Appointment</h2>
+                <p>Select a date, time, and appointment type for your baby's checkup.</p>
+            </div>
 
-        <div class="cards">
-            <div class="card">
-                <h3>Baby Age</h3>
-                <p>8 Months</p>
+            <!-- New Baby Selection Section -->
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="baby-select" style="font-size: 16px; font-weight: bold; color: #1976d2;">Select Baby</label>
+                <select id="baby-select" class="form-control small-select">
+                    @foreach($babies as $baby)
+                        <option value="{{ $baby->id }}">{{ $baby->name }}</option>
+                    @endforeach
+                </select>
             </div>
-            <div class="card">
-                <h3>Next Checkup</h3>
-                <p>May 30</p>
+
+            <div class="calendar-container">
+                <div class="calendar">
+                    <h4>Select Appointment Date</h4>
+                    <div id="appointment-calendar"></div>
+                </div>
+
+                <div class="calendar">
+                    <h4>Select Appointment Time</h4>
+                    <div class="time-options">
+                        <button class="appointment-time-btn">9:00 AM</button>
+                        <button class="appointment-time-btn">10:00 AM</button>
+                        <button class="appointment-time-btn">11:00 AM</button>
+                        <button class="appointment-time-btn">2:00 PM</button>
+                        <button class="appointment-time-btn">3:00 PM</button>
+                        <button class="appointment-time-btn">4:00 PM</button>
+                    </div>
+                </div>
             </div>
-            <div class="card">
-                <h3>Milestones</h3>
-                <p>5 Achieved</p>
+
+            <div class="form-group">
+                <label for="appointment-type">Select Appointment Type</label>
+                <select id="appointment-type" class="form-control small-select">
+                    <option value="checkup">Checkup</option>
+                    <option value="vaccination">Vaccination</option>
+                    <option value="other">Other</option>
+                </select>
             </div>
+
+            <button class="btn" id="submit-appointment">Submit Appointment</button>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -450,18 +606,40 @@
             });
         });
 
-        // Make the dropdown menu close when clicking outside
-        window.addEventListener('click', function(event) {
-            if (!event.target.matches('.profile-btn') && !event.target.closest('.dropdown-menu')) {
-                const dropdowns = document.querySelectorAll('.dropdown-menu');
-                dropdowns.forEach(dropdown => {
-                    dropdown.classList.remove('show');
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Flatpickr to show the calendar by default
+            flatpickr("#appointment-calendar", {
+                inline: true, // Show the calendar inline
+                dateFormat: "Y-m-d",
+                minDate: "today", // Disable past dates
+                defaultDate: "today", // Set default date to today
+            });
+
+            // Time button selection logic
+            const timeButtons = document.querySelectorAll('.appointment-time-btn');
+            timeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    timeButtons.forEach(btn => btn.classList.remove('focus'));
+                    button.classList.add('focus');
                 });
-                const arrows = document.querySelectorAll('.arrow-icon');
-                arrows.forEach(arrow => {
-                    arrow.style.transform = 'rotate(0)';
-                });
-            }
+            });
+
+            // Submit appointment logic
+            document.getElementById('submit-appointment').addEventListener('click', function () {
+                const date = document.querySelector('.flatpickr-day.selected')?.ariaLabel;
+                const time = document.querySelector('.appointment-time-btn.focus')?.innerText;
+                const appointmentType = document.getElementById('appointment-type').value;
+
+                // Get the selected baby name
+                const babySelect = document.getElementById('baby-select');
+                const babyName = babySelect.options[babySelect.selectedIndex]?.text;
+
+                if (!date || !time || !appointmentType || !babyName) {
+                    alert('Please fill out all fields before submitting.');
+                } else {
+                    alert(`Appointment scheduled for ${date} at ${time} for a ${appointmentType} for ${babyName}.`);
+                }
+            });
         });
     </script>
 </body>

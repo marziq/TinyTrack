@@ -341,7 +341,7 @@
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
         <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
-        <a href="{{route('calendar')}}"><i class="fas fa-calendar"></i> Calendar</a>
+        <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
         <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
     </div>
 
@@ -351,7 +351,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1>Overview</h1>
+            <h1>Settings</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon">
@@ -371,7 +371,7 @@
                     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                         <li><a class="dropdown-item" href="{{route('mainpage')}}"><i class="fa-solid fa-house"></i> Home</a></li>
                         <li><a class="dropdown-item" href="{{route('mybaby')}}"><i class="fas fa-baby"></i> My Baby</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-address-card"></i> My Account</a></li>
+                        <li><a class="dropdown-item" href="{{route('myaccount')}}"><i class="fa-solid fa-address-card"></i> My Account</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
@@ -386,25 +386,75 @@
             </div>
         </div>
 
-        <div class="welcome-section">
-            <h2>Welcome, {{ Auth::user()->name }}</h2>
-            <p>Here's an overview of your baby's progress.</p>
-        </div>
+       {{--Main Content--}}
+       <div class="container">
+           <div class="row">
+               <!-- Update Profile Information -->
+               <div class="col-md-6">
+                   <div class="card">
+                       <div class="card-header">
+                           <h3>Update Profile Information</h3>
+                       </div>
+                       <div class="card-body">
+                           <form method="POST" action="{{ route('user-profile-information.update') }}" enctype="multipart/form-data">
+                               @csrf
+                               @method('PUT')
 
-        <div class="cards">
-            <div class="card">
-                <h3>Baby Age</h3>
-                <p>8 Months</p>
-            </div>
-            <div class="card">
-                <h3>Next Checkup</h3>
-                <p>May 30</p>
-            </div>
-            <div class="card">
-                <h3>Milestones</h3>
-                <p>5 Achieved</p>
-            </div>
-        </div>
+                               <!-- Profile Photo -->
+                               <div class="mb-3">
+                                   <label for="profile_photo" class="form-label">Profile Photo</label>
+                                   <input type="file" name="profile_photo" id="profile_photo" class="form-control">
+                               </div>
+
+                               <!-- Username -->
+                               <div class="mb-3">
+                                   <label for="name" class="form-label">Username</label>
+                                   <input type="text" name="name" id="name" class="form-control" value="{{ old('name', Auth::user()->name) }}" required>
+                               </div>
+
+                               <button type="submit" class="btn btn-primary">Save Changes</button>
+                           </form>
+                       </div>
+                   </div>
+               </div>
+
+               <!-- Update Password -->
+               <div class="col-md-6">
+                   <div class="card">
+                       <div class="card-header">
+                           <h3>Update Password</h3>
+                       </div>
+                       <div class="card-body">
+                           <form method="POST" action="{{ route('user-password.update') }}">
+                               @csrf
+                               @method('PUT')
+
+                               <!-- Current Password -->
+                               <div class="mb-3">
+                                   <label for="current_password" class="form-label">Current Password</label>
+                                   <input type="password" name="current_password" id="current_password" class="form-control" required>
+                               </div>
+
+                               <!-- New Password -->
+                               <div class="mb-3">
+                                   <label for="password" class="form-label">New Password</label>
+                                   <input type="password" name="password" id="password" class="form-control" required>
+                               </div>
+
+                               <!-- Confirm Password -->
+                               <div class="mb-3">
+                                   <label for="password_confirmation" class="form-label">Confirm Password</label>
+                                   <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
+                               </div>
+
+                               <button type="submit" class="btn btn-primary">Update Password</button>
+                           </form>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+       {{--Main Content End--}}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

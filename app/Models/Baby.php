@@ -18,6 +18,7 @@ class Baby extends Model
         'birth_date',
         'gender',
         'ethnicity',
+        'premature',
         'baby_photo_path'
     ];
 

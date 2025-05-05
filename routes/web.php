@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BabyController;
 use App\Models\Baby;
-
 
 // Public routes
 Route::get('/', function () {
@@ -37,7 +37,9 @@ Route::get('/dashboard-admin', function () {
     return view('admin/dashboard-admin');
 })->name('dashboardadmin');
 
-// Authenticated routes (using Jetstream/Sanctum)
+Route::get('/dashboard-admin', [AdminController::class, 'index'])->name('dashboard-admin');
+
+// Authenticated routes
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -63,18 +65,21 @@ Route::middleware([
         return view('user/milestone');
     })->name('milestone');
 
-    Route::get('/dashboard/calendar', function () {
-        return view('user/calendar');
-    })->name('calendar');
+    Route::get('/dashboard/appointment', function () {
+        return view('user/appointment');
+    })->name('appointment');
 
     Route::get('/dashboard/settings', function () {
         return view('user/settings');
     })->name('settings');
 
+    Route::get('/dashboard/account', function () {
+        return view('user/myaccount');
+    })->name('myaccount');
     // Baby resource routes
     Route::get('/babies/{id}', [BabyController::class, 'getBaby']); // Route to get baby details
     Route::resource('babies', BabyController::class);
-
+    Route::get('dashboard/appointment', [BabyController::class, 'index'])->name('appointment');
 });
 
 Route::get('/babies/{baby}', function(Baby $baby) {

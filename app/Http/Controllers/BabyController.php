@@ -14,12 +14,17 @@ class BabyController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        return view('babies.index', [
-            'babies' => Auth::user()->babies
-        ]);
+{
+    $babies = Auth::user()->babies; // Fetch babies for the logged-in user
+
+    // Check the route or request parameter to decide which view to return
+    if (request()->routeIs('appointment')) {
+        return view('user.appointment', compact('babies'));
     }
 
+    // Default to the 'mybaby' view
+    return view('user.mybaby', compact('babies'));
+}
     /**
      * Show the form for creating a new resource.
      */
@@ -39,6 +44,7 @@ class BabyController extends Controller
             'birth_date' => 'required|date',
             'gender' => 'required|string|in:male,female',
             'ethnicity' => 'required|string',
+            'premature' => 'nullable|boolean',
             'baby_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
@@ -100,6 +106,7 @@ class BabyController extends Controller
             'birth_date' => 'required|date',
             'gender' => 'required|string|in:male,female',
             'ethnicity' => 'required|string',
+            'premature' => 'nullable|boolean',
             'baby_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 

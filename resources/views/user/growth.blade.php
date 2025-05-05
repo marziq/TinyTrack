@@ -260,6 +260,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
+            margin-bottom: 20px; /* Add spacing between cards */
         }
 
         .card:hover {
@@ -331,6 +332,142 @@
                 margin-left: auto;
             }
         }
+
+        .main-content {
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .baby-name {
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+         .milestones-section,
+        .abilities-section {
+            margin-bottom: 30px;
+        }
+
+        .milestones-section h3,
+        .abilities-section h3 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 20px;
+        }
+
+        .milestone-list,
+        .abilities-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .milestone-item,
+        .ability-item {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .milestone-item:hover,
+        .ability-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .milestone-item p,
+        .ability-item p {
+            font-size: 18px;
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .milestone-item span,
+        .ability-item span {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .milestone-list,
+            .abilities-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .input-group label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 150px;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 10px 40px 10px 10px; /* Add padding-right to create space for the unit */
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .input-wrapper .unit {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #555;
+            pointer-events: none; /* Prevent interaction with the unit */
+        }
+
+        .baby-icon {
+            font-size: 50px;
+            color: #1976d2;
+            text-align: center;
+        }
+
+        .chart-area {
+            height: 300px;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 16px;
+            font-style: italic;
+        }
+
     </style>
 </head>
 <body>
@@ -341,7 +478,7 @@
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
         <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
-        <a href="{{route('calendar')}}"><i class="fas fa-calendar"></i> Calendar</a>
+        <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
         <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
     </div>
 
@@ -351,7 +488,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1>Overview</h1>
+            <h1>Growth</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon">
@@ -371,7 +508,7 @@
                     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                         <li><a class="dropdown-item" href="{{route('mainpage')}}"><i class="fa-solid fa-house"></i> Home</a></li>
                         <li><a class="dropdown-item" href="{{route('mybaby')}}"><i class="fas fa-baby"></i> My Baby</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-address-card"></i> My Account</a></li>
+                        <li><a class="dropdown-item" href="{{route('myaccount')}}"><i class="fa-solid fa-address-card"></i> My Account</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
@@ -386,29 +523,58 @@
             </div>
         </div>
 
-        <div class="welcome-section">
-            <h2>Welcome, {{ Auth::user()->name }}</h2>
-            <p>Here's an overview of your baby's progress.</p>
-        </div>
+        {{--- Main Content --}}
+        <div class="main-content">
+            <!-- Height and Weight Input Card -->
+            <div class="card">
+                <div class="input-container">
+                    <!-- Height Input -->
+                    <div class="input-group">
+                        <label for="height-input">Height</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="height-input" class="form-control" placeholder="Enter height">
+                            <span class="unit">cm</span>
+                        </div>
+                    </div>
 
-        <div class="cards">
-            <div class="card">
-                <h3>Baby Age</h3>
-                <p>8 Months</p>
+                    <!-- Baby Icon -->
+                    <div class="baby-icon">
+                        <i class="fas fa-baby"></i>
+                    </div>
+
+                    <!-- Weight Input -->
+                    <div class="input-group">
+                        <label for="weight-input">Weight</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="weight-input" class="form-control" placeholder="Enter weight">
+                            <span class="unit">kg</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Height Curvature Chart Card -->
             <div class="card">
-                <h3>Next Checkup</h3>
-                <p>May 30</p>
+                <h3>Height Curvature Chart</h3>
+                <div class="chart-area" id="height-chart">
+                    <!-- Chart will be rendered here -->
+                </div>
             </div>
+
+            <!-- Weight Curvature Chart Card -->
             <div class="card">
-                <h3>Milestones</h3>
-                <p>5 Achieved</p>
+                <h3>Weight Curvature Chart</h3>
+                <div class="chart-area" id="weight-chart">
+                    <!-- Chart will be rendered here -->
+                </div>
             </div>
         </div>
+        {{--- Main Content END--}}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -462,6 +628,46 @@
                     arrow.style.transform = 'rotate(0)';
                 });
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Example chart rendering using Chart.js
+            const heightCtx = document.getElementById('height-chart').getContext('2d');
+            const weightCtx = document.getElementById('weight-chart').getContext('2d');
+
+            new Chart(heightCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    datasets: [{
+                        label: 'Height (cm)',
+                        data: [50, 52, 55, 58, 60],
+                        borderColor: '#1976d2',
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                }
+            });
+
+            new Chart(weightCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    datasets: [{
+                        label: 'Weight (kg)',
+                        data: [3, 3.5, 4, 4.5, 5],
+                        borderColor: '#e74c3c',
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                }
+            });
         });
     </script>
 </body>

@@ -118,40 +118,6 @@
             gap: 20px;
         }
 
-        /* Notification Icon */
-        .notification-icon {
-            position: relative;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: background-color 0.3s;
-        }
-
-        .notification-icon:hover {
-            background-color: #e3f2fd;
-        }
-
-        .notification-icon i {
-            font-size: 20px;
-            color: #555;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: #e74c3c;
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
         /* Profile Dropdown */
         .dropdown {
             position: relative;
@@ -239,127 +205,72 @@
             margin: 8px 0;
         }
 
-        .text-danger {
-            color: #dc3545 !important;
-        }
-
-        .text-danger:hover {
-            color: #c82333 !important;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
+        /* Content Layout for Profile Management */
+        .container {
+            margin-top: 30px;
         }
 
         .card {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
             background-color: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .card h3 {
-            margin-bottom: 15px;
-            color: #555;
-            font-size: 18px;
-        }
-
-        .card p {
-            font-size: 24px;
+        .card-header {
+            font-size: 22px;
             font-weight: bold;
             color: #1976d2;
-            margin-bottom: 0;
+            margin-bottom: 20px;
         }
 
-        .welcome-section {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-        }
-
-        .welcome-section h2 {
+        .form-label {
+            font-weight: bold;
             color: #333;
+        }
+
+        .form-control {
             margin-bottom: 10px;
         }
 
-        .welcome-section p {
-            color: #666;
+        .btn {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                height: 100vh;
-                z-index: 100;
-            }
-
-            .sidebar.hidden {
-                transform: translateX(-100%);
-            }
-
-            .main {
-                width: 100%;
-                padding: 15px;
-            }
-
-            .topbar h1 {
-                position: static;
-                transform: none;
-                margin-right: auto;
-                margin-left: 15px;
-                font-size: 20px;
-            }
-
-            .topbar {
-                flex-wrap: wrap;
-                gap: 15px;
-            }
-
-            .topbar-right {
-                margin-left: auto;
-            }
+        .btn:hover {
+            background-color: #1565c0;
         }
+
     </style>
 </head>
 <body>
     <div class="sidebar" id="sidebar">
         <h2>My Dashboard</h2>
-        <a href="{{route('dashboard')}}"><i class="fa-solid fa-table-columns"></i> Overview</a>
-        <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
-        <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
-        <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
-        <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
-        <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
-        <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
+        <a href="{{ route('dashboard') }}"><i class="fa-solid fa-table-columns"></i> Overview</a>
+        <a href="{{ route('mybaby') }}"><i class="fas fa-child"></i> My Baby</a>
+        <a href="{{ route('growth') }}"><i class="fas fa-chart-line"></i> Growth</a>
+        <a href="{{ route('tips') }}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
+        <a href="{{ route('milestone') }}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
+        <a href="{{ route('appointment') }}"><i class="fas fa-calendar"></i> Appointment</a>
+        <a href="{{ route('settings') }}"><i class="fas fa-cog"></i> Settings</a>
     </div>
-
 
     <div class="main">
         <div class="topbar">
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1>Overview</h1>
+            <h1>My Account</h1>
             <div class="topbar-right">
-                <!-- Notification Icon -->
                 <div class="notification-icon">
                     <i class="fas fa-bell"></i>
                     <span class="notification-badge">3</span>
                 </div>
-
-                <!-- Profile Dropdown -->
                 <div class="dropdown">
                     <button class="profile-btn dropdown-toggle" type="button" id="accountDropdown">
                         <div class="profile-img-container">
@@ -367,11 +278,10 @@
                         </div>
                         <i class="fas fa-chevron-down arrow-icon"></i>
                     </button>
-
                     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                        <li><a class="dropdown-item" href="{{route('mainpage')}}"><i class="fa-solid fa-house"></i> Home</a></li>
-                        <li><a class="dropdown-item" href="{{route('mybaby')}}"><i class="fas fa-baby"></i> My Baby</a></li>
-                        <li><a class="dropdown-item" href="{{route('myaccount')}}"><i class="fa-solid fa-address-card"></i> My Account</a></li>
+                        <li><a class="dropdown-item" href="{{ route('mainpage') }}"><i class="fa-solid fa-house"></i> Home</a></li>
+                        <li><a class="dropdown-item" href="{{ route('mybaby') }}"><i class="fas fa-baby"></i> My Baby</a></li>
+                        <li><a class="dropdown-item" href="{{ route('myaccount') }}"><i class="fa-solid fa-address-card"></i> My Account</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
@@ -386,24 +296,62 @@
             </div>
         </div>
 
-        <div class="welcome-section">
-            <h2>Welcome, {{ Auth::user()->name }}</h2>
-            <p>Here's an overview of your baby's progress.</p>
-        </div>
+        <div class="container">
+            <div class="row">
+                <!-- Profile Information -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Update Profile Information</div>
+                        <div class="card-body">
+                            @livewire('profile.update-profile-information-form')
+                        </div>
+                    </div>
+                </div>
 
-        <div class="cards">
-            <div class="card">
-                <h3>Baby Age</h3>
-                <p>8 Months</p>
+                <!-- Update Password -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Update Password</div>
+                        <div class="card-body">
+                            @livewire('profile.update-password-form')
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card">
-                <h3>Next Checkup</h3>
-                <p>May 30</p>
+
+            <!-- Two Factor Authentication -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Two Factor Authentication</div>
+                        <div class="card-body">
+                            @livewire('profile.two-factor-authentication-form')
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logout Other Sessions -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Logout from Other Browsers</div>
+                        <div class="card-body">
+                            @livewire('profile.logout-other-browser-sessions-form')
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card">
-                <h3>Milestones</h3>
-                <p>5 Achieved</p>
-            </div>
+
+            @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
+                <!-- Account Deletion -->
+                <div class="mt-4">
+                    <div class="card">
+                        <div class="card-header">Delete Account</div>
+                        <div class="card-body">
+                            @livewire('profile.delete-user-form')
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 
@@ -413,55 +361,26 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('hidden');
-
-            // Update the toggle button icon
             const toggleBtn = document.querySelector('.toggle-btn');
             const iconClass = sidebar.classList.contains('hidden') ? 'fa-bars' : 'fa-times';
             toggleBtn.querySelector('i').className = `fas ${iconClass}`;
         }
 
-        // Profile dropdown functionality
         document.addEventListener('DOMContentLoaded', function() {
             const profileBtn = document.querySelector('.profile-btn');
             const dropdownMenu = document.querySelector('.dropdown-menu');
             const arrowIcon = document.querySelector('.arrow-icon');
 
-            if (profileBtn && dropdownMenu && arrowIcon) {
-                profileBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    dropdownMenu.classList.toggle('show');
-                    arrowIcon.style.transform = dropdownMenu.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0)';
-                });
-
-                // Close dropdown when clicking outside
-                document.addEventListener('click', function() {
-                    dropdownMenu.classList.remove('show');
-                    arrowIcon.style.transform = 'rotate(0)';
-                });
-            }
-
-            // Close dropdown when clicking on a dropdown item
-            const dropdownItems = document.querySelectorAll('.dropdown-item');
-            dropdownItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    dropdownMenu.classList.remove('show');
-                    arrowIcon.style.transform = 'rotate(0)';
-                });
+            profileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+                arrowIcon.style.transform = dropdownMenu.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0)';
             });
-        });
 
-        // Make the dropdown menu close when clicking outside
-        window.addEventListener('click', function(event) {
-            if (!event.target.matches('.profile-btn') && !event.target.closest('.dropdown-menu')) {
-                const dropdowns = document.querySelectorAll('.dropdown-menu');
-                dropdowns.forEach(dropdown => {
-                    dropdown.classList.remove('show');
-                });
-                const arrows = document.querySelectorAll('.arrow-icon');
-                arrows.forEach(arrow => {
-                    arrow.style.transform = 'rotate(0)';
-                });
-            }
+            document.addEventListener('click', function() {
+                dropdownMenu.classList.remove('show');
+                arrowIcon.style.transform = 'rotate(0)';
+            });
         });
     </script>
 </body>

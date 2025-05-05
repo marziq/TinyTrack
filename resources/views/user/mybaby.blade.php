@@ -47,15 +47,23 @@
         .sidebar a {
             text-decoration: none;
             color: #333;
-            padding: 10px 0;
-            display: block;
-            transition: background 0.3s;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            border-radius: 6px;
+            margin-bottom: 5px;
         }
 
         .sidebar a:hover {
             background-color: #bbdefb;
-            border-radius: 6px;
-            padding-left: 10px;
+            color: #0d47a1;
+        }
+
+        .sidebar a i {
+            width: 20px;
+            text-align: center;
         }
 
         .main {
@@ -63,6 +71,7 @@
             padding: 20px;
             position: relative;
             transition: margin-left 0.3s ease;
+            overflow-y: auto;
         }
 
         .sidebar.hidden + .main {
@@ -74,6 +83,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            padding: 10px 0;
             position: relative;
         }
 
@@ -84,6 +94,13 @@
             cursor: pointer;
             color: #1976d2;
             z-index: 20;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background-color: #e3f2fd;
         }
 
         .topbar h1 {
@@ -91,6 +108,8 @@
             left: 50%;
             transform: translateX(-50%);
             margin: 0;
+            color: #333;
+            font-size: 24px;
         }
 
         .topbar-right {
@@ -103,6 +122,13 @@
         .notification-icon {
             position: relative;
             cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .notification-icon:hover {
+            background-color: #e3f2fd;
         }
 
         .notification-icon i {
@@ -112,8 +138,8 @@
 
         .notification-badge {
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: 0;
+            right: 0;
             background-color: #e74c3c;
             color: white;
             border-radius: 50%;
@@ -123,6 +149,7 @@
             align-items: center;
             justify-content: center;
             font-size: 10px;
+            font-weight: bold;
         }
 
         /* Profile Dropdown */
@@ -135,10 +162,16 @@
             background: none;
             border: none;
             cursor: pointer;
-            padding: 0;
+            padding: 5px;
             display: flex;
             align-items: center;
             gap: 8px;
+            border-radius: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .profile-btn:hover {
+            background-color: #e3f2fd;
         }
 
         .profile-img-container {
@@ -197,6 +230,7 @@
             margin-right: 10px;
             width: 18px;
             text-align: center;
+            color: #555;
         }
 
         .dropdown-divider {
@@ -207,6 +241,10 @@
 
         .text-danger {
             color: #dc3545 !important;
+        }
+
+        .text-danger:hover {
+            color: #c82333 !important;
         }
 
         /* New Styles for the Redesign */
@@ -244,8 +282,7 @@
 
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto auto;
+            grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
             gap: 20px;
         }
 
@@ -254,6 +291,69 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            text-align: center; /* Center text */
+            gap: 15px; /* Add spacing between elements */
+        }
+
+        .baby-photo-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #e3f2fd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .baby-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .baby-details {
+            font-size: 16px; /* Increase font size for better readability */
+            color: #333;
+        }
+
+        .baby-name {
+            font-size: 20px; /* Larger font for the name */
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .baby-age {
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .baby-info {
+            font-size: 16px; /* Slightly larger font for details */
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .baby-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .baby-actions button {
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .baby-actions button:hover {
+            background-color: #f0f0f0;
         }
 
         .baby-header {
@@ -262,118 +362,143 @@
             margin-bottom: 20px;
         }
 
-        .baby-photo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #e3f2fd;
-            margin-right: 20px;
-        }
-
-        .baby-details h3 {
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .baby-details p {
-            margin: 3px 0;
-            color: #666;
-        }
-
-        .baby-age {
-            font-weight: bold;
-            color: #1976d2;
-        }
-
         .chart-container {
             background-color: white;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            height: 100%;
+            height: 400px; /* Larger height for the chart */
+            grid-column: span 2; /* Make the chart span two columns */
         }
 
         .chart-placeholder {
-            width: 100%;
-            height: 200px;
-            background-color: #f5f5f5;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            border-radius: 8px;
-            margin-top: 20px;
+            flex-direction: column;
+            align-items: center; /* Centers the image horizontally */
+            justify-content: center; /* Centers the image vertically */
+            height: 100%; /* Ensures the placeholder takes up the full height of the container */
+            text-align: center;
         }
 
-        .milestones-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        .chart-image {
+            max-width: 70%; /* Resize the image to 70% of the container width */
+            max-height: 70%; /* Ensure the image doesn't exceed 70% of the container height */
+            object-fit: contain; /* Ensures the image scales proportionally */
+            margin-bottom: 10px; /* Adds spacing between the image and the text */
         }
 
-        .milestone-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
+        /* Milestones Container */
+.milestones-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
 
-        .milestone-item:last-child {
-            border-bottom: none;
-        }
+.milestone-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
-        .milestone-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: #e3f2fd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            color: #1976d2;
-        }
+.milestone-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    border: 1px solid #e3f2fd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-        .milestone-text {
-            flex: 1;
-        }
+.milestone-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
-        .milestone-date {
-            color: #888;
-            font-size: 14px;
-        }
+.milestone-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e3f2fd;
+    border-radius: 50%;
+    color: #1976d2;
+    font-size: 18px;
+}
 
-        .vaccine-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
+.milestone-content {
+    display: flex;
+    flex-direction: column;
+}
 
-        .vaccine-card {
-            background-color: #f8fbfe;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-            border-left: 4px solid #1976d2;
-        }
+.milestone-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
 
-        .vaccine-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+.milestone-date {
+    font-size: 14px;
+    color: #666;
+}
 
-        .vaccine-date {
-            color: #1976d2;
-            font-weight: bold;
-        }
+/* Vaccine Container */
+.vaccine-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+}
 
-        .vaccine-days {
-            color: #666;
-            font-size: 14px;
-        }
+.vaccine-card {
+    padding: 15px;
+    border-left: 5px solid #1976d2;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vaccine-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.vaccine-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.vaccine-date {
+    font-size: 14px;
+    color: #666;
+}
+
+.vaccine-days {
+    font-size: 14px;
+    color: #1976d2;
+    font-weight: bold;
+}
+
+/* Baby Tips Panel */
+.baby-tips-panel {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+}
+
+.baby-tips-panel p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+}
 
         .babyh1 {
             text-align: center; /* Centers text horizontally */
@@ -394,7 +519,7 @@
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
         <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
-        <a href="{{route('calendar')}}"><i class="fas fa-calendar"></i> Calendar</a>
+        <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
         <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
     </div>
 
@@ -420,8 +545,8 @@
 
                     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                         <li><a class="dropdown-item" href="{{ route('mainpage') }}"><i class="fa-solid fa-house"></i> Home</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-baby"></i> My Baby</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-address-card"></i> My Account</a></li>
+                        <li><a class="dropdown-item" href="{{route('mybaby')}}"><i class="fas fa-baby"></i> My Baby</a></li>
+                        <li><a class="dropdown-item" href="{{route('myaccount')}}"><i class="fa-solid fa-address-card"></i> My Account</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
@@ -436,7 +561,8 @@
             </div>
         </div>
 
-        <div class="baby-selector-container">
+        <div class="main-content">
+           <div class="baby-selector-container">
             <div>
                 <h2>Hi, {{ Auth::user()->name }}</h2>
                 <p>Select a baby to view details</p>
@@ -459,6 +585,7 @@
             data-gender="{{ ucfirst($baby->gender) }}"
             data-ethnicity="{{ $baby->ethnicity }}"
             data-photo="{{ asset('storage/' . $baby->baby_photo_path) }}"
+            data-premature="{{ $baby->premature ? '1' : '0' }}"
         >
             {{ $baby->name }} ({{ ucfirst($baby->gender) }}, {{ \Carbon\Carbon::parse($baby->birth_date)->diff(\Carbon\Carbon::now())->format('%y years, %m months') }})
         </option>
@@ -469,21 +596,22 @@
 
         <hr>
         <div id="babyDashboard" style="display: none;">
-            <h1 class="babyh1">Track {{ $baby->name }}'s Progress</h1>
+            <h1 class="babyh1" id="selectedBabyProfileHeading">Select a baby to view their profile</h1>
             <div class="dashboard-grid">
                 <!-- Row 1 -->
                 <div class="baby-info-panel">
-                    <div class="baby-header">
+                    <div class="baby-photo-container">
                         <img id="selectedBabyPhoto" src="" alt="Baby Photo" class="baby-photo">
-                        <div class="baby-details">
-                            <h3 id="selectedBabyName"></h3>
-                            <p><span class="baby-age" id="selectedBabyAge"></span></p>
-                            <p id="selectedBabyBirthDate"></p>
-                            <p id="selectedBabyGender"></p>
-                            <p id="selectedBabyEthnicity"></p>
-                        </div>
                     </div>
-                    <div class="baby-actions" style="display: flex; gap: 10px;">
+                    <div class="baby-details">
+                        <h3 id="selectedBabyName" class="baby-name"></h3>
+                        <p class="baby-info"><span class="baby-age" id="selectedBabyAge"></span></p>
+                        <p class="baby-info" id="selectedBabyBirthDate"></p>
+                        <p class="baby-info" id="selectedBabyGender"></p>
+                        <p class="baby-info" id="selectedBabyEthnicity"></p>
+                        <p class="baby-info" id="selectedBabyPremature"></p>
+                    </div>
+                    <div class="baby-actions">
                         <button class="btn btn-outline-primary" onclick="editSelectedBaby()">
                             <i class="fas fa-pencil-alt"></i> Edit
                         </button>
@@ -496,6 +624,7 @@
                 <div class="chart-container">
                     <h4>Height Growth Chart</h4>
                     <div class="chart-placeholder">
+                        <img src="{{ asset('img/growth-chart.jpg') }}" alt="growth chart" class="chart-image">
                         <p>Height growth chart will be displayed here</p>
                     </div>
                 </div>
@@ -545,11 +674,17 @@
                         <div class="vaccine-date">July 15, 2023</div>
                         <div class="vaccine-days">in 12 days</div>
                     </div>
-                    <div class="vaccine-card" style="border-left-color: #4caf50; opacity: 0.7;">
+                    <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
                         <div class="vaccine-name">DTaP (2nd dose)</div>
                         <div class="vaccine-date">August 5, 2023</div>
                         <div class="vaccine-days">in 33 days</div>
                     </div>
+                </div>
+
+                <!-- Additional card for the last row -->
+                <div class="baby-tips-panel">
+                    <h4>Baby Tips</h4>
+                    <p>This is an extra card to ensure 3 cards in the last row.</p>
                 </div>
             </div>
         </div>
@@ -598,6 +733,15 @@
                                     <option value="Bumiputera Sarawak">Bumiputera Sarawak</option>
                                 </select>
                             </div>
+                            <div class="mb-3">
+                                <label for="babyPremature" class="form-label">Is the baby premature?</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="babyPremature" name="premature" value="1">
+                                    <label class="form-check-label" for="babyPremature">
+                                        Yes
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -607,6 +751,8 @@
                 </div>
             </div>
         </div>
+        </div>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -639,38 +785,42 @@
 
             // Form submission handler
             document.getElementById('babyForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        e.preventDefault();
 
-            const form = e.target;
-            const formData = new FormData(form);
+        const form = e.target;
+        const formData = new FormData(form);
 
-            // For PUT requests, Laravel needs _method field
-            if (form.method.toLowerCase() === 'put') {
-                formData.append('_method', 'PUT');
-            }
+        // Check if premature checkbox is checked
+        const prematureChecked = document.getElementById('babyPremature').checked ? '1' : '0';
+        formData.append('premature', prematureChecked);
 
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST', // Always use POST when sending FormData
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                });
+        // For PUT requests, Laravel needs _method field
+        if (form.method.toLowerCase() === 'put') {
+            formData.append('_method', 'PUT');
+        }
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(Object.values(errorData.errors).join('\n'));
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST', // Always use POST when sending FormData
+                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 }
+            });
 
-                const data = await response.json();
-                alert('Baby updated successfully!');
-                window.location.reload(); // Or update UI as needed
-            } catch (error) {
-                console.error('Submission error:', error);
-                alert(error.message);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(Object.values(errorData.errors).join('\n'));
             }
+
+            const data = await response.json();
+            alert('Baby updated successfully!');
+            window.location.reload(); // Or update UI as needed
+        } catch (error) {
+            console.error('Submission error:', error);
+            alert(error.message);
+        }
         });
         });
 
@@ -681,15 +831,20 @@
 
             if (!babyId || !selectedOption) {
                 document.getElementById('babyDashboard').style.display = 'none';
+                document.getElementById('selectedBabyProfileHeading').textContent = 'Select a baby to view their profile';
                 return;
             }
 
-            // Extract data attributes
+            // Update the heading dynamically
+            document.getElementById('selectedBabyProfileHeading').textContent = `${selectedOption.dataset.name}'s Profile`;
+
+            // Extract data attributes and update the dashboard
             document.getElementById('selectedBabyName').textContent = selectedOption.dataset.name;
             document.getElementById('selectedBabyAge').textContent = selectedOption.dataset.age;
             document.getElementById('selectedBabyBirthDate').textContent = "Birth Date: " + selectedOption.dataset.birthdate;
             document.getElementById('selectedBabyGender').textContent = "Gender: " + selectedOption.dataset.gender;
             document.getElementById('selectedBabyEthnicity').textContent = "Ethnicity: " + selectedOption.dataset.ethnicity;
+            document.getElementById('selectedBabyPremature').textContent = selectedOption.dataset.premature == '1' ? "Premature: Yes" : "Premature: No";
             document.getElementById('selectedBabyPhoto').src = selectedOption.dataset.photo;
 
             document.getElementById('babyDashboard').style.display = 'block';
@@ -767,6 +922,7 @@
         document.getElementById('babyBirthDate').value = baby.birth_date.split('T')[0];
         document.getElementById('babyGender').value = baby.gender;
         document.getElementById('babyEthnicity').value = baby.ethnicity || '';
+        document.getElementById('babyPremature').checked = baby.premature == '1';
 
         // Set photo preview
         const photoPreview = document.getElementById('photoPreview');

@@ -331,6 +331,86 @@
                 margin-left: auto;
             }
         }
+        /* Explore Content */
+        .explore-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .explore-header h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .explore-header select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .topics-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjusts to fit available space */
+            gap: 20px; /* Space between cards */
+            margin-top: 20px;
+        }
+
+        .topic-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-card h3 {
+            font-size: 20px;
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+
+        .topic-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .topic-list li {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .topic-list li .progress-bar {
+            background-color: #e3f2fd;
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .topic-list li .progress-bar span {
+            display: block;
+            height: 100%;
+            background-color: #1976d2;
+            border-radius: 5px;
+        }
+
+        .topic-list li a {
+            text-decoration: none;
+            color: #1976d2;
+        }
+
+        .topic-list li a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -341,7 +421,7 @@
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
         <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
-        <a href="{{route('calendar')}}"><i class="fas fa-calendar"></i> Calendar</a>
+        <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
         <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
     </div>
 
@@ -351,7 +431,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1>Overview</h1>
+            <h1>Baby Tips</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon">
@@ -371,7 +451,7 @@
                     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                         <li><a class="dropdown-item" href="{{route('mainpage')}}"><i class="fa-solid fa-house"></i> Home</a></li>
                         <li><a class="dropdown-item" href="{{route('mybaby')}}"><i class="fas fa-baby"></i> My Baby</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-address-card"></i> My Account</a></li>
+                        <li><a class="dropdown-item" href="{{route('myaccount')}}"><i class="fa-solid fa-address-card"></i> My Account</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
@@ -385,26 +465,85 @@
                 </div>
             </div>
         </div>
-
-        <div class="welcome-section">
-            <h2>Welcome, {{ Auth::user()->name }}</h2>
-            <p>Here's an overview of your baby's progress.</p>
+        {{-- Main content goes here --}}
+        <div class="explore-header">
+            <h2>Tips for your Baby</h2>
+            <select>
+                <option value="0-3">0–3 Months (Current)</option>
+                <option value="4-6">4–6 Months</option>
+                <option value="7-9">7–9 Months</option>
+            </select>
         </div>
 
-        <div class="cards">
-            <div class="card">
-                <h3>Baby Age</h3>
-                <p>8 Months</p>
+        <div class="topics-section">
+            <!-- Bonding Topic -->
+            <div class="topic-card">
+                <h3>Bonding</h3>
+                <ul class="topic-list">
+                    <li>What is the "Fourth Trimester"? <div class="progress-bar"><span style="width: 9%"></span></div></li>
+                    <li>Skin-to-Skin & Baby Massage Tips <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Tips to Help Baby Communicate <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Play Ideas at 1 Month <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Help Baby Learn Language <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>How to Build Trust with Your Baby <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li><a href="#">View all</a></li>
+                </ul>
             </div>
-            <div class="card">
-                <h3>Next Checkup</h3>
-                <p>May 30</p>
+
+            <!-- Early Sensory Topic -->
+            <div class="topic-card">
+                <h3>Early Sensory</h3>
+                <ul class="topic-list">
+                    <li>Are Baby's Eyes Crossed? <div class="progress-bar"><span style="width: 13%"></span></div></li>
+                    <li>WATCH: The 8 Senses <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Baby's Sense of Smell <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Baby's Hearing Tests <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>The "Balance" Sense <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>How to Stimulate Baby's Vision <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li><a href="#">View all</a></li>
+                </ul>
             </div>
-            <div class="card">
-                <h3>Milestones</h3>
-                <p>5 Achieved</p>
+
+            <!-- Sleep and Routines Topic -->
+            <div class="topic-card">
+                <h3>Sleep and Routines</h3>
+                <ul class="topic-list">
+                    <li>How Much Sleep Does Baby Need? <div class="progress-bar"><span style="width: 20%"></span></div></li>
+                    <li>Creating a Bedtime Routine <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Safe Sleep Practices <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Dealing with Sleep Regression <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Daytime Naps: Tips and Tricks <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li><a href="#">View all</a></li>
+                </ul>
+            </div>
+
+            <!-- Feeding and Nutrition Topic -->
+            <div class="topic-card">
+                <h3>Feeding and Nutrition</h3>
+                <ul class="topic-list">
+                    <li>Breastfeeding Basics <div class="progress-bar"><span style="width: 30%"></span></div></li>
+                    <li>Introducing Solid Foods <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Signs of Hunger and Fullness <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Formula Feeding Tips <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Foods to Avoid for Babies <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li><a href="#">View all</a></li>
+                </ul>
+            </div>
+
+            <!-- Developmental Milestones Topic -->
+            <div class="topic-card">
+                <h3>Developmental Milestones</h3>
+                <ul class="topic-list">
+                    <li>Tracking Baby's Growth <div class="progress-bar"><span style="width: 10%"></span></div></li>
+                    <li>When Will Baby Start Crawling? <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Baby's First Words <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Encouraging Motor Skills <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li>Understanding Social Development <div class="progress-bar"><span style="width: 0%"></span></div></li>
+                    <li><a href="#">View all</a></li>
+                </ul>
             </div>
         </div>
+        {{--Main  content ends here--}}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

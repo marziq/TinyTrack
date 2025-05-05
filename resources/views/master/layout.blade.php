@@ -64,7 +64,7 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="{{route('mainpage')}}" class="nav-item nav-link active">Home</a>
+                            <a href="{{route('mainpage')}}" class="nav-item nav-link">Home</a>
                             <a href="{{route('expert')}}" class="nav-item nav-link">Experts</a>
                             <a href="{{route('service')}}" class="nav-item nav-link">Services</a>
                             <a href="{{route('event')}}" class="nav-item nav-link">FAQ</a>

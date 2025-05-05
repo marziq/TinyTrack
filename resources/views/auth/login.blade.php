@@ -42,6 +42,10 @@
         .logo-container {
             text-align: center;
             margin-bottom: 2rem;
+            display: flex;
+            justify-content: center; /* Centers horizontally */
+            align-items: center; /* Centers vertically */
+            flex-direction: column; /* Ensures content stacks vertically */
         }
 
         .logo-container img {
@@ -204,7 +208,6 @@
                 <div class="logo-container">
                     <img src="img/tinytrack-logo.png" alt="TinyTrack logo">
                     <a href="{{route('mainpage')}}" class="navbar-brand">
-                        <h1 class="text-primary">Tiny<span class="text-secondary">Track</span></h1>
                     </a>
                 </div>
 

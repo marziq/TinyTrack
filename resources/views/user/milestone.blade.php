@@ -331,6 +331,117 @@
                 margin-left: auto;
             }
         }
+        .main-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .baby-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .milestones-abilities-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two equal columns */
+            gap: 30px; /* Space between the two sections */
+            margin-bottom: 30px;
+        }
+
+        .milestones-section, .abilities-section {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .milestone-list, .abilities-list {
+            display: grid;
+            grid-template-columns: 1fr; /* Items stack vertically */
+            gap: 15px;
+        }
+
+        .milestone-item, .ability-item {
+            position: relative; /* To position the arrow icon */
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .milestone-item:hover, .ability-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .milestone-item p, .ability-item p {
+            font-size: 18px;
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .milestone-item span, .ability-item span {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .arrow-icon {
+            position: absolute;
+            right: 15px; /* Align the arrow to the right */
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #555;
+            transition: transform 0.3s ease;
+        }
+
+        .milestone-item:hover .arrow-icon, .ability-item:hover .arrow-icon {
+            transform: translateY(-50%) rotate(180deg); /* Rotate the arrow on hover */
+        }
+
+        /* Add completed statuses with colors */
+        .milestone-item span.completed, .ability-item span.completed {
+            color: #388e3c; /* Green for completed */
+        }
+
+        .milestone-item span.not-completed, .ability-item span.not-completed {
+            color: #f44336; /* Red for not completed */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .milestones-abilities-container {
+            grid-template-columns: 1fr; /* Stack sections vertically */
+    }
+}
+
+        .baby-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .baby-selector {
+            padding: 8px 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .baby-selector:focus {
+            border-color: #1976d2;
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -341,7 +452,7 @@
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
         <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
-        <a href="{{route('calendar')}}"><i class="fas fa-calendar"></i> Calendar</a>
+        <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
         <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
     </div>
 
@@ -351,7 +462,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1>Overview</h1>
+            <h1>Milestone</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon">
@@ -371,7 +482,7 @@
                     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                         <li><a class="dropdown-item" href="{{route('mainpage')}}"><i class="fa-solid fa-house"></i> Home</a></li>
                         <li><a class="dropdown-item" href="{{route('mybaby')}}"><i class="fas fa-baby"></i> My Baby</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-address-card"></i> My Account</a></li>
+                        <li><a class="dropdown-item" href="{{route('myaccount')}}"><i class="fa-solid fa-address-card"></i> My Account</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
@@ -386,23 +497,71 @@
             </div>
         </div>
 
-        <div class="welcome-section">
-            <h2>Welcome, {{ Auth::user()->name }}</h2>
-            <p>Here's an overview of your baby's progress.</p>
-        </div>
+        <div class="main-content">
+            <div class="baby-header">
+                <h2 class="baby-name">Track <span id="selectedBabyNameHeading">Progress</span></h2>
+                <select id="babySelector" class="baby-selector" onchange="loadBabyData(this.value)">
+                    <option value="" disabled selected hidden>Select a baby</option>
+                    @foreach(Auth::user()->babies as $baby)
+                        <option value="{{ $baby->id }}" data-name="{{ $baby->name }}">{{ $baby->name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-        <div class="cards">
-            <div class="card">
-                <h3>Baby Age</h3>
-                <p>8 Months</p>
-            </div>
-            <div class="card">
-                <h3>Next Checkup</h3>
-                <p>May 30</p>
-            </div>
-            <div class="card">
-                <h3>Milestones</h3>
-                <p>5 Achieved</p>
+            <div class="milestones-abilities-container">
+                <!-- Milestones Section -->
+                <div class="milestones-section">
+                    <h3>Milestones</h3>
+                    <div class="milestone-list">
+                        <div class="milestone-item">
+                            <p>Motor Milestones</p>
+                            <span class="not-completed">0/5 completed</span>
+                            <i class="fas fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="milestone-item">
+                            <p>Sensory Milestones</p>
+                            <span class="not-completed">0/5 completed</span>
+                            <i class="fas fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="milestone-item">
+                            <p>Communication Milestones</p>
+                            <span class="not-completed">0/6 completed</span>
+                            <i class="fas fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="milestone-item">
+                            <p>Feeding Milestones</p>
+                            <span class="not-completed">0/4 completed</span>
+                            <i class="fas fa-chevron-down arrow-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Abilities Section -->
+                <div class="abilities-section">
+                    <h3>Abilities</h3>
+                    <div class="abilities-list">
+                        <div class="ability-item">
+                            <p>Play and Social Skills Abilities</p>
+                            <span class="not-completed">0/2 completed</span>
+                            <i class="fas fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="ability-item">
+                            <p>Coordination Abilities</p>
+                            <span class="not-completed">0/2 completed</span>
+                            <i class="fas fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="ability-item">
+                            <p>Daily Activities Abilities</p>
+                            <span class="not-completed">0/3 completed</span>
+                            <i class="fas fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="ability-item">
+                            <p>Self-Expression Abilities</p>
+                            <span class="not-completed">0/3 completed</span>
+                            <i class="fas fa-chevron-down arrow-icon"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -463,6 +622,33 @@
                 });
             }
         });
+
+        function loadBabyData(babyId) {
+            if (!babyId) return;
+
+            // Get the selected option
+            const babySelector = document.getElementById('babySelector');
+            const selectedOption = babySelector.options[babySelector.selectedIndex];
+
+            // Get the baby's name from the data attribute
+            const babyName = selectedOption.getAttribute('data-name');
+
+            // Update the heading with the baby's name
+            const heading = document.getElementById('selectedBabyNameHeading');
+            heading.textContent = `${babyName}'s Progress`;
+
+            // For now, just log the selected baby ID
+            console.log("Selected Baby ID:", babyId);
+
+            // In the future, you can make an AJAX request to fetch the baby's milestones
+            // Example:
+            // fetch(`/api/babies/${babyId}/milestones`)
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         // Update the milestones and abilities dynamically
+            //         console.log(data);
+            //     });
+        }
     </script>
 </body>
 </html>

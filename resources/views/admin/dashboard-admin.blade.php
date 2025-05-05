@@ -284,8 +284,7 @@
             <h3>Dashboard</h3>
         </div>
         <ul class="sidebar-menu">
-            <li class="active"><i class="fas fa-home"></i> Home</li>
-            <li><i class="fas fa-chart-line"></i> Analytics</li>
+            <li class="active"><i class="fas fa-chart-line"></i> Analytics</li>
             <li><i class="fas fa-users"></i> Users</li>
             <li><i class="fas fa-cog"></i> Settings</li>
             <li><i class="fas fa-envelope"></i> Messages</li>
@@ -337,20 +336,24 @@
 
         <!-- Dashboard Content -->
         <div class="dashboard-content">
-            <h2>Welcome to your Dashboard</h2>
+            <h2>Welcome Admin</h2>
             <p>Here's an overview of your activities and statistics.</p>
 
             <div class="card-container">
                 <div class="card">
                     <h3>Total Users</h3>
-                    <p>1,234</p>
+                    <p>{{$totalUsers}}</p>
                 </div>
                 <div class="card">
-                    <h3>Revenue</h3>
-                    <p>$12,345</p>
+                    <h3>Total Babies</h3>
+                    <p>{{$totalBabies}}</p>
                 </div>
                 <div class="card">
-                    <h3>Tasks</h3>
+                    <h3>Vaccine completed</h3>
+                    <p>15 pending</p>
+                </div>
+                <div class="card">
+                    <h3>Activities completed</h3>
                     <p>15 pending</p>
                 </div>
             </div>
