@@ -38,12 +38,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 0; /* Remove padding to avoid gaps */
+            overflow: hidden; /* Ensure no overflow */
         }
 
         .right-panel img {
-            width: fit-content;
-            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the entire panel */
         }
 
         .logo {
@@ -180,7 +182,6 @@
                 <div class="logo">
                     <img src="/img/tinytrack-logo.png" alt="TinyTrack Logo">
                 </div>
-                <h1 class="text-primary" style="text-align: center; font-size: 2.5rem;">Tiny<span class="text-secondary">Track</span></h1>
                 <h2 class="title">Create Your Account</h2>
                 <p class="welcome-text">Join us today to get started</p>
 
@@ -233,7 +234,7 @@
 
             <!-- Right side - Image section -->
             <div class="right-panel">
-                <img src="img/hero-img.jpg" alt="Registration Illustration">
+                <img src="img/babyregister.jpg" alt="Registration Illustration">
             </div>
         </div>
     </div>

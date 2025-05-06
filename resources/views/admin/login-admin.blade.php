@@ -29,11 +29,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 0; /* Remove padding to avoid gaps */
+            overflow: hidden; /* Ensure no overflow */
         }
 
         .left-panel img {
-            width: fit-content;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the entire panel */
         }
 
         .right-panel {
@@ -147,7 +150,7 @@
     <div class="login-container">
         <div class="card">
             <div class="left-panel">
-                <img src="img/team-3.jpg" alt="Illustration">
+                <img src="img/babyadmin.jpg" alt="Illustration">
             </div>
             <div class="right-panel">
                 <div class="logo">
