@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Nunito', sans-serif;
         }
 
         body {
@@ -367,7 +368,7 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            height: 400px; /* Larger height for the chart */
+            height: 450px; /* Larger height for the chart */
             grid-column: span 2; /* Make the chart span two columns */
         }
 
@@ -451,7 +452,6 @@
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    margin-top: 20px;
 }
 
 .vaccine-card {
@@ -491,7 +491,6 @@
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    margin-top: 20px;
 }
 
 .baby-tips-panel p {
@@ -513,8 +512,7 @@
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <h2>My Dashboard</h2>
-        <a href="{{route('dashboard')}}"><i class="fa-solid fa-table-columns"></i> Overview</a>
+        <a href="{{route('mybaby')}}"><h2 >My Dashboard</h2></a>
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
@@ -564,8 +562,10 @@
         <div class="main-content">
            <div class="baby-selector-container">
             <div>
-                <h2>Hi, {{ Auth::user()->name }}</h2>
-                <p>Select a baby to view details</p>
+                <h2>Welcome Back, {{ Auth::user()->name }}!</h2>
+                <p>Let's make parenting smarter, together.
+
+                </p>
             </div>
             <button class="add-baby-btn-top" onclick="openAddBabyModal()">
                 <i class="fas fa-plus"></i> Add Baby
@@ -577,23 +577,36 @@
         class="block w-64 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200 text-gray-700 truncate">
         <option value="" disabled selected hidden>Select baby</option>
         @foreach(Auth::user()->babies as $baby)
+        @php
+        $birthDate = \Carbon\Carbon::parse($baby->birth_date);
+        $now = \Carbon\Carbon::now();
+        $diff = $birthDate->diff($now);
+
+        $years = $diff->y;
+        $months = $diff->m;
+
+        if ($years > 0) {
+            $ageText = "$years Years, $months Months";
+        } else {
+            $ageText = "$months Months";
+        }
+        @endphp
+
         <option
             value="{{ $baby->id }}"
             data-name="{{ $baby->name }}"
-            data-age="{{ \Carbon\Carbon::parse($baby->birth_date)->diff(\Carbon\Carbon::now())->format('%y years, %m months') }}"
+            data-age="{{ $ageText }}"
             data-birthdate="{{ $baby->birth_date }}"
             data-gender="{{ ucfirst($baby->gender) }}"
             data-ethnicity="{{ $baby->ethnicity }}"
             data-photo="{{ asset('storage/' . $baby->baby_photo_path) }}"
             data-premature="{{ $baby->premature ? '1' : '0' }}"
         >
-            {{ $baby->name }} ({{ ucfirst($baby->gender) }}, {{ \Carbon\Carbon::parse($baby->birth_date)->diff(\Carbon\Carbon::now())->format('%y years, %m months') }})
+            {{ $baby->name }} ({{ ucfirst($baby->gender) }}, {{ $ageText }})
         </option>
+
         @endforeach
         </select>
-
-
-
         <hr>
         <div id="babyDashboard" style="display: none;">
             <h1 class="babyh1" id="selectedBabyProfileHeading">Select a baby to view their profile</h1>
@@ -836,7 +849,7 @@
             }
 
             // Update the heading dynamically
-            document.getElementById('selectedBabyProfileHeading').textContent = `${selectedOption.dataset.name}'s Profile`;
+            document.getElementById('selectedBabyProfileHeading').textContent = `${selectedOption.dataset.name}'s At A Glance`;
 
             // Extract data attributes and update the dashboard
             document.getElementById('selectedBabyName').textContent = selectedOption.dataset.name;

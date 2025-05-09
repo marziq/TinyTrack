@@ -9,11 +9,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Nunito', sans-serif;
         }
 
         body {
@@ -463,8 +464,7 @@
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <h2>My Dashboard</h2>
-        <a href="{{route('dashboard')}}"><i class="fa-solid fa-table-columns"></i> Overview</a>
+        <a href="{{route('mybaby')}}"><h2 >My Dashboard</h2></a>
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
