@@ -479,7 +479,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1>Appointment</h1>
+            <h1 style="font-weight: bold">Appointment</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon">

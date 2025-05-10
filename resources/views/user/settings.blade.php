@@ -351,7 +351,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1>Settings</h1>
+            <h1 style="font-weight: bold">Settings</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon">
@@ -516,3 +516,4 @@
     </script>
 </body>
 </html>
+

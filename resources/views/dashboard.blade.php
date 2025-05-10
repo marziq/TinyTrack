@@ -368,7 +368,7 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            height: 400px; /* Larger height for the chart */
+            height: 450px; /* Larger height for the chart */
             grid-column: span 2; /* Make the chart span two columns */
         }
 
@@ -389,117 +389,120 @@
         }
 
         /* Milestones Container */
-.milestones-container {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
+        .milestones-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            max-height: 300px; /* Set a fixed height */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
 
-.milestone-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+        .milestone-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-.milestone-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 10px;
-    border: 1px solid #e3f2fd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            border: 1px solid #e3f2fd;
+            border-radius: 8px;
+            background-color: #94d9eb;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 10px;
+        }
 
-.milestone-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+        .milestone-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-.milestone-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #e3f2fd;
-    border-radius: 50%;
-    color: #1976d2;
-    font-size: 18px;
-}
+        .milestone-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e3f2fd;
+            border-radius: 50%;
+            color: #1976d2;
+            font-size: 18px;
+        }
 
-.milestone-content {
-    display: flex;
-    flex-direction: column;
-}
+        .milestone-content {
+            display: flex;
+            flex-direction: column;
+        }
 
-.milestone-text {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-}
+        .milestone-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
 
-.milestone-date {
-    font-size: 14px;
-    color: #666;
-}
+        .milestone-date {
+            font-size: 14px;
+            color: #666;
+        }
 
-/* Vaccine Container */
-.vaccine-container {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    margin-top: 20px;
-}
+        /* Vaccine Container */
+        .vaccine-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            max-height: 300px; /* Set a fixed height */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
 
-.vaccine-card {
-    padding: 15px;
-    border-left: 5px solid #1976d2;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+        .vaccine-card {
+            padding: 15px;
+            border-left: 5px solid #1976d2;
+            background-color: #94d9eb;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
 
-.vaccine-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+        .vaccine-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-.vaccine-name {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-}
+        .vaccine-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
 
-.vaccine-date {
-    font-size: 14px;
-    color: #666;
-}
+        .vaccine-date {
+            font-size: 14px;
+            color: #666;
+        }
 
-.vaccine-days {
-    font-size: 14px;
-    color: #1976d2;
-    font-weight: bold;
-}
+        .vaccine-days {
+            font-size: 14px;
+            color: #1976d2;
+            font-weight: bold;
+        }
 
-/* Baby Tips Panel */
-.baby-tips-panel {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    margin-top: 20px;
-}
+        /* Baby Tips Panel */
+        .baby-tips-panel {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
 
-.baby-tips-panel p {
-    font-size: 14px;
-    color: #666;
-    line-height: 1.6;
-}
+        .baby-tips-panel p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
 
         .babyh1 {
             text-align: center; /* Centers text horizontally */
@@ -528,7 +531,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1>My Baby</h1>
+            <h1 style="font-weight: bold">My Baby</h1>
             <div class="topbar-right">
                 <div class="notification-icon">
                     <i class="fas fa-bell"></i>
@@ -564,8 +567,10 @@
         <div class="main-content">
            <div class="baby-selector-container">
             <div>
-                <h2>Hi, {{ Auth::user()->name }}</h2>
-                <p>Select a baby to view details</p>
+                <h2>Welcome Back, {{ Auth::user()->name }}!</h2>
+                <p>Let's make parenting smarter, together.
+
+                </p>
             </div>
             <button class="add-baby-btn-top" onclick="openAddBabyModal()">
                 <i class="fas fa-plus"></i> Add Baby
@@ -577,23 +582,36 @@
         class="block w-64 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200 text-gray-700 truncate">
         <option value="" disabled selected hidden>Select baby</option>
         @foreach(Auth::user()->babies as $baby)
+        @php
+        $birthDate = \Carbon\Carbon::parse($baby->birth_date);
+        $now = \Carbon\Carbon::now();
+        $diff = $birthDate->diff($now);
+
+        $years = $diff->y;
+        $months = $diff->m;
+
+        if ($years > 0) {
+            $ageText = "$years Years, $months Months";
+        } else {
+            $ageText = "$months Months";
+        }
+        @endphp
+
         <option
             value="{{ $baby->id }}"
             data-name="{{ $baby->name }}"
-            data-age="{{ \Carbon\Carbon::parse($baby->birth_date)->diff(\Carbon\Carbon::now())->format('%y years, %m months') }}"
+            data-age="{{ $ageText }}"
             data-birthdate="{{ $baby->birth_date }}"
             data-gender="{{ ucfirst($baby->gender) }}"
             data-ethnicity="{{ $baby->ethnicity }}"
-            data-photo="{{ asset('storage/' . $baby->baby_photo_path) }}"
+            data-photo="{{ $baby->baby_photo_path ? asset('storage/' . $baby->baby_photo_path) : asset('storage/baby-photos/default-baby.png') }}"
             data-premature="{{ $baby->premature ? '1' : '0' }}"
         >
-            {{ $baby->name }} ({{ ucfirst($baby->gender) }}, {{ \Carbon\Carbon::parse($baby->birth_date)->diff(\Carbon\Carbon::now())->format('%y years, %m months') }})
+            {{ $baby->name }} ({{ ucfirst($baby->gender) }}, {{ $ageText }})
         </option>
+
         @endforeach
         </select>
-
-
-
         <hr>
         <div id="babyDashboard" style="display: none;">
             <h1 class="babyh1" id="selectedBabyProfileHeading">Select a baby to view their profile</h1>
@@ -601,7 +619,10 @@
                 <!-- Row 1 -->
                 <div class="baby-info-panel">
                     <div class="baby-photo-container">
-                        <img id="selectedBabyPhoto" src="" alt="Baby Photo" class="baby-photo">
+                        <img id="selectedBabyPhoto"
+                        src="{{ $baby->baby_photo_path ? asset('storage/' . $baby->baby_photo_path) : asset('storage/baby-photos/default-baby.png') }}"
+                        alt="Baby Photo"
+                        class="baby-photo">
                     </div>
                     <div class="baby-details">
                         <h3 id="selectedBabyName" class="baby-name"></h3>
@@ -665,6 +686,39 @@
                             June 20, 2023
                         </div>
                     </div>
+                    <div class="milestone-item">
+                        <div class="milestone-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="milestone-text">
+                            First solid food
+                        </div>
+                        <div class="milestone-date">
+                            June 20, 2023
+                        </div>
+                    </div>
+                    <div class="milestone-item">
+                        <div class="milestone-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="milestone-text">
+                            First solid food
+                        </div>
+                        <div class="milestone-date">
+                            June 20, 2023
+                        </div>
+                    </div>
+                    <div class="milestone-item">
+                        <div class="milestone-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="milestone-text">
+                            First solid food
+                        </div>
+                        <div class="milestone-date">
+                            June 20, 2023
+                        </div>
+                    </div>
                 </div>
 
                 <div class="vaccine-container">
@@ -673,6 +727,21 @@
                         <div class="vaccine-name">Hepatitis B (3rd dose)</div>
                         <div class="vaccine-date">July 15, 2023</div>
                         <div class="vaccine-days">in 12 days</div>
+                    </div>
+                    <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
+                        <div class="vaccine-name">DTaP (2nd dose)</div>
+                        <div class="vaccine-date">August 5, 2023</div>
+                        <div class="vaccine-days">in 33 days</div>
+                    </div>
+                    <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
+                        <div class="vaccine-name">DTaP (2nd dose)</div>
+                        <div class="vaccine-date">August 5, 2023</div>
+                        <div class="vaccine-days">in 33 days</div>
+                    </div>
+                    <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
+                        <div class="vaccine-name">DTaP (2nd dose)</div>
+                        <div class="vaccine-date">August 5, 2023</div>
+                        <div class="vaccine-days">in 33 days</div>
                     </div>
                     <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
                         <div class="vaccine-name">DTaP (2nd dose)</div>
@@ -689,68 +758,70 @@
             </div>
         </div>
 
-        <!-- Add Baby Modal (same as before) -->
-        <div class="modal fade" id="addBabyModal" tabindex="-1" aria-labelledby="addBabyModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addBabyModalLabel">Add New Baby</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form id="babyForm" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="hidden" id="babyId" name="id">
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="babyPhotoInput" class="form-label">Baby Photo</label>
-                                <input type="file" class="form-control" id="babyPhotoInput" name="baby_photo" accept="image/*">
-                                <div id="photoPreview" class="mt-3 text-center"></div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="babyName" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="babyName" name="name" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="babyBirthDate" class="form-label">Birth Date</label>
-                                <input type="date" class="form-control" id="babyBirthDate" name="birth_date" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="babyGender" class="form-label">Gender</label>
-                                <select class="form-select" id="babyGender" name="gender" required>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="babyEthnicity" class="form-label">Ethnicity</label>
-                                <select class="form-select" id="babyEthnicity" name="ethnicity" required>
-                                    <option value="" disabled selected hidden>Select Ethnicity</option>
-                                    <option value="Malay">Malay</option>
-                                    <option value="Chinese">Chinese</option>
-                                    <option value="Indian">Indian</option>
-                                    <option value="Orang Asli">Orang Asli</option>
-                                    <option value="Bumiputera Sabah">Bumiputera Sabah</option>
-                                    <option value="Bumiputera Sarawak">Bumiputera Sarawak</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="babyPremature" class="form-label">Is the baby premature?</label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="babyPremature" name="premature" value="1">
-                                    <label class="form-check-label" for="babyPremature">
-                                        Yes
-                                    </label>
+
+        <!-- Add/Edit Baby Modal -->
+            <div class="modal fade" id="addEditBabyModal" tabindex="-1" aria-labelledby="addEditBabyModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addEditBabyModalLabel">Add New Baby</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="babyForm" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" id="babyId" name="id">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="babyPhotoInput" class="form-label">Baby Photo</label>
+                                    <input type="file" class="form-control" id="babyPhotoInput" name="baby_photo" accept="image/*">
+                                    <div id="photoPreview" class="mt-3 text-center"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="babyName" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="babyName" name="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="babyBirthDate" class="form-label">Birth Date</label>
+                                    <input type="date" class="form-control" id="babyBirthDate" name="birth_date" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="babyGender" class="form-label">Gender</label>
+                                    <select class="form-select" id="babyGender" name="gender" required>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="babyEthnicity" class="form-label">Ethnicity</label>
+                                    <select class="form-select" id="babyEthnicity" name="ethnicity" required>
+                                        <option value="" disabled selected hidden>Select Ethnicity</option>
+                                        <option value="Malay">Malay</option>
+                                        <option value="Chinese">Chinese</option>
+                                        <option value="Indian">Indian</option>
+                                        <option value="Orang Asli">Orang Asli</option>
+                                        <option value="Bumiputera Sabah">Bumiputera Sabah</option>
+                                        <option value="Bumiputera Sarawak">Bumiputera Sarawak</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="babyPremature" class="form-label">Is the baby premature?</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="babyPremature" name="premature" value="1">
+                                        <label class="form-check-label" for="babyPremature">
+                                            Yes
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                    </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="button" class="btn btn-danger" id="deleteBabyButton" onclick="deleteSelectedBaby()" style="display: none;">Delete</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
 
     </div>
@@ -761,13 +832,13 @@
 
 
         // Initialize modal globally
-        let addBabyModal;
+        let addEditBabyModal;
         let currentBabyId = null;
 
         // DOM Ready
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize modal
-            addBabyModal = new bootstrap.Modal(document.getElementById('addBabyModal'));
+            addEditBabyModal = new bootstrap.Modal(document.getElementById('addEditBabyModal'));
 
             // Photo preview handler
             document.getElementById('babyPhotoInput')?.addEventListener('change', function(e) {
@@ -836,20 +907,21 @@
             }
 
             // Update the heading dynamically
-            document.getElementById('selectedBabyProfileHeading').textContent = `${selectedOption.dataset.name}'s Profile`;
+            document.getElementById('selectedBabyProfileHeading').textContent = `${selectedOption.dataset.name}'s At A Glance`;
 
             // Extract data attributes and update the dashboard
+            const defaultPhoto = '/storage/baby-photos/default-baby.png';
+            const babyPhoto = selectedOption.dataset.photo;
             document.getElementById('selectedBabyName').textContent = selectedOption.dataset.name;
             document.getElementById('selectedBabyAge').textContent = selectedOption.dataset.age;
             document.getElementById('selectedBabyBirthDate').textContent = "Birth Date: " + selectedOption.dataset.birthdate;
             document.getElementById('selectedBabyGender').textContent = "Gender: " + selectedOption.dataset.gender;
             document.getElementById('selectedBabyEthnicity').textContent = "Ethnicity: " + selectedOption.dataset.ethnicity;
             document.getElementById('selectedBabyPremature').textContent = selectedOption.dataset.premature == '1' ? "Premature: Yes" : "Premature: No";
-            document.getElementById('selectedBabyPhoto').src = selectedOption.dataset.photo;
+            document.getElementById('selectedBabyPhoto').src = babyPhoto && babyPhoto !== 'null' ? babyPhoto : defaultPhoto;
 
             document.getElementById('babyDashboard').style.display = 'block';
         }
-
 
         // Edit the currently selected baby
         function editSelectedBaby() {
@@ -886,19 +958,21 @@
             const form = document.getElementById('babyForm');
             form.reset();
             form.action = "/babies";
-            document.getElementById('addBabyModalLabel').textContent = 'Add New Baby';
+            document.getElementById('addEditBabyModalLabel').textContent = 'Add New Baby';
             document.getElementById('photoPreview').innerHTML = '';
+            document.getElementById('deleteBabyButton').style.display = 'none'; // Hide delete button for creation
 
             // Clear any existing hidden _method field
             const methodInput = form.querySelector('input[name="_method"]');
             if (methodInput) methodInput.remove();
 
-            addBabyModal.show();
+            const addEditBabyModal = new bootstrap.Modal(document.getElementById('addEditBabyModal'));
+            addEditBabyModal.show();
         }
 
         // Open modal for editing baby
-     async function editBaby(babyId) {
-     try {
+        async function editBaby(babyId) {
+    try {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         const response = await fetch(`/babies/${babyId}/edit`, {
@@ -916,7 +990,7 @@
 
         // Populate the form with baby data
         form.action = `/babies/${baby.id}`;
-        document.getElementById('addBabyModalLabel').textContent = 'Edit Baby';
+        document.getElementById('addEditBabyModalLabel').textContent = 'Edit Baby';
         document.getElementById('babyId').value = baby.id;
         document.getElementById('babyName').value = baby.name;
         document.getElementById('babyBirthDate').value = baby.birth_date.split('T')[0];
@@ -924,11 +998,12 @@
         document.getElementById('babyEthnicity').value = baby.ethnicity || '';
         document.getElementById('babyPremature').checked = baby.premature == '1';
 
-        // Set photo preview
+        // Set photo preview with default image if no photo is available
         const photoPreview = document.getElementById('photoPreview');
+        const defaultPhoto = '/path/to/default-baby-photo.jpg'; // Replace with the actual path to your default image
         photoPreview.innerHTML = baby.baby_photo_path
             ? `<img src="/storage/${baby.baby_photo_path}" class="img-thumbnail rounded-circle" width="150" height="150">`
-            : '';
+            : `<img src="${defaultPhoto}" class="img-thumbnail rounded-circle" width="150" height="150">`;
 
         // Add hidden input for PUT method
         let methodInput = form.querySelector('input[name="_method"]');
@@ -940,12 +1015,15 @@
         }
         methodInput.value = 'PUT';
 
-        addBabyModal.show();
-        } catch (error) {
+        document.getElementById('deleteBabyButton').style.display = 'inline-block'; // Show delete button for editing
+
+        const addEditBabyModal = new bootstrap.Modal(document.getElementById('addEditBabyModal'));
+        addEditBabyModal.show();
+    } catch (error) {
         console.error('Error loading baby:', error);
         alert('Failed to load baby data. Please try again.');
-        }
-        }
+    }
+}
 
         // Delete baby confirmation
         async function confirmDelete(babyId) {

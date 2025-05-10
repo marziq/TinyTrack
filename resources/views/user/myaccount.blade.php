@@ -298,6 +298,25 @@
             color: #666;
         }
 
+        .profile-photo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-img-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #e0e0e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #profile_photo {
+            max-width: 300px;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .sidebar {
@@ -351,7 +370,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1>My Account</h1>
+            <h1 style="font-weight: bold">My Account</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon">
@@ -388,72 +407,116 @@
 
        {{--Main Content--}}
        <div class="container">
-           <div class="row">
-               <!-- Update Profile Information -->
-               <div class="col-md-6">
-                   <div class="card">
-                       <div class="card-header">
-                           <h3>Update Profile Information</h3>
-                       </div>
-                       <div class="card-body">
-                           <form method="POST" action="{{ route('user-profile-information.update') }}" enctype="multipart/form-data">
-                               @csrf
-                               @method('PUT')
+        <div class="row">
+            <!-- Profile Information Section -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Profile Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- View Mode -->
+                        <div id="viewMode">
+                            <!-- Profile Photo -->
+                            <div class="mb-3">
+                                <label class="form-label">Profile Photo</label>
+                                <div class="profile-photo-container">
+                                    <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile Photo" class="profile-img-preview">
+                                </div>
+                            </div>
 
-                               <!-- Profile Photo -->
-                               <div class="mb-3">
-                                   <label for="profile_photo" class="form-label">Profile Photo</label>
-                                   <input type="file" name="profile_photo" id="profile_photo" class="form-control">
-                               </div>
+                            <!-- Username -->
+                            <div class="mb-3">
+                                <label class="form-label">Name</label>
+                                <p>{{ Auth::user()->name }}</p>
+                            </div>
 
-                               <!-- Username -->
-                               <div class="mb-3">
-                                   <label for="name" class="form-label">Username</label>
-                                   <input type="text" name="name" id="name" class="form-control" value="{{ old('name', Auth::user()->name) }}" required>
-                               </div>
+                            <!-- Email Address -->
+                            <div class="mb-3">
+                                <label class="form-label">Email Address</label>
+                                <p>{{ Auth::user()->email }}</p>
+                            </div>
 
-                               <button type="submit" class="btn btn-primary">Save Changes</button>
-                           </form>
-                       </div>
-                   </div>
-               </div>
+                            <!-- Gender -->
+                            <div class="mb-3">
+                                <label class="form-label">Gender</label>
+                                <p>{{ Auth::user()->gender }}</p>
+                            </div>
 
-               <!-- Update Password -->
-               <div class="col-md-6">
-                   <div class="card">
-                       <div class="card-header">
-                           <h3>Update Password</h3>
-                       </div>
-                       <div class="card-body">
-                           <form method="POST" action="{{ route('user-password.update') }}">
-                               @csrf
-                               @method('PUT')
+                            <!-- Mobile Number -->
+                            <div class="mb-3">
+                                <label class="form-label">Mobile Number</label>
+                                <p>{{ Auth::user()->mobile_number }}</p>
+                            </div>
 
-                               <!-- Current Password -->
-                               <div class="mb-3">
-                                   <label for="current_password" class="form-label">Current Password</label>
-                                   <input type="password" name="current_password" id="current_password" class="form-control" required>
-                               </div>
+                            <!-- Total Babies -->
+                            <div class="mb-3">
+                                <label class="form-label">Total Babies</label>
+                                <p>{{ Auth::user()->babies->count() }}</p>
+                            </div>
 
-                               <!-- New Password -->
-                               <div class="mb-3">
-                                   <label for="password" class="form-label">New Password</label>
-                                   <input type="password" name="password" id="password" class="form-control" required>
-                               </div>
+                            <button type="button" class="btn btn-primary" onclick="toggleEditMode()">Update</button>
+                        </div>
 
-                               <!-- Confirm Password -->
-                               <div class="mb-3">
-                                   <label for="password_confirmation" class="form-label">Confirm Password</label>
-                                   <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
-                               </div>
+                        <!-- Edit Mode -->
+                        <div id="editMode" style="display: none;">
+                            <form method="POST" action="{{ route('user-profile-information.update') }}" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
 
-                               <button type="submit" class="btn btn-primary">Update Password</button>
-                           </form>
-                       </div>
-                   </div>
-               </div>
-           </div>
-       </div>
+                                <!-- Profile Photo -->
+                                <div class="mb-3">
+                                    <label for="profile_photo" class="form-label">Profile Photo</label>
+                                    <div class="profile-photo-container">
+                                        <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile Photo" class="profile-img-preview">
+                                        <input type="file" name="profile_photo" id="profile_photo" class="form-control">
+                                    </div>
+                                </div>
+
+                                <!-- Username -->
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" name="name" id="name" class="form-control" value="{{ old('name', Auth::user()->name) }}" required>
+                                </div>
+
+                                <!-- Email Address -->
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" name="email" id="email" class="form-control" value="{{ old('email', Auth::user()->email) }}" required>
+                                </div>
+
+                                <!-- Gender -->
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label">Gender</label>
+                                    <select name="gender" id="gender" class="form-control" required>
+                                        <option value="Male" {{ Auth::user()->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                                        <option value="Female" {{ Auth::user()->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                                        <option value="Other" {{ Auth::user()->gender == 'Other' ? 'selected' : '' }}>Other</option>
+                                    </select>
+                                </div>
+
+                                <!-- Mobile Number -->
+                                <div class="mb-3">
+                                    <label for="mobile_number" class="form-label">Mobile Number</label>
+                                    <input type="text" name="mobile_number" id="mobile_number" class="form-control" value="{{ old('mobile_number', Auth::user()->mobile_number) }}" required>
+                                </div>
+
+                                <!-- Total Babies (Read-Only) -->
+                                <div class="mb-3">
+                                    <label class="form-label">Total Babies</label>
+                                    <input type="text" class="form-control" value="{{ Auth::user()->babies->count() }}" readonly>
+                                </div>
+
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                                <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
        {{--Main Content End--}}
     </div>
 
@@ -513,6 +576,19 @@
                 });
             }
         });
+
+        function toggleEditMode() {
+            const viewMode = document.getElementById('viewMode');
+            const editMode = document.getElementById('editMode');
+
+            if (viewMode.style.display === 'none') {
+                viewMode.style.display = 'block';
+                editMode.style.display = 'none';
+            } else {
+                viewMode.style.display = 'none';
+                editMode.style.display = 'block';
+            }
+        }
     </script>
 </body>
 </html>

@@ -331,7 +331,14 @@
             .topbar-right {
                 margin-left: auto;
             }
+
+            .milestones-abilities-container {
+                display: grid;
+                grid-template-columns: 1fr; /* Stack sections vertically */
+                gap: 30px; /* Space between the two sections */
+            }
         }
+
         .main-content {
             background-color: white;
             padding: 30px;
@@ -346,80 +353,93 @@
             margin-bottom: 30px;
         }
 
-        .milestones-abilities-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Two equal columns */
-            gap: 30px; /* Space between the two sections */
-            margin-bottom: 30px;
+        .progress-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
         }
 
-        .milestones-section, .abilities-section {
+        .progress-container {
+            width: 80%; /* Adjust the width as needed */
+            max-width: 800px; /* Limit the maximum width */
+            margin: 0 auto;
             background-color: #ffffff;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .milestone-list, .abilities-list {
-            display: grid;
-            grid-template-columns: 1fr; /* Items stack vertically */
-            gap: 15px;
+        .physical-section, .cognitive-section, .social-section {
+            margin-bottom: 20px;
         }
 
-        .milestone-item, .ability-item {
-            position: relative; /* To position the arrow icon */
+        .physical-item, .cognitive-item, .social-item {
+            padding: 10px;
             background-color: #e3f2fd;
-            padding: 15px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            margin: 20px;
         }
 
-        .milestone-item:hover, .ability-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        .progress-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            margin-right: 15px;
+            object-fit: cover;
+            float: left;
         }
 
-        .milestone-item p, .ability-item p {
-            font-size: 18px;
+        .progress-image-top {
+            width: 40%;
+            height: auto;
+            border-radius: 8px;
+            margin: 0 auto 10px auto; /* Center the image and add spacing below */
+            display: block;
+            object-fit: cover;
+        }
+
+        .dropdown-content {
+            display: none;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .dropdown-content img {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .dropdown-content span {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .physical-item p, .cognitive-item p, .social-item p {
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .physical-item p:hover, .cognitive-item p:hover, .social-item p:hover {
             color: #1976d2;
-            margin-bottom: 10px;
         }
 
-        .milestone-item span, .ability-item span {
-            font-size: 16px;
-            color: #555;
-        }
-
-        .arrow-icon {
-            position: absolute;
-            right: 15px; /* Align the arrow to the right */
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 14px;
-            color: #555;
+        .physical-item .fa-chevron-down, .cognitive-item .fa-chevron-down, .social-item .fa-chevron-down {
             transition: transform 0.3s ease;
-        }
-
-        .milestone-item:hover .arrow-icon, .ability-item:hover .arrow-icon {
-            transform: translateY(-50%) rotate(180deg); /* Rotate the arrow on hover */
-        }
-
-        /* Add completed statuses with colors */
-        .milestone-item span.completed, .ability-item span.completed {
-            color: #388e3c; /* Green for completed */
-        }
-
-        .milestone-item span.not-completed, .ability-item span.not-completed {
-            color: #f44336; /* Red for not completed */
         }
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            .milestones-abilities-container {
-            grid-template-columns: 1fr; /* Stack sections vertically */
-    }
-}
+            .progress-container {
+                grid-template-columns: 1fr; /* Stack sections vertically */
+            }
+        }
 
         .baby-header {
             display: flex;
@@ -462,7 +482,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1>Milestone</h1>
+            <h1 style="font-weight: bold">Milestone</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon">
@@ -508,57 +528,68 @@
                 </select>
             </div>
 
-            <div class="milestones-abilities-container">
-                <!-- Milestones Section -->
-                <div class="milestones-section">
-                    <h3>Milestones</h3>
-                    <div class="milestone-list">
-                        <div class="milestone-item">
-                            <p>Motor Milestones</p>
-                            <span class="not-completed">0/5 completed</span>
-                            <i class="fas fa-chevron-down arrow-icon"></i>
-                        </div>
-                        <div class="milestone-item">
-                            <p>Sensory Milestones</p>
-                            <span class="not-completed">0/5 completed</span>
-                            <i class="fas fa-chevron-down arrow-icon"></i>
-                        </div>
-                        <div class="milestone-item">
-                            <p>Communication Milestones</p>
-                            <span class="not-completed">0/6 completed</span>
-                            <i class="fas fa-chevron-down arrow-icon"></i>
-                        </div>
-                        <div class="milestone-item">
-                            <p>Feeding Milestones</p>
-                            <span class="not-completed">0/4 completed</span>
-                            <i class="fas fa-chevron-down arrow-icon"></i>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <!-- Physical Section -->
+                    <div class="physical-section">
+                        <h3>Physical</h3>
+                        <div class="physical-list">
+                            <div class="physical-item">
+                                <p onclick="toggleDropdown(this)">Motor Skills <i class="fas fa-chevron-down"></i></p>
+                                <div class="dropdown-content">
+                                    <img src="{{ asset('img/motorskills.jpg') }}" alt="Motor Skills" class="progress-image-top">
+                                    <span class="not-completed">0/5 completed</span>
+                                </div>
+                            </div>
+                            <div class="physical-item">
+                                <p onclick="toggleDropdown(this)">Sensory Skills <i class="fas fa-chevron-down"></i></p>
+                                <div class="dropdown-content">
+                                    <img src="{{ asset('img/sensoryskills.png') }}" alt="Sensory Skills" class="progress-image-top">
+                                    <span class="not-completed">0/5 completed</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Abilities Section -->
-                <div class="abilities-section">
-                    <h3>Abilities</h3>
-                    <div class="abilities-list">
-                        <div class="ability-item">
-                            <p>Play and Social Skills Abilities</p>
-                            <span class="not-completed">0/2 completed</span>
-                            <i class="fas fa-chevron-down arrow-icon"></i>
+                    <!-- Cognitive Section -->
+                    <div class="cognitive-section">
+                        <h3>Cognitive</h3>
+                        <div class="cognitive-list">
+                            <div class="cognitive-item">
+                                <p onclick="toggleDropdown(this)">Problem Solving <i class="fas fa-chevron-down"></i></p>
+                                <div class="dropdown-content">
+                                    <img src="{{ asset('img/problemsolving.jpeg') }}" alt="Problem Solving" class="progress-image-top">
+                                    <span class="not-completed">0/3 completed</span>
+                                </div>
+                            </div>
+                            <div class="cognitive-item">
+                                <p onclick="toggleDropdown(this)">Language Skills <i class="fas fa-chevron-down"></i></p>
+                                <div class="dropdown-content">
+                                    <img src="{{ asset('img/languageskills.jpg') }}" alt="Language Skills" class="progress-image-top">
+                                    <span class="not-completed">0/4 completed</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="ability-item">
-                            <p>Coordination Abilities</p>
-                            <span class="not-completed">0/2 completed</span>
-                            <i class="fas fa-chevron-down arrow-icon"></i>
-                        </div>
-                        <div class="ability-item">
-                            <p>Daily Activities Abilities</p>
-                            <span class="not-completed">0/3 completed</span>
-                            <i class="fas fa-chevron-down arrow-icon"></i>
-                        </div>
-                        <div class="ability-item">
-                            <p>Self-Expression Abilities</p>
-                            <span class="not-completed">0/3 completed</span>
-                            <i class="fas fa-chevron-down arrow-icon"></i>
+                    </div>
+
+                    <!-- Social Section -->
+                    <div class="social-section">
+                        <h3>Social</h3>
+                        <div class="social-list">
+                            <div class="social-item">
+                                <p onclick="toggleDropdown(this)">Interaction Skills <i class="fas fa-chevron-down"></i></p>
+                                <div class="dropdown-content">
+                                    <img src="{{ asset('img/interaction.png') }}" alt="Interaction Skills" class="progress-image-top">
+                                    <span class="not-completed">0/3 completed</span>
+                                </div>
+                            </div>
+                            <div class="social-item">
+                                <p onclick="toggleDropdown(this)">Emotional Skills <i class="fas fa-chevron-down"></i></p>
+                                <div class="dropdown-content">
+                                    <img src="{{ asset('img/emotional.jpg') }}" alt="Emotional Skills" class="progress-image-top">
+                                    <span class="not-completed">0/2 completed</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -648,6 +679,19 @@
             //         // Update the milestones and abilities dynamically
             //         console.log(data);
             //     });
+        }
+
+        function toggleDropdown(element) {
+            const dropdownContent = element.nextElementSibling;
+            const icon = element.querySelector('.fa-chevron-down');
+
+            if (dropdownContent.style.display === 'block') {
+                dropdownContent.style.display = 'none';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                dropdownContent.style.display = 'block';
+                icon.style.transform = 'rotate(180deg)';
+            }
         }
     </script>
 </body>

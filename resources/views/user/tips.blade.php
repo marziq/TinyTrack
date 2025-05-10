@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
         * {
@@ -353,64 +354,149 @@
             border: 1px solid #ccc;
         }
 
+        /* Slider Container */
         .topics-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjusts to fit available space */
-            gap: 20px; /* Space between cards */
-            margin-top: 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            overflow: hidden;
+            margin: 20px auto;
         }
 
+        .slider-container {
+            width: 90%; /* Adjust width to fit the slider */
+            overflow: hidden;
+        }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        /* Topic Card */
         .topic-card {
+            flex: 0 0 30%; /* Show 3 cards at a time */
+            margin: 10px;
             background-color: white;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .topic-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .topic-card h3 {
-            font-size: 20px;
-            color: #1976d2;
+        .topic-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
             margin-bottom: 15px;
         }
 
-        .topic-list {
-            list-style: none;
-            padding: 0;
+        .topic-card h3 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 10px;
+            text-align: center;
         }
 
-        .topic-list li {
-            font-size: 16px;
-            color: #555;
+        .topic-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        .topic-card ul li {
             margin-bottom: 10px;
         }
 
-        .topic-list li .progress-bar {
-            background-color: #e3f2fd;
-            height: 10px;
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-
-        .topic-list li .progress-bar span {
-            display: block;
-            height: 100%;
-            background-color: #1976d2;
-            border-radius: 5px;
-        }
-
-        .topic-list li a {
-            text-decoration: none;
+        .topic-card ul li button {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
             color: #1976d2;
+            background-color: #e3f2fd;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        .topic-list li a:hover {
-            text-decoration: underline;
+        .topic-card ul li button:hover {
+            background-color: #bbdefb;
+        }
+
+        /* Info Section */
+        .info-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default */
+        }
+
+        .info-section h3 {
+            font-size: 20px;
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .info-section p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Slider Buttons */
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #1976d2, #42a5f5); /* Gradient background */
+            color: white;
+            border: none;
+            border-radius: 50%; /* Circular buttons */
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 10; /* Ensure buttons are above the slider content */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+            transition: all 0.3s ease; /* Smooth transition for hover effects */
+        }
+
+        .slider-btn:hover {
+            background: linear-gradient(135deg, #1565c0, #1e88e5); /* Darker gradient on hover */
+            transform: translateY(-50%) scale(1.1); /* Slightly enlarge on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+        }
+
+        .prev-btn {
+            left: 10px; /* Position the button inside the container */
+        }
+
+        .next-btn {
+            right: 10px; /* Position the button inside the container */
+        }
+
+        @media (max-width: 768px) {
+            .prev-btn {
+                left: 5px; /* Adjust position for smaller screens */
+            }
+
+            .next-btn {
+                right: 5px; /* Adjust position for smaller screens */
+            }
+
+            .slider-btn {
+                width: 40px;
+                height: 40px; /* Smaller buttons for smaller screens */
+            }
         }
     </style>
 </head>
@@ -431,7 +517,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1>Baby Tips</h1>
+            <h1 style="font-weight: bold">Baby Tips</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon">
@@ -469,79 +555,92 @@
         <div class="explore-header">
             <h2>Tips for your Baby</h2>
             <select>
-                <option value="0-3">0–3 Months (Current)</option>
-                <option value="4-6">4–6 Months</option>
-                <option value="7-9">7–9 Months</option>
+                <option value="0">Less Than Year</option>
+                <option value="1-2">1-2 Years</option>
+                <option value="3-4">3-4 Years</option>
+                <option value="5-6">5-6 Years</option>
+
             </select>
         </div>
-
         <div class="topics-section">
-            <!-- Bonding Topic -->
-            <div class="topic-card">
-                <h3>Bonding</h3>
-                <ul class="topic-list">
-                    <li>What is the "Fourth Trimester"? <div class="progress-bar"><span style="width: 9%"></span></div></li>
-                    <li>Skin-to-Skin & Baby Massage Tips <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Tips to Help Baby Communicate <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Play Ideas at 1 Month <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Help Baby Learn Language <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>How to Build Trust with Your Baby <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li><a href="#">View all</a></li>
-                </ul>
-            </div>
+            <button class="slider-btn prev-btn" onclick="moveSlide(-1)">&#10094;</button>
+            <div class="slider-container">
+                <div class="slider-track">
+                    <!-- Bonding Topic -->
+                    <div class="topic-card">
+                        <img src="{{ asset('img/bonding.jpg') }}" alt="Bonding" class="topic-image">
+                        <h3>Bonding</h3>
+                        <ul class="topic-list">
+                            <li><button onclick="showInfo('bonding1')">What is the "Fourth Trimester"?</button></li>
+                            <li><button onclick="showInfo('bonding2')">Skin-to-Skin & Baby Massage Tips</button></li>
+                            <li><button onclick="showInfo('bonding3')">Tips to Help Baby Communicate</button></li>
+                            <li><button onclick="showInfo('bonding4')">Play Ideas at 1 Month</button></li>
+                            <li><button onclick="showInfo('bonding5')">Help Baby Learn Language</button></li>
+                            <li><button onclick="showInfo('bonding6')">How to Build Trust with Your Baby</button></li>
+                        </ul>
+                    </div>
 
-            <!-- Early Sensory Topic -->
-            <div class="topic-card">
-                <h3>Early Sensory</h3>
-                <ul class="topic-list">
-                    <li>Are Baby's Eyes Crossed? <div class="progress-bar"><span style="width: 13%"></span></div></li>
-                    <li>WATCH: The 8 Senses <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Baby's Sense of Smell <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Baby's Hearing Tests <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>The "Balance" Sense <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>How to Stimulate Baby's Vision <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li><a href="#">View all</a></li>
-                </ul>
-            </div>
+                    <!-- Early Sensory Topic -->
+                    <div class="topic-card">
+                        <img src="path/to/sensory-image.jpg" alt="Early Sensory" class="topic-image">
+                        <h3>Early Sensory</h3>
+                        <ul class="topic-list">
+                            <li><button onclick="showInfo('sensory1')">Are Baby's Eyes Crossed?</button></li>
+                            <li><button onclick="showInfo('sensory2')">WATCH: The 8 Senses</button></li>
+                            <li><button onclick="showInfo('sensory3')">Baby's Sense of Smell</button></li>
+                            <li><button onclick="showInfo('sensory4')">Baby's Hearing Tests</button></li>
+                            <li><button onclick="showInfo('sensory5')">The "Balance" Sense</button></li>
+                            <li><button onclick="showInfo('sensory6')">How to Stimulate Baby's Vision</button></li>
+                        </ul>
+                    </div>
 
-            <!-- Sleep and Routines Topic -->
-            <div class="topic-card">
-                <h3>Sleep and Routines</h3>
-                <ul class="topic-list">
-                    <li>How Much Sleep Does Baby Need? <div class="progress-bar"><span style="width: 20%"></span></div></li>
-                    <li>Creating a Bedtime Routine <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Safe Sleep Practices <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Dealing with Sleep Regression <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Daytime Naps: Tips and Tricks <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li><a href="#">View all</a></li>
-                </ul>
-            </div>
+                    <!-- Sleep and Routines Topic -->
+                    <div class="topic-card">
+                        <img src="path/to/bonding-image.jpg" alt="Bonding" class="topic-image">
+                        <h3>Sleep and Routines</h3>
+                        <ul class="topic-list">
+                            <li><button onclick="showInfo('sleep1')">How Much Sleep Does Baby Need?</button></li>
+                            <li><button onclick="showInfo('sleep2')">Creating a Bedtime Routine</button></li>
+                            <li><button onclick="showInfo('sleep3')">Safe Sleep Practices</button></li>
+                            <li><button onclick="showInfo('sleep4')">Dealing with Sleep Regression</button></li>
+                            <li><button onclick="showInfo('sleep5')">Daytime Naps: Tips and Tricks</button></li>
+                        </ul>
+                    </div>
 
-            <!-- Feeding and Nutrition Topic -->
-            <div class="topic-card">
-                <h3>Feeding and Nutrition</h3>
-                <ul class="topic-list">
-                    <li>Breastfeeding Basics <div class="progress-bar"><span style="width: 30%"></span></div></li>
-                    <li>Introducing Solid Foods <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Signs of Hunger and Fullness <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Formula Feeding Tips <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Foods to Avoid for Babies <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li><a href="#">View all</a></li>
-                </ul>
-            </div>
+                    <!-- Feeding and Nutrition Topic -->
+                    <div class="topic-card">
+                        <img src="path/to/bonding-image.jpg" alt="Bonding" class="topic-image">
+                        <h3>Feeding and Nutrition</h3>
+                        <ul class="topic-list">
+                            <li><button onclick="showInfo('feeding1')">Breastfeeding Basics</button></li>
+                            <li><button onclick="showInfo('feeding2')">Introducing Solid Foods</button></li>
+                            <li><button onclick="showInfo('feeding3')">Signs of Hunger and Fullness</button></li>
+                            <li><button onclick="showInfo('feeding4')">Formula Feeding Tips</button></li>
+                            <li><button onclick="showInfo('feeding5')">Foods to Avoid for Babies</button></li>
+                        </ul>
+                    </div>
 
-            <!-- Developmental Milestones Topic -->
-            <div class="topic-card">
-                <h3>Developmental Milestones</h3>
-                <ul class="topic-list">
-                    <li>Tracking Baby's Growth <div class="progress-bar"><span style="width: 10%"></span></div></li>
-                    <li>When Will Baby Start Crawling? <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Baby's First Words <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Encouraging Motor Skills <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li>Understanding Social Development <div class="progress-bar"><span style="width: 0%"></span></div></li>
-                    <li><a href="#">View all</a></li>
-                </ul>
+                    <!-- Developmental Milestones Topic -->
+                    <div class="topic-card">
+                        <img src="path/to/bonding-image.jpg" alt="Bonding" class="topic-image">
+                        <h3>Developmental Milestones</h3>
+                        <ul class="topic-list">
+                            <li><button onclick="showInfo('milestone1')">Tracking Baby's Growth</button></li>
+                            <li><button onclick="showInfo('milestone2')">When Will Baby Start Crawling?</button></li>
+                            <li><button onclick="showInfo('milestone3')">Baby's First Words</button></li>
+                            <li><button onclick="showInfo('milestone4')">Encouraging Motor Skills</button></li>
+                            <li><button onclick="showInfo('milestone5')">Understanding Social Development</button></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+            <button class="slider-btn next-btn" onclick="moveSlide(1)">&#10095;</button>
+        </div>
+
+        <!-- Section to display more information -->
+        <div id="info-section" class="info-section">
+            <h3 id="info-title"></h3>
+            <p id="info-content"></p>
         </div>
         {{--Main  content ends here--}}
     </div>
@@ -602,6 +701,79 @@
                 });
             }
         });
+
+        let currentSlide = 0;
+
+        function moveSlide(direction) {
+            const sliderTrack = document.querySelector('.slider-track');
+            const topicCards = document.querySelectorAll('.topic-card');
+            const cardWidth = topicCards[0].offsetWidth + 20; // Include margin
+            const visibleSlides = 3; // Number of visible slides
+            const totalSlides = topicCards.length;
+
+            // Calculate the new slide index
+            currentSlide += direction;
+
+            // Prevent sliding out of bounds
+            if (currentSlide < 0) {
+                currentSlide = 0;
+            } else if (currentSlide > totalSlides - visibleSlides) {
+                currentSlide = totalSlides - visibleSlides;
+            }
+
+            // Move the slider track
+            sliderTrack.style.transform = `translateX(-${currentSlide * cardWidth}px)`;
+        }
+
+        function showInfo(topicId) {
+            const infoSection = document.getElementById('info-section');
+            const infoTitle = document.getElementById('info-title');
+            const infoContent = document.getElementById('info-content');
+
+            // Define the content for each topic
+            const topics = {
+                bonding1: {
+                    title: 'What is the "Fourth Trimester"?',
+                    content: 'The "Fourth Trimester" refers to the first three months after birth when your baby is adjusting to life outside the womb.'
+                },
+                bonding2: {
+                    title: 'Skin-to-Skin & Baby Massage Tips',
+                    content: 'Skin-to-skin contact helps regulate your baby’s temperature and heartbeat. Baby massage can soothe and relax your baby.'
+                },
+                sensory1: {
+                    title: 'Are Baby\'s Eyes Crossed?',
+                    content: 'It is normal for a newborn’s eyes to appear crossed occasionally. However, consult a pediatrician if it persists beyond 3 months.'
+                },
+                sensory2: {
+                    title: 'WATCH: The 8 Senses',
+                    content: 'Learn about the 8 senses that play a crucial role in your baby’s development, including sight, hearing, and balance.'
+                },
+                sleep1: {
+                    title: 'How Much Sleep Does Baby Need?',
+                    content: 'Babies need varying amounts of sleep depending on their age. Newborns sleep 14-17 hours a day.'
+                },
+                sleep2: {
+                    title: 'Creating a Bedtime Routine',
+                    content: 'Establishing a consistent bedtime routine helps your baby recognize when it’s time to sleep.'
+                },
+                feeding1: {
+                    title: 'Breastfeeding Basics',
+                    content: 'Breastfeeding provides essential nutrients and antibodies for your baby’s growth and immunity.'
+                },
+                milestone1: {
+                    title: 'Tracking Baby\'s Growth',
+                    content: 'Regular checkups with your pediatrician help track your baby’s growth and development milestones.'
+                }
+                // Add more topics as needed
+            };
+
+            // Update the info section with the selected topic
+            if (topics[topicId]) {
+                infoTitle.textContent = topics[topicId].title;
+                infoContent.textContent = topics[topicId].content;
+                infoSection.style.display = 'block'; // Show the info section
+            }
+        }
     </script>
 </body>
 </html>
