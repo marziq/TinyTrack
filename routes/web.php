@@ -45,13 +45,8 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('user/mybaby');
-    })->name('dashboard');
-
-    Route::get('/dashboard/mybaby', function () {
-        return view('user/mybaby');
-    })->name('mybaby');
+    Route::get('/dashboard', [BabyController::class, 'index'])->name('dashboard'); // Use BabyController for dashboard
+    Route::get('/dashboard/mybaby', [BabyController::class, 'index'])->name('mybaby'); // Use BabyController for mybaby
 
     Route::get('/dashboard/growth', function () {
         return view('user/growth');
@@ -65,9 +60,7 @@ Route::middleware([
         return view('user/milestone');
     })->name('milestone');
 
-    Route::get('/dashboard/appointment', function () {
-        return view('user/appointment');
-    })->name('appointment');
+    Route::get('/dashboard/appointment', [BabyController::class, 'index'])->name('appointment'); // Already using BabyController
 
     Route::get('/dashboard/settings', function () {
         return view('user/settings');
@@ -76,10 +69,10 @@ Route::middleware([
     Route::get('/dashboard/account', function () {
         return view('user/myaccount');
     })->name('myaccount');
+
     // Baby resource routes
     Route::get('/babies/{id}', [BabyController::class, 'getBaby']); // Route to get baby details
     Route::resource('babies', BabyController::class);
-    Route::get('dashboard/appointment', [BabyController::class, 'index'])->name('appointment');
 });
 
 Route::get('/babies/{baby}', function(Baby $baby) {

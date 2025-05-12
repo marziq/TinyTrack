@@ -14,17 +14,25 @@ class BabyController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    $babies = Auth::user()->babies; // Fetch babies for the logged-in user
+    {
+        $babies = Auth::user()->babies; // Fetch babies for the logged-in user
+        $hasBabies = $babies->isNotEmpty(); // Check if the user has any babies
 
-    // Check the route or request parameter to decide which view to return
-    if (request()->routeIs('appointment')) {
-        return view('user.appointment', compact('babies'));
+        // Check the route or request parameter to decide which view to return
+        if (request()->routeIs('appointment')) {
+            return view('user.appointment', compact('babies', 'hasBabies'));
+        }
+
+        // Default to the 'mybaby' view
+        return view('user.mybaby', compact('babies', 'hasBabies'));
     }
+    public function showMyBaby()
+    {
+        $babies = Auth::user()->babies;
+        $hasBabies = $babies->isNotEmpty();
 
-    // Default to the 'mybaby' view
-    return view('user.mybaby', compact('babies'));
-}
+        return view('user.mybaby', compact('babies', 'hasBabies'));
+    }
     /**
      * Show the form for creating a new resource.
      */

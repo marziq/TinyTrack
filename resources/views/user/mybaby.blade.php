@@ -408,6 +408,7 @@
         }
 
         .text-column {
+            background-color: #bbdefb
             flex: 1; /* Allow the text column to take up available space */
             padding-left: 20px;
             display: flex;
