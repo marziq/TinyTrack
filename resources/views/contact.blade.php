@@ -24,7 +24,7 @@
                                 <i class="fas fa-envelope fa-2x text-secondary me-4"></i>
                                 <div class="">
                                     <h4>Mail Us</h4>
-                                    <p class="mb-2">info@example.com</p>
+                                    <p class="mb-2">support@tinytrack.com</p>
                                 </div>
                             </div>
                         </div>
