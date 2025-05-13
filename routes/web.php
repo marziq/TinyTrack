@@ -13,9 +13,9 @@ Route::get('/', function () {
     return view('index');
 })->name('mainpage');
 
-Route::get('/events', function () {
-    return view('event');
-})->name('event');
+Route::get('/faq', function () {
+    return view('faq');
+})->name('faq');
 
 Route::get('/services', function () {
     return view('service');

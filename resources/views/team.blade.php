@@ -1,6 +1,6 @@
 @extends('master.layout')
 @section('content')
-    <style> 
+    <style>
          /* Explore Content */
          .explore-header {
             display: flex;
@@ -167,7 +167,7 @@
             }
         }
     </style>
-    <h1>Our Experts Tips</h1>
+    <h1 style="text-align: center; font-weight: bold; padding: 32px 0 24px 0; letter-spacing: 1px; color: #1976d2;">Our Experts Tips</h1>
     <div class="topics-section">
         <button class="slider-btn prev-btn" onclick="moveSlide(-1)">&#10094;</button>
         <div class="slider-container">

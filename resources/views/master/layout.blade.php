@@ -62,17 +62,17 @@
                             <a href="{{route('mainpage')}}" class="nav-item nav-link">Home</a>
                             <a href="{{route('expert')}}" class="nav-item nav-link">Experts</a>
                             <a href="{{route('service')}}" class="nav-item nav-link">Services</a>
-                            <a href="{{route('event')}}" class="nav-item nav-link">FAQ</a>
+                            <a href="{{route('faq')}}" class="nav-item nav-link">FAQ</a>
                             <a href="{{route('contact')}}" class="nav-item nav-link">Contact</a>
                         </div>
-                        
+
                         <!-- Right section with login/register and account button -->
                         <div class="navbar-nav ms-auto">
                             @guest
                             <a class="nav-item nav-link" href="{{ route('login') }}">Login</a>
                             <a class="nav-item nav-link" href="{{ route('register') }}" style="margin-right: 5px;">Register</a>
                             @endguest
-                            
+
                             @auth
                             <div class="dropdown">
                                 <button class="profile-btn dropdown-toggle d-flex align-items-center gap-2" type="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background-image: none;">
