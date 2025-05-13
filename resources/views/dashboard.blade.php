@@ -368,25 +368,58 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            height: 450px; /* Larger height for the chart */
-            grid-column: span 2; /* Make the chart span two columns */
+            height: 450px;
+            display: flex; /* Use flexbox for horizontal layout */
+            justify-content: space-between;
+            align-items: center; /* Align items vertically within the container */
+            gap: 20px;
+            grid-column: span 2;
+            overflow: hidden; /* Prevent content from overflowing the container */
+            position: relative; /* Ensure child elements are positioned relative to the container */
         }
 
-        .chart-placeholder {
+        .chart-column {
+            flex: 1; /* Allow the chart column to take up available space */
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centers the image horizontally */
-            justify-content: center; /* Centers the image vertically */
-            height: 100%; /* Ensures the placeholder takes up the full height of the container */
+            align-items: center; /* Center the chart horizontally */
+            justify-content: center; /* Center the chart vertically */
+            height: 100%; /* Ensure the column respects the container's height */
+            max-width: 50%; /* Prevent the chart column from exceeding half the container's width */
+            overflow: hidden; /* Prevent content from overflowing */
             text-align: center;
         }
 
-        .chart-image {
-            max-width: 70%; /* Resize the image to 70% of the container width */
-            max-height: 70%; /* Ensure the image doesn't exceed 70% of the container height */
-            object-fit: contain; /* Ensures the image scales proportionally */
-            margin-bottom: 10px; /* Adds spacing between the image and the text */
+        .chart-placeholder {
+            width: 100%; /* Ensure the placeholder takes up the full width of the column */
+            height: auto;
+            max-height: 100%; /* Prevent the image from exceeding the column's height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
+        .chart-image {
+            width: 100%; /* Ensure the image takes up the full width of the placeholder */
+            height: auto;
+            max-height: 100%; /* Prevent the image from exceeding the placeholder's height */
+            object-fit: contain; /* Ensure the image scales proportionally */
+            border-radius: 8px; /* Optional: Add rounded corners to the image */
+        }
+
+        .text-column {
+            background-color: #bbdefb
+            flex: 1; /* Allow the text column to take up available space */
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center the text vertically */
+            height: 100%; /* Ensure the column respects the container's height */
+            max-width: 50%; /* Prevent the text column from exceeding half the container's width */
+            overflow: hidden; /* Prevent content from overflowing */
+        }
+
+
 
         /* Milestones Container */
         .milestones-container {
@@ -411,7 +444,7 @@
             padding: 10px;
             border: 1px solid #e3f2fd;
             border-radius: 8px;
-            background-color: #94d9eb;
+            background-color: #e3f2fd;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             margin-bottom: 10px;
         }
@@ -462,7 +495,7 @@
         .vaccine-card {
             padding: 15px;
             border-left: 5px solid #1976d2;
-            background-color: #94d9eb;
+            background-color: #e3f2fd;
             border-radius: 8px;
             margin-bottom: 15px;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -513,11 +546,13 @@
             height: 100%; /* Adjust height as needed */
             margin-bottom: 30px;
         }
+
     </style>
 </head>
 <body>
     <div class="sidebar" id="sidebar">
         <a href="{{route('mybaby')}}"><h2 >My Dashboard</h2></a>
+        <hr>
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
@@ -643,12 +678,18 @@
                 </div>
 
                 <div class="chart-container">
-                    <h4>Height Growth Chart</h4>
-                    <div class="chart-placeholder">
-                        <img src="{{ asset('img/growth-chart.jpg') }}" alt="growth chart" class="chart-image">
-                        <p>Height growth chart will be displayed here</p>
+                    <div class="chart-column">
+                        <canvas id="heightGrowthChart"></canvas>
+                    </div>
+                    <div class="text-column">
+                        <h3 style="margin-bottom: 30px">Height Growth Chart</h3>
+                        <h4>Storytelling</h4>
+                        <p>The height growth chart displayed above shows the developmental milestones of a child over time. It helps in understanding the natural growth patterns, identifying any irregularities, and guiding appropriate interventions when needed. By comparing a child’s height against standard growth percentiles, parents and doctors can track overall health and development effectively.</p>
                     </div>
                 </div>
+
+
+
 
                 <!-- Row 2 -->
                 <div class="milestones-container">
@@ -828,8 +869,61 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <script>
+        //chart
+        document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('heightGrowthChart').getContext('2d');
+
+        // Example data for height growth (in cm) over months
+        const labels = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']; // Months
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Baby Height (cm)',
+                    data: [50, 54, 58, 61, 63, 65, 67, 69, 71, 73, 74, 75, 76], // Example height data
+                    borderColor: '#1976d2',
+                    backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                    borderWidth: 2,
+                    tension: 0.4, // Smooth curvature
+                },
+            ],
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Age (Months)',
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Height (cm)',
+                        },
+                        beginAtZero: true,
+                    },
+                },
+            },
+        };
+
+        // Render the chart
+        new Chart(ctx, config);
+    });
 
         // Initialize modal globally
         let addEditBabyModal;

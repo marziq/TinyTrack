@@ -503,6 +503,7 @@
 <body>
     <div class="sidebar" id="sidebar">
         <a href="{{route('mybaby')}}"><h2 >My Dashboard</h2></a>
+        <hr>
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
@@ -582,7 +583,7 @@
 
                     <!-- Early Sensory Topic -->
                     <div class="topic-card">
-                        <img src="path/to/sensory-image.jpg" alt="Early Senses" class="topic-image">
+                        <img src="{{ asset('img/earlysensory.jpg') }}" alt="Early Senses" class="topic-image">
                         <h3>Early Sensory</h3>
                         <ul class="topic-list">
                             <li><button onclick="showInfo('sensory1')">Eye Contact & Smiles</button></li>
@@ -596,7 +597,7 @@
 
                     <!-- Sleep and Routines Topic -->
                     <div class="topic-card">
-                        <img src="path/to/bonding-image.jpg" alt="Bonding" class="topic-image">
+                        <img src="{{ asset('img/sleep.jpeg') }}" alt="sleep" class="topic-image">
                         <h3>Sleep and Routines</h3>
                         <ul class="topic-list">
                             <li><button onclick="showInfo('sleep1')">How Much Sleep Does Baby Need?</button></li>
@@ -609,7 +610,7 @@
 
                     <!-- Feeding and Nutrition Topic -->
                     <div class="topic-card">
-                        <img src="path/to/bonding-image.jpg" alt="Bonding" class="topic-image">
+                        <img src="{{ asset('img/feeding.jpg') }}" alt="feeding" class="topic-image">
                         <h3>Feeding and Nutrition</h3>
                         <ul class="topic-list">
                             <li><button onclick="showInfo('feeding1')">Breastfeeding Basics</button></li>
@@ -622,7 +623,7 @@
 
                     <!-- Safety and Hygiene Topic -->
                     <div class="topic-card">
-                        <img src="path/to/bonding-image.jpg" alt="Safety and Hygiene" class="topic-image">
+                        <img src="{{ asset('img/hygiene.jpg') }}" alt="Safety and Hygiene" class="topic-image">
                         <h3>Safety & Hygiene</h3>
                         <ul class="topic-list">
                             <li><button onclick="showInfo('safety1')">Wash Hands Often</button></li>
@@ -909,11 +910,21 @@
             // Update the info section with the selected topic
             if (topics[topicId]) {
                 const topic = topics[topicId];
-                infoTitle.textContent = topic.title;
+
+                // Check if the topic is already in favourites
+                const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+                const isFavourite = favourites.includes(topicId);
+
 
                 // Build the content dynamically
                 infoContent.innerHTML = `
-                    <p>${topic.content}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="color: #1976d2; margin: 0;">${topic.title}</h3>
+                        <button id="favouriteButton" class="btn btn-primary" style="margin-left: 20px;">
+                            ${isFavourite ? 'Remove from Favourites' : 'Add to Favourites'}
+                        </button>
+                    </div>
+                    <p><br>${topic.content}</p>
                     ${topic.additionalText ? `
                         <div style="margin: 0 auto; max-width: 600px; text-align: center; line-height: 1.6; color: #555;">
                             </br> ${topic.additionalText}
@@ -949,6 +960,25 @@
                 `;
 
                 infoSection.style.display = 'block'; // Show the info section
+                // Add event listener for the favourite button
+                const favouriteButton = document.getElementById('favouriteButton');
+                favouriteButton.addEventListener('click', function () {
+                    const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+                    const index = favourites.indexOf(topicId);
+
+                    if (index === -1) {
+                        // Add to favourites
+                        favourites.push(topicId);
+                        favouriteButton.textContent = 'Remove from Favourites';
+                    } else {
+                        // Remove from favourites
+                        favourites.splice(index, 1);
+                        favouriteButton.textContent = 'Add to Favourites';
+                    }
+
+                    // Update local storage
+                    localStorage.setItem('favourites', JSON.stringify(favourites));
+                });
             }
         }
     </script>

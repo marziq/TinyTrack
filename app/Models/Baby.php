@@ -38,4 +38,9 @@ class Baby extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function growths()
+    {
+        return $this->hasMany(Growth::class);
+    }
 }

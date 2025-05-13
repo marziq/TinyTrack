@@ -116,7 +116,7 @@ h6,
 
 .btn.btn-primary:hover {
     background: var(--bs-secondary);
-    color: var(--bs-primary);
+    color: rgb(57, 61, 114);
 }
 
 .btn-border-radius {
@@ -179,7 +179,7 @@ h6,
 .navbar .navbar-nav .nav-link.active,
 .fixed-top.bg-white .navbar .navbar-nav .nav-link:hover,
 .fixed-top.bg-white .navbar .navbar-nav .nav-link.active {
-    color: var(--bs-primary);
+    color: #4D65F9;
 }
 
 .navbar .dropdown-toggle::after {
@@ -290,7 +290,7 @@ h6,
     display: block;
     width: 100px;
     height: 100px;
-    background: var(--bs-primary);
+    background: #4D65F9;
     border-radius: 50%;
     transition: all 200ms;
 }
@@ -360,7 +360,7 @@ h6,
 }
 
 .about {
-    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url(../img/background.jpg);
+    background: white, url(../img/background.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -370,7 +370,7 @@ h6,
 
 /*** service Start ***/
 .service {
-    background: linear-gradient(rgba(255, 72, 128, 0.05), rgba(255, 72, 128, 0.2));
+    background: white;
 }
 
 .service .service-item {
@@ -422,12 +422,12 @@ h6,
     color: var(--bs-white) !important;
 }
 .service-item:hover .service-content-inner a.h4 {
-    color: var(--bs-primary);
+    color: rgb(57, 61, 114);
 }
 
 .service-item:hover .service-content-inner a.btn-primary {
     background: var(--bs-white) !important;
-    color: var(--bs-primary) !important;
+    color: rgb(57, 61, 114) !important;
 }
 
 .service-item .service-content-inner a.btn-primary:hover {
@@ -645,7 +645,7 @@ h6,
     margin: 0 5px;
     width: 15px;
     height: 15px;
-    background: var(--bs-primary);
+    background: #393d72;
     border-radius: 10px;
     transition: 0.5s;
 }
@@ -690,7 +690,7 @@ h6,
 }
 .dropdown-menu .dropdown-item:hover {
     color: #ffffff !important; /* Change text color to white */
-    background-color: var(--bs-primary) !important; /* Optional: Add a background color */
+    background-color: #4D65F9!important; /* Optional: Add a background color */
 }
 /*Profile photo*/
 .profile-btn {
@@ -746,7 +746,7 @@ h6,
 }
 
 .dropdown-item:hover {
-    background-color: #f8f9fa;
+    background-color: #4D65F9;
 }
 
 .dropdown-divider {

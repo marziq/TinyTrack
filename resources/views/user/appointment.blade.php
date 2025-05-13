@@ -346,6 +346,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             max-width: 800px;
             margin: 0 auto;
+            margin-bottom: 30px;
         }
 
         .appointment-header h2 {
@@ -465,6 +466,7 @@
 <body>
     <div class="sidebar" id="sidebar">
         <a href="{{route('mybaby')}}"><h2 >My Dashboard</h2></a>
+        <hr>
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
@@ -513,7 +515,44 @@
                 </div>
             </div>
         </div>
+        <div class="appointment-container">
+            <div class="appointment-header">
+                <h2>Appointment List for a Baby</h2>
+                <p>Select a baby to view their appointment history.</p>
+            </div>
 
+            <!-- Baby Selector -->
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="baby-appointment-select" style="font-size: 16px; font-weight: bold; color: #1976d2;">Select Baby</label>
+                <select id="baby-appointment-select" class="form-control small-select">
+                    <option value="" selected disabled>Select a baby</option>
+                    @foreach($babies as $baby)
+                        <option value="{{ $baby->id }}">{{ $baby->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Appointment List Table -->
+            <div id="appointment-list-container">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Appointment Date</th>
+                            <th>Appointment Time</th>
+                            <th>Doctor Name</th>
+                            <th>Location</th>
+                            <th>Purpose</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointment-list">
+                        <tr>
+                            <td colspan="6" class="text-center">Select a baby to view appointments.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="appointment-container">
             <div class="appointment-header">
                 <h2>Doctor Appointment</h2>
@@ -641,6 +680,53 @@
                 }
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+        const babySelector = document.getElementById('baby-appointment-select');
+        const appointmentList = document.getElementById('appointment-list');
+
+        babySelector.addEventListener('change', function () {
+            const babyId = this.value;
+
+            if (babyId) {
+                fetch(`dashboard/appointment/${babyId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        appointmentList.innerHTML = '';
+
+                        if (data.length > 0) {
+                            data.forEach(appointment => {
+                                const row = `
+                                    <tr>
+                                        <td>${appointment.appointmentDate}</td>
+                                        <td>${appointment.appointmentTime}</td>
+                                        <td>${appointment.doctorName}</td>
+                                        <td>${appointment.location}</td>
+                                        <td>${appointment.purpose}</td>
+                                        <td>${appointment.status}</td>
+                                    </tr>
+                                `;
+                                appointmentList.innerHTML += row;
+                            });
+                        } else {
+                            appointmentList.innerHTML = `
+                                <tr>
+                                    <td colspan="6" class="text-center">No appointments found for this baby.</td>
+                                </tr>
+                            `;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching appointments:', error);
+                        appointmentList.innerHTML = `
+                            <tr>
+                                <td colspan="6" class="text-center text-danger">Failed to load appointments.</td>
+                            </tr>
+                        `;
+                    });
+            }
+        });
+    });
     </script>
 </body>
 </html>

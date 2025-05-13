@@ -16,7 +16,7 @@
 
         .card {
             display: flex;
-            width: 1550px;
+            width: 1000px;
             height: auto;
             background: #fff;
             border-radius: 20px;

@@ -444,7 +444,7 @@
             padding: 10px;
             border: 1px solid #e3f2fd;
             border-radius: 8px;
-            background-color: #94d9eb;
+            background-color: #e3f2fd;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             margin-bottom: 10px;
         }
@@ -495,7 +495,7 @@
         .vaccine-card {
             padding: 15px;
             border-left: 5px solid #1976d2;
-            background-color: #94d9eb;
+            background-color: #e3f2fd;
             border-radius: 8px;
             margin-bottom: 15px;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -552,6 +552,7 @@
 <body>
     <div class="sidebar" id="sidebar">
         <a href="{{route('mybaby')}}"><h2 >My Dashboard</h2></a>
+        <hr>
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
@@ -678,9 +679,7 @@
 
                 <div class="chart-container">
                     <div class="chart-column">
-                        <div class="chart-placeholder">
-                            <img src="{{ asset('img/growth-chart.jpg') }}" alt="growth chart" class="chart-image">
-                        </div>
+                        <canvas id="heightGrowthChart"></canvas>
                     </div>
                     <div class="text-column">
                         <h3 style="margin-bottom: 30px">Height Growth Chart</h3>
@@ -870,8 +869,61 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <script>
+        //chart
+        document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('heightGrowthChart').getContext('2d');
+
+        // Example data for height growth (in cm) over months
+        const labels = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']; // Months
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Baby Height (cm)',
+                    data: [50, 54, 58, 61, 63, 65, 67, 69, 71, 73, 74, 75, 76], // Example height data
+                    borderColor: '#1976d2',
+                    backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                    borderWidth: 2,
+                    tension: 0.4, // Smooth curvature
+                },
+            ],
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Age (Months)',
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Height (cm)',
+                        },
+                        beginAtZero: true,
+                    },
+                },
+            },
+        };
+
+        // Render the chart
+        new Chart(ctx, config);
+    });
 
         // Initialize modal globally
         let addEditBabyModal;

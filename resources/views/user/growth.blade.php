@@ -341,80 +341,72 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .baby-name {
-            color: #333;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
-
-         .milestones-section,
-        .abilities-section {
-            margin-bottom: 30px;
-        }
-
-        .milestones-section h3,
-        .abilities-section h3 {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1976d2;
-            margin-bottom: 20px;
-        }
-
-        .milestone-list,
-        .abilities-list {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
-
-        .milestone-item,
-        .ability-item {
-            background-color: #e3f2fd;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .milestone-item:hover,
-        .ability-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .milestone-item p,
-        .ability-item p {
-            font-size: 18px;
-            color: #1976d2;
-            margin-bottom: 10px;
-        }
-
-        .milestone-item span,
-        .ability-item span {
-            font-size: 16px;
-            color: #555;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .milestone-list,
-            .abilities-list {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .input-container {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            position: relative;
+            padding: 40px 20px;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            gap: 20px;
+            width: 120px;
+        }
+
+        .slider-group input[type="range"] {
+            writing-mode: bt-lr; /* Vertical orientation */
+            -webkit-appearance: slider-vertical;
+            width: 8px;
+            height: 200px;
+            margin: 20px 0;
+        }
+
+        .slider-value {
+            font-size: 16px;
+            color: #f5af00;
+            font-weight: bold;
+        }
+
+        .baby-icon-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 240px;
+        }
+
+        .baby-icon-center img {
+            margin-top: 50px;
+            height: 300px;
+            width: auto;
+            opacity: 0.5;
         }
 
         .input-group {
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+
+        .height-group {
+            order: 1; /* Left side */
+            flex: 1;
+        }
+
+        .baby-icon {
+            order: 2; /* Center */
+            font-size: 50px;
+            color: #1976d2;
+            margin: 0 20px;
+        }
+
+        .weight-group {
+            order: 3; /* Right side */
             flex: 1;
         }
 
@@ -433,7 +425,7 @@
 
         .input-wrapper input {
             width: 100%;
-            padding: 10px 40px 10px 10px; /* Add padding-right to create space for the unit */
+            padding: 10px 40px 10px 10px;
             font-size: 14px;
             border: 1px solid #ccc;
             border-radius: 8px;
@@ -447,33 +439,91 @@
             transform: translateY(-50%);
             font-size: 14px;
             color: #555;
-            pointer-events: none; /* Prevent interaction with the unit */
+            pointer-events: none;
         }
 
-        .baby-icon {
-            font-size: 50px;
+        .input-group.full-width {
+            order: 4; /* Bottom */
+            flex-basis: 100%;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .input-row {
+            display: flex;
+            justify-content: center; /* Center the inputs */
+            align-items: flex-start;
+            gap: 10px; /* Reduce spacing between the inputs */
+            width: 100%; /* Make the row span the full width */
+            margin-top: 10px; /* Adjust the top margin */
+        }
+
+        .input-row .input-group {
+            flex: 1; /* Make the inputs take equal space */
+            max-width: 250px; /* Limit the maximum width of each input */
+        }
+
+        .input-row .input-group label {
+            font-size: 14px;
+            font-weight: bold;
             color: #1976d2;
+            margin-bottom: 5px; /* Reduce spacing below the label */
+            display: block;
+        }
+
+        .input-row .input-wrapper {
+            width: 100%;
+        }
+
+        .baby-selector-container {
+            width: 100%;
+            max-width: 400px; /* Limit the width */
+            margin: 0 auto; /* Center the container */
             text-align: center;
         }
-
         .chart-area {
-            height: 300px;
-            background-color: #f8f9fa;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #aaa;
-            font-size: 16px;
-            font-style: italic;
+            width: 100%; /* Full width of the container */
+            max-width: 600px; /* Limit the maximum width */
+            height: 300px; /* Set a fixed height */
+            margin: 0 auto; /* Center the chart */
         }
 
+        canvas {
+            width: 90% !important; /* Ensure the canvas scales properly */
+            height: auto !important; /* Ensure the canvas scales properly */
+        }
+
+        .submit-btn {
+            background-color: #1976d2;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-align: center;
+            width: 100%; /* Make it span the full width */
+            max-width: 200px; /* Limit the maximum width */
+            margin: 20px auto 0; /* Center the button */
+        }
+
+        .submit-btn:hover {
+            background-color: #0d47a1;
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:active {
+            background-color: #0b3c91;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
     <div class="sidebar" id="sidebar">
         <a href="{{route('mybaby')}}"><h2 >My Dashboard</h2></a>
+        <hr>
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
@@ -527,45 +577,83 @@
         <div class="main-content">
             <!-- Height and Weight Input Card -->
             <div class="card">
-                <div class="input-container">
-                    <!-- Height Input -->
-                    <div class="input-group">
-                        <label for="height-input">Height</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="height-input" class="form-control" placeholder="Enter height">
-                            <span class="unit">cm</span>
-                        </div>
-                    </div>
 
-                    <!-- Baby Icon -->
-                    <div class="baby-icon">
-                        <i class="fas fa-baby"></i>
-                    </div>
+               <form method="POST" action="{{ route('growth.store') }}">
+                    @csrf
+                    <div class="input-container">
 
-                    <!-- Weight Input -->
-                    <div class="input-group">
-                        <label for="weight-input">Weight</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="weight-input" class="form-control" placeholder="Enter weight">
-                            <span class="unit">kg</span>
+                        <!-- Weight Slider -->
+                        <div class="input-group slider-group weight-slider">
+                            <label for="weight-input">Weight</label>
+                            <input type="range" id="weight-input" name="weight" min="1000" max="6000" value="2010" step="10">
+                            <span class="slider-value" id="weight-value">2010 g</span>
                         </div>
+
+                        <!-- Baby Icon Silhouette -->
+                        <div class="baby-icon-center">
+                            <img src="{{asset('img/childrenicon.png')}}" alt="ChildrenIcon">
+                        </div>
+
+                        <!-- Height Slider -->
+                        <div class="input-group slider-group height-slider">
+                            <label for="height-input">Height</label>
+                            <input type="range" id="height-input" name="height" min="40" max="70" value="50" step="1">
+                            <span class="slider-value" id="height-value">50 cm</span>
+                        </div>
+
+                        <div class="input-row">
+                            <!-- Growth Month -->
+                            <div class="input-group">
+                                <label for="growthMonth">Growth Month</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="growthMonth" name="growthMonth" class="form-control" placeholder="Enter growth month" step="1" required>
+                                </div>
+                            </div>
+
+                            <!-- Select Baby -->
+                            <div class="input-group">
+                                <label for="baby_id">Select Baby</label>
+                                <div class="input-wrapper">
+                                    <select id="baby_id" name="baby_id" class="form-control" required>
+                                        <option value="" disabled selected>Select a baby</option>
+                                        @foreach ($babies as $baby)
+                                            <option value="{{ $baby->id }}">{{ $baby->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="input-group full-width">
+                            <button type="submit" class="submit-btn">Submit</button>
+                        </div>
+
                     </div>
-                </div>
+                </form>
             </div>
 
-            <!-- Height Curvature Chart Card -->
-            <div class="card">
-                <h3>Height Curvature Chart</h3>
-                <div class="chart-area" id="height-chart">
-                    <!-- Chart will be rendered here -->
-                </div>
+            <div class="baby-selector-container">
+                <h2>Growth Tracking</h2>
+                <select id="babySelector" onchange="loadBabyData(this.value)" class="form-control">
+                    <option value="" disabled selected hidden>Select a baby</option>
+                    @foreach(Auth::user()->babies as $baby)
+                        <option value="{{ $baby->id }}" data-name="{{ $baby->name }}">
+                            {{ $baby->name }} ({{ ucfirst($baby->gender) }})
+                        </option>
+                    @endforeach
+                </select>
             </div>
-
-            <!-- Weight Curvature Chart Card -->
-            <div class="card">
-                <h3>Weight Curvature Chart</h3>
-                <div class="chart-area" id="weight-chart">
-                    <!-- Chart will be rendered here -->
+            <hr>
+            <div id="babyDashboard" style="display: none;">
+                <h3 id="selectedBabyName" class="text-center"></h3>
+                <div class="card">
+                    <h3>Height Curvature Chart</h3>
+                    <canvas id="height-chart"></canvas>
+                </div>
+                <div class="card">
+                    <h3>Weight Curvature Chart</h3>
+                    <canvas id="weight-chart"></canvas>
                 </div>
             </div>
         </div>
@@ -629,19 +717,35 @@
                 });
             }
         });
-
         document.addEventListener('DOMContentLoaded', function () {
-            // Example chart rendering using Chart.js
-            const heightCtx = document.getElementById('height-chart').getContext('2d');
-            const weightCtx = document.getElementById('weight-chart').getContext('2d');
+            // Weight Slider
+            const weightSlider = document.getElementById('weight-input');
+            const weightValue = document.getElementById('weight-value');
 
-            new Chart(heightCtx, {
+            weightSlider.addEventListener('input', function () {
+                weightValue.textContent = `${weightSlider.value} g`; // Update the weight value dynamically
+            });
+
+            // Height Slider
+            const heightSlider = document.getElementById('height-input');
+            const heightValue = document.getElementById('height-value');
+
+            heightSlider.addEventListener('input', function () {
+                heightValue.textContent = `${heightSlider.value} cm`; // Update the height value dynamically
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const heightChartCtx = document.getElementById('height-chart').getContext('2d');
+            const weightChartCtx = document.getElementById('weight-chart').getContext('2d');
+
+            // Initialize empty charts
+            const heightChart = new Chart(heightChartCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    labels: [], // Growth months will be added dynamically
                     datasets: [{
                         label: 'Height (cm)',
-                        data: [50, 52, 55, 58, 60],
+                        data: [],
                         borderColor: '#1976d2',
                         fill: false,
                     }]
@@ -652,13 +756,13 @@
                 }
             });
 
-            new Chart(weightCtx, {
+            const weightChart = new Chart(weightChartCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    labels: [], // Growth months will be added dynamically
                     datasets: [{
-                        label: 'Weight (kg)',
-                        data: [3, 3.5, 4, 4.5, 5],
+                        label: 'Weight (g)',
+                        data: [],
                         borderColor: '#e74c3c',
                         fill: false,
                     }]
@@ -668,6 +772,46 @@
                     maintainAspectRatio: false,
                 }
             });
+
+            // Load baby data when a baby is selected
+            window.loadBabyData = function (babyId) {
+                if (!babyId) return;
+
+                // Fetch growth data for the selected baby
+                fetch(`/dashboard/growth/${babyId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Fetched data:', data); // Log the fetched data
+
+                        // Update the charts
+                        const labels = data.map(entry => entry.growthMonth); // Use growthMonth for labels
+                        const heights = data.map(entry => entry.height);
+                        const weights = data.map(entry => entry.weight);
+
+                        console.log('Labels:', labels); // Log the labels (growth months)
+                        console.log('Heights:', heights); // Log the heights
+                        console.log('Weights:', weights); // Log the weights
+
+                        heightChart.data.labels = labels;
+                        heightChart.data.datasets[0].data = heights;
+                        heightChart.update();
+
+                        weightChart.data.labels = labels;
+                        weightChart.data.datasets[0].data = weights;
+                        weightChart.update();
+
+                        // Update the baby name
+                        const selectedOption = document.querySelector(`#babySelector option[value="${babyId}"]`);
+                        document.getElementById('selectedBabyName').textContent = `${selectedOption.dataset.name}'s Growth Tracking`;
+
+                        // Show the dashboard
+                        document.getElementById('babyDashboard').style.display = 'block';
+                    })
+                    .catch(error => {
+                        console.error('Error fetching growth data:', error);
+                        alert('Failed to load growth data. Please try again.');
+                    });
+            };
         });
     </script>
 </body>

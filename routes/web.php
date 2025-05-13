@@ -3,6 +3,9 @@
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BabyController;
+use App\Http\Controllers\GrowthController;
+use App\Http\Controllers\MilestoneController;
+use App\Http\Controllers\AppointmentController;
 use App\Models\Baby;
 
 // Public routes
@@ -73,6 +76,11 @@ Route::middleware([
     // Baby resource routes
     Route::get('/babies/{id}', [BabyController::class, 'getBaby']); // Route to get baby details
     Route::resource('babies', BabyController::class);
+
+    Route::post('/dashboard/growths/store', [GrowthController::class, 'store'])->name('growth.store');
+    Route::get('/dashboard/growth', [GrowthController::class, 'create'])->name('growth');
+    Route::get('dashboard/growth/{babyId}', [GrowthController::class, 'getGrowthData'])->name('growth.data');
+    Route::get('dashboard/appointment/{babyId}', [AppointmentController::class, 'getAppointmentsByBaby']);
 });
 
 Route::get('/babies/{baby}', function(Baby $baby) {
