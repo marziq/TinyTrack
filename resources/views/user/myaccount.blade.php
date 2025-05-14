@@ -386,7 +386,10 @@
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <a href="{{route('mybaby')}}"><h2 >My Dashboard</h2></a>
+        <a href="{{route('mybaby')}}" style="display: flex; align-items: center; gap: 10px;">
+            <img src="{{ asset('img/tinytrack-logo.png') }}" alt="Logo" style="height: 36px; width: 36px; object-fit: contain;">
+            <h2 style="margin-bottom: 0;">My Dashboard</h2>
+        </a>
         <hr>
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
@@ -561,6 +564,33 @@
                 </div>
             </div>
         </div>
+        <!-- Favourited Baby Tips Card -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Favourited Baby Tips</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="#">How to Soothe a Crying Baby</a>
+                                <span class="badge bg-primary">Favourited</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="#">Safe Sleep Practices</a>
+                                <span class="badge bg-primary">Favourited</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="#">Introducing Solid Foods</a>
+                                <span class="badge bg-primary">Favourited</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{--Main Content End--}}
         </div>
 
        {{--Main Content End--}}
