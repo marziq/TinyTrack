@@ -351,6 +351,37 @@
                 margin-left: auto;
             }
         }
+        .notification-popup {
+            position: absolute;
+            top: 35px;
+            right: 0;
+            min-width: 260px;
+            background: #fff;
+            border: 1px solid #e3f2fd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 1001;
+            padding: 10px 0;
+        }
+        .notification-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .notification-item {
+            padding: 10px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        .no-notification {
+            padding: 16px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -374,9 +405,23 @@
             <h1 style="font-weight: bold">My Account</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
-                <div class="notification-icon">
+                <div class="notification-icon" id="notificationBell" style="position: relative;">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
+                    <span class="notification-badge">2</span>
+                    <div id="notificationPopup" class="notification-popup" style="display: none;">
+                        <ul class="notification-list">
+                            <li class="notification-item">
+                                <strong>Welcome to TinyTrack!</strong><br>
+                                <span>Your account has been created successfully.</span>
+                                <div style="font-size: 11px; color: #888;">Just now</div>
+                            </li>
+                            <li class="notification-item">
+                                <strong>System Update</strong><br>
+                                <span>New features have been added to your dashboard.</span>
+                                <div style="font-size: 11px; color: #888;">2 hours ago</div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- Profile Dropdown -->
@@ -590,6 +635,19 @@
                 editMode.style.display = 'block';
             }
         }
+        document.addEventListener('DOMContentLoaded', function() {
+    const bell = document.getElementById('notificationBell');
+    const popup = document.getElementById('notificationPopup');
+
+    bell.addEventListener('click', function(e) {
+        e.stopPropagation();
+        popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.addEventListener('click', function() {
+        popup.style.display = 'none';
+    });
+});
     </script>
 </body>
 </html>

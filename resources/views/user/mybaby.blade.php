@@ -153,6 +153,42 @@
             font-weight: bold;
         }
 
+        .notification-popup {
+            position: absolute;
+            top: 35px;
+            right: 0;
+            min-width: 260px;
+            background: #fff;
+            border: 1px solid #e3f2fd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 1001;
+            padding: 10px 0;
+        }
+
+        .notification-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .notification-item {
+            padding: 10px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .no-notification {
+            padding: 16px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
+
         /* Profile Dropdown */
         .dropdown {
             position: relative;
@@ -369,25 +405,41 @@
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             height: 450px;
-            display: flex; /* Use flexbox for horizontal layout */
-            justify-content: space-between;
-            align-items: center; /* Align items vertically within the container */
+            display: flex;
+            align-items: stretch;
             gap: 20px;
             grid-column: span 2;
-            overflow: hidden; /* Prevent content from overflowing the container */
-            position: relative; /* Ensure child elements are positioned relative to the container */
+            overflow: hidden;
+            position: relative;
+            /* Remove justify-content to allow custom widths */
+            flex-direction: row;
+        }
+
+        .chart-title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #1976d2;
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+            pointer-events: none;
         }
 
         .chart-column {
-            flex: 1; /* Allow the chart column to take up available space */
+            flex: 3 1 0%;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Center the chart horizontally */
-            justify-content: center; /* Center the chart vertically */
-            height: 100%; /* Ensure the column respects the container's height */
-            max-width: 50%; /* Prevent the chart column from exceeding half the container's width */
-            overflow: hidden; /* Prevent content from overflowing */
-            text-align: center;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            max-width: 75%;
+            /* Ensure the chart doesn't overlap the title */
+            margin-top: 40px;
         }
 
         .chart-placeholder {
@@ -407,16 +459,15 @@
             border-radius: 8px; /* Optional: Add rounded corners to the image */
         }
 
-        .text-column {
-            background-color: #bbdefb
-            flex: 1; /* Allow the text column to take up available space */
+       .text-column {
+            flex: 1 1 0%;
             padding-left: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Center the text vertically */
-            height: 100%; /* Ensure the column respects the container's height */
-            max-width: 50%; /* Prevent the text column from exceeding half the container's width */
-            overflow: hidden; /* Prevent content from overflowing */
+            justify-content: center;
+            height: 100%;
+            max-width: 25%;
+            margin-top: 40px;
         }
 
 
@@ -568,9 +619,23 @@
             </button>
             <h1 style="font-weight: bold">My Baby</h1>
             <div class="topbar-right">
-                <div class="notification-icon">
+                <div class="notification-icon" id="notificationBell" style="position: relative;">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
+                    <span class="notification-badge">2</span>
+                    <div id="notificationPopup" class="notification-popup" style="display: none;">
+                        <ul class="notification-list">
+                            <li class="notification-item">
+                                <strong>Welcome to TinyTrack!</strong><br>
+                                <span>Your account has been created successfully.</span>
+                                <div style="font-size: 11px; color: #888;">Just now</div>
+                            </li>
+                            <li class="notification-item">
+                                <strong>System Update</strong><br>
+                                <span>New features have been added to your dashboard.</span>
+                                <div style="font-size: 11px; color: #888;">2 hours ago</div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="dropdown">
@@ -678,13 +743,13 @@
                 </div>
 
                 <div class="chart-container">
+                    <h3 class="chart-title">Height Growth Chart</h3>
                     <div class="chart-column">
                         <canvas id="heightGrowthChart"></canvas>
                     </div>
                     <div class="text-column">
-                        <h3 style="margin-bottom: 30px">Height Growth Chart</h3>
                         <h4>Storytelling</h4>
-                        <p>The height growth chart displayed above shows the developmental milestones of a child over time. It helps in understanding the natural growth patterns, identifying any irregularities, and guiding appropriate interventions when needed. By comparing a child’s height against standard growth percentiles, parents and doctors can track overall health and development effectively.</p>
+                        <p>Height: </br> Measurement: cm </br> Status: Normal</p>
                     </div>
                 </div>
 
@@ -1172,6 +1237,20 @@
                 });
             }
         })();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const bell = document.getElementById('notificationBell');
+            const popup = document.getElementById('notificationPopup');
+
+            bell.addEventListener('click', function(e) {
+                e.stopPropagation();
+                popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+            });
+
+            document.addEventListener('click', function() {
+                popup.style.display = 'none';
+            });
+        });
     </script>
 
     <style>

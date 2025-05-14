@@ -7,7 +7,7 @@
                     <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
                         <h4 class="text-secondary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Contact Us</h4>
                         <h1 class="display-3">Contact For Any Query</h1>
-                        <p class="mb-5">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
+                        <p class="mb-5" style="color: black;">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
                     </div>
                     <div class="row g-5 mb-5">
                         <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
@@ -15,7 +15,7 @@
                                 <i class="fas fa-map-marker-alt fa-2x text-secondary me-4"></i>
                                 <div class="">
                                     <h4>Address</h4>
-                                    <p class="mb-2">104 North tower New York, USA</p>
+                                    <p class="mb-2" style="color: black;">Setapak, KL</p>
                                 </div>
                             </div>
                         </div>
@@ -24,7 +24,7 @@
                                 <i class="fas fa-envelope fa-2x text-secondary me-4"></i>
                                 <div class="">
                                     <h4>Mail Us</h4>
-                                    <p class="mb-2">support@tinytrack.com</p>
+                                    <p class="mb-2" style="color: black;">support@tinytrack.com</p>
                                 </div>
                             </div>
                         </div>
@@ -33,7 +33,7 @@
                                 <i class="fa fa-phone-alt fa-2x text-secondary me-4"></i>
                                 <div class="">
                                     <h4>Telephone</h4>
-                                    <p class="mb-2">(+012) 3456 7890 123</p>
+                                    <p class="mb-2" style="color: black;">(+012) 3456 7890 123</p>
                                 </div>
                             </div>
                         </div>

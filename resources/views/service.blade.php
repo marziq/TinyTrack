@@ -14,7 +14,7 @@
                             <div class="service-content d-flex align-items-center justify-content-center p-4">
                                 <div class="service-content-inner">
                                     <a href="#" class="h4">Baby Growth Tracker</a>
-                                    <p class="my-3">Easily track your baby's height, weight, and growth progress. TinyTrack simplifies wellness monitoring with clear visuals and organized records.</p>
+                                    <p class="my-3" style="color: black;">Easily track your baby's height, weight, and growth progress. TinyTrack simplifies wellness monitoring with clear visuals and organized records.</p>
                                     <a href="#" class="btn btn-primary text-white px-4 py-2 my-2 btn-border-radius" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important;">Read More</a>
                                 </div>
                             </div>
@@ -25,7 +25,7 @@
                             <div class="service-content d-flex align-items-center justify-content-center p-4">
                                 <div class="service-content-inner">
                                     <a href="#" class="h4">Health Check Reminders</a>
-                                    <p class="my-3">Never miss a check-up again. Get timely reminders for vaccinations, doctor visits, and routine baby care appointments.</p>
+                                    <p class="my-3" style="color: black;">Never miss a check-up again. Get timely reminders for vaccinations, doctor visits, and routine baby care appointments.</p>
                                     <a href="#" class="btn btn-primary text-white px-4 py-2 my-2 btn-border-radius" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important;">Read More</a>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                             <div class="service-content d-flex align-items-center justify-content-center p-4">
                                 <div class="service-content-inner">
                                     <a href="#" class="h4">Expert Insights</a>
-                                    <p class="my-3">Access credible advice and tips from health professionals and parenting experts — all in one place.
+                                    <p class="my-3" style="color: black;">Access credible advice and tips from health professionals and parenting experts — all in one place.
                                     </p>
                                     <a href="#" class="btn btn-primary text-white px-4 py-2 my-2 btn-border-radius" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important;">Read More</a>
                                 </div>
@@ -48,7 +48,7 @@
                             <div class="service-content d-flex align-items-center justify-content-center p-4">
                                 <div class="service-content-inner">
                                     <a href="#" class="h4">Learn & Grow</a>
-                                    <p class="my-3">Explore a library of bite-sized educational resources, curated to guide you through your baby's early milestones and needs.</p>
+                                    <p class="my-3" style="color: black;">Explore a library of bite-sized educational resources, curated to guide you through your baby's early milestones and needs.</p>
                                     <a href="#" class="btn btn-primary text-white px-4 py-2 my-2 btn-border-radius" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important;">Read More</a>
                                 </div>
                             </div>

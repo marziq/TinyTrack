@@ -5,8 +5,8 @@
             <div class="container py-5">
                 <div class="row g-5">
                     <div class="col-lg-7 col-md-12">
-                        <h1 class="mb-3 text-white" style="font-weight: bold; font-size: 30px;">Track Your Baby's Growth with Confidence</h1>
-                        <h1 class="mb-5 display-1 text-white">All-in-One Wellness Platform for Malaysian Parents</h1>
+                        <h1 class="mb-3 text-white" style="font-weight: bold; font-size: 23px;">Track Your Baby's Growth with Confidence</h1>
+                        <h1 class="mb-5 display-1 text-white" style="font-weight: bold; font-size: 65px !important;">All-in-One Wellness Platform for Malaysian Parents</h1>
                         <a href="" class="btn btn-primary px-4 py-3 px-md-5  me-4 btn-border-radius b" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important; color: #4D65F9  !important;">Get Started</a>
                         <a href="" class="btn btn-primary px-4 py-3 px-md-5 btn-border-radius" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important; color: #4D65F9  !important;">Learn More</a>
                     </div>
@@ -30,9 +30,9 @@
                     <div class="col-lg-7 wow fadeIn" data-wow-delay="0.3s">
                         <h4 class="mb-4 border-bottom border-2 d-inline-block p-2 title-border-radius" style="color: #393d72; border-bottom: 1px solid #4a92d9 !important;">About Us</h4>
                         <h1 class="text-dark mb-4 display-5">Empowering Parents, Nurturing Growth</h1>
-                        <p class="text-dark mb-4">At TinyTrack, we believe every child deserves the best start in life. 
-                            Our platform is designed to support Malaysian parents with smart, reliable tools to track baby wellness, 
-                            growth, and developmental milestones — all in one place. From health metrics to doctor visits, 
+                        <p class="text-dark mb-4">At TinyTrack, we believe every child deserves the best start in life.
+                            Our platform is designed to support Malaysian parents with smart, reliable tools to track baby wellness,
+                            growth, and developmental milestones — all in one place. From health metrics to doctor visits,
                             TinyTrack makes parenting easier, informed, and more confident.
                         </p>
                         <div class="row mb-4">
@@ -86,7 +86,7 @@
                             <div class="service-content d-flex align-items-center justify-content-center p-4">
                                 <div class="service-content-inner">
                                     <a href="#" class="h4">Baby Growth Tracker</a>
-                                    <p class="my-3">Easily track your baby's height, weight, and growth progress. TinyTrack simplifies wellness monitoring with clear visuals and organized records.</p>
+                                    <p class="my-3" style="color: black">Easily track your baby's height, weight, and growth progress. TinyTrack simplifies wellness monitoring with clear visuals and organized records.</p>
                                     <a href="#" class="btn btn-primary text-white px-4 py-2 my-2 btn-border-radius" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important;">Read More</a>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                             <div class="service-content d-flex align-items-center justify-content-center p-4">
                                 <div class="service-content-inner">
                                     <a href="#" class="h4">Health Check Reminders</a>
-                                    <p class="my-3">Never miss a check-up again. Get timely reminders for vaccinations, doctor visits, and routine baby care appointments.</p>
+                                    <p class="my-3" style="color: black">Never miss a check-up again. Get timely reminders for vaccinations, doctor visits, and routine baby care appointments.</p>
                                     <a href="#" class="btn btn-primary text-white px-4 py-2 my-2 btn-border-radius" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important;">Read More</a>
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                             <div class="service-content d-flex align-items-center justify-content-center p-4">
                                 <div class="service-content-inner">
                                     <a href="#" class="h4">Expert Insights</a>
-                                    <p class="my-3">Access credible advice and tips from health professionals and parenting experts — all in one place.
+                                    <p class="my-3" style="color: black">Access credible advice and tips from health professionals and parenting experts — all in one place.
                                     </p>
                                     <a href="#" class="btn btn-primary text-white px-4 py-2 my-2 btn-border-radius" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important;">Read More</a>
                                 </div>
@@ -120,7 +120,7 @@
                             <div class="service-content d-flex align-items-center justify-content-center p-4">
                                 <div class="service-content-inner">
                                     <a href="#" class="h4">Learn & Grow</a>
-                                    <p class="my-3">Explore a library of bite-sized educational resources, curated to guide you through your baby's early milestones and needs.</p>
+                                    <p class="my-3" style="color: black">Explore a library of bite-sized educational resources, curated to guide you through your baby's early milestones and needs.</p>
                                     <a href="#" class="btn btn-primary text-white px-4 py-2 my-2 btn-border-radius" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important;">Read More</a>
                                 </div>
                             </div>

@@ -52,7 +52,11 @@
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light navbar-expand-xl py-3 justify-content-center">
-                    <a href="{{route('mainpage')}}" class="navbar-brand"><h1 class="text-primary display-6">Tiny<span class="text-secondary">Track</span></h1></a>
+                    <!--Put logo here-->
+                    <a href="{{route('mainpage')}}" class="navbar-brand d-flex align-items-center">
+                        <img src="{{ asset('img/tinytrack-logo.png') }}" alt="TinyTrack Logo" style="height: 48px; width: auto; margin-right: 10px;">
+                        <h1 class="text-primary display-6 mb-0">Tiny<span class="text-secondary">Track</span></h1>
+                    </a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
