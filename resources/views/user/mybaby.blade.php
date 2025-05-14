@@ -598,6 +598,20 @@
             margin-bottom: 30px;
         }
 
+        .baby-tips-scroll {
+            max-height: 220px; /* Adjust as needed */
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #bbdefb #f8fafc;
+        }
+        .baby-tips-scroll::-webkit-scrollbar {
+            width: 8px;
+            background: #f8fafc;
+        }
+        .baby-tips-scroll::-webkit-scrollbar-thumb {
+            background: #bbdefb;
+            border-radius: 6px;
+        }
     </style>
 </head>
 <body>
@@ -859,8 +873,69 @@
                 <!-- Additional card for the last row -->
                 <div class="baby-tips-panel">
                     <h4>Baby Tips</h4>
-                    <p>This is an extra card to ensure 3 cards in the last row.</p>
+                    <div class="baby-tips-list baby-tips-scroll" style="display: flex; flex-direction: column; gap: 10px;">
+                        <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
+                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #bbdefb; border-radius: 50%; color: #1976d2;">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
+                                Always place your baby on their back to sleep.
+                            </div>
+                            <button class="btn btn-xs btn-outline-danger" style="font-size: 10px; padding: 2px 6px; min-width: unset; height: 22px;" onclick="removeTip(this)">
+                                <i class="fas fa-times" style="font-size: 12px;"></i>
+                            </button>
+                        </div>
+                        <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
+                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #bbdefb; border-radius: 50%; color: #1976d2;">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
+                                Talk, read, and sing to your baby every day.
+                            </div>
+                            <button class="btn btn-xs btn-outline-danger" style="font-size: 10px; padding: 2px 6px; min-width: unset; height: 22px;" onclick="removeTip(this)">
+                                <i class="fas fa-times" style="font-size: 12px;"></i>
+                            </button>
+                        </div>
+                        <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
+                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #bbdefb; border-radius: 50%; color: #1976d2;">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
+                                Never leave your baby unattended on high surfaces.
+                            </div>
+                            <button class="btn btn-xs btn-outline-danger" style="font-size: 10px; padding: 2px 6px; min-width: unset; height: 22px;" onclick="removeTip(this)">
+                                <i class="fas fa-times" style="font-size: 12px;"></i>
+                            </button>
+                        </div>
+                        <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
+                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #bbdefb; border-radius: 50%; color: #1976d2;">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
+                                Eat healthy as suggested.
+                            </div>
+                            <button class="btn btn-xs btn-outline-danger" style="font-size: 10px; padding: 2px 6px; min-width: unset; height: 22px;" onclick="removeTip(this)">
+                                <i class="fas fa-times" style="font-size: 12px;"></i>
+                            </button>
+                        </div>
+                        <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
+                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #bbdefb; border-radius: 50%; color: #1976d2;">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
+                                Quality Sleeps.
+                            </div>
+                            <button class="btn btn-xs btn-outline-danger" style="font-size: 10px; padding: 2px 6px; min-width: unset; height: 22px;" onclick="removeTip(this)">
+                                <i class="fas fa-times" style="font-size: 12px;"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
+                <script>
+                    function removeTip(btn) {
+                        btn.closest('.baby-tip-item').remove();
+                    }
+                </script>
             </div>
         </div>
 
