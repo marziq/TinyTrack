@@ -573,6 +573,51 @@
             color: #1976d2;
             font-size: 18px;
         }
+        .chart-card-flex {
+            display: flex;
+            flex-direction: row;
+            gap: 0;
+            width: 100%;
+            align-items: stretch;
+            min-height: 320px;
+            position: relative;
+        }
+        .chart-content {
+            flex: 1 1 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .summary-inside {
+            width: 30%;
+            min-width: 200px;
+            max-width: 320px;
+            padding: 10px 12px;           /* Reduced vertical padding */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;  /* Align to top */
+            align-items: flex-start;      /* Align to left */
+            border-radius: 12px;
+            margin-left: 2px;
+            box-shadow: 0 0 0 0 transparent;
+            height: auto;                 /* Let height fit content */
+            min-height: unset;            /* Remove min-height if set elsewhere */
+            max-height: 120px;            /* Optional: limit max height */
+            overflow: auto;               /* Add scroll if content overflows */
+        }
+            @media (max-width: 900px) {
+            .chart-card-flex {
+                flex-direction: column;
+            }
+            .summary-inside {
+                width: 100%;
+                max-width: 100%;
+                margin-left: 0;
+                margin-top: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -727,15 +772,31 @@
             <hr>
             <div id="babyDashboard" style="display: none;">
                 <h3 id="selectedBabyName" class="text-center"></h3>
-                <div class="card">
-                    <h3>Height Curvature Chart</h3>
-                    <canvas id="height-chart"></canvas>
+                <div class="card chart-card-flex" style="position: relative;">
+                    <div class="chart-content">
+                        <h3>Height Curvature Chart</h3>
+                        <canvas id="height-chart"></canvas>
+                    </div>
+                    <div class="summary-inside" style="background: #f5faff;">
+                        <h4 style="color: #1976d2;">Height Summary</h4>
+                        <div id="height-summary-text" style="color: #333; font-size: 15px;">
+                            Select a baby to see a summary of their height growth here.
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h3>Weight Curvature Chart</h3>
-                    <canvas id="weight-chart"></canvas>
+                <div class="card chart-card-flex" style="position: relative;">
+                    <div class="chart-content">
+                        <h3>Weight Curvature Chart</h3>
+                        <canvas id="weight-chart"></canvas>
+                    </div>
+                    <div class="summary-inside" style="background: #fff8f7;">
+                        <h4 style="color: #e74c3c;">Weight Summary</h4>
+                        <div id="weight-summary-text" style="color: #333; font-size: 15px;">
+                            Select a baby to see a summary of their weight growth here.
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </div>>
         </div>
         {{--- Main Content END--}}
     </div>
@@ -886,6 +947,30 @@
 
                         // Show the dashboard
                         document.getElementById('babyDashboard').style.display = 'block';
+
+                         // --- Height Summary ---
+                        const heightSummary = document.getElementById('height-summary-text');
+                        if (data.length > 0) {
+                            const minH = Math.min(...data.map(e => e.height));
+                            const maxH = Math.max(...data.map(e => e.height));
+                            const lastH = data[data.length - 1].height;
+                            const firstH = data[0].height;
+                            heightSummary.textContent = `Started at ${firstH} cm, now ${lastH} cm. Highest: ${maxH} cm, Lowest: ${minH} cm. Growth: ${lastH - firstH} cm.`;
+                        } else {
+                            heightSummary.textContent = "No height data available for this baby.";
+                        }
+
+                        // --- Weight Summary ---
+                        const weightSummary = document.getElementById('weight-summary-text');
+                        if (data.length > 0) {
+                            const minW = Math.min(...data.map(e => e.weight));
+                            const maxW = Math.max(...data.map(e => e.weight));
+                            const lastW = data[data.length - 1].weight;
+                            const firstW = data[0].weight;
+                            weightSummary.textContent = `Started at ${firstW} g, now ${lastW} g. Highest: ${maxW} g, Lowest: ${minW} g. Growth: ${lastW - firstW} g.`;
+                        } else {
+                            weightSummary.textContent = "No weight data available for this baby.";
+                        }
                     })
                     .catch(error => {
                         console.error('Error fetching growth data:', error);
@@ -894,18 +979,18 @@
             };
         });
         document.addEventListener('DOMContentLoaded', function() {
-    const bell = document.getElementById('notificationBell');
-    const popup = document.getElementById('notificationPopup');
+            const bell = document.getElementById('notificationBell');
+            const popup = document.getElementById('notificationPopup');
 
-    bell.addEventListener('click', function(e) {
-        e.stopPropagation();
-        popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-    });
+            bell.addEventListener('click', function(e) {
+                e.stopPropagation();
+                popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+            });
 
-    document.addEventListener('click', function() {
-        popup.style.display = 'none';
-    });
-});
+            document.addEventListener('click', function() {
+                popup.style.display = 'none';
+            });
+        });
     </script>
 </body>
 </html>

@@ -499,6 +499,42 @@
             color: #fff !important;
             font-weight: bold;
         }
+        .milestone-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .milestone-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 12px 18px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            font-size: 16px;
+        }
+        .milestone-check {
+            background: #fff;
+            border: 2px solid #19d276;
+            color: #19d276;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .milestone-check.completed, .milestone-check:active {
+            background: #19d276;
+            color: #fff;
+        }
+        .milestone-check i {
+            pointer-events: none;
+}
     </style>
 </head>
 <body>
@@ -593,6 +629,28 @@
                                 <div class="dropdown-content">
                                     <img src="{{ asset('img/motorskills.jpg') }}" alt="Motor Skills" class="progress-image-top">
                                     <span class="not-completed">0/5 completed</span>
+                                    <div class="milestone-cards">
+                                        <div class="milestone-card">
+                                            <span>Rolls over from tummy to back</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Sits without support</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Crawls on hands and knees</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Stands holding on</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Walks with assistance</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="physical-item">
@@ -600,6 +658,28 @@
                                 <div class="dropdown-content">
                                     <img src="{{ asset('img/sensoryskills.png') }}" alt="Sensory Skills" class="progress-image-top">
                                     <span class="not-completed">0/5 completed</span>
+                                        <div class="milestone-cards">
+                                            <div class="milestone-card">
+                                                <span>Responds to sounds by turning head</span>
+                                                <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                            </div>
+                                            <div class="milestone-card">
+                                                <span>Follows moving objects with eyes</span>
+                                                <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                            </div>
+                                            <div class="milestone-card">
+                                                <span>Reaches for and grasps objects</span>
+                                                <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                            </div>
+                                            <div class="milestone-card">
+                                                <span>Explores objects with mouth</span>
+                                                <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                            </div>
+                                            <div class="milestone-card">
+                                                <span>Recognizes familiar faces and voices</span>
+                                                <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -613,7 +693,29 @@
                                 <p onclick="toggleDropdown(this)">Problem Solving <i class="fas fa-chevron-down"></i></p>
                                 <div class="dropdown-content">
                                     <img src="{{ asset('img/problemsolving.jpeg') }}" alt="Problem Solving" class="progress-image-top">
-                                    <span class="not-completed">0/3 completed</span>
+                                    <span class="not-completed">0/5 completed</span>
+                                    <div class="milestone-cards">
+                                        <div class="milestone-card">
+                                            <span>Looks for hidden objects</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Transfers objects from one hand to another</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Tries to get objects that are out of reach</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Finds partially hidden objects</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Shows curiosity about things and tries to get them</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="cognitive-item">
@@ -621,6 +723,24 @@
                                 <div class="dropdown-content">
                                     <img src="{{ asset('img/languageskills.jpg') }}" alt="Language Skills" class="progress-image-top">
                                     <span class="not-completed">0/4 completed</span>
+                                    <div class="milestone-cards">
+                                        <div class="milestone-card">
+                                            <span>Babbles with expression and copies sounds</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Says simple words like "mama" or "dada"</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Responds to own name</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Understands "no"</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -635,6 +755,20 @@
                                 <div class="dropdown-content">
                                     <img src="{{ asset('img/interaction.png') }}" alt="Interaction Skills" class="progress-image-top">
                                     <span class="not-completed">0/3 completed</span>
+                                    <div class="milestone-cards">
+                                        <div class="milestone-card">
+                                            <span>Waves goodbye or claps hands</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Plays simple games like peek-a-boo</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>Imitates gestures or sounds</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="social-item">
@@ -642,6 +776,16 @@
                                 <div class="dropdown-content">
                                     <img src="{{ asset('img/emotional.jpg') }}" alt="Emotional Skills" class="progress-image-top">
                                     <span class="not-completed">0/2 completed</span>
+                                    <div class="milestone-cards">
+                                        <div class="milestone-card">
+                                            <span>Shows affection to familiar people</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                        <div class="milestone-card">
+                                            <span>May be shy or nervous with strangers</span>
+                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -748,18 +892,26 @@
             }
         }
         document.addEventListener('DOMContentLoaded', function() {
-    const bell = document.getElementById('notificationBell');
-    const popup = document.getElementById('notificationPopup');
+            const bell = document.getElementById('notificationBell');
+            const popup = document.getElementById('notificationPopup');
 
-    bell.addEventListener('click', function(e) {
-        e.stopPropagation();
-        popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-    });
+            bell.addEventListener('click', function(e) {
+                e.stopPropagation();
+                popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+            });
 
-    document.addEventListener('click', function() {
-        popup.style.display = 'none';
-    });
-});
+            document.addEventListener('click', function() {
+                popup.style.display = 'none';
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.milestone-check').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    btn.classList.toggle('completed');
+                });
+            });
+        });
     </script>
 </body>
 </html>
