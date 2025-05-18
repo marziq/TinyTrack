@@ -297,6 +297,47 @@
         .dropdown-menu li {
             list-style: none;
         }
+        /* User Table Styles */
+        .user-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .user-table th, .user-table td {
+            padding: 14px 12px;
+            text-align: left;
+        }
+        .user-table thead {
+            background: #243b55;
+            color: #fff;
+        }
+        .user-table tbody tr {
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+        .user-table tbody tr:hover {
+            background: #f6faff;
+        }
+        .delete-btn {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.2s;
+        }
+        .delete-btn:hover {
+            background: #c0392b;
+        }
         /* Responsive Styles */
         @media (max-width: 768px) {
             .sidebar {
@@ -393,28 +434,46 @@
 
         <!-- Dashboard Content -->
         <div class="dashboard-content">
-            <h2>Welcome Admin</h2>
-            <p>Here's an overview of your activities and statistics.</p>
-
-            <div class="card-container">
-                <div class="card">
-                    <h3>Total Users</h3>
-                    <p>{{$totalUsers}}</p>
-                </div>
-                <div class="card">
-                    <h3>Total Babies</h3>
-                    <p>{{$totalBabies}}</p>
-                </div>
-                <div class="card">
-                    <h3>Vaccine completed</h3>
-                    <p>15 pending</p>
-                </div>
-                <div class="card">
-                    <h3>Activities completed</h3>
-                    <p>15 pending</p>
-                </div>
+            <h2 style="margin-bottom:20px;">User List</h2>
+            <div style="overflow-x:auto;">
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th style="padding:12px;">#</th>
+                            <th style="padding:12px;">Name</th>
+                            <th style="padding:12px;">Email</th>
+                            <th style="padding:12px;">Created At</th>
+                            <th style="padding:12px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($users as $user)
+                        <tr style="border-bottom:1px solid #f0f0f0;">
+                            <td style="padding:12px;">{{ $loop->iteration }}</td>
+                            <td style="padding:12px;">{{ $user->name }}</td>
+                            <td style="padding:12px;">{{ $user->email }}</td>
+                            <td style="padding:12px;">{{ $user->created_at->format('Y-m-d') }}</td>
+                            <td style="padding:12px;">
+                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this user?')">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" style="padding:12px; text-align:center;">No users found.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
+        <!-- Dashboard Content -->
+
     </div>
 
     <script>

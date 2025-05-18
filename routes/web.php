@@ -36,11 +36,12 @@ Route::get('/login-admin', function () {
     return view('admin/login-admin');
 })->name('adminlogin');
 
-Route::get('/dashboard-admin', function () {
-    return view('admin/dashboard-admin');
-})->name('dashboardadmin');
 
-Route::get('/dashboard-admin', [AdminController::class, 'index'])->name('dashboard-admin');
+
+Route::get('admin/dashboard', [AdminController::class, 'index'])->name('dashboard-admin');
+Route::get('admin/users', [AdminController::class, 'usersAdmin'])->name('users-admin');
+Route::delete('admin/users/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
+
 
 // Authenticated routes
 Route::middleware([

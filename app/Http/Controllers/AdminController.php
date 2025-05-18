@@ -18,6 +18,11 @@ class AdminController extends Controller
         return view('admin.dashboard-admin', compact('totalUsers', 'totalBabies'));
     }
 
+    public function usersAdmin()
+    {
+        $users = \App\Models\User::all();
+        return view('admin.users-admin', compact('users'));
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -61,8 +66,10 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $user = \App\Models\User::findOrFail($id);
+        $user->delete();
+        return redirect()->route('users-admin')->with('success', 'User deleted successfully.');
     }
 }
