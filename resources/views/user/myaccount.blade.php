@@ -382,6 +382,11 @@
             color: #888;
             font-size: 14px;
         }
+        .sidebar a.active {
+            background-color: #1976d2;
+            color: #fff !important;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -390,7 +395,7 @@
             <img src="{{ asset('img/tinytrack-logo.png') }}" alt="Logo" style="height: 36px; width: 36px; object-fit: contain;">
             <h2 style="margin-bottom: 0;">My Dashboard</h2>
         </a>
-        <hr>
+        <hr style="color: #1976d2">
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>

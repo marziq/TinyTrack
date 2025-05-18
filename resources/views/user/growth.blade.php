@@ -549,6 +549,30 @@
             color: #888;
             font-size: 14px;
         }
+        .sidebar a.active {
+            background-color: #1976d2;
+            color: #fff !important;
+            font-weight: bold;
+        }
+        .select-arrow-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .select-arrow-wrapper select {
+            appearance: none;
+            -webkit-appearance: none;
+            padding-right: 35px;
+        }
+        .select-arrow {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #1976d2;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -557,9 +581,9 @@
             <img src="{{ asset('img/tinytrack-logo.png') }}" alt="Logo" style="height: 36px; width: 36px; object-fit: contain;">
             <h2 style="margin-bottom: 0;">My Dashboard</h2>
         </a>
-        <hr>
+        <hr style="color: #1976d2">
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
-        <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
+        <a href="{{route('growth')}}" class="active"><i class="fas fa-chart-line"></i> Growth</a>
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
         <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
         <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
@@ -661,13 +685,16 @@
                             <!-- Select Baby -->
                             <div class="input-group">
                                 <label for="baby_id">Select Baby</label>
-                                <div class="input-wrapper">
-                                    <select id="baby_id" name="baby_id" class="form-control" required>
+                                <div class="input-wrapper select-arrow-wrapper" style="position: relative; display: inline-block; width: 100%;">
+                                    <select id="baby_id" name="baby_id" class="form-control" required style="appearance: none; -webkit-appearance: none; padding-right: 35px;">
                                         <option value="" disabled selected>Select a baby</option>
                                         @foreach ($babies as $baby)
                                             <option value="{{ $baby->id }}">{{ $baby->name }}</option>
                                         @endforeach
                                     </select>
+                                    <span class="select-arrow" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #1976d2; font-size: 18px;">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -683,14 +710,19 @@
 
             <div class="baby-selector-container">
                 <h2>Growth Tracking</h2>
-                <select id="babySelector" onchange="loadBabyData(this.value)" class="form-control">
-                    <option value="" disabled selected hidden>Select a baby</option>
-                    @foreach(Auth::user()->babies as $baby)
-                        <option value="{{ $baby->id }}" data-name="{{ $baby->name }}">
-                            {{ $baby->name }} ({{ ucfirst($baby->gender) }})
-                        </option>
-                    @endforeach
-                </select>
+                <div class="select-arrow-wrapper" style="position: relative; display: inline-block; width: 100%;">
+                    <select id="babySelector" onchange="loadBabyData(this.value)" class="form-control" style="appearance: none; -webkit-appearance: none; padding-right: 35px;">
+                        <option value="" disabled selected hidden>Select a baby</option>
+                        @foreach(Auth::user()->babies as $baby)
+                            <option value="{{ $baby->id }}" data-name="{{ $baby->name }}">
+                                {{ $baby->name }} ({{ ucfirst($baby->gender) }})
+                            </option>
+                        @endforeach
+                    </select>
+                    <span class="select-arrow" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #1976d2; font-size: 18px;">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </div>
             </div>
             <hr>
             <div id="babyDashboard" style="display: none;">

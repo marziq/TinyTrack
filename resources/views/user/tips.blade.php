@@ -529,6 +529,11 @@
             color: #888;
             font-size: 14px;
         }
+        .sidebar a.active {
+            background-color: #1976d2;
+            color: #fff !important;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -537,10 +542,10 @@
             <img src="{{ asset('img/tinytrack-logo.png') }}" alt="Logo" style="height: 36px; width: 36px; object-fit: contain;">
             <h2 style="margin-bottom: 0;">My Dashboard</h2>
         </a>
-        <hr>
+        <hr style="color: #1976d2">
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
         <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
-        <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
+        <a href="{{route('tips')}}" class="active"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
         <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
         <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
         <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
@@ -608,7 +613,6 @@
                 <option value="1-2">1-2 Years</option>
                 <option value="3-4">3-4 Years</option>
                 <option value="5-6">5-6 Years</option>
-
             </select>
         </div>
         <div class="topics-section">
@@ -620,12 +624,42 @@
                         <img src="{{ asset('img/bonding.jpg') }}" alt="Bonding" class="topic-image">
                         <h3>Bonding</h3>
                         <ul class="topic-list">
-                            <li><button onclick="showInfo('bonding1')">Skin-to-Skin Cuddles</button></li>
-                            <li><button onclick="showInfo('bonding2')">Gentle Baby Massage</button></li>
-                            <li><button onclick="showInfo('bonding3')">Talk & Sing to Baby</button></li>
-                            <li><button onclick="showInfo('bonding4')">Tummy Time Play</button></li>
-                            <li><button onclick="showInfo('bonding5')">Help Baby Learn Language</button></li>
-                            <li><button onclick="showInfo('bonding6')">How to Build Trust with Your Baby</button></li>
+                            <li>
+                                <button onclick="showInfo('bonding1')">
+                                    <i class="fa-solid fa-hand-holding-heart" style="margin-right:8px; color: rgb(250, 115, 138);"></i>
+                                    Skin-to-Skin Cuddles
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('bonding2')">
+                                    <i class="fa-solid fa-baby" style="margin-right:8px; color: rgb(239, 159, 94);"></i>
+                                    Gentle Baby Massage
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('bonding3')">
+                                    <i class="fa-solid fa-microphone" style="margin-right:8px; color: rgb(89, 247, 11);"></i>
+                                    Talk & Sing to Baby
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('bonding4')">
+                                    <i class="fa-regular fa-lightbulb" style="margin-right:8px; color: rgb(238, 255, 5);"></i>
+                                    Tummy Time Play
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('bonding5')">
+                                    <i class="fa-solid fa-language" style="margin-right:8px; color: rgb(43, 131, 194);"></i>
+                                    Help Baby Learn Language
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('bonding6')">
+                                    <i class="fa-solid fa-handshake" style="margin-right:8px; color: rgb(244, 20, 225);"></i>
+                                    How to Build Trust with Your Baby
+                                </button>
+                            </li>
                         </ul>
                     </div>
 
@@ -634,12 +668,42 @@
                         <img src="{{ asset('img/earlysensory.jpg') }}" alt="Early Senses" class="topic-image">
                         <h3>Early Sensory</h3>
                         <ul class="topic-list">
-                            <li><button onclick="showInfo('sensory1')">Eye Contact & Smiles</button></li>
-                            <li><button onclick="showInfo('sensory2')">Respond to Sounds</button></li>
-                            <li><button onclick="showInfo('sensory3')">Touch & Texture Play</button></li>
-                            <li><button onclick="showInfo('sensory4')">Watch for Jaundice</button></li>
-                            <li><button onclick="showInfo('sensory5')">The "Balance" Sense</button></li>
-                            <li><button onclick="showInfo('sensory6')">How to Stimulate Baby's Vision</button></li>
+                            <li>
+                                <button onclick="showInfo('sensory1')">
+                                    <i class="fa-regular fa-face-smile" style="margin-right:8px; color: #fbc02d;"></i>
+                                    Eye Contact & Smiles
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('sensory2')">
+                                    <i class="fa-solid fa-ear-listen" style="margin-right:8px; color: #42a5f5;"></i>
+                                    Respond to Sounds
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('sensory3')">
+                                    <i class="fa-solid fa-hand-dots" style="margin-right:8px; color: #8bc34a;"></i>
+                                    Touch & Texture Play
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('sensory4')">
+                                    <i class="fa-solid fa-droplet" style="margin-right:8px; color: #ffb300;"></i>
+                                    Watch for Jaundice
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('sensory5')">
+                                    <i class="fa-solid fa-scale-balanced" style="margin-right:8px; color: #ab47bc;"></i>
+                                    The "Balance" Sense
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('sensory6')">
+                                    <i class="fa-regular fa-eye" style="margin-right:8px; color: #1976d2;"></i>
+                                    How to Stimulate Baby's Vision
+                                </button>
+                            </li>
                         </ul>
                     </div>
 
@@ -648,11 +712,36 @@
                         <img src="{{ asset('img/sleep.jpeg') }}" alt="sleep" class="topic-image">
                         <h3>Sleep and Routines</h3>
                         <ul class="topic-list">
-                            <li><button onclick="showInfo('sleep1')">How Much Sleep Does Baby Need?</button></li>
-                            <li><button onclick="showInfo('sleep2')">Creating a Bedtime Routine</button></li>
-                            <li><button onclick="showInfo('sleep3')">Back is Best</button></li>
-                            <li><button onclick="showInfo('sleep4')">Avoid Baby Walkers</button></li>
-                            <li><button onclick="showInfo('sleep5')">Create Calm Nights</button></li>
+                            <li>
+                                <button onclick="showInfo('sleep1')">
+                                    <i class="fa-solid fa-bed" style="margin-right:8px; color: #1976d2;"></i>
+                                    How Much Sleep Does Baby Need?
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('sleep2')">
+                                    <i class="fa-solid fa-moon" style="margin-right:8px; color: #fbc02d;"></i>
+                                    Creating a Bedtime Routine
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('sleep3')">
+                                    <i class="fa-solid fa-child" style="margin-right:8px; color: #42a5f5;"></i>
+                                    Back is Best
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('sleep4')">
+                                    <i class="fa-solid fa-ban" style="margin-right:8px; color: #e57373;"></i>
+                                    Avoid Baby Walkers
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('sleep5')">
+                                    <i class="fa-solid fa-cloud-moon" style="margin-right:8px; color: #ab47bc;"></i>
+                                    Create Calm Nights
+                                </button>
+                            </li>
                         </ul>
                     </div>
 
@@ -661,11 +750,36 @@
                         <img src="{{ asset('img/feeding.jpg') }}" alt="feeding" class="topic-image">
                         <h3>Feeding and Nutrition</h3>
                         <ul class="topic-list">
-                            <li><button onclick="showInfo('feeding1')">Breastfeeding Basics</button></li>
-                            <li><button onclick="showInfo('feeding2')">Exclusive Breastfeeding (0–6 Months)</button></li>
-                            <li><button onclick="showInfo('feeding3')">Feed on Demand</button></li>
-                            <li><button onclick="showInfo('feeding4')">Start Solids at 6 Months</button></li>
-                            <li><button onclick="showInfo('feeding5')">No Sugar, No Honey</button></li>
+                            <li>
+                                <button onclick="showInfo('feeding1')">
+                                    <i class="fa-solid fa-droplet"></i>
+                                    Breastfeeding Basics
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('feeding2')">
+                                    <i class="fa-solid fa-baby" style="margin-right:8px; color: #42a5f5;"></i>
+                                    Exclusive Breastfeeding (0–6 Months)
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('feeding3')">
+                                    <i class="fa-solid fa-clock" style="margin-right:8px; color: #ab47bc;"></i>
+                                    Feed on Demand
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('feeding4')">
+                                    <i class="fa-solid fa-utensils" style="margin-right:8px; color: #8bc34a;"></i>
+                                    Start Solids at 6 Months
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('feeding5')">
+                                    <i class="fa-solid fa-ban" style="margin-right:8px; color: #e57373;"></i>
+                                    No Sugar, No Honey
+                                </button>
+                            </li>
                         </ul>
                     </div>
 
@@ -674,10 +788,30 @@
                         <img src="{{ asset('img/hygiene.jpg') }}" alt="Safety and Hygiene" class="topic-image">
                         <h3>Safety & Hygiene</h3>
                         <ul class="topic-list">
-                            <li><button onclick="showInfo('safety1')">Wash Hands Often</button></li>
-                            <li><button onclick="showInfo('safety2')">Bathe with Care</button></li>
-                            <li><button onclick="showInfo('safety3')">No Baby Alone</button></li>
-                            <li><button onclick="showInfo('safety4')">Choose Safe Toys</button></li>
+                            <li>
+                                <button onclick="showInfo('safety1')">
+                                    <i class="fa-solid fa-hands-bubbles" style="margin-right:8px; color: #42a5f5;"></i>
+                                    Wash Hands Often
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('safety2')">
+                                    <i class="fa-solid fa-soap" style="margin-right:8px; color: #8bc34a;"></i>
+                                    Bathe with Care
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('safety3')">
+                                    <i class="fa-solid fa-user-lock" style="margin-right:8px; color: #e57373;"></i>
+                                    No Baby Alone
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="showInfo('safety4')">
+                                    <i class="fa-solid fa-cube" style="margin-right:8px; color: #fbc02d;"></i>
+                                    Choose Safe Toys
+                                </button>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -967,7 +1101,12 @@
                 // Build the content dynamically
                 infoContent.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <h3 style="color: #1976d2; margin: 0;">${topic.title}</h3>
+                        <div style="display: flex; flex-direction: column; flex: 1;">
+                            <h3 style="color: #1976d2; margin: 0;">${topic.title}</h3>
+                            <a style="color: #1976d2; margin: 0; font-size: 14px;">
+                               <br> Reviewed By: <br> Dr Aiman Khalid <br> Consultant Pediatrician at Selangor Specialist Hospital
+                            </a>
+                        </div>
                         <button id="favouriteButton" class="btn btn-primary" style="margin-left: 20px;">
                             ${isFavourite ? 'Remove from Favourites' : 'Add to Favourites'}
                         </button>
