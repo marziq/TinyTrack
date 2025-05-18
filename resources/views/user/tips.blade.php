@@ -1103,7 +1103,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div style="display: flex; flex-direction: column; flex: 1;">
                             <h3 style="color: #1976d2; margin: 0;">${topic.title}</h3>
-                            <a style="color: #1976d2; margin: 0; font-size: 14px;">
+                            <a style="color: #1976d2; margin: 0; font-size: 12px;">
                                <br> Reviewed By: <br> Dr Aiman Khalid <br> Consultant Pediatrician at Selangor Specialist Hospital
                             </a>
                         </div>
