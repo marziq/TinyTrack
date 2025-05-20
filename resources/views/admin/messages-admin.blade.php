@@ -298,47 +298,6 @@
         .dropdown-menu li {
             list-style: none;
         }
-        /* User Table Styles */
-        .user-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-        .user-table th, .user-table td {
-            padding: 14px 12px;
-            text-align: left;
-        }
-        .user-table thead {
-            background: #243b55;
-            color: #fff;
-        }
-        .user-table tbody tr {
-            border-bottom: 1px solid #f0f0f0;
-            transition: background 0.2s;
-        }
-        .user-table tbody tr:hover {
-            background: #f6faff;
-        }
-        .delete-btn {
-            background: #e74c3c;
-            color: #fff;
-            border: none;
-            padding: 7px 14px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: background 0.2s;
-        }
-        .delete-btn:hover {
-            background: #c0392b;
-        }
         /* Responsive Styles */
         @media (max-width: 768px) {
             .sidebar {
@@ -479,104 +438,156 @@
                 </div>
             </div>
         </nav>
-        @if(session('success'))
-            <div style="background:#d4edda; color:#155724; padding:10px 18px; border-radius:5px; margin-bottom:18px;">
-                {{ session('success') }}
-            </div>
-        @endif
+
         <!-- Dashboard Content -->
         <div class="dashboard-content">
-            <h2 style="margin-bottom:20px;">User List</h2>
-            <div style="overflow-x:auto;">
-                <table class="user-table">
-                    <thead>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Notifications</h2>
+                <!-- Create Notification Button -->
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNotificationModal">Create Notification</a>
+
+                <!-- Create Notification Modal -->
+                <div class="modal fade" id="createNotificationModal" tabindex="-1" aria-labelledby="createNotificationModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form action="{{ route('notifications.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="createNotificationModalLabel">Create Notification</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="user_id" class="form-label">User</label>
+                            <select name="user_id" id="user_id" class="form-select" required>
+                            <option value="">Select User</option>
+                            @foreach(\App\Models\User::all() as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->id }})</option>
+                            @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" name="title" id="title" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea name="message" id="message" class="form-control" rows="3" required></textarea>
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Send Notification</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                </div>
+
+                <!-- Edit Notification Modal -->
+                <div class="modal fade" id="editNotificationModal" tabindex="-1" aria-labelledby="editNotificationModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <form id="editNotificationForm" method="POST">
+                      @csrf
+                      @method('PUT')
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="editNotificationModalLabel">Edit Notification</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <input type="hidden" name="notification_id" id="edit_notification_id">
+                          <div class="mb-3">
+                            <label for="edit_user_id" class="form-label">User</label>
+                            <select name="user_id" id="edit_user_id" class="form-select" required>
+                              <option value="">Select User</option>
+                              @foreach(\App\Models\User::all() as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->id }})</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label for="edit_title" class="form-label">Title</label>
+                            <input type="text" name="title" id="edit_title" class="form-control" required>
+                          </div>
+                          <div class="mb-3">
+                            <label for="edit_message" class="form-label">Message</label>
+                            <textarea name="message" id="edit_message" class="form-control" rows="3" required></textarea>
+                          </div>
+                          <div class="mb-3">
+                            <label for="edit_status" class="form-label">Status</label>
+                            <select name="status" id="edit_status" class="form-select" required>
+                              <option value="unread">Unread</option>
+                              <option value="read">Read</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <button type="submit" class="btn btn-primary">Update Notification</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
                         <tr>
-                            <th style="padding:12px;">User ID</th>
-                            <th style="padding:12px;">Name</th>
-                            <th style="padding:12px;">Email</th>
-                            <th style="padding:12px;">Gender</th>
-                            <th style="padding:12px;">Mobile Number</th>
-                            <th style="padding:12px;">Created At</th>
-                            <th style="padding:12px;">Babies</th>
-                            <th style="padding:12px;">Action</th>
+                            <th>Notification ID</th>
+                            <th>User (ID)</th>
+                            <th>Title</th>
+                            <th>Message</th>
+                            <th>Date Sent</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($users as $user)
-                        <tr style="border-bottom:1px solid #f0f0f0;">
-                            <td style="padding:12px;">{{ $user->id }}</td>
-                            <td style="padding:12px;">{{ $user->name }}</td>
-                            <td style="padding:12px;">{{ $user->email }}</td>
-                            <td style="padding:12px;">{{ $user->gender ?? '-' }}</td>
-                            <td style="padding:12px;">{{ $user->mobile_number ?? '-' }}</td>
-                            <td style="padding:12px;">{{ $user->created_at->format('Y-m-d') }}</td>
-                            <td style="padding:12px;">
-                                {{ $user->babies_count ?? $user->babies->count() ?? 0 }}
-                            </td>
-                            <td style="padding:12px;">
-                                <a href="javascript:void(0);"
-                                   class="update-btn open-update-modal"
-                                   data-id="{{ $user->id }}"
-                                   data-name="{{ $user->name }}"
-                                   data-email="{{ $user->email }}"
-                                   data-gender="{{ $user->gender }}"
-                                   data-mobile="{{ $user->mobile_number }}"
-                                   style="background:#3498db; color:#fff; border:none; padding:7px 14px; border-radius:5px; cursor:pointer; font-size:14px; display:inline-flex; align-items:center; gap:5px; text-decoration:none; margin-right:5px;">
-                                    <i class="fas fa-edit"></i> Update
-                                </a>
-                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this user?')" style="margin-top: 5px;">
-                                        <i class="fas fa-trash-alt"></i> Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
+                        @forelse($notifications as $notification)
+                            <tr>
+                                <td>{{ $notification->notification_id }}</td>
+                                <td>
+                                    {{ $notification->user->name ?? 'Unknown' }} ({{ $notification->user_id }})
+                                </td>
+                                <td>{{ $notification->title }}</td>
+                                <td>{{ $notification->message }}</td>
+                                <td>{{ $notification->dateSent }}</td>
+                                <td>
+                                    <span class="badge {{ $notification->status == 'unread' ? 'bg-warning' : 'bg-success' }}">
+                                        {{ ucfirst($notification->status) }}
+                                    </span>
+                                </td>
+                                <td>
+                                   <a href="#"
+                                        style="color: #fff; background-color: #0d6efd; !important;"
+                                        class="btn btn-sm btn-info edit-notification-btn"
+                                        data-id="{{ $notification->notification_id }}"
+                                        data-user="{{ $notification->user_id }}"
+                                        data-title="{{ $notification->title }}"
+                                        data-message="{{ $notification->message }}"
+                                        data-status="{{ $notification->status }}">
+                                        Update
+                                    </a>
+                                        <form action="{{ route('notifications.destroy', $notification->notification_id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this notification?')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
                         @empty
-                        <tr><td colspan="8">No users found.</td></tr>
+                            <tr>
+                                <td colspan="7" class="text-center">No notifications found.</td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
-        <!-- Dashboard Content -->
+        <!-- END Dashboard Content -->
 
-    </div>
-
-    <!-- Add this modal HTML just before the closing </body> tag -->
-    <div id="updateUserModal" class="modal" style="display:none; position:fixed; z-index:2000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.35); align-items:center; justify-content:center;">
-        <div style="background:#fff; border-radius:10px; padding:30px 24px; min-width:320px; max-width:90vw; box-shadow:0 4px 24px rgba(0,0,0,0.15); position:relative;">
-            <button id="closeUpdateModal" style="position:absolute; top:12px; right:16px; background:none; border:none; font-size:22px; color:#888; cursor:pointer;">&times;</button>
-            <h3 style="margin-bottom:18px;">Update User</h3>
-            <form id="updateUserForm" method="POST">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="user_id" id="modal_user_id">
-                <div style="margin-bottom:14px;">
-                    <label for="modal_name" style="display:block; margin-bottom:6px;">Name</label>
-                    <input type="text" name="name" id="modal_name" class="form-control" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc;">
-                </div>
-                <div style="margin-bottom:14px;">
-                    <label for="modal_email" style="display:block; margin-bottom:6px;">Email</label>
-                    <input type="email" name="email" id="modal_email" class="form-control" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc;">
-                </div>
-                <div style="margin-bottom:14px;">
-                    <label for="modal_gender" style="display:block; margin-bottom:6px;">Gender</label>
-                    <select name="gender" id="modal_gender" class="form-control" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc;">
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div style="margin-bottom:14px;">
-                    <label for="modal_mobile" style="display:block; margin-bottom:6px;">Mobile Number</label>
-                    <input type="text" name="mobile_number" id="modal_mobile" class="form-control" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc;">
-                </div>
-                <button type="submit" style="background:#3498db; color:#fff; border:none; padding:8px 18px; border-radius:5px; cursor:pointer; font-size:15px;">Save</button>
-            </form>
-        </div>
     </div>
 
     <script>
@@ -644,88 +655,58 @@
                 arrowIcon.style.transform = 'rotate(0)';
             });
 
-            // Notification bell functionality
             const bell = document.getElementById('notificationBell');
-                const popup = document.getElementById('notificationPopup');
+            const popup = document.getElementById('notificationPopup');
 
-                bell.addEventListener('click', function(e) {
+            bell.addEventListener('click', function(e) {
+                e.stopPropagation();
+                popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+            });
+
+            document.addEventListener('click', function() {
+                popup.style.display = 'none';
+            });
+
+            // Mark notification as read and show full message
+            document.querySelectorAll('.notification-item').forEach(item => {
+                item.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-                });
+                    const notifId = this.getAttribute('data-id');
+                    fetch(`/notifications/${notifId}/mark-read`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    }).then(() => {
+                        // Remove the notification from the popup view
+                        this.remove();
 
-                document.addEventListener('click', function() {
-                    popup.style.display = 'none';
-                });
+                        // Show full notification in a modal
+                        showNotificationModal(
+                            this.querySelector('strong').innerText,
+                            this.querySelector('span').innerText,
+                            this.querySelector('div').innerText
+                        );
 
-                // Mark notification as read and show full message
-                document.querySelectorAll('.notification-item').forEach(item => {
-                    item.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const notifId = this.getAttribute('data-id');
-                        fetch(`/notifications/${notifId}/mark-read`, {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Accept': 'application/json'
-                            }
-                        }).then(() => {
-                            // Remove the notification from the popup view
-                            this.remove();
+                        // Optionally update badge count
+                        let badge = document.querySelector('.notification-badge');
+                        if (badge) {
+                            let count = parseInt(badge.innerText) - 1;
+                            badge.innerText = count > 0 ? count : '';
+                            if (count <= 0) badge.style.display = 'none';
+                        }
 
-                            // Show full notification in a modal
-                            showNotificationModal(
-                                this.querySelector('strong').innerText,
-                                this.querySelector('span').innerText,
-                                this.querySelector('div').innerText
-                            );
-
-                            // Optionally update badge count
-                            let badge = document.querySelector('.notification-badge');
-                            if (badge) {
-                                let count = parseInt(badge.innerText) - 1;
-                                badge.innerText = count > 0 ? count : '';
-                                if (count <= 0) badge.style.display = 'none';
-                            }
-
-                            // If no notifications left, show "No notifications."
-                            if (document.querySelectorAll('.notification-item').length === 0) {
-                                const list = document.querySelector('.notification-list');
-                                list.innerHTML = '<li class="no-notification">No notifications.</li>';
-                            }
-                        });
+                        // If no notifications left, show "No notifications."
+                        if (document.querySelectorAll('.notification-item').length === 0) {
+                            const list = document.querySelector('.notification-list');
+                            list.innerHTML = '<li class="no-notification">No notifications.</li>';
+                        }
                     });
                 });
-            // Modal logic
-            const modal = document.getElementById('updateUserModal');
-            const closeModalBtn = document.getElementById('closeUpdateModal');
-            const updateForm = document.getElementById('updateUserForm');
-            const nameInput = document.getElementById('modal_name');
-            const emailInput = document.getElementById('modal_email');
-            const genderSelect = document.getElementById('modal_gender');
-            const mobileInput = document.getElementById('modal_mobile');
-            const userIdInput = document.getElementById('modal_user_id');
-
-            document.querySelectorAll('.open-update-modal').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    nameInput.value = this.getAttribute('data-name');
-                    emailInput.value = this.getAttribute('data-email');
-                    userIdInput.value = this.getAttribute('data-id');
-                    document.getElementById('modal_gender').value = this.getAttribute('data-gender') || '';
-                    document.getElementById('modal_mobile').value = this.getAttribute('data-mobile') || '';
-                    updateForm.action = '/admin/users/' + this.getAttribute('data-id');
-                    modal.style.display = 'flex';
-                });
-            });
-
-            closeModalBtn.addEventListener('click', function() {
-                modal.style.display = 'none';
-            });
-
-            // Optional: close modal when clicking outside the modal content
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) modal.style.display = 'none';
             });
         });
+
         // Show notification modal
         function showNotificationModal(title, message, date) {
             let modalHtml = `
@@ -750,8 +731,168 @@
             let notifModal = new bootstrap.Modal(document.getElementById('notifModal'));
             notifModal.show();
         }
-    </script>
 
+        // Edit notification functionality
+        document.querySelectorAll('.btn-info').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const notifId = this.closest('tr').querySelector('td').innerText;
+                const userId = this.closest('tr').querySelector('td:nth-child(2)').innerText.split('(')[1].slice(0, -1);
+                const title = this.closest('tr').querySelector('td:nth-child(3)').innerText;
+                const message = this.closest('tr').querySelector('td:nth-child(4)').innerText;
+                const status = this.closest('tr').querySelector('td:nth-child(6) .badge').innerText.toLowerCase();
+
+                // Set the values in the edit form
+                document.getElementById('edit_notification_id').value = notifId;
+                document.getElementById('edit_user_id').value = userId;
+                document.getElementById('edit_title').value = title;
+                document.getElementById('edit_message').value = message;
+                document.getElementById('edit_status').value = status === 'unread' ? 'unread' : 'read';
+
+                // Show the edit modal
+                const editModal = new bootstrap.Modal(document.getElementById('editNotificationModal'));
+                editModal.show();
+            });
+        });
+
+        // Handle edit form submission
+        document.getElementById('editNotificationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const notifId = document.getElementById('edit_notification_id').value;
+            const formData = new FormData(this);
+
+            // Convert FormData to JSON
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            fetch(`/notifications/${notifId}`, {
+                method: 'POST', // Using POST with _method override for Laravel
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                    ...jsonData,
+                    _method: 'PUT' // Laravel method override
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw err; });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Find the row to update - NEW IMPROVED VERSION
+                    const rows = document.querySelectorAll('tbody tr');
+                    let targetRow = null;
+
+                    // Find the row with matching notification ID
+                    for (const row of rows) {
+                        const firstCell = row.querySelector('td:first-child');
+                        if (firstCell && firstCell.textContent.trim() === notifId) {
+                            targetRow = row;
+                            break;
+                        }
+                    }
+
+                    if (targetRow) {
+                        // Get all cells in the row
+                        const cells = targetRow.querySelectorAll('td');
+
+                        // Update user cell (2nd column)
+                        const userSelect = document.getElementById('edit_user_id');
+                        const selectedOption = userSelect.options[userSelect.selectedIndex];
+                        cells[1].textContent = `${selectedOption.text.split(' (')[0]} (${jsonData.user_id})`;
+
+                        // Update title (3rd column)
+                        cells[2].textContent = jsonData.title;
+
+                        // Update message (4th column)
+                        cells[3].textContent = jsonData.message;
+
+                        // Update status (6th column)
+                        const statusBadge = cells[5].querySelector('.badge');
+                        if (statusBadge) {
+                            statusBadge.textContent = jsonData.status === 'unread' ? 'Unread' : 'Read';
+                            statusBadge.className = `badge ${jsonData.status === 'unread' ? 'bg-warning' : 'bg-success'}`;
+                        }
+                    }
+
+                    // Close the modal
+                    const editModal = bootstrap.Modal.getInstance(document.getElementById('editNotificationModal'));
+                    editModal.hide();
+
+                    // Show success toast/alert
+                    showToast('Notification updated successfully', 'success');
+                }
+            })
+            .catch(error => {
+                console.error('Update error:', error);
+                let errorMessage = 'Error updating notification';
+
+                if (error.errors) {
+                    errorMessage = Object.values(error.errors).join('\n');
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+
+                // Show error in modal instead of alert
+                const errorDiv = document.getElementById('editNotificationErrors');
+                if (errorDiv) {
+                    errorDiv.textContent = errorMessage;
+                    errorDiv.classList.remove('d-none');
+                } else {
+                    alert(errorMessage);
+                }
+            });
+        });
+
+        // Helper function for showing toast messages
+        function showToast(message, type = 'success') {
+            // Implement your toast notification system here
+            // Example using Bootstrap toasts:
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+
+            const toastContainer = document.getElementById('toastContainer') || createToastContainer();
+            toastContainer.appendChild(toast);
+
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+
+            // Auto-remove after hide
+            toast.addEventListener('hidden.bs.toast', () => {
+                toast.remove();
+            });
+        }
+
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toastContainer';
+            container.className = 'position-fixed bottom-0 end-0 p-3';
+            container.style.zIndex = '1100';
+            document.body.appendChild(container);
+            return container;
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

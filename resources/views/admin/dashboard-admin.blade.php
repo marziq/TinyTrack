@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Dashboard</title>
     <style>
         * {
@@ -319,6 +320,38 @@
                 min-width: 180px;
             }
         }
+         .notification-popup {
+            position: absolute;
+            top: 35px;
+            right: 0;
+            min-width: 260px;
+            background: #fff;
+            border: 1px solid #e3f2fd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 1001;
+            padding: 10px 0;
+        }
+        .notification-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .notification-item {
+            padding: 10px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        .no-notification {
+            padding: 16px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -339,7 +372,7 @@
                 <a href="{{ route('dashboard-admin') }}"><i class="fas fa-cog"></i> Settings</a>
             </li>
             <li class="{{ request()->routeIs('messages') ? 'active' : '' }}">
-                <a href="{{ route('dashboard-admin') }}"><i class="fas fa-envelope"></i> Messages</a>
+                <a href="{{ route('messages-admin') }}"><i class="fas fa-envelope"></i> Messages</a>
             </li>
             <li class="{{ request()->routeIs('calendar') ? 'active' : '' }}">
                 <a href="{{ route('dashboard-admin') }}"><i class="fas fa-calendar"></i> Calendar</a>
@@ -358,9 +391,24 @@
                 <i class="fas fa-bars"></i>
             </button>
             <div class="nav-icons">
-                <div class="notification-icon">
+                <div class="notification-icon" id="notificationBell" style="position: relative;">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
+                    @if($unreadCount > 0)
+                        <span class="notification-badge">{{ $unreadCount }}</span>
+                    @endif
+                    <div id="notificationPopup" class="notification-popup" style="display: none;">
+                        <ul class="notification-list">
+                            @forelse($userNotifications as $notif)
+                                <li class="notification-item {{ $notif->status == 'unread' ? 'fw-bold' : '' }}" data-id="{{ $notif->notification_id }}">
+                                    <strong>{{ $notif->title }}</strong><br>
+                                    <span>{{ $notif->message }}</span>
+                                    <div style="font-size: 11px; color: #888;">{{ $notif->dateSent }}</div>
+                                </li>
+                            @empty
+                                <li class="no-notification">No notifications.</li>
+                            @endforelse
+                        </ul>
+                    </div>
                 </div>
                 <div class="dropdown">
                     <!-- Profile picture button -->

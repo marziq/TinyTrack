@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BabyController;
 use App\Http\Controllers\GrowthController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\MilestoneController;
 use App\Http\Controllers\AppointmentController;
 use App\Models\Baby;
@@ -29,7 +30,7 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
-
+// Public routes end
 
 // Admin routes
 Route::get('/login-admin', function () {
@@ -37,11 +38,12 @@ Route::get('/login-admin', function () {
 })->name('adminlogin');
 
 
-
 Route::get('admin/dashboard', [AdminController::class, 'index'])->name('dashboard-admin');
 Route::get('admin/users', [AdminController::class, 'usersAdmin'])->name('users-admin');
 Route::delete('admin/users/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
-
+Route::put('/admin/users/{user}', [AdminController::class, 'update'])->name('admin.users.update');
+Route::get('/admin/messages', [NotificationsController::class, 'index'])->name('messages-admin');
+//admin routes end
 
 // Authenticated routes
 Route::middleware([
@@ -87,3 +89,7 @@ Route::middleware([
 Route::get('/babies/{baby}', function(Baby $baby) {
     return response()->json($baby);
 })->middleware('auth');
+
+Route::resource('notifications', NotificationsController::class);
+Route::post('/notifications/{id}/mark-read', [NotificationsController::class, 'markRead'])->name('notifications.markRead');
+Route::put('/notifications/{notification}', [NotificationsController::class, 'update'])->name('notifications.update');
