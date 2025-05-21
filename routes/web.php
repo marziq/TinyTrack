@@ -37,12 +37,16 @@ Route::get('/login-admin', function () {
     return view('admin/login-admin');
 })->name('adminlogin');
 
+Route::get('/admin/calendar', function () {
+    return view('admin/calendar');
+})->name('admincalendar');
 
 Route::get('admin/dashboard', [AdminController::class, 'index'])->name('dashboard-admin');
 Route::get('admin/users', [AdminController::class, 'usersAdmin'])->name('users-admin');
 Route::delete('admin/users/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
 Route::put('/admin/users/{user}', [AdminController::class, 'update'])->name('admin.users.update');
 Route::get('/admin/messages', [NotificationsController::class, 'index'])->name('messages-admin');
+
 //admin routes end
 
 // Authenticated routes

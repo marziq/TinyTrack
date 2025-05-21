@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(['admin.messages-admin', 'admin.dashboard-admin', 'admin.users-admin'], function ($view) {
+        View::composer(['admin.messages-admin', 'admin.dashboard-admin', 'admin.users-admin', 'admin.calendar','admin.settings'], function ($view) {
             $notifications = Notification::with('user')->orderByDesc('dateSent')->get();
 
             $userNotifications = Notification::where('user_id', auth()->id())

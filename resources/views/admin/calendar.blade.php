@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <title>Dashboard</title>
     <style>
         * {
@@ -320,7 +322,7 @@
                 min-width: 180px;
             }
         }
-        .notification-popup {
+         .notification-popup {
             position: absolute;
             top: 35px;
             right: 0;
@@ -352,6 +354,40 @@
             color: #888;
             font-size: 14px;
         }
+
+        /* Add this to your existing styles */
+        #appointmentCalendar {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .fc-event {
+            cursor: pointer;
+        }
+
+        /* Custom colors for different appointment types */
+        .fc-event-checkup {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .fc-event-vaccination {
+            background-color: #2196F3;
+            border-color: #2196F3;
+        }
+
+        .fc-event-consultation {
+            background-color: #FF9800;
+            border-color: #FF9800;
+        }
+
+        .fc-toolbar-title {
+            font-size: 1.2em;
+        }
+
+        .fc-col-header-cell {
+            background-color: #f8f9fa;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -375,7 +411,7 @@
                 <a href="{{ route('messages-admin') }}"><i class="fas fa-envelope"></i> Messages</a>
             </li>
             <li class="{{ request()->routeIs('calendar') ? 'active' : '' }}">
-                <a href="{{ route('admincalendar') }}"><i class="fas fa-calendar"></i> Calendar</a>
+                <a href="{{ route('dashboard-admin') }}"><i class="fas fa-calendar"></i> Calendar</a>
             </li>
             <li class="{{ request()->routeIs('reports') ? 'active' : '' }}">
                 <a href="{{ route('dashboard-admin') }}"><i class="fas fa-file"></i> Reports</a>
@@ -441,152 +477,15 @@
 
         <!-- Dashboard Content -->
         <div class="dashboard-content">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2>Notifications</h2>
-                <!-- Create Notification Button -->
-                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNotificationModal">Create Notification</a>
+                <h2 class="mb-4">Appointment Calendar</h2>
 
-                <!-- Create Notification Modal -->
-                <div class="modal fade" id="createNotificationModal" tabindex="-1" aria-labelledby="createNotificationModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <form action="{{ route('notifications.store') }}" method="POST">
-                    @csrf
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="createNotificationModalLabel">Create Notification</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="user_id" class="form-label">User</label>
-                            <select name="user_id" id="user_id" class="form-select" required>
-                            <option value="">Select User</option>
-                            @foreach(\App\Models\User::all() as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->id }})</option>
-                            @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
-                            <input type="text" name="title" id="title" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Message</label>
-                            <textarea name="message" id="message" class="form-control" rows="3" required></textarea>
-                        </div>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Send Notification</button>
-                        </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div id="appointmentCalendar"></div>
                     </div>
-                    </form>
                 </div>
-                </div>
-
-                <!-- Edit Notification Modal -->
-                <div class="modal fade" id="editNotificationModal" tabindex="-1" aria-labelledby="editNotificationModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <form id="editNotificationForm" method="POST">
-                      @csrf
-                      @method('PUT')
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="editNotificationModalLabel">Edit Notification</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <input type="hidden" name="notification_id" id="edit_notification_id">
-                          <div class="mb-3">
-                            <label for="edit_user_id" class="form-label">User</label>
-                            <select name="user_id" id="edit_user_id" class="form-select" required>
-                              <option value="">Select User</option>
-                              @foreach(\App\Models\User::all() as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->id }})</option>
-                              @endforeach
-                            </select>
-                          </div>
-                          <div class="mb-3">
-                            <label for="edit_title" class="form-label">Title</label>
-                            <input type="text" name="title" id="edit_title" class="form-control" required>
-                          </div>
-                          <div class="mb-3">
-                            <label for="edit_message" class="form-label">Message</label>
-                            <textarea name="message" id="edit_message" class="form-control" rows="3" required></textarea>
-                          </div>
-                          <div class="mb-3">
-                            <label for="edit_status" class="form-label">Status</label>
-                            <select name="status" id="edit_status" class="form-select" required>
-                              <option value="unread">Unread</option>
-                              <option value="read">Read</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                          <button type="submit" class="btn btn-primary">Update Notification</button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Notification ID</th>
-                            <th>User (ID)</th>
-                            <th>Title</th>
-                            <th>Message</th>
-                            <th>Date Sent</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($notifications as $notification)
-                            <tr>
-                                <td>{{ $notification->notification_id }}</td>
-                                <td>
-                                    {{ $notification->user->name ?? 'Unknown' }} ({{ $notification->user_id }})
-                                </td>
-                                <td>{{ $notification->title }}</td>
-                                <td>{{ $notification->message }}</td>
-                                <td>{{ $notification->dateSent }}</td>
-                                <td>
-                                    <span class="badge {{ $notification->status == 'unread' ? 'bg-warning' : 'bg-success' }}">
-                                        {{ ucfirst($notification->status) }}
-                                    </span>
-                                </td>
-                                <td>
-                                   <a href="#"
-                                        style="color: #fff; background-color: #0d6efd; !important;"
-                                        class="btn btn-sm btn-info edit-notification-btn"
-                                        data-id="{{ $notification->notification_id }}"
-                                        data-user="{{ $notification->user_id }}"
-                                        data-title="{{ $notification->title }}"
-                                        data-message="{{ $notification->message }}"
-                                        data-status="{{ $notification->status }}">
-                                        Update
-                                    </a>
-                                        <form action="{{ route('notifications.destroy', $notification->notification_id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this notification?')">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="text-center">No notifications found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
         </div>
-        <!-- END Dashboard Content -->
+        <!-- Dashboard Content -->
 
     </div>
 
@@ -655,6 +554,7 @@
                 arrowIcon.style.transform = 'rotate(0)';
             });
 
+            // Notification popup functionality
             const bell = document.getElementById('notificationBell');
             const popup = document.getElementById('notificationPopup');
 
@@ -732,167 +632,105 @@
             notifModal.show();
         }
 
-        // Edit notification functionality
-        document.querySelectorAll('.btn-info').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const notifId = this.closest('tr').querySelector('td').innerText;
-                const userId = this.closest('tr').querySelector('td:nth-child(2)').innerText.split('(')[1].slice(0, -1);
-                const title = this.closest('tr').querySelector('td:nth-child(3)').innerText;
-                const message = this.closest('tr').querySelector('td:nth-child(4)').innerText;
-                const status = this.closest('tr').querySelector('td:nth-child(6) .badge').innerText.toLowerCase();
-
-                // Set the values in the edit form
-                document.getElementById('edit_notification_id').value = notifId;
-                document.getElementById('edit_user_id').value = userId;
-                document.getElementById('edit_title').value = title;
-                document.getElementById('edit_message').value = message;
-                document.getElementById('edit_status').value = status === 'unread' ? 'unread' : 'read';
-
-                // Show the edit modal
-                const editModal = new bootstrap.Modal(document.getElementById('editNotificationModal'));
-                editModal.show();
-            });
-        });
-
-        // Handle edit form submission
-        document.getElementById('editNotificationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const notifId = document.getElementById('edit_notification_id').value;
-            const formData = new FormData(this);
-
-            // Convert FormData to JSON
-            const jsonData = {};
-            formData.forEach((value, key) => {
-                jsonData[key] = value;
-            });
-
-            fetch(`/notifications/${notifId}`, {
-                method: 'POST', // Using POST with _method override for Laravel
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the calendar
+            var calendarEl = document.getElementById('appointmentCalendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                body: JSON.stringify({
-                    ...jsonData,
-                    _method: 'PUT' // Laravel method override
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => { throw err; });
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    // Find the row to update - NEW IMPROVED VERSION
-                    const rows = document.querySelectorAll('tbody tr');
-                    let targetRow = null;
-
-                    // Find the row with matching notification ID
-                    for (const row of rows) {
-                        const firstCell = row.querySelector('td:first-child');
-                        if (firstCell && firstCell.textContent.trim() === notifId) {
-                            targetRow = row;
-                            break;
-                        }
+                events: [
+                    // These would normally come from your database via AJAX
+                    // Example data - in a real app, you'd fetch this from your backend
+                    {
+                        title: 'Regular Checkup',
+                        start: new Date().toISOString().split('T')[0],
+                        className: 'fc-event-checkup'
+                    },
+                    {
+                        title: 'Vaccination',
+                        start: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0],
+                        className: 'fc-event-vaccination'
+                    },
+                    {
+                        title: 'Doctor Consultation',
+                        start: new Date(new Date().setDate(new Date().getDate() + 5)).toISOString().split('T')[0],
+                        className: 'fc-event-consultation'
+                    },
+                    {
+                        title: 'Regular Checkup',
+                        start: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0],
+                        className: 'fc-event-checkup'
                     }
-
-                    if (targetRow) {
-                        // Get all cells in the row
-                        const cells = targetRow.querySelectorAll('td');
-
-                        // Update user cell (2nd column)
-                        const userSelect = document.getElementById('edit_user_id');
-                        const selectedOption = userSelect.options[userSelect.selectedIndex];
-                        cells[1].textContent = `${selectedOption.text.split(' (')[0]} (${jsonData.user_id})`;
-
-                        // Update title (3rd column)
-                        cells[2].textContent = jsonData.title;
-
-                        // Update message (4th column)
-                        cells[3].textContent = jsonData.message;
-
-                        // Update status (6th column)
-                        const statusBadge = cells[5].querySelector('.badge');
-                        if (statusBadge) {
-                            statusBadge.textContent = jsonData.status === 'unread' ? 'Unread' : 'Read';
-                            statusBadge.className = `badge ${jsonData.status === 'unread' ? 'bg-warning' : 'bg-success'}`;
-                        }
-                    }
-
-                    // Close the modal
-                    const editModal = bootstrap.Modal.getInstance(document.getElementById('editNotificationModal'));
-                    editModal.hide();
-
-                    // Show success toast/alert
-                    showToast('Notification updated successfully', 'success');
-                }
-            })
-            .catch(error => {
-                console.error('Update error:', error);
-                let errorMessage = 'Error updating notification';
-
-                if (error.errors) {
-                    errorMessage = Object.values(error.errors).join('\n');
-                } else if (error.message) {
-                    errorMessage = error.message;
-                }
-
-                // Show error in modal instead of alert
-                const errorDiv = document.getElementById('editNotificationErrors');
-                if (errorDiv) {
-                    errorDiv.textContent = errorMessage;
-                    errorDiv.classList.remove('d-none');
-                } else {
-                    alert(errorMessage);
-                }
-            });
-        });
-
-        // Helper function for showing toast messages
-        function showToast(message, type = 'success') {
-            // Implement your toast notification system here
-            // Example using Bootstrap toasts:
-            const toast = document.createElement('div');
-            toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0`;
-            toast.setAttribute('role', 'alert');
-            toast.setAttribute('aria-live', 'assertive');
-            toast.setAttribute('aria-atomic', 'true');
-
-            toast.innerHTML = `
-                <div class="d-flex">
-                    <div class="toast-body">
-                        ${message}
+                ],
+                eventClick: function(info) {
+                    // When an appointment is clicked, show details
+                    const event = info.event;
+                    let modalHtml = `
+                    <div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="appointmentModalLabel">Appointment Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Type:</strong> ${event.title}</p>
+                            <p><strong>Date:</strong> ${event.start.toLocaleDateString()}</p>
+                            <p><strong>Time:</strong> ${event.start.toLocaleTimeString()}</p>
+                            <p><strong>Status:</strong> Confirmed</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        </div>
                     </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            `;
+                    </div>
+                    `;
 
-            const toastContainer = document.getElementById('toastContainer') || createToastContainer();
-            toastContainer.appendChild(toast);
-
-            const bsToast = new bootstrap.Toast(toast);
-            bsToast.show();
-
-            // Auto-remove after hide
-            toast.addEventListener('hidden.bs.toast', () => {
-                toast.remove();
+                    // Remove existing modal if any
+                    document.getElementById('appointmentModal')?.remove();
+                    document.body.insertAdjacentHTML('beforeend', modalHtml);
+                    let appointmentModal = new bootstrap.Modal(document.getElementById('appointmentModal'));
+                    appointmentModal.show();
+                }
             });
-        }
 
-        function createToastContainer() {
-            const container = document.createElement('div');
-            container.id = 'toastContainer';
-            container.className = 'position-fixed bottom-0 end-0 p-3';
-            container.style.zIndex = '1100';
-            document.body.appendChild(container);
-            return container;
-        }
+            calendar.render();
+
+            // In a real application, you would fetch appointments from your backend
+            function fetchAppointments() {
+                // Example AJAX call (you would replace this with your actual endpoint)
+                /*
+                fetch('/api/appointments')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Format the data for FullCalendar
+                        const events = data.map(appointment => {
+                            return {
+                                title: appointment.type,
+                                start: appointment.date,
+                                className: `fc-event-${appointment.type.toLowerCase()}`
+                            };
+                        });
+
+                        // Remove existing events and add new ones
+                        calendar.getEvents().forEach(event => event.remove());
+                        calendar.addEventSource(events);
+                    })
+                    .catch(error => console.error('Error fetching appointments:', error));
+                */
+            }
+
+            // Fetch appointments initially and set up periodic refresh
+            fetchAppointments();
+            setInterval(fetchAppointments, 300000); // Refresh every 5 minutes
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
