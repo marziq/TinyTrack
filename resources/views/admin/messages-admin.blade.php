@@ -369,16 +369,13 @@
                 <a href="{{ route('users-admin') }}"><i class="fas fa-users"></i> Users</a>
             </li>
             <li class="{{ request()->routeIs('settings') ? 'active' : '' }}">
-                <a href="{{ route('dashboard-admin') }}"><i class="fas fa-cog"></i> Settings</a>
+                <a href="{{ route('adminsettings') }}"><i class="fas fa-cog"></i> Settings</a>
             </li>
             <li class="{{ request()->routeIs('messages') ? 'active' : '' }}">
                 <a href="{{ route('messages-admin') }}"><i class="fas fa-envelope"></i> Messages</a>
             </li>
             <li class="{{ request()->routeIs('calendar') ? 'active' : '' }}">
                 <a href="{{ route('admincalendar') }}"><i class="fas fa-calendar"></i> Calendar</a>
-            </li>
-            <li class="{{ request()->routeIs('reports') ? 'active' : '' }}">
-                <a href="{{ route('dashboard-admin') }}"><i class="fas fa-file"></i> Reports</a>
             </li>
         </ul>
     </div>

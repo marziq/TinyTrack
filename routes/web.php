@@ -41,6 +41,10 @@ Route::get('/admin/calendar', function () {
     return view('admin/calendar');
 })->name('admincalendar');
 
+Route::get('/admin/settings', function () {
+    return view('admin/settings');
+})->name('adminsettings');
+
 Route::get('admin/dashboard', [AdminController::class, 'index'])->name('dashboard-admin');
 Route::get('admin/users', [AdminController::class, 'usersAdmin'])->name('users-admin');
 Route::delete('admin/users/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');

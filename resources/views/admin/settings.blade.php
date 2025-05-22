@@ -369,16 +369,13 @@
                 <a href="{{ route('users-admin') }}"><i class="fas fa-users"></i> Users</a>
             </li>
             <li class="{{ request()->routeIs('settings') ? 'active' : '' }}">
-                <a href="{{ route('dashboard-admin') }}"><i class="fas fa-cog"></i> Settings</a>
+                <a href="{{ route('adminsettings') }}"><i class="fas fa-cog"></i> Settings</a>
             </li>
             <li class="{{ request()->routeIs('messages') ? 'active' : '' }}">
                 <a href="{{ route('messages-admin') }}"><i class="fas fa-envelope"></i> Messages</a>
             </li>
             <li class="{{ request()->routeIs('calendar') ? 'active' : '' }}">
-                <a href="{{ route('dashboard-admin') }}"><i class="fas fa-calendar"></i> Calendar</a>
-            </li>
-            <li class="{{ request()->routeIs('reports') ? 'active' : '' }}">
-                <a href="{{ route('dashboard-admin') }}"><i class="fas fa-file"></i> Reports</a>
+                <a href="{{ route('admincalendar') }}"><i class="fas fa-calendar"></i> Calendar</a>
             </li>
         </ul>
     </div>
@@ -441,27 +438,66 @@
 
         <!-- Dashboard Content -->
         <div class="dashboard-content">
-            <h2>Welcome Admin</h2>
-            <p>Here's an overview of your activities and statistics.</p>
+            <div class="container mt-5">
+                <div class="row">
 
-            <div class="card-container">
-                <div class="card">
-                    <h3>Total Users</h3>
-                    <p>{{$totalUsers}}</p>
-                </div>
-                <div class="card">
-                    <h3>Total Babies</h3>
-                    <p>{{$totalBabies}}</p>
-                </div>
-                <div class="card">
-                    <h3>Vaccine completed</h3>
-                    <p>15 pending</p>
-                </div>
-                <div class="card">
-                    <h3>Activities completed</h3>
-                    <p>15 pending</p>
+                    <!-- Left Column: Profile Card -->
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle mb-3" width="120">
+                                <h4>Ammar Haziq</h4>
+                                <p class="text-secondary mb-1">TinyTrack Admin</p>
+                                <p class="text-muted">2217763</p>
+                                <div class="mb-2">
+                                    <button class="btn btn-primary btn-sm">Follow</button>
+                                    <button class="btn btn-outline-primary btn-sm">Message</button>
+                                </div>
+                            </div>
+                            <ul class="list-group list-group-flush text-start">
+                                <li class="list-group-item"><i class="fas fa-globe me-2"></i> Website: <span class="text-muted">https://bootdey.com</span></li>
+                                <li class="list-group-item"><i class="fab fa-github me-2"></i> Github: <span class="text-muted">bootdey</span></li>
+                                <li class="list-group-item"><i class="fab fa-twitter me-2"></i> Twitter: <span class="text-muted">@bootdey</span></li>
+                                <li class="list-group-item"><i class="fab fa-instagram me-2"></i> Instagram: <span class="text-muted">bootdey</span></li>
+                                <li class="list-group-item"><i class="fab fa-facebook me-2"></i> Facebook: <span class="text-muted">bootdey</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: User Info and Projects -->
+                    <div class="col-md-8">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-sm-3"><strong>Full Name</strong></div>
+                                    <div class="col-sm-9 text-secondary">Ammar Haziq</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-3"><strong>Email</strong></div>
+                                    <div class="col-sm-9 text-secondary">support@tinytrack.com</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-3"><strong>Phone</strong></div>
+                                    <div class="col-sm-9 text-secondary">(239) 816-9029</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-3"><strong>Mobile</strong></div>
+                                    <div class="col-sm-9 text-secondary">(320) 380-4539</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-3"><strong>Address</strong></div>
+                                    <div class="col-sm-9 text-secondary">Setapak, KL</div>
+                                </div>
+                                <div class="text-end">
+                                    <button class="btn btn-info">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 
