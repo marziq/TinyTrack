@@ -101,3 +101,4 @@ Route::get('/babies/{baby}', function(Baby $baby) {
 Route::resource('notifications', NotificationsController::class);
 Route::post('/notifications/{id}/mark-read', [NotificationsController::class, 'markRead'])->name('notifications.markRead');
 Route::put('/notifications/{notification}', [NotificationsController::class, 'update'])->name('notifications.update');
+Route::get('/notifications/{id}', [NotificationsController::class, 'getNotification']);

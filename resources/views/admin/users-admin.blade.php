@@ -452,7 +452,15 @@
                     <!-- Profile picture button -->
                     <button class="profile-btn dropdown-toggle" type="button" id="accountDropdown">
                         <div class="profile-img-container">
-                            <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
+                            @if (Auth::check())
+                                <div class="profile-img-container">
+                                    <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
+                                </div>
+                            @else
+                                <script>
+                                    window.location.href = "{{ route('login') }}";  // Redirect to login page
+                                </script>
+                            @endif
                         </div>
                         <i class="fas fa-chevron-down text-muted arrow-icon"></i>
                     </button>

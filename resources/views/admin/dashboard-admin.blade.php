@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Dashboard</title>
+    <title>Admin Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -263,21 +263,39 @@
         /* Dashboard Content */
         .dashboard-content {
             padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-top: 30px;
         }
 
+        .dashboard-content h2 {
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-content p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        /* Card Container */
         .card-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 25px;
+            gap: 20px;
+            margin-top: 20px;
         }
 
         .card {
-            background-color: white;
+            background-color: #ffffff;
             border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease-in-out;
         }
 
         .card:hover {
@@ -286,18 +304,119 @@
 
         .card h3 {
             color: #555;
-            margin-bottom: 10px;
             font-size: 18px;
+            margin-bottom: 10px;
         }
 
         .card p {
             font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
+            font-weight: 600;
+            color: #333;
         }
-        .dropdown-menu li {
-            list-style: none;
+
+        /* Chart Container */
+        .chart-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
         }
+
+        .chart-container > div {
+            flex: 0 1 48%;  /* Adjust width to ensure charts share space equally */
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            height: 500px;  /* Set consistent height for both charts */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .chart-container h3 {
+            color: #333;
+            font-size: 18px;  /* Title font size */
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        #babiesChart, #genderChart {
+            width: 100%;  /* Ensure both charts fill the width of their container */
+            height: 100%;  /* Make the height match the container */
+            display: block;
+        }
+
+
+        /* Progress Bar */
+        .projects {
+            margin-top: 40px;
+        }
+
+        /* Card Styling for the entire Projects section */
+        .projects-card {
+            background-color: #ffffff; /* White background for the card */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-top: 40px;
+            margin-bottom: 20px; /* Space below the card */
+        }
+
+        .projects h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Styling for progress bars */
+        .progress-bar p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .progress {
+            height: 15px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            width: 100%;
+            position: relative;
+        }
+
+        .progress .progress-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .progress-bar-fill.server-migration {
+            background-color: #e74c3c; /* Red for Server Migration */
+            width: 20%;
+        }
+
+        .progress-bar-fill.sales-tracking {
+            background-color: #f39c12; /* Yellow for Sales Tracking */
+            width: 40%;
+        }
+
+        .progress-bar-fill.customer-database {
+            background-color: #3498db; /* Blue for Customer Database */
+            width: 60%;
+        }
+
+        .progress-bar .percentage {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            font-weight: 600;
+            color: #fff;
+            font-size: 12px;
+        }
+
+
+
         /* Responsive Styles */
         @media (max-width: 768px) {
             .sidebar {
@@ -316,11 +435,19 @@
                 padding: 15px 20px;
             }
 
-            .dropdown-menu {
-                min-width: 180px;
+            .card-container {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .dashboard-content {
+                padding: 10px;
+            }
+
+            .chart-container {
+                width: 100%;
             }
         }
-         .notification-popup {
+        .notification-popup {
             position: absolute;
             top: 35px;
             right: 0;
@@ -351,6 +478,40 @@
             text-align: center;
             color: #888;
             font-size: 14px;
+        }
+
+        /* Add this to your existing styles */
+        #appointmentCalendar {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .fc-event {
+            cursor: pointer;
+        }
+
+        /* Custom colors for different appointment types */
+        .fc-event-checkup {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .fc-event-vaccination {
+            background-color: #2196F3;
+            border-color: #2196F3;
+        }
+
+        .fc-event-consultation {
+            background-color: #FF9800;
+            border-color: #FF9800;
+        }
+
+        .fc-toolbar-title {
+            font-size: 1.2em;
+        }
+
+        .fc-col-header-cell {
+            background-color: #f8f9fa;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -411,7 +572,15 @@
                     <!-- Profile picture button -->
                     <button class="profile-btn dropdown-toggle" type="button" id="accountDropdown">
                         <div class="profile-img-container">
-                            <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
+                            @if (Auth::check())
+                                <div class="profile-img-container">
+                                    <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
+                                </div>
+                            @else
+                                <script>
+                                    window.location.href = "{{ route('login') }}";  // Redirect to login page
+                                </script>
+                            @endif
                         </div>
                         <i class="fas fa-chevron-down text-muted arrow-icon"></i>
                     </button>
@@ -441,6 +610,7 @@
             <h2>Welcome Admin</h2>
             <p>Here's an overview of your activities and statistics.</p>
 
+            <!-- Card Section -->
             <div class="card-container">
                 <div class="card">
                     <h3>Total Users</h3>
@@ -451,17 +621,75 @@
                     <p>{{$totalBabies}}</p>
                 </div>
                 <div class="card">
-                    <h3>Vaccine completed</h3>
+                    <h3>Vaccine Completed</h3>
                     <p>15 pending</p>
                 </div>
                 <div class="card">
-                    <h3>Activities completed</h3>
+                    <h3>Activities Completed</h3>
                     <p>15 pending</p>
                 </div>
             </div>
+
+            <!-- Chart Section -->
+            <div class="chart-container">
+                <div>
+                    <h3>Babies Added Each Month</h3>
+                    <canvas id="babiesChart"></canvas>
+                </div>
+
+                <div>
+                    <h3>User Gender Distribution</h3>
+                    <canvas id="genderChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Progress Bar Section -->
+            <div class="projects-card">
+                <h3>Appointment Progression</h3>
+
+                <!-- Project for Server Migration -->
+                <div class="progress-bar">
+                    <p>General</p>
+                    <div class="progress">
+                        <div class="progress-bar-fill server-migration"></div>
+                        <span class="percentage">20%</span>
+                    </div>
+                </div>
+
+                <!-- Project for Sales Tracking -->
+                <div class="progress-bar">
+                    <p>Checkup</p>
+                    <div class="progress">
+                        <div class="progress-bar-fill sales-tracking"></div>
+                        <span class="percentage">40%</span>
+                    </div>
+                </div>
+
+                <!-- Project for Customer Database -->
+                <div class="progress-bar">
+                    <p>Vaccination</p>
+                    <div class="progress">
+                        <div class="progress-bar-fill customer-database"></div>
+                        <span class="percentage">60%</span>
+                    </div>
+                </div>
+
+                <!-- Project for Payout Details -->
+                <div class="progress-bar">
+                    <p>Others</p>
+                    <div class="progress">
+                        <div class="progress-bar-fill" style="width: 80%; background-color: #2ecc71;"></div>
+                        <span class="percentage">80%</span>
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('sidebar');
@@ -604,6 +832,50 @@
             let notifModal = new bootstrap.Modal(document.getElementById('notifModal'));
             notifModal.show();
         }
+
+        var ctx1 = document.getElementById('babiesChart').getContext('2d');
+        var babiesChart = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Babies Added',
+                    data: [5, 8, 7, 10, 9, 12, 14, 11, 15, 18, 20, 22],
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,  // Allow the height to stretch to fit the container
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        var ctx2 = document.getElementById('genderChart').getContext('2d');
+        var genderChart = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['Male', 'Female'],
+                datasets: [{
+                    label: 'User Gender Distribution',
+                    data: [60, 40],
+                    backgroundColor: ['#36A2EB', '#FF6384'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,  // Allow the height to stretch to fit the container
+            }
+        });
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

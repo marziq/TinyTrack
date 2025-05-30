@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(['admin.messages-admin', 'admin.dashboard-admin', 'admin.users-admin', 'admin.calendar','admin.settings'], function ($view) {
+        View::composer(['admin.messages-admin', 'admin.dashboard-admin', 'admin.users-admin', 'admin.calendar','admin.settings', 'user.mybaby', 'dashboard', 'user.growth'], function ($view) {
             $notifications = Notification::with('user')->orderByDesc('dateSent')->get();
 
             $userNotifications = Notification::where('user_id', auth()->id())
@@ -37,5 +38,18 @@ class AppServiceProvider extends ServiceProvider
                 'unreadCount' => $unreadCount
             ]);
         });
+
+         View::composer(
+            ['dashboard', 'user.mybaby'],
+            function ($view) {
+                $user = Auth::user();
+
+                // Check if user has babies
+                $baby = $user->babies->first(); // Get the first baby or null if no babies
+
+                // Pass data to the view
+                $view->with('baby', $baby);
+            }
+        );
     }
 }

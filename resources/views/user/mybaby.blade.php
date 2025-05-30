@@ -741,10 +741,17 @@
                 <!-- Row 1 -->
                 <div class="baby-info-panel">
                     <div class="baby-photo-container">
-                        <img id="selectedBabyPhoto"
-                        src="{{ $baby->baby_photo_path ? asset('storage/' . $baby->baby_photo_path) : asset('storage/baby-photos/default-baby.png') }}"
-                        alt="Baby Photo"
-                        class="baby-photo">
+                        @empty($baby)
+                            <img id="selectedBabyPhoto"
+                                src="{{ asset('storage/baby-photos/default-baby.png') }}"
+                                alt="Default Baby Photo"
+                                class="baby-photo">
+                        @else
+                            <img id="selectedBabyPhoto"
+                                src="{{ asset('storage/' . $baby->baby_photo_path) }}"
+                                alt="Baby Photo"
+                                class="baby-photo">
+                        @endempty
                     </div>
                     <div class="baby-details">
                         <h3 id="selectedBabyName" class="baby-name"></h3>
