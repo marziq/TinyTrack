@@ -1,4 +1,4 @@
-<p align="center"><a href="" target="_blank"><img src="public/img/tinytrack-logo.png" width="400" alt="TinyTrack Logo"></a></p>
+<p align="center"><a href="" target="_blank"><img src="public/img/Untitled design.jpg" width="400" alt="TinyTrack Logo"></a></p>
 
 ## About TinyTrack
 
