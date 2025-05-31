@@ -14,7 +14,7 @@ We would like to extend our thanks to the following developers for helping TinyT
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Laravel, please send an e-mail to Ammar Haziq via [ammarhaziqzainal@gmail.com](mailto:ammarhaziqzainal@gmail.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
