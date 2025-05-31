@@ -796,7 +796,7 @@
                         </div>
                     </div>
                 </div>
-            </div>>
+            </div>
         </div>
         {{--- Main Content END--}}
     </div>

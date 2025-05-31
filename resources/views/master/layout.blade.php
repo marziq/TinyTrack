@@ -46,7 +46,7 @@
             <div class="container topbar d-none d-lg-block py-2" style="border-radius: 0 40px; background: linear-gradient(to right, #c1c8e4, #c4fff9)">
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" style="color: black; font-weight: bold; padding: 20px;">support@tinytrack.com</a></small>
+                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" style="color: black; font-weight: bold; padding: 5px;">support@tinytrack.com</a></small>
                     </div>
                 </div>
             </div>

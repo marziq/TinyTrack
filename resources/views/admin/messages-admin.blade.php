@@ -578,7 +578,7 @@
                                         <form action="{{ route('notifications.destroy', $notification->notification_id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this notification?')">Delete</button>
+                                        <button class="btn btn-sm btn-danger" style="margin-top: 5px; padding-right: 14px;" onclick="return confirm('Delete this notification?')" >Delete</button>
                                     </form>
                                 </td>
                             </tr>

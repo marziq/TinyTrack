@@ -453,14 +453,17 @@
                     <div class="col-md-4">
                         <div class="card text-center">
                             <div class="card-body">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle mb-3" width="120">
-                                <h4>Ammar Haziq</h4>
-                                <p class="text-secondary mb-1">TinyTrack Admin</p>
-                                <p class="text-muted">2217763</p>
-                                <div class="mb-2">
-                                    <button class="btn btn-primary btn-sm">Follow</button>
-                                    <button class="btn btn-outline-primary btn-sm">Message</button>
-                                </div>
+                                @if (Auth::check())
+                                    <img src="{{ Auth::user()->profile_photo_url }}" class="rounded-circle mb-3" width="120" alt="Profile">
+                                    <h4>{{ Auth::user()->name }}</h4>
+                                    <p class="text-secondary mb-1" style="color: #3498db !important">Admin</p>
+                                    <p class="text-muted" style="color:#3498db !important; font-size: 15px;">User ID: TT{{ Auth::user()->id }}</p>
+                                @else
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle mb-3" width="120" alt="Profile">
+                                    <h4>Guest</h4>
+                                    <p class="text-secondary mb-1">TinyTrack Admin</p>
+                                    <p class="text-muted">-</p>
+                                @endif
                             </div>
                             <ul class="list-group list-group-flush text-start">
                                 <li class="list-group-item"><i class="fas fa-globe me-2"></i> Website: <span class="text-muted">https://bootdey.com</span></li>
@@ -469,6 +472,10 @@
                                 <li class="list-group-item"><i class="fab fa-instagram me-2"></i> Instagram: <span class="text-muted">bootdey</span></li>
                                 <li class="list-group-item"><i class="fab fa-facebook me-2"></i> Facebook: <span class="text-muted">bootdey</span></li>
                             </ul>
+                            <div class="mb-2">
+                                <br>
+                                <button class="btn btn-outline-primary btn-sm">Edit</button>
+                            </div>
                         </div>
                     </div>
 
@@ -497,7 +504,7 @@
                                     <div class="col-sm-9 text-secondary">Setapak, KL</div>
                                 </div>
                                 <div class="text-end">
-                                    <button class="btn btn-info">Edit</button>
+                                    <button class="btn btn-primary" style="padding:5px 20px 5px 20px; !important;">Edit</button>
                                 </div>
                             </div>
                         </div>

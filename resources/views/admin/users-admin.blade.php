@@ -327,7 +327,7 @@
             background: #e74c3c;
             color: #fff;
             border: none;
-            padding: 7px 14px;
+            padding: 7px 17px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;

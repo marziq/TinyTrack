@@ -622,11 +622,11 @@
                 </div>
                 <div class="card">
                     <h3>Vaccine Completed</h3>
-                    <p>15 pending</p>
+                    <p>15 Pending</p>
                 </div>
                 <div class="card">
                     <h3>Activities Completed</h3>
-                    <p>15 pending</p>
+                    <p>15 Pending</p>
                 </div>
             </div>
 
