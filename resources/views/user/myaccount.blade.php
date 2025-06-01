@@ -460,119 +460,164 @@
         </div>
 
        {{--Main Content--}}
-       <div class="container">
+       <div class="container mt-5">
         <div class="row">
-            <!-- Profile Information Section -->
-            <div class="col-md-12">
-                <div class="card">
+            <!-- Left Column: Profile Card -->
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <img src="{{ Auth::user()->profile_photo_url }}" class="rounded-circle mb-3" width="120" alt="Profile">
+                        <h4>{{ Auth::user()->name }}</h4>
+                        <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important">User ID: TT{{ Auth::user()->id }}</p>
+                    </div>
+                    <ul class="list-group list-group-flush text-start">
+                        <li class="list-group-item">
+                            <i class="fas fa-envelope me-2"></i> {{ Auth::user()->email }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-venus-mars me-2"></i>
+                            {{ ucfirst(strtolower(Auth::user()->gender)) }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-phone me-2"></i>
+                            @php
+                                $number = Auth::user()->mobile_number;
+                                $formattedNumber = (strlen($number) > 3) ? substr($number, 0, 3) . '-' . substr($number, 3) : $number;
+                            @endphp
+                            {{ $formattedNumber }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-baby me-2"></i>
+                            Babies: {{ Auth::user()->babies->count() }}
+                            @php
+                                $maleBabies = Auth::user()->babies->where('gender', 'male')->count();
+                                $femaleBabies = Auth::user()->babies->where('gender', 'female')->count();
+                                $otherBabies = Auth::user()->babies->whereNotIn('gender', ['male', 'female'])->count();
+                            @endphp
+                            <span class="text-muted" style="font-size: 13px;">
+                                (
+                                @if($maleBabies) {{ $maleBabies }} Male @endif
+                                @if($maleBabies && $femaleBabies) , @endif
+                                @if($femaleBabies) {{ $femaleBabies }} Female @endif
+                                @if(($maleBabies || $femaleBabies) && $otherBabies) , @endif
+                                @if($otherBabies) {{ $otherBabies }} Other @endif
+                                )
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Column: User Info and Favourited Tips -->
+            <div class="col-md-8">
+                <div class="card mb-3">
                     <div class="card-header">
                         <h3>Profile Information</h3>
                     </div>
                     <div class="card-body">
                         <!-- View Mode -->
                         <div id="viewMode">
-                            <!-- Profile Photo -->
-                            <div class="mb-3">
-                                <label class="form-label">Profile Photo</label>
-                                <div class="profile-photo-container">
-                                    <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile Photo" class="profile-img-preview">
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Name</strong></div>
+                                <div class="col-sm-8 text-secondary">{{ Auth::user()->name }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Email Address</strong></div>
+                                <div class="col-sm-8 text-secondary">{{ Auth::user()->email }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Gender</strong></div>
+                                <div class="col-sm-8 text-secondary">{{ ucfirst(strtolower(Auth::user()->gender)) }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Mobile Number</strong></div>
+                                <div class="col-sm-8 text-secondary">
+                                    @php
+                                        $number = Auth::user()->mobile_number;
+                                        $formattedNumber = (strlen($number) > 3) ? substr($number, 0, 3) . '-' . substr($number, 3) : $number;
+                                    @endphp
+                                    {{ $formattedNumber }}
                                 </div>
                             </div>
-
-                            <!-- Username -->
-                            <div class="mb-3">
-                                <label class="form-label">Name</label>
-                                <p>{{ Auth::user()->name }}</p>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Total Babies</strong></div>
+                                <div class="col-sm-8 text-secondary">{{ Auth::user()->babies->count() }}
+                                    @php
+                                        $maleBabies = Auth::user()->babies->where('gender', 'male')->count();
+                                        $femaleBabies = Auth::user()->babies->where('gender', 'female')->count();
+                                        $otherBabies = Auth::user()->babies->whereNotIn('gender', ['male', 'female'])->count();
+                                    @endphp
+                                    <span class="text-muted" style="font-size: 13px;">
+                                        (
+                                        @if($maleBabies) {{ $maleBabies }} Male @endif
+                                        @if($maleBabies && $femaleBabies) , @endif
+                                        @if($femaleBabies) {{ $femaleBabies }} Female @endif
+                                        @if(($maleBabies || $femaleBabies) && $otherBabies) , @endif
+                                        @if($otherBabies) {{ $otherBabies }} Other @endif
+                                        )
+                                    </span>
+                                </div>
                             </div>
-
-                            <!-- Email Address -->
-                            <div class="mb-3">
-                                <label class="form-label">Email Address</label>
-                                <p>{{ Auth::user()->email }}</p>
+                            <div class="text-end">
+                                <button style="background-color:#258ef7 !important" type="button" class="btn btn-primary" onclick="toggleEditMode()">Update</button>
                             </div>
-
-                            <!-- Gender -->
-                            <div class="mb-3">
-                                <label class="form-label">Gender</label>
-                                <p>{{ Auth::user()->gender }}</p>
-                            </div>
-
-                            <!-- Mobile Number -->
-                            <div class="mb-3">
-                                <label class="form-label">Mobile Number</label>
-                                <p>{{ Auth::user()->mobile_number }}</p>
-                            </div>
-
-                            <!-- Total Babies -->
-                            <div class="mb-3">
-                                <label class="form-label">Total Babies</label>
-                                <p>{{ Auth::user()->babies->count() }}</p>
-                            </div>
-
-                            <button type="button" class="btn btn-primary" onclick="toggleEditMode()">Update</button>
                         </div>
-
                         <!-- Edit Mode -->
                         <div id="editMode" style="display: none;">
                             <form method="POST" action="{{ route('user-profile-information.update') }}" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
-
-                                <!-- Profile Photo -->
-                                <div class="mb-3">
-                                    <label for="profile_photo" class="form-label">Profile Photo</label>
-                                    <div class="profile-photo-container">
-                                        <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile Photo" class="profile-img-preview">
+                                <div class="row mb-3">
+                                    <label class="col-sm-4 col-form-label">Profile Photo</label>
+                                    <div class="col-sm-8 d-flex align-items-center">
+                                        <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile Photo" class="rounded-circle me-3" width="60">
                                         <input type="file" name="profile_photo" id="profile_photo" class="form-control">
                                     </div>
                                 </div>
-
-                                <!-- Username -->
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control" value="{{ old('name', Auth::user()->name) }}" required>
+                                <div class="row mb-3">
+                                    <label for="name" class="col-sm-4 col-form-label">Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="name" id="name" class="form-control" value="{{ old('name', Auth::user()->name) }}" required>
+                                    </div>
                                 </div>
-
-                                <!-- Email Address -->
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email Address</label>
-                                    <input type="email" name="email" id="email" class="form-control" value="{{ old('email', Auth::user()->email) }}" required>
+                                <div class="row mb-3">
+                                    <label for="email" class="col-sm-4 col-form-label">Email Address</label>
+                                    <div class="col-sm-8">
+                                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email', Auth::user()->email) }}" required>
+                                    </div>
                                 </div>
-
-                                <!-- Gender -->
-                                <div class="mb-3">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select name="gender" id="gender" class="form-control" required>
-                                        <option value="Male" {{ Auth::user()->gender == 'Male' ? 'selected' : '' }}>Male</option>
-                                        <option value="Female" {{ Auth::user()->gender == 'Female' ? 'selected' : '' }}>Female</option>
-                                        <option value="Other" {{ Auth::user()->gender == 'Other' ? 'selected' : '' }}>Other</option>
-                                    </select>
+                                <div class="row mb-3">
+                                    <label for="gender" class="col-sm-4 col-form-label">Gender</label>
+                                    <div class="col-sm-8">
+                                        <select name="gender" id="gender" class="form-control" required>
+                                            <option value="Male" {{ Auth::user()->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                                            <option value="Female" {{ Auth::user()->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                                            <option value="Other" {{ Auth::user()->gender == 'Other' ? 'selected' : '' }}>Other</option>
+                                        </select>
+                                    </div>
                                 </div>
-
-                                <!-- Mobile Number -->
-                                <div class="mb-3">
-                                    <label for="mobile_number" class="form-label">Mobile Number</label>
-                                    <input type="text" name="mobile_number" id="mobile_number" class="form-control" value="{{ old('mobile_number', Auth::user()->mobile_number) }}" required>
+                                <div class="row mb-3">
+                                    <label for="mobile_number" class="col-sm-4 col-form-label">Mobile Number</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="mobile_number" id="mobile_number" class="form-control" value="{{ old('mobile_number', Auth::user()->mobile_number) }}" required>
+                                    </div>
                                 </div>
-
-                                <!-- Total Babies (Read-Only) -->
-                                <div class="mb-3">
-                                    <label class="form-label">Total Babies</label>
-                                    <input type="text" class="form-control" value="{{ Auth::user()->babies->count() }}" readonly>
+                                <div class="row mb-3">
+                                    <label class="col-sm-4 col-form-label">Total Babies</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" value="{{ Auth::user()->babies->count() }}" readonly>
+                                    </div>
                                 </div>
-
-                                <button type="submit" class="btn btn-success">Save Changes</button>
-                                <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Save Changes</button>
+                                    <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- Favourited Baby Tips Card -->
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <div class="card">
+                <!-- Favourited Baby Tips Card -->
+                <div class="card mt-4">
                     <div class="card-header">
                         <h3>Favourited Baby Tips</h3>
                     </div>
@@ -580,25 +625,23 @@
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <a href="#">How to Soothe a Crying Baby</a>
-                                <span class="badge bg-primary">Favourited</span>
+                                <span style="background-color: #258ef7 !important" class="badge bg-primary">Favourited</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <a href="#">Safe Sleep Practices</a>
-                                <span class="badge bg-primary">Favourited</span>
+                                <span style="background-color: #258ef7 !important" class="badge bg-primary">Favourited</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <a href="#">Introducing Solid Foods</a>
-                                <span class="badge bg-primary">Favourited</span>
+                                <span style="background-color: #258ef7 !important" class="badge bg-primary">Favourited</span>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        {{--Main Content End--}}
-        </div>
-
-       {{--Main Content End--}}
+    </div>
+    {{--Main Content End--}}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

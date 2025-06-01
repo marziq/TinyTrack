@@ -629,6 +629,9 @@
                                 <div class="dropdown-content">
                                     <img src="{{ asset('img/motorskills.jpg') }}" alt="Motor Skills" class="progress-image-top">
                                     <span class="not-completed">0/5 completed</span>
+                                    <div class="progress mb-3">
+                                        <div id="physicalProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 0%">0%</div>
+                                    </div>
                                     <div class="milestone-cards">
                                         <div class="milestone-card">
                                             <span>Rolls over from tummy to back</span>
@@ -658,6 +661,9 @@
                                 <div class="dropdown-content">
                                     <img src="{{ asset('img/sensoryskills.png') }}" alt="Sensory Skills" class="progress-image-top">
                                     <span class="not-completed">0/5 completed</span>
+                                    <div class="progress mb-3">
+                                        <div id="physicalProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 0%">0%</div>
+                                    </div>
                                         <div class="milestone-cards">
                                             <div class="milestone-card">
                                                 <span>Responds to sounds by turning head</span>
@@ -694,6 +700,9 @@
                                 <div class="dropdown-content">
                                     <img src="{{ asset('img/problemsolving.jpeg') }}" alt="Problem Solving" class="progress-image-top">
                                     <span class="not-completed">0/5 completed</span>
+                                    <div class="progress mb-3">
+                                        <div id="cognitiveProgressBar" class="progress-bar bg-info" role="progressbar" style="width: 0%">0%</div>
+                                    </div>
                                     <div class="milestone-cards">
                                         <div class="milestone-card">
                                             <span>Looks for hidden objects</span>
@@ -723,6 +732,9 @@
                                 <div class="dropdown-content">
                                     <img src="{{ asset('img/languageskills.jpg') }}" alt="Language Skills" class="progress-image-top">
                                     <span class="not-completed">0/4 completed</span>
+                                    <div class="progress mb-3">
+                                        <div id="cognitiveProgressBar" class="progress-bar bg-info" role="progressbar" style="width: 0%">0%</div>
+                                    </div>
                                     <div class="milestone-cards">
                                         <div class="milestone-card">
                                             <span>Babbles with expression and copies sounds</span>
@@ -755,6 +767,9 @@
                                 <div class="dropdown-content">
                                     <img src="{{ asset('img/interaction.png') }}" alt="Interaction Skills" class="progress-image-top">
                                     <span class="not-completed">0/3 completed</span>
+                                    <div class="progress mb-3">
+                                        <div id="socialProgressBar" class="progress-bar bg-warning" role="progressbar" style="width: 0%">0%</div>
+                                    </div>
                                     <div class="milestone-cards">
                                         <div class="milestone-card">
                                             <span>Waves goodbye or claps hands</span>
@@ -776,6 +791,9 @@
                                 <div class="dropdown-content">
                                     <img src="{{ asset('img/emotional.jpg') }}" alt="Emotional Skills" class="progress-image-top">
                                     <span class="not-completed">0/2 completed</span>
+                                    <div class="progress mb-3">
+                                        <div id="socialProgressBar" class="progress-bar bg-warning" role="progressbar" style="width: 0%">0%</div>
+                                    </div>
                                     <div class="milestone-cards">
                                         <div class="milestone-card">
                                             <span>Shows affection to familiar people</span>

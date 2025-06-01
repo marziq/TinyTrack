@@ -47,6 +47,7 @@
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
                         <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" style="color: black; font-weight: bold; padding: 5px;">support@tinytrack.com</a></small>
+                        <small class="me-3"><i class="fas fa-phone-alt me-2 text-secondary"></i><a href="#" style="color: black; font-weight: bold; padding: 2px;">+123 456 7890</a></small>
                     </div>
                 </div>
             </div>

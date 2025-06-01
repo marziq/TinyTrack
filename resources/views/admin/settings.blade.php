@@ -461,7 +461,7 @@
                                 @else
                                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle mb-3" width="120" alt="Profile">
                                     <h4>Guest</h4>
-                                    <p class="text-secondary mb-1">TinyTrack Admin</p>
+                                    <p class="text-secondary mb-1">Admin</p>
                                     <p class="text-muted">-</p>
                                 @endif
                             </div>

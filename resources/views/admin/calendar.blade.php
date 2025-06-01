@@ -485,6 +485,19 @@
 
                 <div class="card">
                     <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0"> </h5>
+                            <form id="userSelectForm" method="GET" action="">
+                                <select id="userSelect" name="user_id" class="form-select" style="min-width: 180px;" onchange="this.form.submit()">
+                                    <option value="" disabled selected>Select User</option>
+                                    @foreach($users as $user)
+                                        <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
+                                            {{ $user->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </div>
                         <div id="appointmentCalendar"></div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\User;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-         View::composer(
+        View::composer(
             ['dashboard', 'user.mybaby'],
             function ($view) {
                 $user = Auth::user();
@@ -49,7 +49,10 @@ class AppServiceProvider extends ServiceProvider
 
                 // Pass data to the view
                 $view->with('baby', $baby);
-            }
-        );
+            });
+        View::composer('admin.calendar', function ($view) {
+                $users = User::all();
+                $view->with('users', $users);
+            });
     }
 }
