@@ -158,7 +158,12 @@
                 </div>
                 <div class="title">Login as a Admin User</div>
 
-                <form method="POST" action="{{ route('login') }}">
+                @if ($errors->any())
+                    <div style="color: red; margin-bottom: 1rem;">
+                        {{ $errors->first('email') }}
+                    </div>
+                @endif
+                <form method="POST" action="{{ route('admin.login.submit') }}">
                     @csrf
 
                     <div class="form-group">
@@ -185,6 +190,7 @@
                         Terms of use. Privacy policy
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

@@ -488,7 +488,7 @@
                         </li>
                         <li class="list-group-item">
                             <i class="fas fa-baby me-2"></i>
-                            Babies: {{ Auth::user()->babies->count() }}
+                            Babies: {{ Auth::user()->babies->count() }} Babies
                             @php
                                 $maleBabies = Auth::user()->babies->where('gender', 'male')->count();
                                 $femaleBabies = Auth::user()->babies->where('gender', 'female')->count();
@@ -547,6 +547,7 @@
                                         $femaleBabies = Auth::user()->babies->where('gender', 'female')->count();
                                         $otherBabies = Auth::user()->babies->whereNotIn('gender', ['male', 'female'])->count();
                                     @endphp
+                                    Babies
                                     <span class="text-muted" style="font-size: 13px;">
                                         (
                                         @if($maleBabies) {{ $maleBabies }} Male @endif

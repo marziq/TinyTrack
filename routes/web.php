@@ -8,6 +8,8 @@ use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\MilestoneController;
 use App\Http\Controllers\AppointmentController;
 use App\Models\Baby;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 // Public routes
 Route::get('/', function () {
@@ -34,8 +36,19 @@ Route::get('/contact', function () {
 
 // Admin routes
 Route::get('/login-admin', function () {
-    return view('admin/login-admin');
-})->name('adminlogin');
+    return view('admin.login-admin');
+})->name('login-admin');
+Route::post('/login-admin', function (Request $request) {
+    $credentials = $request->only('email', 'password');
+    if (Auth::attempt($credentials)) {
+        if (Auth::user()->email === 'support@tinytrack.com') {
+            return redirect()->route('dashboard-admin');
+        }
+        Auth::logout(); // Log out the non-admin user
+        return back()->withErrors(['email' => 'You are not authorized to access the admin dashboard.']);
+    }
+    return back()->withErrors(['email' => 'Invalid credentials.']);
+})->name('admin.login.submit');
 
 Route::get('/admin/calendar', function () {
     return view('admin/calendar');

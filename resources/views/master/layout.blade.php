@@ -109,7 +109,7 @@
                                     <li><a class="dropdown-item" href="{{ route('login') }}">Login</a></li>
                                     <li><a class="dropdown-item" href="{{ route('register') }}">Register</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-danger" href="{{ route('adminlogin') }}">Login as Admin</a></li>
+                                    <li><a class="dropdown-item text-danger" href="{{ route('admin.login.submit') }}">Login as Admin</a></li>
                                 </ul>
                             </div>
                             @endauth
