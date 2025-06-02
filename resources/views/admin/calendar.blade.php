@@ -447,9 +447,7 @@
                     <button class="profile-btn dropdown-toggle" type="button" id="accountDropdown">
                         <div class="profile-img-container">
                             @if (Auth::check())
-                                <div class="profile-img-container">
-                                    <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
-                                </div>
+                                <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
                             @else
                                 <script>
                                     window.location.href = "{{ route('login') }}";  // Redirect to login page
@@ -461,8 +459,7 @@
 
                     <!-- Dropdown menu -->
                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="accountDropdown">
-                        <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
-                        <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="fas fa-baby me-2"></i> My Baby</a></li>
+                        <li><a class="dropdown-item" href="{{ route('dashboard-admin') }}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <a class="dropdown-item text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

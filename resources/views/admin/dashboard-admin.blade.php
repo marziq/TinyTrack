@@ -573,9 +573,7 @@
                     <button class="profile-btn dropdown-toggle" type="button" id="accountDropdown">
                         <div class="profile-img-container">
                             @if (Auth::check())
-                                <div class="profile-img-container">
-                                    <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
-                                </div>
+                                <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
                             @else
                                 <script>
                                     window.location.href = "{{ route('login') }}";  // Redirect to login page
@@ -587,8 +585,7 @@
 
                     <!-- Dropdown menu -->
                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="accountDropdown">
-                        <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
-                        <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="fas fa-baby me-2"></i> My Baby</a></li>
+                        <li><a class="dropdown-item" href="{{ route('dashboard-admin') }}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <a class="dropdown-item text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -633,12 +630,12 @@
             <!-- Chart Section -->
             <div class="chart-container">
                 <div>
-                    <h3>Babies Added Each Month</h3>
+                    <h3 style="padding-top: 30px !important;">Babies Added Each Month</h3>
                     <canvas id="babiesChart"></canvas>
                 </div>
 
                 <div>
-                    <h3>User Gender Distribution</h3>
+                    <h3 style="padding-top: 30px !important;">User Gender Distribution</h3>
                     <canvas id="genderChart"></canvas>
                 </div>
             </div>
@@ -652,7 +649,7 @@
                     <p>General</p>
                     <div class="progress">
                         <div class="progress-bar-fill server-migration"></div>
-                        <span class="percentage">20%</span>
+                        <span class="percentage" style="color: black;">20%</span>
                     </div>
                 </div>
 
@@ -661,7 +658,7 @@
                     <p>Checkup</p>
                     <div class="progress">
                         <div class="progress-bar-fill sales-tracking"></div>
-                        <span class="percentage">40%</span>
+                        <span class="percentage" style="color: black;">40%</span>
                     </div>
                 </div>
 
@@ -670,7 +667,7 @@
                     <p>Vaccination</p>
                     <div class="progress">
                         <div class="progress-bar-fill customer-database"></div>
-                        <span class="percentage">60%</span>
+                        <span class="percentage" style="color: black;">60%</span>
                     </div>
                 </div>
 
@@ -679,7 +676,7 @@
                     <p>Others</p>
                     <div class="progress">
                         <div class="progress-bar-fill" style="width: 80%; background-color: #2ecc71;"></div>
-                        <span class="percentage">80%</span>
+                        <span class="percentage" style="color: black;">80%</span>
                     </div>
                 </div>
             </div>

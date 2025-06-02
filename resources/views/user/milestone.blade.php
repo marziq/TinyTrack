@@ -630,7 +630,7 @@
                                     <img src="{{ asset('img/motorskills.jpg') }}" alt="Motor Skills" class="progress-image-top">
                                     <span class="not-completed">0/5 completed</span>
                                     <div class="progress mb-3">
-                                        <div id="physicalProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 0%">0%</div>
+                                        <div id="physicalProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 40%">40%</div>
                                     </div>
                                     <div class="milestone-cards">
                                         <div class="milestone-card">
@@ -662,7 +662,7 @@
                                     <img src="{{ asset('img/sensoryskills.png') }}" alt="Sensory Skills" class="progress-image-top">
                                     <span class="not-completed">0/5 completed</span>
                                     <div class="progress mb-3">
-                                        <div id="physicalProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 0%">0%</div>
+                                        <div id="physicalProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 50%">50%</div>
                                     </div>
                                         <div class="milestone-cards">
                                             <div class="milestone-card">
@@ -701,7 +701,7 @@
                                     <img src="{{ asset('img/problemsolving.jpeg') }}" alt="Problem Solving" class="progress-image-top">
                                     <span class="not-completed">0/5 completed</span>
                                     <div class="progress mb-3">
-                                        <div id="cognitiveProgressBar" class="progress-bar bg-info" role="progressbar" style="width: 0%">0%</div>
+                                        <div id="cognitiveProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 60%">60%</div>
                                     </div>
                                     <div class="milestone-cards">
                                         <div class="milestone-card">
@@ -733,7 +733,7 @@
                                     <img src="{{ asset('img/languageskills.jpg') }}" alt="Language Skills" class="progress-image-top">
                                     <span class="not-completed">0/4 completed</span>
                                     <div class="progress mb-3">
-                                        <div id="cognitiveProgressBar" class="progress-bar bg-info" role="progressbar" style="width: 0%">0%</div>
+                                        <div id="cognitiveProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 35%">35%</div>
                                     </div>
                                     <div class="milestone-cards">
                                         <div class="milestone-card">
@@ -768,7 +768,7 @@
                                     <img src="{{ asset('img/interaction.png') }}" alt="Interaction Skills" class="progress-image-top">
                                     <span class="not-completed">0/3 completed</span>
                                     <div class="progress mb-3">
-                                        <div id="socialProgressBar" class="progress-bar bg-warning" role="progressbar" style="width: 0%">0%</div>
+                                        <div id="socialProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 10%">10%</div>
                                     </div>
                                     <div class="milestone-cards">
                                         <div class="milestone-card">
@@ -792,7 +792,7 @@
                                     <img src="{{ asset('img/emotional.jpg') }}" alt="Emotional Skills" class="progress-image-top">
                                     <span class="not-completed">0/2 completed</span>
                                     <div class="progress mb-3">
-                                        <div id="socialProgressBar" class="progress-bar bg-warning" role="progressbar" style="width: 0%">0%</div>
+                                        <div id="socialProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 20%">20%</div>
                                     </div>
                                     <div class="milestone-cards">
                                         <div class="milestone-card">

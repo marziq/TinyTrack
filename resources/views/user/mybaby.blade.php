@@ -804,7 +804,7 @@
                             <i class="fas fa-check"></i>
                         </div>
                         <div class="milestone-text">
-                            Rolled over
+                            Recognized familiar voice
                         </div>
                         <div class="milestone-date">
                             June 2, 2023
@@ -826,10 +826,10 @@
                             <i class="fas fa-check"></i>
                         </div>
                         <div class="milestone-text">
-                            First solid food
+                            Rolled over tummy
                         </div>
                         <div class="milestone-date">
-                            June 20, 2023
+                            June 25, 2023
                         </div>
                     </div>
                     <div class="milestone-item">
@@ -837,10 +837,10 @@
                             <i class="fas fa-check"></i>
                         </div>
                         <div class="milestone-text">
-                            First solid food
+                            Sits without support
                         </div>
                         <div class="milestone-date">
-                            June 20, 2023
+                            June 22, 2023
                         </div>
                     </div>
                     <div class="milestone-item">
@@ -848,10 +848,10 @@
                             <i class="fas fa-check"></i>
                         </div>
                         <div class="milestone-text">
-                            First solid food
+                            Stands holding on
                         </div>
                         <div class="milestone-date">
-                            June 20, 2023
+                            June 28, 2023
                         </div>
                     </div>
                 </div>
@@ -869,19 +869,19 @@
                         <div class="vaccine-days">in 33 days</div>
                     </div>
                     <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
-                        <div class="vaccine-name">DTaP (2nd dose)</div>
-                        <div class="vaccine-date">August 5, 2023</div>
-                        <div class="vaccine-days">in 33 days</div>
+                        <div class="vaccine-name">MMR (1st dose)</div>
+                        <div class="vaccine-date">September 5, 2023</div>
+                        <div class="vaccine-days">in 63 days</div>
                     </div>
                     <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
-                        <div class="vaccine-name">DTaP (2nd dose)</div>
-                        <div class="vaccine-date">August 5, 2023</div>
-                        <div class="vaccine-days">in 33 days</div>
+                        <div class="vaccine-name">Pneumokokal (1st dose)</div>
+                        <div class="vaccine-date">October 25, 2023</div>
+                        <div class="vaccine-days">in 93 days</div>
                     </div>
                     <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
-                        <div class="vaccine-name">DTaP (2nd dose)</div>
-                        <div class="vaccine-date">August 5, 2023</div>
-                        <div class="vaccine-days">in 33 days</div>
+                        <div class="vaccine-name">Pneumokokal (2nd dose)</div>
+                        <div class="vaccine-date">November 15, 2023</div>
+                        <div class="vaccine-days">in 123 days</div>
                     </div>
                 </div>
 

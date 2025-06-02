@@ -496,15 +496,6 @@
                         <input class="form-check-input" type="checkbox" id="darkModeSwitch">
                         <label class="form-check-label" for="darkModeSwitch">Enable Dark Mode</label>
                     </div>
-                    <!-- Language Preference -->
-                    <div class="mb-3">
-                        <label for="languageSelect" class="form-label">Language</label>
-                        <select class="form-select" id="languageSelect" name="language">
-                            <option value="en" selected>English</option>
-                            <option value="ms">Malay</option>
-                            <option value="zh">Chinese</option>
-                        </select>
-                    </div>
                     <!-- Notification Preferences -->
                     <div class="mb-3">
                         <label class="form-label">Notification Preferences</label>
