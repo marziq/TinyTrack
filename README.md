@@ -1,4 +1,4 @@
-<p align="center"><a href="" target="_blank"><img src="public/img/Untitled design.jpg" width="400" alt="TinyTrack Logo"></a></p>
+<p align="center"><a href="" target="_blank"><img src="public/img/Untitled design.png" width="400" alt="TinyTrack Logo"></a></p>
 
 ## About TinyTrack
 
@@ -14,7 +14,7 @@ We would like to extend our thanks to the following developers for helping TinyT
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Ammar Haziq via [ammarhaziqzainal@gmail.com](mailto:ammarhaziqzainal@gmail.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within  TinyTrack, please send an e-mail to Ammar Haziq via [ammarhaziqzainal@gmail.com](mailto:ammarhaziqzainal@gmail.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
