@@ -7,7 +7,7 @@
                     <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
                         <h4 class="text-secondary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Contact Us</h4>
                         <h1 class="display-3">Contact For Any Query</h1>
-                        <p class="mb-5" style="color: black;">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
+                        <p class="mb-5" style="color: black;">Have a question or need assistance? Fill out the form below, and our team will get back to you as soon as possible. We're here to help!</p>
                     </div>
                     <div class="row g-5 mb-5">
                         <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
