@@ -466,7 +466,9 @@
             <div class="col-md-4">
                 <div class="card text-center">
                     <div class="card-body">
-                        <img src="{{ Auth::user()->profile_photo_url }}" class="rounded-circle mb-3" width="120" alt="Profile">
+                        <div class="profile-img-container mb-3" style="width:170px; height:170px; margin:0 auto;">
+                            <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img" style="width:100%; height:100%;">
+                        </div>
                         <h4>{{ Auth::user()->name }}</h4>
                         <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important">User ID: TT{{ Auth::user()->id }}</p>
                     </div>

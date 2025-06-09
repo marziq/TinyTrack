@@ -451,7 +451,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 @if (Auth::check())
-                                    <img src="{{ Auth::user()->profile_photo_url }}" class="rounded-circle mb-3" width="120" alt="Profile">
+                                    <img src="{{ Auth::user()->profile_photo_url }}" class="rounded-circle mb-3" width="120" alt="Profile" style="border: 3px solid #3498db; !important">
                                     <h4>{{ Auth::user()->name }}</h4>
                                     <p class="text-secondary mb-1" style="color: #3498db !important">Admin</p>
                                     <p class="text-muted" style="color:#3498db !important; font-size: 15px;">User ID: TT{{ Auth::user()->id }}</p>
@@ -482,7 +482,7 @@
                             <div class="card-body">
                                 <div class="row mb-3">
                                     <div class="col-sm-3"><strong>Full Name</strong></div>
-                                    <div class="col-sm-9 text-secondary">Ammar Haziq</div>
+                                    <div class="col-sm-9 text-secondary">{{Auth::user()->name}}</div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-sm-3"><strong>Email</strong></div>
