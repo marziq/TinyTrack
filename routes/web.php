@@ -101,6 +101,10 @@ Route::middleware([
         return view('user/chatbot');
     })->name('chatbot');
 
+    Route::get('/test', function () {
+        return view('user/test');
+    })->name('test');
+
     // Baby resource routes
     Route::get('/babies/{id}', [BabyController::class, 'getBaby']); // Route to get baby details
     Route::resource('babies', BabyController::class);
