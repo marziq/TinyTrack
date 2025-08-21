@@ -10,6 +10,7 @@
 
 - Implemented Notifications Bell functionality for user-side page
 - Added Chatbot Page (Pseudo Design)
+- Added Test Chatbot (Model Llama 3.3 70B Instruct (free))
 
 
 ## TinyTrack Developers
