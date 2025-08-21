@@ -629,6 +629,7 @@
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
         <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
         <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
+        <a href="{{route('chatbot')}}"><i class="fas fa-robot"></i> Chat With Sage</a>
         <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
     </div>
 

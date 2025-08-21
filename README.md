@@ -7,7 +7,10 @@ The TinyTrack: Digital Baby Wellness and Growth Platform is designed to address 
 ## Development Updates
 
 ### Thursday 21 August 2025
+
 - Implemented Notifications Bell functionality for user-side page
+- Added Chatbot Page (Pseudo Design)
+
 
 ## TinyTrack Developers
 

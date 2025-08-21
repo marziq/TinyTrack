@@ -152,39 +152,7 @@
             font-size: 10px;
             font-weight: bold;
         }
-        /* Notification Popup Styles */
-        .notification-popup {
-            position: absolute;
-            top: 35px;
-            right: 0;
-            min-width: 260px;
-            background: #fff;
-            border: 1px solid #e3f2fd;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            z-index: 1001;
-            padding: 10px 0;
-        }
-        .notification-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .notification-item {
-            padding: 10px 16px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .notification-item:last-child {
-            border-bottom: none;
-        }
-        .no-notification {
-            padding: 16px;
-            text-align: center;
-            color: #888;
-            font-size: 14px;
-        }
+
         /* Profile Dropdown */
         .dropdown {
             position: relative;
@@ -330,25 +298,6 @@
             color: #666;
         }
 
-        .profile-photo-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .profile-img-preview {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #e0e0e0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        #profile_photo {
-            max-width: 300px;
-        }
-
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .sidebar {
@@ -383,6 +332,7 @@
                 margin-left: auto;
             }
         }
+        /* Notification Popup Styles */
         .notification-popup {
             position: absolute;
             top: 35px;
@@ -404,6 +354,7 @@
             padding: 10px 16px;
             border-bottom: 1px solid #f0f0f0;
             font-size: 14px;
+            cursor: pointer;
         }
         .notification-item:last-child {
             border-bottom: none;
@@ -414,11 +365,132 @@
             color: #888;
             font-size: 14px;
         }
+
         .sidebar a.active {
             background-color: #1976d2;
             color: #fff !important;
             font-weight: bold;
         }
+
+        /*Chatbot*/
+        .chat-container {
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            height: 80vh;         /* full height */
+            max-width: 3200px;      /* card width */
+            width: 100%;
+            margin: 0 auto;        /* center horizontally */
+            border-radius: 12px;   /* rounded corners */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* subtle shadow */
+        }
+
+        .chat-header {
+            background: #1976d2;
+            color: #fff;
+            padding: 15px;
+            font-weight: bold;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .chat-header h4 {
+            display: flex;
+            align-items: center;   /* vertical alignment */
+            gap: 10px;             /* spacing between img and text */
+            margin: 0;             /* remove default h4 margin */
+        }
+
+        .chat-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+        .message {
+            display: flex;
+            align-items: flex-start; /* FIX: avatar aligns with top of bubble */
+            max-width: 75%;
+        }
+
+        /* Bot message (with avatar) */
+        .bot-message {
+            gap: 10px;
+            align-self: flex-start;
+        }
+
+        /* Avatar alignment fix */
+        .bot-message .avatar {
+            flex-shrink: 0; /* prevents squishing */
+            width: 32px;
+            height: 32px;
+            background: #1976d2;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            margin-top: 2px; /* small tweak for perfect vertical alignment */
+        }
+
+        .message-content {
+            background: #fff;
+            padding: 12px 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .bot-message .message-content {
+            background: #e3f2fd;
+            color: #333;
+            border-top-left-radius: 0;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            justify-content: flex-end;
+        }
+
+        .user-message .message-content {
+            background: #1976d2;
+            color: #fff;
+            border-top-right-radius: 0;
+        }
+
+        .chat-footer {
+            display: flex;
+            padding: 12px;
+            gap: 10px;
+            border-top: 1px solid #eee;
+            background: #fff;
+        }
+
+        .chat-footer input {
+            flex: 1;
+            border-radius: 20px;
+            padding: 10px 15px;
+        }
+
+        .chat-footer button {
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
     </style>
 </head>
 <body>
@@ -433,8 +505,8 @@
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
         <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
         <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
-        <a href="{{route('chatbot')}}"><i class="fas fa-robot"></i> Chat With Sage</a>
-        <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
+        <a href="{{route('chatbot')}}" class="active"><i class="fas fa-robot"></i> Chat With Sage</a>
+        <a href="{{route('settings')}}" ><i class="fas fa-cog"></i> Settings</a>
     </div>
 
 
@@ -443,7 +515,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1 style="font-weight: bold">My Account</h1>
+            <h1 style="font-weight: bold">What can Sage help you?</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                  <div class="notification-icon" id="notificationBell" style="position: relative;">
@@ -465,6 +537,7 @@
                         </ul>
                     </div>
                 </div>
+
                 <!-- Profile Dropdown -->
                 <div class="dropdown">
                     <button class="profile-btn dropdown-toggle" type="button" id="accountDropdown">
@@ -493,193 +566,51 @@
         </div>
 
        {{--Main Content--}}
-       <div class="container mt-5">
-        <div class="row">
-            <!-- Left Column: Profile Card -->
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <div class="profile-img-container mb-3" style="width:170px; height:170px; margin:0 auto;">
-                            <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img" style="width:100%; height:100%;">
+       <div class="container">
+            <div class="row">
+                <!-- Basic Settings Card -->
+                <div class="col-md-6 mb-4" style="flex: 1 0 auto; !important;">
+                    <div class="chat-container">
+                        <div class="chat-header">
+                            <h4>
+                                <img src="{{ asset('img/sage.ico') }}" alt="Sage Avatar" class="chat-avatar">
+                                Sage
+                            </h4>
                         </div>
-                        <h4>{{ Auth::user()->name }}</h4>
-                        <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important">User ID: TT{{ Auth::user()->id }}</p>
-                    </div>
-                    <ul class="list-group list-group-flush text-start">
-                        <li class="list-group-item">
-                            <i class="fas fa-envelope me-2"></i> {{ Auth::user()->email }}
-                        </li>
-                        <li class="list-group-item">
-                            <i class="fas fa-venus-mars me-2"></i>
-                            {{ ucfirst(strtolower(Auth::user()->gender)) }}
-                        </li>
-                        <li class="list-group-item">
-                            <i class="fas fa-phone me-2"></i>
-                            @php
-                                $number = Auth::user()->mobile_number;
-                                $formattedNumber = (strlen($number) > 3) ? substr($number, 0, 3) . '-' . substr($number, 3) : $number;
-                            @endphp
-                            {{ $formattedNumber }}
-                        </li>
-                        <li class="list-group-item">
-                            <i class="fas fa-baby me-2"></i>
-                            Babies: {{ Auth::user()->babies->count() }} Babies
-                            @php
-                                $maleBabies = Auth::user()->babies->where('gender', 'male')->count();
-                                $femaleBabies = Auth::user()->babies->where('gender', 'female')->count();
-                                $otherBabies = Auth::user()->babies->whereNotIn('gender', ['male', 'female'])->count();
-                            @endphp
-                            <span class="text-muted" style="font-size: 13px;">
-                                (
-                                @if($maleBabies) {{ $maleBabies }} Male @endif
-                                @if($maleBabies && $femaleBabies) , @endif
-                                @if($femaleBabies) {{ $femaleBabies }} Female @endif
-                                @if(($maleBabies || $femaleBabies) && $otherBabies) , @endif
-                                @if($otherBabies) {{ $otherBabies }} Other @endif
-                                )
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Right Column: User Info and Favourited Tips -->
-            <div class="col-md-8">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <h3>Profile Information</h3>
-                    </div>
-                    <div class="card-body">
-                        <!-- View Mode -->
-                        <div id="viewMode">
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Name</strong></div>
-                                <div class="col-sm-8 text-secondary">{{ Auth::user()->name }}</div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Email Address</strong></div>
-                                <div class="col-sm-8 text-secondary">{{ Auth::user()->email }}</div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Gender</strong></div>
-                                <div class="col-sm-8 text-secondary">{{ ucfirst(strtolower(Auth::user()->gender)) }}</div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Mobile Number</strong></div>
-                                <div class="col-sm-8 text-secondary">
-                                    @php
-                                        $number = Auth::user()->mobile_number;
-                                        $formattedNumber = (strlen($number) > 3) ? substr($number, 0, 3) . '-' . substr($number, 3) : $number;
-                                    @endphp
-                                    {{ $formattedNumber }}
+                        <div class="chat-body" id="chatBody">
+                            <!-- Example Messages -->
+                            <div class="message bot-message">
+                                <div class="avatar">
+                                    <img src="{{ asset('img/sage.ico') }}" alt="Sage Avatar" style="width: 32px; height: 32px; border-radius: 50%;">
+                                </div>
+                                <div class="message-content">
+                                    Hello! I'm Sage, your baby wellness assistant 👶💙
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Total Babies</strong></div>
-                                <div class="col-sm-8 text-secondary">{{ Auth::user()->babies->count() }}
-                                    @php
-                                        $maleBabies = Auth::user()->babies->where('gender', 'male')->count();
-                                        $femaleBabies = Auth::user()->babies->where('gender', 'female')->count();
-                                        $otherBabies = Auth::user()->babies->whereNotIn('gender', ['male', 'female'])->count();
-                                    @endphp
-                                    Babies
-                                    <span class="text-muted" style="font-size: 13px;">
-                                        (
-                                        @if($maleBabies) {{ $maleBabies }} Male @endif
-                                        @if($maleBabies && $femaleBabies) , @endif
-                                        @if($femaleBabies) {{ $femaleBabies }} Female @endif
-                                        @if(($maleBabies || $femaleBabies) && $otherBabies) , @endif
-                                        @if($otherBabies) {{ $otherBabies }} Other @endif
-                                        )
-                                    </span>
+                            <div class="message user-message">
+                                <div class="message-content">
+                                    Hi Sage! Can you give me some tips about baby sleep?
                                 </div>
                             </div>
-                            <div class="text-end">
-                                <button style="background-color:#258ef7 !important" type="button" class="btn btn-primary" onclick="toggleEditMode()">Update</button>
+                            <div class="message bot-message">
+                                <div class="avatar">
+                                    <img src="{{ asset('img/sage.ico') }}" alt="Sage Avatar" style="width: 32px; height: 32px; border-radius: 50%;">
+                                </div>
+                                <div class="message-content">
+                                    Sure! Babies need a consistent bedtime routine. Keep the room calm, dim the lights, and avoid screen time before sleep. 🌙✨
+                                </div>
                             </div>
                         </div>
-                        <!-- Edit Mode -->
-                        <div id="editMode" style="display: none;">
-                            <form method="POST" action="{{ route('user-profile-information.update') }}" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-                                <div class="row mb-3">
-                                    <label class="col-sm-4 col-form-label">Profile Photo</label>
-                                    <div class="col-sm-8 d-flex align-items-center">
-                                        <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile Photo" class="rounded-circle me-3" width="60">
-                                        <input type="file" name="profile_photo" id="profile_photo" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="name" class="col-sm-4 col-form-label">Name</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="name" id="name" class="form-control" value="{{ old('name', Auth::user()->name) }}" required>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="email" class="col-sm-4 col-form-label">Email Address</label>
-                                    <div class="col-sm-8">
-                                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email', Auth::user()->email) }}" required>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="gender" class="col-sm-4 col-form-label">Gender</label>
-                                    <div class="col-sm-8">
-                                        <select name="gender" id="gender" class="form-control" required>
-                                            <option value="Male" {{ Auth::user()->gender == 'Male' ? 'selected' : '' }}>Male</option>
-                                            <option value="Female" {{ Auth::user()->gender == 'Female' ? 'selected' : '' }}>Female</option>
-                                            <option value="Other" {{ Auth::user()->gender == 'Other' ? 'selected' : '' }}>Other</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="mobile_number" class="col-sm-4 col-form-label">Mobile Number</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="mobile_number" id="mobile_number" class="form-control" value="{{ old('mobile_number', Auth::user()->mobile_number) }}" required>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-4 col-form-label">Total Babies</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" value="{{ Auth::user()->babies->count() }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-success">Save Changes</button>
-                                    <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
-                                </div>
-                            </form>
+                        <div class="chat-footer">
+                            <input type="text" class="form-control" placeholder="Type your message...">
+                            <button class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
                         </div>
-                    </div>
-                </div>
-                <!-- Favourited Baby Tips Card -->
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h3>Favourited Baby Tips</h3>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <a href="#">How to Soothe a Crying Baby</a>
-                                <span style="background-color: #258ef7 !important" class="badge bg-primary">Favourited</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <a href="#">Safe Sleep Practices</a>
-                                <span style="background-color: #258ef7 !important" class="badge bg-primary">Favourited</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <a href="#">Introducing Solid Foods</a>
-                                <span style="background-color: #258ef7 !important" class="badge bg-primary">Favourited</span>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
         </div>
+       {{--Main Content End--}}
     </div>
-    {{--Main Content End--}}
-    </div>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -736,19 +667,6 @@
                 });
             }
         });
-
-        function toggleEditMode() {
-            const viewMode = document.getElementById('viewMode');
-            const editMode = document.getElementById('editMode');
-
-            if (viewMode.style.display === 'none') {
-                viewMode.style.display = 'block';
-                editMode.style.display = 'none';
-            } else {
-                viewMode.style.display = 'none';
-                editMode.style.display = 'block';
-            }
-        }
         document.addEventListener('DOMContentLoaded', function() {
             const bell = document.getElementById('notificationBell');
             const popup = document.getElementById('notificationPopup');
@@ -761,6 +679,7 @@
             document.addEventListener('click', function() {
                 popup.style.display = 'none';
             });
+
             // Mark notification as read and show full message
             document.querySelectorAll('.notification-item').forEach(item => {
                 item.addEventListener('click', function(e) {
@@ -799,8 +718,8 @@
                     });
                 });
             });
-        });
-        // Show notification modal
+    });
+    // Show notification modal
         function showNotificationModal(title, message, date) {
             let modalHtml = `
             <div class="modal fade" id="notifModal" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
@@ -825,5 +744,8 @@
             notifModal.show();
         }
     </script>
+
+
 </body>
 </html>
+
