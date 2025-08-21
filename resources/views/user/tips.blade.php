@@ -153,7 +153,39 @@
             font-size: 10px;
             font-weight: bold;
         }
-
+        /* Notification Popup Styles */
+        .notification-popup {
+            position: absolute;
+            top: 35px;
+            right: 0;
+            min-width: 260px;
+            background: #fff;
+            border: 1px solid #e3f2fd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 1001;
+            padding: 10px 0;
+        }
+        .notification-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .notification-item {
+            padding: 10px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        .no-notification {
+            padding: 16px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
         /* Profile Dropdown */
         .dropdown {
             position: relative;
@@ -560,21 +592,22 @@
             <h1 style="font-weight: bold">Baby Tips</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
-                <div class="notification-icon" id="notificationBell" style="position: relative;">
+                 <div class="notification-icon" id="notificationBell" style="position: relative;">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge">2</span>
+                    @if($unreadCount > 0)
+                        <span class="notification-badge">{{ $unreadCount }}</span>
+                    @endif
                     <div id="notificationPopup" class="notification-popup" style="display: none;">
                         <ul class="notification-list">
-                            <li class="notification-item">
-                                <strong>Welcome to TinyTrack!</strong><br>
-                                <span>Your account has been created successfully.</span>
-                                <div style="font-size: 11px; color: #888;">Just now</div>
-                            </li>
-                            <li class="notification-item">
-                                <strong>System Update</strong><br>
-                                <span>New features have been added to your dashboard.</span>
-                                <div style="font-size: 11px; color: #888;">2 hours ago</div>
-                            </li>
+                            @forelse($userNotifications as $notif)
+                                <li class="notification-item {{ $notif->status == 'unread' ? 'fw-bold' : '' }}" data-id="{{ $notif->notification_id }}">
+                                    <strong>{{ $notif->title }}</strong><br>
+                                    <span>{{ $notif->message }}</span>
+                                    <div style="font-size: 11px; color: #888;">{{ $notif->dateSent }}</div>
+                                </li>
+                            @empty
+                                <li class="no-notification">No notifications.</li>
+                            @endforelse
                         </ul>
                     </div>
                 </div>
@@ -1169,18 +1202,81 @@
             }
         }
         document.addEventListener('DOMContentLoaded', function() {
-    const bell = document.getElementById('notificationBell');
-    const popup = document.getElementById('notificationPopup');
+            const bell = document.getElementById('notificationBell');
+            const popup = document.getElementById('notificationPopup');
 
-    bell.addEventListener('click', function(e) {
-        e.stopPropagation();
-        popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-    });
+            bell.addEventListener('click', function(e) {
+                e.stopPropagation();
+                popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+            });
 
-    document.addEventListener('click', function() {
-        popup.style.display = 'none';
+            document.addEventListener('click', function() {
+                popup.style.display = 'none';
+            });
+
+            // Mark notification as read and show full message
+            document.querySelectorAll('.notification-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const notifId = this.getAttribute('data-id');
+                    fetch(`/notifications/${notifId}/mark-read`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    }).then(() => {
+                        // Remove the notification from the popup view
+                        this.remove();
+
+                        // Show full notification in a modal
+                        showNotificationModal(
+                            this.querySelector('strong').innerText,
+                            this.querySelector('span').innerText,
+                            this.querySelector('div').innerText
+                        );
+
+                        // Optionally update badge count
+                        let badge = document.querySelector('.notification-badge');
+                        if (badge) {
+                            let count = parseInt(badge.innerText) - 1;
+                            badge.innerText = count > 0 ? count : '';
+                            if (count <= 0) badge.style.display = 'none';
+                        }
+
+                        // If no notifications left, show "No notifications."
+                        if (document.querySelectorAll('.notification-item').length === 0) {
+                            const list = document.querySelector('.notification-list');
+                            list.innerHTML = '<li class="no-notification">No notifications.</li>';
+                        }
+                    });
+                });
+            });
     });
-});
+    // Show notification modal
+        function showNotificationModal(title, message, date) {
+            let modalHtml = `
+            <div class="modal fade" id="notifModal" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="notifModalLabel">${title}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>${message}</p>
+                    <div style="font-size: 12px; color: #888;">${date}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            `;
+            // Remove existing modal if any
+            document.getElementById('notifModal')?.remove();
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            let notifModal = new bootstrap.Modal(document.getElementById('notifModal'));
+            notifModal.show();
+        }
     </script>
 </body>
 </html>

@@ -153,6 +153,7 @@
             font-weight: bold;
         }
 
+        /* Notification Popup Styles */
         .notification-popup {
             position: absolute;
             top: 35px;
@@ -165,23 +166,20 @@
             z-index: 1001;
             padding: 10px 0;
         }
-
         .notification-list {
             list-style: none;
             margin: 0;
             padding: 0;
         }
-
         .notification-item {
             padding: 10px 16px;
             border-bottom: 1px solid #f0f0f0;
             font-size: 14px;
+            cursor: pointer;
         }
-
         .notification-item:last-child {
             border-bottom: none;
         }
-
         .no-notification {
             padding: 16px;
             text-align: center;
@@ -641,21 +639,23 @@
             </button>
             <h1 style="font-weight: bold">My Baby</h1>
             <div class="topbar-right">
-                <div class="notification-icon" id="notificationBell" style="position: relative;">
+                <!-- Notification Icon -->
+                 <div class="notification-icon" id="notificationBell" style="position: relative;">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge">2</span>
+                    @if($unreadCount > 0)
+                        <span class="notification-badge">{{ $unreadCount }}</span>
+                    @endif
                     <div id="notificationPopup" class="notification-popup" style="display: none;">
                         <ul class="notification-list">
-                            <li class="notification-item">
-                                <strong>Welcome to TinyTrack!</strong><br>
-                                <span>Your account has been created successfully.</span>
-                                <div style="font-size: 11px; color: #888;">Just now</div>
-                            </li>
-                            <li class="notification-item">
-                                <strong>System Update</strong><br>
-                                <span>New features have been added to your dashboard.</span>
-                                <div style="font-size: 11px; color: #888;">2 hours ago</div>
-                            </li>
+                            @forelse($userNotifications as $notif)
+                                <li class="notification-item {{ $notif->status == 'unread' ? 'fw-bold' : '' }}" data-id="{{ $notif->notification_id }}">
+                                    <strong>{{ $notif->title }}</strong><br>
+                                    <span>{{ $notif->message }}</span>
+                                    <div style="font-size: 11px; color: #888;">{{ $notif->dateSent }}</div>
+                                </li>
+                            @empty
+                                <li class="no-notification">No notifications.</li>
+                            @endforelse
                         </ul>
                     </div>
                 </div>
@@ -804,7 +804,7 @@
                             <i class="fas fa-check"></i>
                         </div>
                         <div class="milestone-text">
-                            Rolled over
+                            Recognized familiar voice
                         </div>
                         <div class="milestone-date">
                             June 2, 2023
@@ -826,10 +826,10 @@
                             <i class="fas fa-check"></i>
                         </div>
                         <div class="milestone-text">
-                            First solid food
+                            Rolled over tummy
                         </div>
                         <div class="milestone-date">
-                            June 20, 2023
+                            June 25, 2023
                         </div>
                     </div>
                     <div class="milestone-item">
@@ -837,10 +837,10 @@
                             <i class="fas fa-check"></i>
                         </div>
                         <div class="milestone-text">
-                            First solid food
+                            Sits without support
                         </div>
                         <div class="milestone-date">
-                            June 20, 2023
+                            June 22, 2023
                         </div>
                     </div>
                     <div class="milestone-item">
@@ -848,10 +848,10 @@
                             <i class="fas fa-check"></i>
                         </div>
                         <div class="milestone-text">
-                            First solid food
+                            Stands holding on
                         </div>
                         <div class="milestone-date">
-                            June 20, 2023
+                            June 28, 2023
                         </div>
                     </div>
                 </div>
@@ -869,19 +869,19 @@
                         <div class="vaccine-days">in 33 days</div>
                     </div>
                     <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
-                        <div class="vaccine-name">DTaP (2nd dose)</div>
-                        <div class="vaccine-date">August 5, 2023</div>
-                        <div class="vaccine-days">in 33 days</div>
+                        <div class="vaccine-name">MMR (1st dose)</div>
+                        <div class="vaccine-date">September 5, 2023</div>
+                        <div class="vaccine-days">in 63 days</div>
                     </div>
                     <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
-                        <div class="vaccine-name">DTaP (2nd dose)</div>
-                        <div class="vaccine-date">August 5, 2023</div>
-                        <div class="vaccine-days">in 33 days</div>
+                        <div class="vaccine-name">Pneumokokal (1st dose)</div>
+                        <div class="vaccine-date">October 25, 2023</div>
+                        <div class="vaccine-days">in 93 days</div>
                     </div>
                     <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
-                        <div class="vaccine-name">DTaP (2nd dose)</div>
-                        <div class="vaccine-date">August 5, 2023</div>
-                        <div class="vaccine-days">in 33 days</div>
+                        <div class="vaccine-name">Pneumokokal (2nd dose)</div>
+                        <div class="vaccine-date">November 15, 2023</div>
+                        <div class="vaccine-days">in 123 days</div>
                     </div>
                 </div>
 
@@ -1340,7 +1340,70 @@
             document.addEventListener('click', function() {
                 popup.style.display = 'none';
             });
+
+            // Mark notification as read and show full message
+            document.querySelectorAll('.notification-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const notifId = this.getAttribute('data-id');
+                    fetch(`/notifications/${notifId}/mark-read`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    }).then(() => {
+                        // Remove the notification from the popup view
+                        this.remove();
+
+                        // Show full notification in a modal
+                        showNotificationModal(
+                            this.querySelector('strong').innerText,
+                            this.querySelector('span').innerText,
+                            this.querySelector('div').innerText
+                        );
+
+                        // Optionally update badge count
+                        let badge = document.querySelector('.notification-badge');
+                        if (badge) {
+                            let count = parseInt(badge.innerText) - 1;
+                            badge.innerText = count > 0 ? count : '';
+                            if (count <= 0) badge.style.display = 'none';
+                        }
+
+                        // If no notifications left, show "No notifications."
+                        if (document.querySelectorAll('.notification-item').length === 0) {
+                            const list = document.querySelector('.notification-list');
+                            list.innerHTML = '<li class="no-notification">No notifications.</li>';
+                        }
+                    });
+                });
+            });
         });
+        // Show notification modal
+        function showNotificationModal(title, message, date) {
+            let modalHtml = `
+            <div class="modal fade" id="notifModal" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="notifModalLabel">${title}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>${message}</p>
+                    <div style="font-size: 12px; color: #888;">${date}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            `;
+            // Remove existing modal if any
+            document.getElementById('notifModal')?.remove();
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            let notifModal = new bootstrap.Modal(document.getElementById('notifModal'));
+            notifModal.show();
+        }
     </script>
 
     <style>

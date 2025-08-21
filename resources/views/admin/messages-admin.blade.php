@@ -320,6 +320,7 @@
                 min-width: 180px;
             }
         }
+
         .notification-popup {
             position: absolute;
             top: 35px;
