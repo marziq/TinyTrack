@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baby Dashboard</title>
+    <title>Baby Growth</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -735,9 +735,9 @@
 
                         <!-- Weight Slider -->
                         <div class="input-group slider-group weight-slider">
-                            <label for="weight-input">Weight</label>
-                            <input type="range" id="weight-input" name="weight" min="1000" max="6000" value="2010" step="10">
-                            <span class="slider-value" id="weight-value">2010 g</span>
+                            <label for="weight-input">Weight(g)</label>
+                            <input type="range" id="weight-input" name="weight" min="1000" max="6000" value="2010" step="1">
+                            <input type="number" id="weight-value" min="1000" max="6000" step="1" value="2010" class="form-control mt-2" style="width: 100px; text-align: center;">
                         </div>
 
                         <!-- Baby Icon Silhouette -->
@@ -747,9 +747,9 @@
 
                         <!-- Height Slider -->
                         <div class="input-group slider-group height-slider">
-                            <label for="height-input">Height</label>
+                            <label for="height-input">Height(cm)</label>
                             <input type="range" id="height-input" name="height" min="40" max="70" value="50" step="1">
-                            <span class="slider-value" id="height-value">50 cm</span>
+                            <input type="number" id="height-value" min="40" max="70" step="1" value="50" class="form-control mt-2" style="width: 100px; text-align: center;">
                         </div>
 
                         <div class="input-row">
@@ -893,20 +893,30 @@
             }
         });
         document.addEventListener('DOMContentLoaded', function () {
-            // Weight Slider
+            // Weight sync
             const weightSlider = document.getElementById('weight-input');
             const weightValue = document.getElementById('weight-value');
 
             weightSlider.addEventListener('input', function () {
-                weightValue.textContent = `${weightSlider.value} g`; // Update the weight value dynamically
+                weightValue.value = weightSlider.value;
             });
 
-            // Height Slider
+            weightValue.addEventListener('input', function () {
+                let val = Math.min(Math.max(weightValue.value, 1000), 6000); // clamp between min/max
+                weightSlider.value = val;
+            });
+
+            // Height sync
             const heightSlider = document.getElementById('height-input');
             const heightValue = document.getElementById('height-value');
 
             heightSlider.addEventListener('input', function () {
-                heightValue.textContent = `${heightSlider.value} cm`; // Update the height value dynamically
+                heightValue.value = heightSlider.value;
+            });
+
+            heightValue.addEventListener('input', function () {
+                let val = Math.min(Math.max(heightValue.value, 40), 70); // clamp between min/max
+                heightSlider.value = val;
             });
         });
         document.addEventListener('DOMContentLoaded', function () {

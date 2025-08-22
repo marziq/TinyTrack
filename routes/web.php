@@ -101,6 +101,7 @@ Route::middleware([
         return view('user/chatbot');
     })->name('chatbot');
 
+    //Ai testing
     Route::get('/test', function () {
         return view('user/test');
     })->name('test');

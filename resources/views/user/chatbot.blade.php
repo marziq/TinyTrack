@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baby Dashboard</title>
+    <title>Chat With Sage</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
@@ -375,122 +376,110 @@
         /*Chatbot*/
         .chat-container {
             background: #fff;
+            width: 90%;              /* wider width */
+            max-width: 1900px;        /* larger max width */
+            height: 85vh;            /* shorter height */
             display: flex;
             flex-direction: column;
-            height: 80vh;         /* full height */
-            max-width: 3200px;      /* card width */
-            width: 100%;
-            margin: 0 auto;        /* center horizontally */
-            border-radius: 12px;   /* rounded corners */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* subtle shadow */
+            border-radius: 15px;     /* fully rounded */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin: auto;            /* ensure it centers */
         }
-
-        .chat-header {
+		.chat-header {
             background: #1976d2;
-            color: #fff;
+            color: white;
             padding: 15px;
-            font-weight: bold;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* ⬅️ align left */
+            flex-shrink: 0;
         }
-
-        .chat-body {
-            flex: 1;
-            padding: 20px;
+		.chat-header img {
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			margin-right: 10px;
+		}
+		#chatbox {
+            flex: 1; /* fill remaining space */
             overflow-y: auto;
-            background: #f8f9fa;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .chat-header h4 {
-            display: flex;
-            align-items: center;   /* vertical alignment */
-            gap: 10px;             /* spacing between img and text */
-            margin: 0;             /* remove default h4 margin */
+            padding: 10px;
+            background: #fefefe;
+            border-top: 1px solid #ccc;
+            border-bottom: none;
         }
 
-        .chat-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+        .chat-input {
+            background: #fff;
+            flex-shrink: 0;
+            margin: 0;
+            padding: 8px; /* add slight breathing space */
+            border-top: 1px solid #ccc; /* separate from chatbox */
+        }
+
+        .chat-input .form-control {
+            flex: 1;
+            min-height: 45px;
+            border-radius: 8px 0 0 8px;
+            border-right: none;
+            text-align: left;          /* ✅ text starts from left */
+            text-justify: inter-word;  /* ✅ justify long text */
+            padding-left: 10px;        /* small padding for neat look */
         }
         .message {
             display: flex;
-            align-items: flex-start; /* FIX: avatar aligns with top of bubble */
-            max-width: 75%;
+            align-items: flex-end; /* avatars align to bottom of bubble */
+            margin: 10px 0;
         }
 
-        /* Bot message (with avatar) */
-        .bot-message {
-            gap: 10px;
-            align-self: flex-start;
+        /* Bot messages on the left */
+        .message.bot {
+            flex-direction: row;           /* bubble on left */
+            justify-content: flex-start;
+        }
+        .message.bot .avatar {
+            margin-right: 8px;
+            margin-left: 0;
         }
 
-        /* Avatar alignment fix */
-        .bot-message .avatar {
-            flex-shrink: 0; /* prevents squishing */
-            width: 32px;
-            height: 32px;
-            background: #1976d2;
-            color: #fff;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 16px;
-            margin-top: 2px; /* small tweak for perfect vertical alignment */
+        /* User messages on the right */
+        .message.user {
+            flex-direction: row;   /* bubble on right */
+            justify-content: flex-end;     /* avatar stays on the right */
+            text-align: right;
+        }
+        .message.user .avatar {
+            margin-left: 8px;  /* space between bubble and avatar */
+            margin-right: 0;
         }
 
-        .message-content {
-            background: #fff;
-            padding: 12px 16px;
-            border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            font-size: 14px;
-            line-height: 1.4;
+        .bubble {
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 70%;
+            word-wrap: break-word;
         }
-
-        .bot-message .message-content {
+        .bot .bubble {
             background: #e3f2fd;
-            color: #333;
+            color: #000;
             border-top-left-radius: 0;
         }
-
-        .user-message {
-            align-self: flex-end;
-            justify-content: flex-end;
-        }
-
-        .user-message .message-content {
+        .user .bubble {
             background: #1976d2;
-            color: #fff;
+            color: white;
             border-top-right-radius: 0;
         }
 
-        .chat-footer {
-            display: flex;
-            padding: 12px;
-            gap: 10px;
-            border-top: 1px solid #eee;
-            background: #fff;
-        }
-
-        .chat-footer input {
-            flex: 1;
-            border-radius: 20px;
-            padding: 10px 15px;
-        }
-
-        .chat-footer button {
+        .avatar {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
+        .input-group .btn {
+            border-radius: 0 8px 8px 0;
+        }
     </style>
 </head>
 <body>
@@ -566,49 +555,26 @@
         </div>
 
        {{--Main Content--}}
-       <div class="container">
-            <div class="row">
-                <!-- Basic Settings Card -->
-                <div class="col-md-6 mb-4" style="flex: 1 0 auto; !important;">
-                    <div class="chat-container">
-                        <div class="chat-header">
-                            <h4>
-                                <img src="{{ asset('img/sage.ico') }}" alt="Sage Avatar" class="chat-avatar">
-                                Sage
-                            </h4>
-                        </div>
-                        <div class="chat-body" id="chatBody">
-                            <!-- Example Messages -->
-                            <div class="message bot-message">
-                                <div class="avatar">
-                                    <img src="{{ asset('img/sage.ico') }}" alt="Sage Avatar" style="width: 32px; height: 32px; border-radius: 50%;">
-                                </div>
-                                <div class="message-content">
-                                    Hello! I'm Sage, your baby wellness assistant 👶💙
-                                </div>
-                            </div>
-                            <div class="message user-message">
-                                <div class="message-content">
-                                    Hi Sage! Can you give me some tips about baby sleep?
-                                </div>
-                            </div>
-                            <div class="message bot-message">
-                                <div class="avatar">
-                                    <img src="{{ asset('img/sage.ico') }}" alt="Sage Avatar" style="width: 32px; height: 32px; border-radius: 50%;">
-                                </div>
-                                <div class="message-content">
-                                    Sure! Babies need a consistent bedtime routine. Keep the room calm, dim the lights, and avoid screen time before sleep. 🌙✨
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat-footer">
-                            <input type="text" class="form-control" placeholder="Type your message...">
-                            <button class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
-                        </div>
-                    </div>
+       <div class="chat-container">
+            <!-- Header -->
+            <div class="chat-header">
+                <img src="{{ asset('img/sage.ico') }}" alt="Sage Avatar">
+                <h4 class="m-0">Sage</h4>
+            </div>
+
+            <!-- Chat Area -->
+            <div id="chatbox"></div>
+
+            <!-- Input -->
+            <div class="chat-input">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="userInput" placeholder="Enter your message" />
+                    <button class="btn" onclick="sendMessage()" style="color: white; background-color: #1976d2; border-color: #1976d2;">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
                 </div>
             </div>
-        </div>
+	    </div>
        {{--Main Content End--}}
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -744,7 +710,136 @@
                 notifModal.show();
             }
     </script>
+    <script>
+        // Global conversation history
+        let conversationHistory = [
+            { role: "system", content: "You are Sage, a friendly baby health assistant chatbot. Only answer questions related to baby health, growth, nutrition, and care. If asked unrelated questions, politely refuse and redirect to baby topics." }
+        ];
 
+        let summaryMemory = ""; // running summary of old messages
+
+        async function sendMessage() {
+            const inputField = document.getElementById("userInput");
+            const input = inputField.value.trim();
+            if (!input) return;
+
+            const chatbox = document.getElementById("chatbox");
+
+            // User message with avatar
+            const userMessage = document.createElement("div");
+            userMessage.className = "message user";
+            userMessage.innerHTML = `
+                <div class="bubble">${input}</div>
+                <img src="{{ Auth::user()->profile_photo_url }}" class="avatar" alt="User" />
+            `;
+            chatbox.appendChild(userMessage);
+            chatbox.scrollTop = chatbox.scrollHeight;
+
+            inputField.value = "";
+
+            // Add user input to conversation history
+            conversationHistory.push({ role: "user", content: input });
+
+            // Bot typing placeholder
+            const botMessage = document.createElement("div");
+            botMessage.className = "message bot";
+            botMessage.innerHTML = `
+                <img src="{{ asset('img/sage.ico') }}" alt="Sage Avatar" class="avatar">
+                <div class="bubble">Typing...</div>
+            `;
+            chatbox.appendChild(botMessage);
+            chatbox.scrollTop = chatbox.scrollHeight;
+
+            try {
+                //Summarize if conversation gets too long
+                if (conversationHistory.length > 12) {
+                    const oldMessages = conversationHistory.slice(1, conversationHistory.length - 6);
+
+                    const summaryResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": "Bearer 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",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            model: "gpt-4o-mini",
+                            messages: [
+                                { role: "system", content: "Summarize this baby-related conversation into a structured memory. Focus on baby's age, weight, height, diet, health goals, and other important details. Ignore chit-chat." },
+                                { role: "user", content: JSON.stringify(oldMessages) }
+                            ]
+                        })
+                    });
+
+                    const summaryData = await summaryResponse.json();
+                    const newSummary = summaryData.choices?.[0]?.message?.content || "";
+
+                    // merge summaries
+                    summaryMemory = (summaryMemory ? summaryMemory + " " : "") + newSummary;
+
+                    // rebuild history with summary + recent messages
+                    conversationHistory = [
+                        conversationHistory[0], // system
+                        { role: "system", content: "Conversation memory so far: " + summaryMemory },
+                        ...conversationHistory.slice(-6) // keep only latest 6
+                    ];
+                }
+
+                //Call main AI for answer
+                const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": "Bearer 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",
+                        "Referer": "https://www.TinyTrack.com",
+                        "X-Title": "TinyTrack Sage Chatbot",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        model: "meta-llama/llama-3.3-70b-instruct:free",
+                        messages: conversationHistory
+                    })
+                });
+
+                const data = await response.json();
+                console.log("Raw API response:", data);
+
+                // Error handling
+                if (!response.ok) {
+                    let errorMessage = "⚠️ Something went wrong.";
+                    if (response.status === 429) {
+                        errorMessage = "⚠️ Rate limit exceeded. Please wait and try again.";
+                    } else if (response.status === 401) {
+                        errorMessage = "⚠️ Unauthorized (check your API key).";
+                    } else if (response.status >= 500) {
+                        errorMessage = "⚠️ Server error. Please try again later.";
+                    }
+                    botMessage.querySelector(".bubble").innerText = errorMessage;
+                    return;
+                }
+
+                if (data.error) {
+                    let errorMessage = "⚠️ " + (data.error.message || "Unknown error from AI service.");
+                    botMessage.querySelector(".bubble").innerText = errorMessage;
+                    return;
+                }
+
+                // ✅ Success case
+                const markdownText =
+                    data.choices?.[0]?.message?.content ||
+                    data.choices?.[0]?.content ||
+                    "⚠️ No response received.";
+
+                botMessage.querySelector(".bubble").innerHTML = marked.parse(markdownText);
+
+                // Save bot reply to history
+                conversationHistory.push({ role: "assistant", content: markdownText });
+
+            } catch (error) {
+                botMessage.querySelector(".bubble").innerText = "Error: " + error.message;
+            }
+
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+    </script>
 
 </body>
 </html>
