@@ -28,7 +28,7 @@
 			overflow: hidden;
 		}
 		.chat-header {
-            background: #4CAF50;
+            background: #1976d2;
             color: white;
             padding: 15px;
             display: flex;
@@ -102,13 +102,13 @@
             word-wrap: break-word;
         }
         .bot .bubble {
-            background: #eaeaea;
+            background: #e3f2fd;
             color: #000;
             border-top-left-radius: 0;
         }
         .user .bubble {
-            background: #d1ffd6;
-            color: #000;
+            background: #1976d2;
+            color: white;
             border-top-right-radius: 0;
         }
 
@@ -138,7 +138,7 @@
 		<div class="chat-input">
             <div class="input-group">
                 <input type="text" class="form-control" id="userInput" placeholder="Enter your message" />
-                <button class="btn btn-success" onclick="sendMessage()">
+                <button class="btn" onclick="sendMessage()" style="color: white; background-color: #1976d2; border-color: #1976d2;">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
             </div>
@@ -147,6 +147,13 @@
 	</div>
 
 	<script>
+        // Global conversation history
+        let conversationHistory = [
+            { role: "system", content: "You are Sage, a friendly baby health assistant chatbot. Only answer questions related to baby health, growth, nutrition, and care. If asked unrelated questions, politely refuse and redirect to baby topics." }
+        ];
+
+        let summaryMemory = ""; // running summary of old messages
+
         async function sendMessage() {
             const inputField = document.getElementById("userInput");
             const input = inputField.value.trim();
@@ -159,57 +166,92 @@
             userMessage.className = "message user";
             userMessage.innerHTML = `
                 <div class="bubble">${input}</div>
-                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" class="avatar" alt="User" />
+                <img src="{{ Auth::user()->profile_photo_url }}" class="avatar" alt="User" />
             `;
             chatbox.appendChild(userMessage);
             chatbox.scrollTop = chatbox.scrollHeight;
 
             inputField.value = "";
 
+            // Add user input to conversation history
+            conversationHistory.push({ role: "user", content: input });
+
             // Bot typing placeholder
             const botMessage = document.createElement("div");
             botMessage.className = "message bot";
             botMessage.innerHTML = `
-                <img src="{{ asset('img/sage.ico') }}" alt="Sage Avatar">
+                <img src="{{ asset('img/sage.ico') }}" alt="Sage Avatar" class="avatar">
                 <div class="bubble">Typing...</div>
             `;
             chatbox.appendChild(botMessage);
             chatbox.scrollTop = chatbox.scrollHeight;
 
             try {
+                //Summarize if conversation gets too long
+                if (conversationHistory.length > 12) {
+                    const oldMessages = conversationHistory.slice(1, conversationHistory.length - 6);
+
+                    const summaryResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": "Bearer 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",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            model: "gpt-4o-mini",
+                            messages: [
+                                { role: "system", content: "Summarize this baby-related conversation into a structured memory. Focus on baby's age, weight, height, diet, health goals, and other important details. Ignore chit-chat." },
+                                { role: "user", content: JSON.stringify(oldMessages) }
+                            ]
+                        })
+                    });
+
+                    const summaryData = await summaryResponse.json();
+                    const newSummary = summaryData.choices?.[0]?.message?.content || "";
+
+                    // merge summaries
+                    summaryMemory = (summaryMemory ? summaryMemory + " " : "") + newSummary;
+
+                    // rebuild history with summary + recent messages
+                    conversationHistory = [
+                        conversationHistory[0], // system
+                        { role: "system", content: "Conversation memory so far: " + summaryMemory },
+                        ...conversationHistory.slice(-6) // keep only latest 6
+                    ];
+                }
+
+                //Call main AI for answer
                 const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                     method: "POST",
                     headers: {
-                        "Authorization": "Bearer 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",
-                        "HTTP-Referer": "https://www.TinyTrack.com",
+                        "Authorization": "Bearer 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",
+                        "Referer": "https://www.TinyTrack.com",
                         "X-Title": "TinyTrack Sage Chatbot",
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
                         model: "meta-llama/llama-3.3-70b-instruct:free",
-                        messages: [{ role: "user", content: input }]
+                        messages: conversationHistory
                     })
                 });
 
                 const data = await response.json();
                 console.log("Raw API response:", data);
 
-                //Rate limit Error Handling
-                // ✅ First check: did the HTTP request itself fail?
+                // Error handling
                 if (!response.ok) {
                     let errorMessage = "⚠️ Something went wrong.";
-
                     if (response.status === 429) {
-                        errorMessage = "⚠️ Sorry Sage cannot give response because rate limit exceeded. Please wait and try again.";
+                        errorMessage = "⚠️ Rate limit exceeded. Please wait and try again.";
+                    } else if (response.status === 401) {
+                        errorMessage = "⚠️ Unauthorized (check your API key).";
                     } else if (response.status >= 500) {
                         errorMessage = "⚠️ Server error. Please try again later.";
                     }
-
                     botMessage.querySelector(".bubble").innerText = errorMessage;
                     return;
                 }
 
-                // ✅ Second check: did OpenRouter return an error object?
                 if (data.error) {
                     let errorMessage = "⚠️ " + (data.error.message || "Unknown error from AI service.");
                     botMessage.querySelector(".bubble").innerText = errorMessage;
@@ -221,7 +263,11 @@
                     data.choices?.[0]?.message?.content ||
                     data.choices?.[0]?.content ||
                     "⚠️ No response received.";
+
                 botMessage.querySelector(".bubble").innerHTML = marked.parse(markdownText);
+
+                // Save bot reply to history
+                conversationHistory.push({ role: "assistant", content: markdownText });
 
             } catch (error) {
                 botMessage.querySelector(".bubble").innerText = "Error: " + error.message;
@@ -230,5 +276,7 @@
             chatbox.scrollTop = chatbox.scrollHeight;
         }
     </script>
+
+
 </body>
 </html>

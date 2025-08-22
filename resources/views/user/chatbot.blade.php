@@ -717,32 +717,32 @@
                         }
                     });
                 });
-            });
-    });
-    // Show notification modal
-        function showNotificationModal(title, message, date) {
-            let modalHtml = `
-            <div class="modal fade" id="notifModal" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="notifModalLabel">${title}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <p>${message}</p>
-                    <div style="font-size: 12px; color: #888;">${date}</div>
-                  </div>
+             });
+        });
+        // Show notification modal
+            function showNotificationModal(title, message, date) {
+                let modalHtml = `
+                <div class="modal fade" id="notifModal" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="notifModalLabel">${title}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>${message}</p>
+                        <div style="font-size: 12px; color: #888;">${date}</div>
+                    </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            `;
-            // Remove existing modal if any
-            document.getElementById('notifModal')?.remove();
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-            let notifModal = new bootstrap.Modal(document.getElementById('notifModal'));
-            notifModal.show();
-        }
+                </div>
+                `;
+                // Remove existing modal if any
+                document.getElementById('notifModal')?.remove();
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                let notifModal = new bootstrap.Modal(document.getElementById('notifModal'));
+                notifModal.show();
+            }
     </script>
 
 
