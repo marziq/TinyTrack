@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
         * {
@@ -636,7 +637,7 @@
             box-shadow: 0 0 0 0 transparent;
             height: auto;                 /* Let height fit content */
             min-height: unset;            /* Remove min-height if set elsewhere */
-            max-height: 120px;            /* Optional: limit max height */
+            max-height: 200px;            /* Optional: limit max height */
             overflow: auto;               /* Add scroll if content overflows */
         }
             @media (max-width: 900px) {
@@ -649,6 +650,27 @@
                 margin-left: 0;
                 margin-top: 20px;
             }
+        }
+        #recommendation-text {
+            font-size: 15px !important;
+            color: #333 !important;
+            background: #f4f8fb;
+            border-left: 4px solid #1976d2;
+            padding: 15px 18px;
+            border-radius: 8px;
+            margin: 0;
+            min-height: 40px;
+            font-style: normal;
+            line-height: 1.6;
+            /* Remove browser default blue color and italics */
+        }
+        #recommendation-text p,
+        #recommendation-text ul,
+        #recommendation-text li {
+            color: #333 !important;
+            font-size: 15px !important;
+            font-style: normal !important;
+            margin-bottom: 0.5em;
         }
     </style>
 </head>
@@ -829,6 +851,29 @@
                             Select a baby to see a summary of their weight growth here.
                         </div>
                     </div>
+                </div>
+            </div>
+            {{--Recommendation Section (Optional)--}}
+            <div id="recommendation-section" class="card mt-4">
+                <div class="card-body">
+                    <h4 style="color:#1976d2; margin-bottom: 10px;">
+                        <i class="fas fa-robot" style="margin-right: 8px; color:#1976d2;"></i>
+                        Personalized Recommendation
+                    </h4>
+                    <blockquote id="recommendation-text" style="
+                        font-size: 1.08rem;
+                        color: #222;
+                        background: #f4f8fb;
+                        border-left: 4px solid #1976d2;
+                        padding: 15px 18px;
+                        border-radius: 8px;
+                        margin: 0;
+                        min-height: 40px;
+                        font-style: italic;
+                        line-height: 1.6;
+                    ">
+                        Select a baby and enter growth data to see recommendations here.
+                    </blockquote>
                 </div>
             </div>
         </div>
@@ -1021,6 +1066,23 @@
                         } else {
                             weightSummary.textContent = "No weight data available for this baby.";
                         }
+                        // AI Recommendation
+                        if (data.length > 0) {
+                            const lastEntry = data[data.length - 1];
+                            let gender = 'unknown';
+                            const selectedOption = document.querySelector(`#babySelector option[value="${babyId}"]`);
+                            if (selectedOption && selectedOption.textContent.match(/\(([^)]+)\)/)) {
+                                gender = selectedOption.textContent.match(/\(([^)]+)\)/)[1];
+                            }
+                            fetchAIRecommendation(
+                                `Height: ${lastEntry.height_status}, Weight: ${lastEntry.weight_status}`,
+                                lastEntry.growthMonth,
+                                gender
+                            );
+                        } else {
+                            document.getElementById('recommendation-text').innerHTML = "Select a baby and enter growth data to see recommendations here.";
+                            document.getElementById('recommendation-section').style.display = "block";
+                        }
                     })
                     .catch(error => {
                         console.error('Error fetching growth data:', error);
@@ -1114,6 +1176,41 @@
             "Very High": "The baby's growth is far above the normal range. If this is unexpected, consult a healthcare professional.",
             "No status": "No growth data or status available for this entry."
         };
+
+        // Fetch AI recommendation
+        async function fetchAIRecommendation(status, age, gender) {
+            console.log("AI Prompt Params:", { status, age, gender }); // <--- Add this line
+            const recSection = document.getElementById('recommendation-section');
+            const recText = document.getElementById('recommendation-text');
+            recText.innerHTML = "Loading AI recommendation...";
+
+            const prompt = `A ${age} month old ${gender} baby has the following growth status:
+                            ${status}. What should the parent do? Give a short, practical, and
+                            empathetic recommendation.`;
+            console.log("AI Prompt:", prompt);
+            try {
+                const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        Authorization: 'Bearer sk-APIKEY',
+                        'HTTP-Referer': 'https://TinyTrack.com',
+                        'X-Title': 'TinyTrack',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model: 'deepseek/deepseek-r1-distill-llama-70b:free',
+                        messages: [{ role: 'user', content: prompt }]
+                    }),
+                });
+                const data = await response.json();
+                console.log("AI API Response:", data);
+                const markdownText = data.choices?.[0]?.message?.content || 'No recommendation received.';
+                recText.innerHTML = marked.parse(markdownText);
+            } catch (error) {
+                recText.innerHTML = 'Error: ' + error.message;
+                recSection.style.display = "block";
+            }
+        }
     </script>
 </body>
 </html>

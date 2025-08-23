@@ -6,11 +6,20 @@
 
 ## Developers Logs
 
+### Saturday 23 August 2025
+
+<p align="justify">We implemented the AI on Growth page to give advice/recommendation to parent if their baby is growing not normal. We also decided to try new model which is DeepSeek: R1 Distill Llama 70B. We will continue further test to ensure stability of the AI</p>
+
 ### Friday 22 August 2025
 
 <p align="justify">We are still undergo few experiments on API for our Sage Chatbot. Currently we use Llama 3.3 70B Instruct. Previous Sage we implement doesnt remember last conversation making it feels not natural. We figured out the way for Sage to remember the last conversation but we also found new problem which the more Sage remember last conversation, more times needed for respond to prompt. We decide to limit the conversation that Sage remember to last 10 conversation. Not long after that, we have idea instead of only remembers 10 conversation, if the conversations getting long the system will asked to summarize the convesations and then continue answering to user prompt</p>
 
 ## Development Updates
+
+### Saturday 23 August 2025
+
+- Implemented Zscores Calculation for for Height and Weight in order to classified the baby growth is normal or not
+- Implemented AI Recommendation for parents if their baby's growth isn't normal.
 
 ### Friday 22 August 2025
 

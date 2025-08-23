@@ -788,13 +788,13 @@
                 const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                     method: "POST",
                     headers: {
-                        "Authorization": "Bearer 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",
+                        "Authorization": "Bearer sk-APIKEY",
                         "Referer": "https://www.TinyTrack.com",
                         "X-Title": "TinyTrack Sage Chatbot",
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        model: "meta-llama/llama-3.3-70b-instruct:free",
+                        model: "deepseek/deepseek-r1-distill-llama-70b:free",
                         messages: conversationHistory
                     })
                 });
