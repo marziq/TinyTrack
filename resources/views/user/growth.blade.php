@@ -995,11 +995,14 @@
                          // --- Height Summary ---
                         const heightSummary = document.getElementById('height-summary-text');
                         if (data.length > 0) {
-                            const minH = Math.min(...data.map(e => e.height));
-                            const maxH = Math.max(...data.map(e => e.height));
-                            const lastH = data[data.length - 1].height;
-                            const firstH = data[0].height;
-                            heightSummary.textContent = `Started at ${firstH} cm, now ${lastH} cm. Highest: ${maxH} cm, Lowest: ${minH} cm. Growth: ${lastH - firstH} cm.`;
+                            const lastEntry = data[data.length - 1];
+                            const lastH = lastEntry.height;
+                            const heightStatus = lastEntry.height_status ?? 'No status';
+                            const heightExplanation = statusExplanations[heightStatus] ?? statusExplanations["No status"];
+
+                            heightSummary.innerHTML = `<strong>Latest height:</strong> ${lastH} cm.<br>
+                                <strong>Status:</strong> ${heightStatus}<br>
+                                <span style="font-size:13px;color:#555;">${heightExplanation}</span>`;
                         } else {
                             heightSummary.textContent = "No height data available for this baby.";
                         }
@@ -1007,11 +1010,14 @@
                         // --- Weight Summary ---
                         const weightSummary = document.getElementById('weight-summary-text');
                         if (data.length > 0) {
-                            const minW = Math.min(...data.map(e => e.weight));
-                            const maxW = Math.max(...data.map(e => e.weight));
-                            const lastW = data[data.length - 1].weight;
-                            const firstW = data[0].weight;
-                            weightSummary.textContent = `Started at ${firstW} g, now ${lastW} g. Highest: ${maxW} g, Lowest: ${minW} g. Growth: ${lastW - firstW} g.`;
+                            const lastEntry = data[data.length - 1];
+                            const lastW = lastEntry.weight;
+                            const weightStatus = lastEntry.weight_status ?? 'No status';
+                            const weightExplanation = statusExplanations[weightStatus] ?? statusExplanations["No status"];
+
+                            weightSummary.innerHTML = `<strong>Latest weight:</strong> ${lastW} g.<br>
+                                <strong>Status:</strong> ${weightStatus}<br>
+                                <span style="font-size:13px;color:#555;">${weightExplanation}</span>`;
                         } else {
                             weightSummary.textContent = "No weight data available for this baby.";
                         }
@@ -1098,6 +1104,16 @@
             let notifModal = new bootstrap.Modal(document.getElementById('notifModal'));
             notifModal.show();
         }
+
+        // Status explanations
+        const statusExplanations = {
+            "Severely Low": "This indicates the baby's growth is far below the normal range. It may be a sign of severe malnutrition or a health issue. Please consult a pediatrician as soon as possible.",
+            "Low": "The baby's growth is below the normal range. Monitoring and possibly adjusting nutrition or care is recommended. Consider consulting a healthcare professional.",
+            "Normal": "The baby's growth is within the normal range for their age and gender. Keep up the good care!",
+            "High": "The baby's growth is above the normal range. This is usually not a concern, but monitor for rapid changes.",
+            "Very High": "The baby's growth is far above the normal range. If this is unexpected, consult a healthcare professional.",
+            "No status": "No growth data or status available for this entry."
+        };
     </script>
 </body>
 </html>

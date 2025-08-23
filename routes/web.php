@@ -109,6 +109,8 @@ Route::middleware([
     // Baby resource routes
     Route::get('/babies/{id}', [BabyController::class, 'getBaby']); // Route to get baby details
     Route::resource('babies', BabyController::class);
+    Route::get('/growth-data/{babyId}', [GrowthController::class, 'getGrowthData']);
+
 
     Route::post('/dashboard/growths/store', [GrowthController::class, 'store'])->name('growth.store');
     Route::get('/dashboard/growth', [GrowthController::class, 'create'])->name('growth');

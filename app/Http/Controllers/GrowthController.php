@@ -5,36 +5,39 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Growth;
 use App\Models\Baby;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class GrowthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        // Retrieve all growth records
         $growths = Growth::all();
 
-        // Return a view with the data
-        return view('user.growth', compact('growths'));
+        foreach ($growths as $record) {
+            $baby = Baby::find($record->baby_id);
+
+            $summary = $this->getGrowthSummary(
+                $baby->gender,
+                $record->growthMonth,
+                $record->height,
+                $record->weight
+            );
+
+            $record->height_status = $summary['height_status'];
+            $record->weight_status = $summary['weight_status'];
+        }
+        $babies = Baby::where('user_id', Auth::id())->get();
+        return view('user.growth', compact('growths', 'babies'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        // Fetch babies for the logged-in user
-        $babies = Baby::where('user_id', auth()->user()->id)->get();
+        // Get all babies belonging to the logged-in user
+        $babies = Baby::where('user_id', Auth::id())->get();
 
-        // Return the view with the babies
         return view('user.growth', compact('babies'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         // Validate the incoming request
@@ -52,55 +55,114 @@ class GrowthController extends Controller
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Growth data saved successfully!');
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function getGrowthData($babyId)
     {
-        //
-    }
+        $growths = Growth::where('baby_id', $babyId)
+            ->orderBy('growthMonth', 'asc')
+            ->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        foreach ($growths as $record) {
+            $baby = Baby::find($record->baby_id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            $summary = $this->getGrowthSummary(
+                $baby->gender,
+                $record->growthMonth,
+                $record->height,
+                $record->weight
+            );
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-    public function getGrowthData(Request $request, $babyId)
-    {
-        // Ensure the baby belongs to the authenticated user
-        $baby = Baby::where('id', $babyId)
-        ->where('user_id', auth()->id())
-        ->first();
-
-        if (!$baby) {
-        return response()->json(['error' => 'Baby not found or unauthorized access'], 403);
+            $record->height_status = $summary['height_status'];
+            $record->weight_status = $summary['weight_status'];
         }
 
-        // Fetch growth data for the baby
-        $growthData = Growth::where('baby_id', $babyId)
-                    ->orderBy('growthMonth', 'asc') // Use growthMonth for ordering
-                    ->get(['growthMonth', 'height', 'weight']);
+        return response()->json($growths);
+    }
 
-        // Return the data as JSON
-        return response()->json($growthData);
+    // ===============================
+    // Growth Service Logic (inline)
+    // ===============================
+
+    private function loadJson($path)
+    {
+        $fullPath = storage_path('app/' . $path);
+        if (!file_exists($fullPath)) {
+            \Log::error("JSON file not found: $fullPath");
+            return [];
+        }
+        $json = file_get_contents($fullPath);
+        $data = json_decode($json, true);
+        if ($data === null) {
+            \Log::error("Failed to decode JSON: $fullPath. Error: " . json_last_error_msg());
+            return [];
+        }
+        return $data;
+    }
+
+    private function getGrowthSummary($gender, $month, $height = null, $weight = null)
+    {
+        $gender = strtolower($gender);
+
+        $lfa = $this->loadJson("who/lfa_{$gender}.json");
+        $wfa = $this->loadJson("who/wfa_{$gender}.json");
+        \Log::info('Loaded LFA:', $lfa);
+        // Find the correct month entry in LFA
+        $lfa_row = collect($lfa)->firstWhere('Month', (int)$month);
+        $wfa_row = collect($wfa)->firstWhere('Month', (int)$month);
+
+        //Log data for make sure it's loading correctly
+        \Log::info("Month: $month, Gender: $gender, LFA found: " . json_encode($lfa_row) . ", WFA found: " . json_encode($wfa_row));
+
+        $height_status = null;
+        $weight_status = null;
+
+        if ($height !== null && $lfa_row) {
+            $L = $lfa_row['L'];
+            $M = $lfa_row['M'];
+            $S = $lfa_row['S'];
+
+            $z = $this->calculateZScore($height, $L, $M, $S);
+            $height_status = $this->getStatusFromZScore($z);
+        }
+
+        if ($weight !== null && $wfa_row) {
+            $L = $wfa_row['L'];
+            $M = $wfa_row['M'];
+            $S = $wfa_row['S'];
+
+            $z = $this->calculateZScore($weight, $L, $M, $S);
+            $weight_status = $this->getStatusFromZScore($z);
+        }
+
+        return [
+            'height_status' => $height_status,
+            'weight_status' => $weight_status,
+        ];
+    }
+
+    // LMS Z-score calculation
+    private function calculateZScore($value, $L, $M, $S)
+    {
+        if ($L == 0) {
+            return log($value / $M) / $S;
+        } else {
+            return (pow($value / $M, $L) - 1) / ($L * $S);
+        }
+    }
+
+    // Convert Z-score to status
+    private function getStatusFromZScore($z)
+    {
+        if ($z < -3) {
+            return 'Severely Low';
+        } elseif ($z < -2) {
+            return 'Low';
+        } elseif ($z <= 2) {
+            return 'Normal';
+        } elseif ($z <= 3) {
+            return 'High';
+        } else {
+            return 'Very High';
+        }
     }
 }
+
