@@ -423,7 +423,7 @@
 
         .topic-card img {
             width: 100%;
-            height: 150px;
+            height: 250px;
             object-fit: cover;
             border-radius: 10px;
             margin-bottom: 15px;
@@ -854,11 +854,24 @@
         </div>
 
         <!-- Section to display more information -->
-        <div id="info-section" class="info-section">
+        <!---<div id="info-section" class="info-section">
             <h3 id="info-title"></h3>
             <p id="info-content"></p>
-        </div>
+        </div>--->
         {{--Main  content ends here--}}
+
+        <!-- Tip Info Modal -->
+        <div class="modal fade" id="tipInfoModal" tabindex="-1" aria-labelledby="tipInfoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tipInfoModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="tipInfoModalBody"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -942,11 +955,8 @@
         }
 
         function showInfo(topicId) {
-            const infoSection = document.getElementById('info-section');
-            const infoTitle = document.getElementById('info-title');
-            const infoContent = document.getElementById('info-content');
-
-            // Define the content for each topic
+            const modalTitle = document.getElementById('tipInfoModalLabel');
+            const modalBody = document.getElementById('tipInfoModalBody');
             const topics = {
                 bonding1: {
                     title: 'Skin-to-Skin Cuddles',
@@ -1120,25 +1130,24 @@
                     heroImage: '{{ asset("img/safe-toys.jpg") }}',
                     videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
                 }
-
             };
 
-            // Update the info section with the selected topic
             if (topics[topicId]) {
                 const topic = topics[topicId];
-
-                // Check if the topic is already in favourites
                 const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
                 const isFavourite = favourites.includes(topicId);
 
-
-                // Build the content dynamically
-                infoContent.innerHTML = `
+                modalTitle.innerHTML = topic.title;
+                if(topic.html){
+                    modalBody.innerHTML = topic.html;
+                }
+                else{
+                modalBody.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div style="display: flex; flex-direction: column; flex: 1;">
                             <h3 style="color: #1976d2; margin: 0;">${topic.title}</h3>
                             <a style="color: #1976d2; margin: 0; font-size: 12px;">
-                               <br> Reviewed By: <br> Dr Aiman Khalid <br> Consultant Pediatrician at Selangor Specialist Hospital
+                            <br> Reviewed By: <br> Dr Aiman Khalid <br> Consultant Pediatrician at Selangor Specialist Hospital
                             </a>
                         </div>
                         <button id="favouriteButton" class="btn btn-primary" style="margin-left: 20px;">
@@ -1179,29 +1188,34 @@
                             ${topic.additionalText5}
                         </div>` : ''}
                 `;
+                }
 
-                infoSection.style.display = 'block'; // Show the info section
+                // Show the modal
+                let tipModal = new bootstrap.Modal(document.getElementById('tipInfoModal'));
+                tipModal.show();
+
                 // Add event listener for the favourite button
-                const favouriteButton = document.getElementById('favouriteButton');
-                favouriteButton.addEventListener('click', function () {
-                    const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
-                    const index = favourites.indexOf(topicId);
+                setTimeout(() => {
+                    const favouriteButton = document.getElementById('favouriteButton');
+                    if (favouriteButton) {
+                        favouriteButton.addEventListener('click', function () {
+                            const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+                            const index = favourites.indexOf(topicId);
 
-                    if (index === -1) {
-                        // Add to favourites
-                        favourites.push(topicId);
-                        favouriteButton.textContent = 'Remove from Favourites';
-                    } else {
-                        // Remove from favourites
-                        favourites.splice(index, 1);
-                        favouriteButton.textContent = 'Add to Favourites';
+                            if (index === -1) {
+                                favourites.push(topicId);
+                                favouriteButton.textContent = 'Remove from Favourites';
+                            } else {
+                                favourites.splice(index, 1);
+                                favouriteButton.textContent = 'Add to Favourites';
+                            }
+                            localStorage.setItem('favourites', JSON.stringify(favourites));
+                        });
                     }
-
-                    // Update local storage
-                    localStorage.setItem('favourites', JSON.stringify(favourites));
-                });
+                }, 100);
             }
         }
+
         document.addEventListener('DOMContentLoaded', function() {
             const bell = document.getElementById('notificationBell');
             const popup = document.getElementById('notificationPopup');

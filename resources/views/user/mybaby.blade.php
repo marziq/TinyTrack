@@ -536,6 +536,20 @@
             color: #666;
         }
 
+        .milestone-scroll {
+            max-height: 220px; /* Adjust as needed */
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #bbdefb #f8fafc;
+        }
+        .milestone-scroll::-webkit-scrollbar {
+            width: 8px;
+            background: #f8fafc;
+        }
+        .milestone-scroll::-webkit-scrollbar-thumb {
+            background: #bbdefb;
+            border-radius: 6px;
+        }
         /* Vaccine Container */
         .vaccine-container {
             background-color: #ffffff;
@@ -577,6 +591,21 @@
             font-weight: bold;
         }
 
+        .vaccine-scroll {
+            max-height: 220px; /* Adjust as needed */
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #bbdefb #f8fafc;
+        }
+        .vaccine-scroll::-webkit-scrollbar {
+            width: 8px;
+            background: #f8fafc;
+        }
+        .vaccine-scroll::-webkit-scrollbar-thumb {
+            background: #bbdefb;
+            border-radius: 6px;
+        }
+
         /* Baby Tips Panel */
         .baby-tips-panel {
             background-color: #ffffff;
@@ -614,6 +643,14 @@
         .baby-tips-scroll::-webkit-scrollbar-thumb {
             background: #bbdefb;
             border-radius: 6px;
+        }
+        .baby-info-panel,
+        .chart-container,
+        .milestones-container,
+        .vaccine-container,
+        .baby-tips-panel {
+            /*border: 2.5px solid #1976d2!important; --- IGNORE ---*/
+            box-shadow: 0 4px 8px 0 #646566 !important;
         }
     </style>
 </head>
@@ -783,110 +820,111 @@
                     </div>
                 </div>
 
-
-
-
                 <!-- Row 2 -->
                 <div class="milestones-container">
                     <h4>Recent Milestones Achieved</h4>
-                    <div class="milestone-item">
-                        <div class="milestone-icon">
-                            <i class="fas fa-check"></i>
+                    <div class="milestone-scroll" style="display: flex; flex-direction: column; gap: 10px;">
+                        <div class="milestone-item">
+                            <div class="milestone-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="milestone-text">
+                                First smile
+                            </div>
+                            <div class="milestone-date">
+                                May 15, 2023
+                            </div>
                         </div>
-                        <div class="milestone-text">
-                            First smile
+                        <div class="milestone-item">
+                            <div class="milestone-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="milestone-text">
+                                Recognized familiar voice
+                            </div>
+                            <div class="milestone-date">
+                                June 2, 2023
+                            </div>
                         </div>
-                        <div class="milestone-date">
-                            May 15, 2023
+                        <div class="milestone-item">
+                            <div class="milestone-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="milestone-text">
+                                First solid food
+                            </div>
+                            <div class="milestone-date">
+                                June 20, 2023
+                            </div>
                         </div>
-                    </div>
-                    <div class="milestone-item">
-                        <div class="milestone-icon">
-                            <i class="fas fa-check"></i>
+                        <div class="milestone-item">
+                            <div class="milestone-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="milestone-text">
+                                Rolled over tummy
+                            </div>
+                            <div class="milestone-date">
+                                June 25, 2023
+                            </div>
                         </div>
-                        <div class="milestone-text">
-                            Recognized familiar voice
+                        <div class="milestone-item">
+                            <div class="milestone-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="milestone-text">
+                                Sits without support
+                            </div>
+                            <div class="milestone-date">
+                                June 22, 2023
+                            </div>
                         </div>
-                        <div class="milestone-date">
-                            June 2, 2023
-                        </div>
-                    </div>
-                    <div class="milestone-item">
-                        <div class="milestone-icon">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <div class="milestone-text">
-                            First solid food
-                        </div>
-                        <div class="milestone-date">
-                            June 20, 2023
-                        </div>
-                    </div>
-                    <div class="milestone-item">
-                        <div class="milestone-icon">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <div class="milestone-text">
-                            Rolled over tummy
-                        </div>
-                        <div class="milestone-date">
-                            June 25, 2023
-                        </div>
-                    </div>
-                    <div class="milestone-item">
-                        <div class="milestone-icon">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <div class="milestone-text">
-                            Sits without support
-                        </div>
-                        <div class="milestone-date">
-                            June 22, 2023
-                        </div>
-                    </div>
-                    <div class="milestone-item">
-                        <div class="milestone-icon">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <div class="milestone-text">
-                            Stands holding on
-                        </div>
-                        <div class="milestone-date">
-                            June 28, 2023
+                        <div class="milestone-item">
+                            <div class="milestone-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="milestone-text">
+                                Stands holding on
+                            </div>
+                            <div class="milestone-date">
+                                June 28, 2023
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="vaccine-container">
                     <h4>Next Vaccination</h4>
-                    <div class="vaccine-card">
-                        <div class="vaccine-name">Hepatitis B (3rd dose)</div>
-                        <div class="vaccine-date">July 15, 2023</div>
-                        <div class="vaccine-days">in 12 days</div>
-                    </div>
-                    <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
-                        <div class="vaccine-name">DTaP (2nd dose)</div>
-                        <div class="vaccine-date">August 5, 2023</div>
-                        <div class="vaccine-days">in 33 days</div>
-                    </div>
-                    <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
-                        <div class="vaccine-name">MMR (1st dose)</div>
-                        <div class="vaccine-date">September 5, 2023</div>
-                        <div class="vaccine-days">in 63 days</div>
-                    </div>
-                    <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
-                        <div class="vaccine-name">Pneumokokal (1st dose)</div>
-                        <div class="vaccine-date">October 25, 2023</div>
-                        <div class="vaccine-days">in 93 days</div>
-                    </div>
-                    <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
-                        <div class="vaccine-name">Pneumokokal (2nd dose)</div>
-                        <div class="vaccine-date">November 15, 2023</div>
-                        <div class="vaccine-days">in 123 days</div>
+                    <div class="vaccine-scroll" style="display: flex; flex-direction: column; gap: 10px;">
+                        <div class="vaccine-card">
+                            <div class="vaccine-name">Hepatitis B (3rd dose)</div>
+                            <div class="vaccine-date">July 15, 2023</div>
+                            <div class="vaccine-days">in 12 days</div>
+                        </div>
+                        <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
+                            <div class="vaccine-name">DTaP (2nd dose)</div>
+                            <div class="vaccine-date">August 5, 2023</div>
+                            <div class="vaccine-days">in 33 days</div>
+                        </div>
+                        <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
+                            <div class="vaccine-name">MMR (1st dose)</div>
+                            <div class="vaccine-date">September 5, 2023</div>
+                            <div class="vaccine-days">in 63 days</div>
+                        </div>
+                        <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
+                            <div class="vaccine-name">Pneumokokal (1st dose)</div>
+                            <div class="vaccine-date">October 25, 2023</div>
+                            <div class="vaccine-days">in 93 days</div>
+                        </div>
+                        <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
+                            <div class="vaccine-name">Pneumokokal (2nd dose)</div>
+                            <div class="vaccine-date">November 15, 2023</div>
+                            <div class="vaccine-days">in 123 days</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Additional card for the last row -->
+                <!-- Baby Tips -->
                 <div class="baby-tips-panel">
                     <h4>Baby Tips</h4>
                     <div class="baby-tips-list baby-tips-scroll" style="display: flex; flex-direction: column; gap: 10px;">
