@@ -529,7 +529,7 @@
 
                 <!-- Profile Dropdown -->
                 <div class="dropdown">
-                    <button class="profile-btn dropdown-toggle" type="button" id="accountDropdown">
+                    <button class="profile-btn" type="button" id="accountDropdown">
                         <div class="profile-img-container">
                             <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
                         </div>

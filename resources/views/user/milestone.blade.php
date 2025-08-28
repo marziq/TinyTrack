@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baby Dashboard</title>
+    <title>Baby Milestones</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -616,7 +616,7 @@
 
                 <!-- Profile Dropdown -->
                 <div class="dropdown">
-                    <button class="profile-btn dropdown-toggle" type="button" id="accountDropdown">
+                    <button class="profile-btn" type="button" id="accountDropdown">
                         <div class="profile-img-container">
                             <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
                         </div>
