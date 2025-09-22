@@ -55,6 +55,12 @@
             transition: all 0.3s;
             border-radius: 6px;
             margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        .sidebar a:not([style]) {
+            box-shadow: 0 4px 16px rgba(25, 118, 210, 0.30);
+            margin-bottom: 20px;
         }
 
         .sidebar a:hover {
@@ -281,11 +287,12 @@
         .text-danger:hover {
             color: #c82333 !important;
         }
-
         .sidebar a.active {
             background-color: #1976d2;
             color: #fff !important;
             font-weight: bold;
+            box-shadow: 0 2px 12px rgba(25, 118, 210, 0.18); /* stronger shadow for active */
+            border: 2px solid #1976d2; /* darker outline for active */
         }
         /* New Styles for the Redesign */
         .baby-selector-container {
@@ -667,6 +674,7 @@
         <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
         <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
         <a href="{{route('chatbot')}}"><i class="fas fa-robot"></i> Chat With Sage</a>
+        <a href="{{route('checkup')}}"><i class="fas fa-check"></i> Checkups</a>
         <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
     </div>
 

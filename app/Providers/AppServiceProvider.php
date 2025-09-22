@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(['admin.messages-admin', 'admin.dashboard-admin', 'admin.users-admin', 'admin.calendar','admin.settings', 'user.mybaby', 'dashboard', 'user.growth', 'user.settings', 'user.appointment', 'user.milestone', 'user.myaccount', 'user.tips', 'user.chatbot'], function ($view) {
+        View::composer(['admin.messages-admin', 'admin.dashboard-admin', 'admin.users-admin', 'admin.calendar','admin.settings', 'user.mybaby', 'dashboard', 'user.growth', 'user.settings', 'user.appointment', 'user.milestone', 'user.myaccount', 'user.tips', 'user.chatbot', 'user.checkup'], function ($view) {
             $notifications = Notification::with('user')->orderByDesc('dateSent')->get();
 
             $userNotifications = Notification::where('user_id', auth()->id())

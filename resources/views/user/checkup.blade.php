@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat With Sage</title>
+    <title>Checkups</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -267,7 +267,12 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
         }
-
+        .card.checkup-result {
+            /* Make result card shorter */
+            min-width: 160px;
+            max-width: 220px;
+            justify-content: center;
+        }
         .card:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
@@ -486,6 +491,124 @@
         .input-group .btn {
             border-radius: 0 8px 8px 0;
         }
+        /* Checkup Section Layout */
+        .checkup-section {
+            display: flex;
+            gap: 30px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .checkup-left {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 0 0 320px;
+            min-width: 260px;
+        }
+
+        .checkup-right {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .checkup-dropdown .dropdown-toggle {
+            font-size: 16px;
+            padding: 12px 18px;
+        }
+
+        .checkup-result.card {
+            min-height: 220px;
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+            border-left: 4px solid #1976d2;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .cards .card {
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* Two-column checkup layout: left wide for checkup, right a bit wider for result */
+        .checkup-row {
+            display: flex;
+            margin-bottom: 36px;
+            width: 1700px;
+        }
+
+        .checkup-card-col {
+            flex: 0 0 calc(100% - 320px); /* Checkup card takes remaining space minus result card width and gap */
+            max-width: calc(100% - 520px);
+            min-width: 400px;
+            display: flex;
+            align-items: stretch;
+            margin-right: 20px;
+        }
+
+        .result-card-col {
+            flex: 0 0 420px;
+            max-width: 420px;
+            min-width: 340px;
+            display: flex;
+            align-items: stretch;
+        }
+
+        .card.checkup-card,
+        .card.checkup-result {
+            min-height: 220px;
+            max-height: 260px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .card.checkup-result {
+            border-left: 4px solid #1976d2;
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+        }
+
+        @media (max-width: 1100px) {
+            .checkup-row {
+                flex-direction: column;
+                gap: 18px;
+            }
+            .result-card-col, .checkup-card-col {
+                max-width: 100%;
+                min-width: 0;
+            }
+            .card.checkup-result, .card.checkup-card {
+                margin: 0;
+                width: 100%;
+                min-height: 180px;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .checkup-section {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .checkup-left, .checkup-right {
+                min-width: 0;
+                width: 100%;
+            }
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -500,8 +623,8 @@
         <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
         <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
         <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
-        <a href="{{route('chatbot')}}" class="active"><i class="fas fa-robot"></i> Chat With Sage</a>
-        <a href="{{route('checkup')}}"><i class="fas fa-check"></i> Checkups</a>
+        <a href="{{route('chatbot')}}"><i class="fas fa-robot"></i> Chat With Sage</a>
+        <a href="{{route('checkup')}}" class="active"><i class="fas fa-check"></i> Checkups</a>
         <a href="{{route('settings')}}" ><i class="fas fa-cog"></i> Settings</a>
     </div>
 
@@ -511,7 +634,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1 style="font-weight: bold">What can Sage help you?</h1>
+            <h1 style="font-weight: bold">Baby Checkups</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
                  <div class="notification-icon" id="notificationBell" style="position: relative;">
@@ -562,27 +685,109 @@
         </div>
 
        {{--Main Content--}}
-       <div class="chat-container">
-            <!-- Header -->
-            <div class="chat-header">
-                <img src="{{ asset('img/sage.ico') }}" alt="Sage Avatar">
-                <h4 class="m-0">Sage</h4>
+        <div class="container-fluid" style="max-width: 1400px; margin: 0 auto;">
+            <div class="mb-3" style="max-width: 400px;">
+                <label for="babyAgeSelect" style="font-weight: bold; margin-bottom: 8px;">Select Baby Age</label>
+                <select id="babyAgeSelect" class="form-select">
+                    <option value="" selected disabled>Choose age range</option>
+                    <option value="0-6m">0-6 months</option>
+                    <option value="7-12m">7-12 months</option>
+                    <option value="1-2y">1-2 years</option>
+                    <option value="2-3y">2-3 years</option>
+                    <option value="3-4y">3-4 years</option>
+                    <option value="4-6y">4-6 years</option>
+                </select>
             </div>
 
-            <!-- Chat Area -->
-            <div id="chatbox"></div>
-
-            <!-- Input -->
-            <div class="chat-input">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="userInput" placeholder="Enter your message" />
-                    <button class="btn" onclick="sendMessage()" style="color: white; background-color: #1976d2; border-color: #1976d2;">
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </button>
+            <!-- Health Check Row -->
+            <div class="checkup-row">
+                <div class="checkup-card-col">
+                    <div class="card checkup-card">
+                        <h3>Health Check</h3>
+                        <form>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="health1">
+                                <label class="form-check-label" for="health1">Temperature normal</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="health2">
+                                <label class="form-check-label" for="health2">No cough or cold</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="health3">
+                                <label class="form-check-label" for="health3">No skin rash</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="health4">
+                                <label class="form-check-label" for="health4">Normal stool</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="health5">
+                                <label class="form-check-label" for="health5">Active & alert</label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="result-card-col">
+                    <div class="card checkup-result">
+                        <h3>Health Result</h3>
+                        <ul style="font-size: 14px; color: #888;">
+                            <li>Temperature: -- °C</li>
+                            <li>Cough/Cold: --</li>
+                            <li>Skin: --</li>
+                            <li>Stool: --</li>
+                            <li>Activity: --</li>
+                        </ul>
+                        <p style="font-size: 16px; color: #555;">No health checkup selected.</p>
+                    </div>
                 </div>
             </div>
-	    </div>
-       {{--Main Content End--}}
+
+            <!-- Nutrition Check Row -->
+            <div class="checkup-row">
+                <div class="checkup-card-col">
+                    <div class="card checkup-card">
+                        <h3>Nutrition Check</h3>
+                        <form>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="nutrition1">
+                                <label class="form-check-label" for="nutrition1">Appetite good</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="nutrition2">
+                                <label class="form-check-label" for="nutrition2">Breastfeeding/formula</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="nutrition3">
+                                <label class="form-check-label" for="nutrition3">Solid food intake</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="nutrition4">
+                                <label class="form-check-label" for="nutrition4">Hydration (water/milk)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="nutrition5">
+                                <label class="form-check-label" for="nutrition5">No vomiting/diarrhea</label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="result-card-col">
+                    <div class="card checkup-result">
+                        <h3>Nutrition Result</h3>
+                        <ul style="font-size: 14px; color: #888;">
+                            <li>Appetite: --</li>
+                            <li>Milk Intake: --</li>
+                            <li>Solid Food: --</li>
+                            <li>Hydration: --</li>
+                            <li>Digestive: --</li>
+                        </ul>
+                        <p style="font-size: 16px; color: #555;">No nutrition checkup selected.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{--Main Content End--}}
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
