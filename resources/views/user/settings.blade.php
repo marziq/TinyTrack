@@ -261,7 +261,7 @@
 
         .card {
             background-color: white;
-            padding: 25px;
+            padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
@@ -275,7 +275,7 @@
         .card h3 {
             margin-bottom: 15px;
             color: #555;
-            font-size: 18px;
+            font-size: 24px;
         }
 
         .card p {
@@ -285,6 +285,9 @@
             margin-bottom: 0;
         }
 
+        .form-label, .form-check-label, .form-select, .form-control {
+            font-size: 1.1rem;
+        }
         .welcome-section {
             background-color: white;
             padding: 20px;
@@ -494,95 +497,93 @@
         </div>
 
        {{--Main Content--}}
-       <div class="container">
-    <div class="row">
-        <!-- Basic Settings Card -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Basic Settings</h3>
+        <div class="container" style="max-width: 800px;">
+            <!-- Basic Settings Card -->
+            <div class="mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Basic Settings</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Dark Mode Switch -->
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="darkModeSwitch">
+                            <label class="form-check-label" for="darkModeSwitch">Enable Dark Mode</label>
+                        </div>
+                        <!-- Notification Preferences -->
+                        <div class="mb-3">
+                            <label class="form-label">Notification Preferences</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="notifEmail" checked>
+                                <label class="form-check-label" for="notifEmail">Email Notifications</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="notifApp" checked>
+                                <label class="form-check-label" for="notifApp">App Notifications</label>
+                            </div>
+                        </div>
+                        <!-- Font Size Adjustment -->
+                        <div class="mb-3">
+                            <label for="fontSizeSelect" class="form-label">Font Size</label>
+                            <select class="form-select" id="fontSizeSelect">
+                                <option value="normal" selected>Normal</option>
+                                <option value="large">Large</option>
+                                <option value="xlarge">Extra Large</option>
+                            </select>
+                        </div>
+                        <!-- Privacy Settings -->
+                        <div class="mb-3">
+                            <label class="form-label">Privacy</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="showProfile" checked>
+                                <label class="form-check-label" for="showProfile">Show my profile to other users</label>
+                            </div>
+                        </div>
+                        <!-- Account Actions -->
+                        <div class="mb-3">
+                            <button class="btn btn-outline-danger" type="button" onclick="alert('Account deletion is not implemented in this demo.')">Delete Account</button>
+                            <button class="btn btn-outline-secondary" type="button" onclick="alert('Data download is not implemented in this demo.')">Download My Data</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <!-- Dark Mode Switch -->
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" id="darkModeSwitch">
-                        <label class="form-check-label" for="darkModeSwitch">Enable Dark Mode</label>
+            </div>
+
+            <!-- Update Password -->
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Update Password</h3>
                     </div>
-                    <!-- Notification Preferences -->
-                    <div class="mb-3">
-                        <label class="form-label">Notification Preferences</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="notifEmail" checked>
-                            <label class="form-check-label" for="notifEmail">Email Notifications</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="notifApp" checked>
-                            <label class="form-check-label" for="notifApp">App Notifications</label>
-                        </div>
-                    </div>
-                    <!-- Font Size Adjustment -->
-                    <div class="mb-3">
-                        <label for="fontSizeSelect" class="form-label">Font Size</label>
-                        <select class="form-select" id="fontSizeSelect">
-                            <option value="normal" selected>Normal</option>
-                            <option value="large">Large</option>
-                            <option value="xlarge">Extra Large</option>
-                        </select>
-                    </div>
-                    <!-- Privacy Settings -->
-                    <div class="mb-3">
-                        <label class="form-label">Privacy</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="showProfile" checked>
-                            <label class="form-check-label" for="showProfile">Show my profile to other users</label>
-                        </div>
-                    </div>
-                    <!-- Account Actions -->
-                    <div class="mb-3">
-                        <button class="btn btn-outline-danger" type="button" onclick="alert('Account deletion is not implemented in this demo.')">Delete Account</button>
-                        <button class="btn btn-outline-secondary" type="button" onclick="alert('Data download is not implemented in this demo.')">Download My Data</button>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('user-password.update') }}">
+                            @csrf
+                            @method('PUT')
+
+                            <!-- Current Password -->
+                            <div class="mb-3">
+                                <label for="current_password" class="form-label">Current Password</label>
+                                <input type="password" name="current_password" id="current_password" class="form-control" required>
+                            </div>
+
+                            <!-- New Password -->
+                            <div class="mb-3">
+                                <label for="password" class="form-label">New Password</label>
+                                <input type="password" name="password" id="password" class="form-control" required>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="mb-3">
+                                <label for="password_confirmation" class="form-label">Confirm Password</label>
+                                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Update Password</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Update Password -->
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Update Password</h3>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="{{ route('user-password.update') }}">
-                        @csrf
-                        @method('PUT')
-
-                        <!-- Current Password -->
-                        <div class="mb-3">
-                            <label for="current_password" class="form-label">Current Password</label>
-                            <input type="password" name="current_password" id="current_password" class="form-control" required>
-                        </div>
-
-                        <!-- New Password -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label">New Password</label>
-                            <input type="password" name="password" id="password" class="form-control" required>
-                        </div>
-
-                        <!-- Confirm Password -->
-                        <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Confirm Password</label>
-                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Update Password</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-       {{--Main Content End--}}
+        {{--Main Content End--}}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
