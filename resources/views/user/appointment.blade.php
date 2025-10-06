@@ -647,6 +647,7 @@
                 </table>
             </div>
         </div>
+
         <div class="appointment-container">
             <div class="appointment-header">
                 <h2>Doctor Appointment</h2>
@@ -691,7 +692,57 @@
                 </select>
             </div>
 
+            <div class="form-group" id="vaccination-type-group" style="display: none;">
+                <label for="vaccination-type">Select Vaccination Type</label>
+                <select id="vaccination-type" class="form-control small-select">
+                    <option value="" selected disabled>Select vaccination</option>
+                    <option value="bcg">BCG</option>
+                    <option value="hepatitis_b">Hepatitis B</option>
+                    <option value="polio">Polio</option>
+                    <option value="dpt">DPT</option>
+                    <option value="measles">Measles</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
             <button class="btn" id="submit-appointment">Submit Appointment</button>
+        </div>
+        <!-- Vaccination Container -->
+        <div class="appointment-container">
+            <div class="appointment-header">
+                <h2>Vaccination Records</h2>
+                <p>Select a baby to view their vaccination history.</p>
+            </div>
+
+            <!-- Baby Selector for Vaccination -->
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="baby-vaccination-select" style="font-size: 16px; font-weight: bold; color: #1976d2;">Select Baby</label>
+                <select id="baby-vaccination-select" class="form-control small-select">
+                    <option value="" selected disabled>Select a baby</option>
+                    @foreach($babies as $baby)
+                        <option value="{{ $baby->id }}">{{ $baby->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Vaccination List Table -->
+            <div id="vaccination-list-container">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Vaccination Date</th>
+                            <th>Vaccine Type</th>
+                            <th>Doctor Name</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vaccination-list">
+                        <tr>
+                            <td colspan="5" class="text-center">Select a baby to view vaccinations.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -757,22 +808,92 @@
                 });
             });
 
+            // Show/hide vaccination type
+            const appointmentTypeSelect = document.getElementById('appointment-type');
+            const vaccinationTypeGroup = document.getElementById('vaccination-type-group');
+
+            appointmentTypeSelect.addEventListener('change', function () {
+                if (this.value === 'vaccination') {
+                    vaccinationTypeGroup.style.display = 'block';
+                } else {
+                    vaccinationTypeGroup.style.display = 'none';
+                    document.getElementById('vaccination-type').selectedIndex = 0;
+                }
+            });
+
             // Submit appointment logic
             document.getElementById('submit-appointment').addEventListener('click', function () {
                 const date = document.querySelector('.flatpickr-day.selected')?.ariaLabel;
                 const time = document.querySelector('.appointment-time-btn.focus')?.innerText;
-                const appointmentType = document.getElementById('appointment-type').value;
-
-                // Get the selected baby name
+                const appointmentType = appointmentTypeSelect.value;
                 const babySelect = document.getElementById('baby-select');
                 const babyName = babySelect.options[babySelect.selectedIndex]?.text;
 
-                if (!date || !time || !appointmentType || !babyName) {
+                let vaccinationType = '';
+                if (appointmentType === 'vaccination') {
+                    vaccinationType = document.getElementById('vaccination-type').value;
+                }
+
+                if (!date || !time || !appointmentType || !babyName || (appointmentType === 'vaccination' && !vaccinationType)) {
                     alert('Please fill out all fields before submitting.');
                 } else {
-                    alert(`Appointment scheduled for ${date} at ${time} for a ${appointmentType} for ${babyName}.`);
+                    let message = `Appointment scheduled for ${date} at ${time} for a ${appointmentType}`;
+                    if (appointmentType === 'vaccination') {
+                        message += ` (${document.getElementById('vaccination-type').options[document.getElementById('vaccination-type').selectedIndex].text})`;
+                    }
+                    message += ` for ${babyName}.`;
+                    alert(message);
                 }
             });
+        });
+
+        //vaccination section
+        document.addEventListener('DOMContentLoaded', function () {
+            const babyVaccinationSelector = document.getElementById('baby-vaccination-select');
+            const vaccinationList = document.getElementById('vaccination-list');
+
+            if (babyVaccinationSelector) {
+                babyVaccinationSelector.addEventListener('change', function () {
+                    const babyId = this.value;
+
+                    if (babyId) {
+                        fetch(`dashboard/vaccination/${babyId}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                vaccinationList.innerHTML = '';
+
+                                if (data.length > 0) {
+                                    data.forEach(vaccination => {
+                                        const row = `
+                                            <tr>
+                                                <td>${vaccination.vaccinationDate}</td>
+                                                <td>${vaccination.vaccineType}</td>
+                                                <td>${vaccination.doctorName}</td>
+                                                <td>${vaccination.location}</td>
+                                                <td>${vaccination.status}</td>
+                                            </tr>
+                                        `;
+                                        vaccinationList.innerHTML += row;
+                                    });
+                                } else {
+                                    vaccinationList.innerHTML = `
+                                        <tr>
+                                            <td colspan="5" class="text-center">No vaccinations found for this baby.</td>
+                                        </tr>
+                                    `;
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error fetching vaccinations:', error);
+                                vaccinationList.innerHTML = `
+                                    <tr>
+                                        <td colspan="5" class="text-center text-danger">Failed to load vaccinations.</td>
+                                    </tr>
+                                `;
+                            });
+                    }
+                });
+            }
         });
 
         document.addEventListener('DOMContentLoaded', function () {
