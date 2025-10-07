@@ -51,10 +51,21 @@ class AppServiceProvider extends ServiceProvider
 
                 // Pass data to the view
                 $view->with('baby', $baby);
-            });
+        });
+
         View::composer('admin.calendar', function ($view) {
                 $users = User::all();
                 $view->with('users', $users);
-            });
+         });
+
+        // Share the preference with all views
+        View::composer('*', function ($view) {
+        // Get preference (e.g., from Auth user, or fall back to cookie/session)
+        $isDarkMode = auth()->check()
+            ? auth()->user()->dark_mode
+            : request()->cookie('dark_mode', false); // Example fall back
+
+        $view->with('isDarkMode', $isDarkMode);
+         });
     }
 }

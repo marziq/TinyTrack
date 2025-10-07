@@ -589,6 +589,44 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+    // --- Dark Mode Logic Start ---
+        const body = document.body;
+        const darkModeSwitch = document.getElementById('darkModeSwitch');
+        const localStorageKey = 'userDarkMode';
+
+        // 1. Function to apply the class
+        function applyTheme(isDark) {
+            if (isDark) {
+                body.classList.add('dark-mode');
+            } else {
+                body.classList.remove('dark-mode');
+            }
+        }
+
+        // 2. Load the initial state from Local Storage (or default to false/light)
+        let initialDarkMode = localStorage.getItem(localStorageKey) === 'true';
+        applyTheme(initialDarkMode);
+
+        // 3. Set the switch state on page load
+        if (darkModeSwitch) {
+            darkModeSwitch.checked = initialDarkMode;
+
+            // 4. Listener for the toggle switch
+            darkModeSwitch.addEventListener('change', function() {
+                const isChecked = this.checked;
+                // a. Apply theme immediately
+                applyTheme(isChecked);
+
+                // b. Save preference to Local Storage
+                localStorage.setItem(localStorageKey, isChecked);
+
+                // c. OPTIONAL: You can also send an AJAX request here to save it in the database
+                // (This is better if you want the setting to sync across devices)
+                // saveDarkModePreference(isChecked);
+            });
+        }
+
+        // --- Dark Mode Logic End ---
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('hidden');
