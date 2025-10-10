@@ -8,12 +8,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Outfit:wght@100..900&family=Sigmar&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Nunito', sans-serif;
+            font-family: "Outfit", sans-serif;
         }
 
         body {
@@ -43,6 +44,8 @@
             font-size: 20px;
             margin-bottom: 30px;
             color: #1976d2;
+            font-family: 'Outfit', sans-serif;
+            font-weight: bold;
         }
 
         .sidebar a {
@@ -54,12 +57,15 @@
             gap: 10px;
             transition: all 0.3s;
             border-radius: 6px;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             font-size: 15px;
+            height: 45px;
+            display: flex;
+            align-items: center;
         }
 
         .sidebar a:not([style]) {
-            box-shadow: 0 4px 16px rgba(25, 118, 210, 0.30);
+            box-shadow: 0 4px 16px rgba(25, 118, 210, 0.28);
             margin-bottom: 20px;
         }
 
@@ -331,14 +337,19 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
             gap: 20px;
+            margin-right: 70px;
+            margin-bottom: 50px;
+            margin-left: 70px;
         }
 
         .baby-info-panel {
             background-color: white;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(48, 48, 48, 0.05);
             display: flex;
+            height: 420px;
+            margin-bottom: 20px;
             flex-direction: column;
             align-items: center; /* Center content horizontally */
             text-align: center; /* Center text */
@@ -413,8 +424,8 @@
             background-color: white;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            height: 450px;
+            box-shadow: 0 4px 12px rgba(49, 49, 49, 0.05);
+            height: 420px;
             display: flex;
             align-items: stretch;
             gap: 20px;
@@ -488,7 +499,7 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            max-height: 300px; /* Set a fixed height */
+            max-height: 1000px; /* Set a fixed height */
             overflow-y: auto; /* Enable vertical scrolling */
         }
 
@@ -540,11 +551,11 @@
 
         .milestone-date {
             font-size: 14px;
-            color: #666;
+            color: #666;36
         }
 
         .milestone-scroll {
-            max-height: 220px; /* Adjust as needed */
+            max-height: 420px; /* Adjust as needed */
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: #bbdefb #f8fafc;
@@ -563,7 +574,7 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            max-height: 300px; /* Set a fixed height */
+            max-height: 1000px; /* Set a fixed height */
             overflow-y: auto; /* Enable vertical scrolling */
         }
 
@@ -599,7 +610,7 @@
         }
 
         .vaccine-scroll {
-            max-height: 220px; /* Adjust as needed */
+            max-height: 420px; /* Adjust as needed */
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: #bbdefb #f8fafc;
@@ -638,7 +649,7 @@
         }
 
         .baby-tips-scroll {
-            max-height: 220px; /* Adjust as needed */
+            max-height: 420px; /* Adjust as needed */
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: #bbdefb #f8fafc;
@@ -657,7 +668,7 @@
         .vaccine-container,
         .baby-tips-panel {
             /*border: 2.5px solid #1976d2!important; --- IGNORE ---*/
-            box-shadow: 0 4px 8px 0 #646566 !important;
+            box-shadow: 0 4px 8px 0 #b8b8b8 !important;
         }
     </style>
 </head>
@@ -665,7 +676,7 @@
     <div class="sidebar" id="sidebar">
         <a href="{{route('mybaby')}}" style="display: flex; align-items: center; gap: 10px;">
             <img src="{{ asset('img/tinytrack-logo.png') }}" alt="Logo" style="height: 36px; width: 36px; object-fit: contain;">
-            <h2 style="margin-bottom: 0;">My Dashboard</h2>
+            <h2 style="margin-bottom: 0; font-weight: bold;">My Dashboard</h2>
         </a>
         <hr style="color: #1976d2">
         <a href="{{route('mybaby')}}" class="active"><i class="fas fa-child"></i> My Baby</a>
@@ -810,9 +821,6 @@
                     <div class="baby-actions">
                         <button class="btn btn-outline-primary" onclick="editSelectedBaby()">
                             <i class="fas fa-pencil-alt"></i> Edit
-                        </button>
-                        <button class="btn btn-outline-danger" onclick="deleteSelectedBaby()">
-                            <i class="fas fa-trash"></i> Delete
                         </button>
                     </div>
                 </div>

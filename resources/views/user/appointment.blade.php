@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Sigmar&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
         * {
             margin: 0;
@@ -731,14 +732,12 @@
                         <tr>
                             <th>Vaccination Date</th>
                             <th>Vaccine Type</th>
-                            <th>Doctor Name</th>
-                            <th>Location</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody id="vaccination-list">
                         <tr>
-                            <td colspan="5" class="text-center">Select a baby to view vaccinations.</td>
+                            <td colspan="3" class="text-center">Select a baby to view vaccinations.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -852,48 +851,61 @@
             const babyVaccinationSelector = document.getElementById('baby-vaccination-select');
             const vaccinationList = document.getElementById('vaccination-list');
 
+            // Hardcoded vaccine list
+            const vaccines = [
+                { date: 'At birth', type: 'BCG' },
+                { date: 'At birth', type: 'Hepatitis B' },
+                { date: '2 months', type: 'DTP' },
+                { date: '2 months', type: 'Polio' },
+                { date: '3 months', type: 'DTP' },
+                { date: '3 months', type: 'Polio' },
+                { date: '4 months', type: 'DTP' },
+                { date: '4 months', type: 'Polio' },
+                { date: '9 months', type: 'Measles' },
+                { date: '12 months', type: 'MMR' },
+            ];
+            // Store status in memory (per session)
+            let vaccineStatus = Array(vaccines.length).fill(false);
+
             if (babyVaccinationSelector) {
                 babyVaccinationSelector.addEventListener('change', function () {
-                    const babyId = this.value;
-
-                    if (babyId) {
-                        fetch(`dashboard/vaccination/${babyId}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                vaccinationList.innerHTML = '';
-
-                                if (data.length > 0) {
-                                    data.forEach(vaccination => {
-                                        const row = `
-                                            <tr>
-                                                <td>${vaccination.vaccinationDate}</td>
-                                                <td>${vaccination.vaccineType}</td>
-                                                <td>${vaccination.doctorName}</td>
-                                                <td>${vaccination.location}</td>
-                                                <td>${vaccination.status}</td>
-                                            </tr>
-                                        `;
-                                        vaccinationList.innerHTML += row;
-                                    });
-                                } else {
-                                    vaccinationList.innerHTML = `
-                                        <tr>
-                                            <td colspan="5" class="text-center">No vaccinations found for this baby.</td>
-                                        </tr>
-                                    `;
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error fetching vaccinations:', error);
-                                vaccinationList.innerHTML = `
-                                    <tr>
-                                        <td colspan="5" class="text-center text-danger">Failed to load vaccinations.</td>
-                                    </tr>
-                                `;
-                            });
-                    }
+                    // Always show the same hardcoded list
+                    vaccinationList.innerHTML = '';
+                    vaccines.forEach((vaccine, idx) => {
+                        const checked = vaccineStatus[idx] ? 'active' : '';
+                        const iconClass = vaccineStatus[idx] ? 'fas fa-check' : 'fas fa-check-circle';
+                        const row = `
+                            <tr>
+                                <td>${vaccine.date}</td>
+                                <td>${vaccine.type}</td>
+                                <td style="text-align:center;">
+                                    <button class="btn btn-outline-success vaccination-tick-btn ${checked}" data-idx="${idx}">
+                                        <i class="${iconClass}"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                        vaccinationList.innerHTML += row;
+                    });
                 });
+                // Initial state
+                babyVaccinationSelector.dispatchEvent(new Event('change'));
             }
+            // Event delegation for tick button
+            vaccinationList.addEventListener('click', function(e) {
+                if (e.target.closest('.vaccination-tick-btn')) {
+                    const btn = e.target.closest('.vaccination-tick-btn');
+                    const idx = btn.getAttribute('data-idx');
+                    vaccineStatus[idx] = !vaccineStatus[idx];
+                    btn.classList.toggle('active');
+                    const icon = btn.querySelector('i');
+                    if (btn.classList.contains('active')) {
+                        icon.className = 'fas fa-check';
+                    } else {
+                        icon.className = 'fas fa-check-circle';
+                    }
+                }
+            });
         });
 
         document.addEventListener('DOMContentLoaded', function () {

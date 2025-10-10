@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Sigmar&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
         * {
             margin: 0;
@@ -571,6 +572,23 @@
             font-weight: bold;
             box-shadow: 0 2px 12px rgba(25, 118, 210, 0.18); /* stronger shadow for active */
             border: 2px solid #1976d2; /* darker outline for active */
+        }
+        #tipInfoModal .modal-dialog.modal-lg {
+            max-width: 1200px !important;
+            width: 95vw !important;
+        }
+        @media (max-width: 768px) {
+            #tipInfoModal .modal-dialog.modal-lg {
+                max-width: 98vw !important;
+                width: 98vw !important;
+                margin: 0;
+            }
+        }
+        #tipInfoModal .modal-content {
+            padding: 0 !important;
+        }
+        #tipInfoModal .modal-body {
+            padding: 32px 32px 24px 32px !important;
         }
     </style>
 </head>

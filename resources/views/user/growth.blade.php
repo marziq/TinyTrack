@@ -9,12 +9,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Outfit:wght@100..900&family=Sigmar&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Outfit', sans-serif;
         }
 
         body {
@@ -55,11 +56,11 @@
             gap: 10px;
             transition: all 0.3s;
             border-radius: 6px;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             font-size: 15px;
         }
         .sidebar a:not([style]) {
-            box-shadow: 0 4px 16px rgba(25, 118, 210, 0.30);
+            box-shadow: 0 4px 16px rgba(25, 118, 210, 0.28);
             margin-bottom: 20px;
         }
         .sidebar a:hover {
@@ -684,7 +685,7 @@
     <div class="sidebar" id="sidebar">
         <a href="{{route('mybaby')}}" style="display: flex; align-items: center; gap: 10px;">
             <img src="{{ asset('img/tinytrack-logo.png') }}" alt="Logo" style="height: 36px; width: 36px; object-fit: contain;">
-            <h2 style="margin-bottom: 0;">My Dashboard</h2>
+            <h2 style="margin-bottom: 0; font-weight: bold;">My Dashboard</h2>
         </a>
         <hr style="color: #1976d2">
         <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>

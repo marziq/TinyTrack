@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Sigmar&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
         * {
             margin: 0;
@@ -648,210 +649,241 @@
             </div>
         </div>
 
+        <!-- MAIN LAYOUT RESTRUCTURE: Four main card sections, selectors, and horizontal scroll for skill groups -->
         <div class="main-content">
-            <div class="baby-header">
-                <h2 class="baby-name">Track <span id="selectedBabyNameHeading">Progress</span></h2>
-                <select id="babySelector" class="baby-selector" onchange="loadBabyData(this.value)">
+            <div class="baby-header" style="justify-content: space-between; align-items: center; margin-bottom: 0;">
+                <h2 class="baby-name" style="margin-bottom: 0;">Track <span id="selectedBabyNameHeading">Progress</span></h2>
+                <select id="babySelector" class="baby-selector" onchange="onBabyChange(this.value)">
                     <option value="" disabled selected hidden>Select a baby</option>
                     @foreach(Auth::user()->babies as $baby)
                         <option value="{{ $baby->id }}" data-name="{{ $baby->name }}">{{ $baby->name }}</option>
                     @endforeach
                 </select>
             </div>
-
-            <div class="progress-wrapper">
-                <div class="progress-container">
-                    <!-- Physical Section -->
-                    <div class="physical-section">
-                        <h3>Physical</h3>
-                        <div class="physical-list">
-                            <div class="physical-item">
-                                <p onclick="toggleDropdown(this)">Motor Skills <i class="fas fa-chevron-down"></i></p>
-                                <div class="dropdown-content">
-                                    <img src="{{ asset('img/motorskills.jpg') }}" alt="Motor Skills" class="progress-image-top">
-                                    <span class="not-completed">0/5 completed</span>
-                                    <div class="progress mb-3">
-                                        <div id="physicalProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 40%">40%</div>
-                                    </div>
-                                    <div class="milestone-cards">
-                                        <div class="milestone-card">
-                                            <span>Rolls over from tummy to back</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Sits without support</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Crawls on hands and knees</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Stands holding on</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Walks with assistance</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="physical-item">
-                                <p onclick="toggleDropdown(this)">Sensory Skills <i class="fas fa-chevron-down"></i></p>
-                                <div class="dropdown-content">
-                                    <img src="{{ asset('img/sensoryskills.png') }}" alt="Sensory Skills" class="progress-image-top">
-                                    <span class="not-completed">0/5 completed</span>
-                                    <div class="progress mb-3">
-                                        <div id="physicalProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 50%">50%</div>
-                                    </div>
-                                        <div class="milestone-cards">
-                                            <div class="milestone-card">
-                                                <span>Responds to sounds by turning head</span>
-                                                <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                            </div>
-                                            <div class="milestone-card">
-                                                <span>Follows moving objects with eyes</span>
-                                                <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                            </div>
-                                            <div class="milestone-card">
-                                                <span>Reaches for and grasps objects</span>
-                                                <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                            </div>
-                                            <div class="milestone-card">
-                                                <span>Explores objects with mouth</span>
-                                                <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                            </div>
-                                            <div class="milestone-card">
-                                                <span>Recognizes familiar faces and voices</span>
-                                                <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="card" style="max-width: 500px; margin: 0 auto 32px auto; padding: 32px 24px; border-radius: 18px; box-shadow: 0 4px 16px rgba(25,118,210,0.10);">
+                <h3 style="color:#1976d2; font-weight:bold; margin-bottom: 18px;">Progress Overview</h3>
+                <div id="progressContent">
+                    <div style="text-align:center; color:#888; font-size:18px; padding:32px 0;">Who you wanna see progress?</div>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 32px;">
+                <!-- Month Range Selector -->
+                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 0;">
+                    <label for="monthRange" style="font-weight:600; color:#1976d2;">Select month range:</label>
+                    <select id="monthRange" class="baby-selector" style="width:auto; min-width:120px;" onchange="onMonthChange(this.value)">
+                        <option value="0-3">0-3 months</option>
+                        <option value="4-6">4-6 months</option>
+                        <option value="7-9">7-9 months</option>
+                        <option value="10-12">10-12 months</option>
+                    </select>
+                </div>
+                <!-- PHYSICAL CARD -->
+                <div class="card" style="padding: 24px 18px; border-radius: 14px;">
+                    <h3 style="color:#1976d2; font-weight:bold; margin-bottom: 18px;">Physical</h3>
+                    <div class="skills-horizontal" id="physicalSkills" style="display: flex; gap: 18px; overflow-x: auto; padding-bottom: 8px;">
+                        <!-- Skill groups will be injected here -->
                     </div>
-
-                    <!-- Cognitive Section -->
-                    <div class="cognitive-section">
-                        <h3>Cognitive</h3>
-                        <div class="cognitive-list">
-                            <div class="cognitive-item">
-                                <p onclick="toggleDropdown(this)">Problem Solving <i class="fas fa-chevron-down"></i></p>
-                                <div class="dropdown-content">
-                                    <img src="{{ asset('img/problemsolving.jpeg') }}" alt="Problem Solving" class="progress-image-top">
-                                    <span class="not-completed">0/5 completed</span>
-                                    <div class="progress mb-3">
-                                        <div id="cognitiveProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 60%">60%</div>
-                                    </div>
-                                    <div class="milestone-cards">
-                                        <div class="milestone-card">
-                                            <span>Looks for hidden objects</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Transfers objects from one hand to another</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Tries to get objects that are out of reach</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Finds partially hidden objects</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Shows curiosity about things and tries to get them</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cognitive-item">
-                                <p onclick="toggleDropdown(this)">Language Skills <i class="fas fa-chevron-down"></i></p>
-                                <div class="dropdown-content">
-                                    <img src="{{ asset('img/languageskills.jpg') }}" alt="Language Skills" class="progress-image-top">
-                                    <span class="not-completed">0/4 completed</span>
-                                    <div class="progress mb-3">
-                                        <div id="cognitiveProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 35%">35%</div>
-                                    </div>
-                                    <div class="milestone-cards">
-                                        <div class="milestone-card">
-                                            <span>Babbles with expression and copies sounds</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Says simple words like "mama" or "dada"</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Responds to own name</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Understands "no"</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+                <!-- COGNITIVE CARD -->
+                <div class="card" style="padding: 24px 18px; border-radius: 14px;">
+                    <h3 style="color:#1976d2; font-weight:bold; margin-bottom: 18px;">Cognitive</h3>
+                    <div class="skills-horizontal" id="cognitiveSkills" style="display: flex; gap: 18px; overflow-x: auto; padding-bottom: 8px;">
+                        <!-- Skill groups will be injected here -->
                     </div>
-
-                    <!-- Social Section -->
-                    <div class="social-section">
-                        <h3>Social</h3>
-                        <div class="social-list">
-                            <div class="social-item">
-                                <p onclick="toggleDropdown(this)">Interaction Skills <i class="fas fa-chevron-down"></i></p>
-                                <div class="dropdown-content">
-                                    <img src="{{ asset('img/interaction.png') }}" alt="Interaction Skills" class="progress-image-top">
-                                    <span class="not-completed">0/3 completed</span>
-                                    <div class="progress mb-3">
-                                        <div id="socialProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 10%">10%</div>
-                                    </div>
-                                    <div class="milestone-cards">
-                                        <div class="milestone-card">
-                                            <span>Waves goodbye or claps hands</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Plays simple games like peek-a-boo</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>Imitates gestures or sounds</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="social-item">
-                                <p onclick="toggleDropdown(this)">Emotional Skills <i class="fas fa-chevron-down"></i></p>
-                                <div class="dropdown-content">
-                                    <img src="{{ asset('img/emotional.jpg') }}" alt="Emotional Skills" class="progress-image-top">
-                                    <span class="not-completed">0/2 completed</span>
-                                    <div class="progress mb-3">
-                                        <div id="socialProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 20%">20%</div>
-                                    </div>
-                                    <div class="milestone-cards">
-                                        <div class="milestone-card">
-                                            <span>Shows affection to familiar people</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                        <div class="milestone-card">
-                                            <span>May be shy or nervous with strangers</span>
-                                            <button class="milestone-check"><i class="fas fa-check"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+                <!-- SOCIAL CARD -->
+                <div class="card" style="padding: 24px 18px; border-radius: 14px;">
+                    <h3 style="color:#1976d2; font-weight:bold; margin-bottom: 18px;">Social</h3>
+                    <div class="skills-horizontal" id="socialSkills" style="display: flex; gap: 18px; overflow-x: auto; padding-bottom: 8px;">
+                        <!-- Skill groups will be injected here -->
                     </div>
                 </div>
             </div>
         </div>
+
+        <script>
+        // --- DATA PLACEHOLDER ---
+        const milestoneData = {
+            '0-3': {
+                physical: [
+                    { title: 'Motor Skills', completed: 1, total: 3, items: ['Lifts head', 'Turns head side to side', 'Makes smooth arm/leg movements'] },
+                    { title: 'Sensory Skills', completed: 0, total: 2, items: ['Responds to loud sounds', 'Stares at faces'] },
+                ],
+                cognitive: [
+                    { title: 'Problem Solving', completed: 0, total: 2, items: ['Follows moving objects', 'Recognizes familiar people'] },
+                ],
+                social: [
+                    { title: 'Interaction Skills', completed: 0, total: 2, items: ['Begins to smile', 'Looks at parent'] },
+                ]
+            },
+            '4-6': {
+                physical: [
+                    { title: 'Motor Skills', completed: 2, total: 4, items: ['Rolls over', 'Sits with support', 'Pushes up on arms', 'Reaches for toys'] },
+                    { title: 'Sensory Skills', completed: 1, total: 2, items: ['Responds to sounds', 'Explores with mouth'] },
+                ],
+                cognitive: [
+                    { title: 'Problem Solving', completed: 1, total: 2, items: ['Finds partially hidden objects', 'Transfers objects hand to hand'] },
+                ],
+                social: [
+                    { title: 'Interaction Skills', completed: 1, total: 2, items: ['Laughs', 'Enjoys playing with people'] },
+                ]
+            },
+            '7-9': {
+                physical: [
+                    { title: 'Motor Skills', completed: 2, total: 5, items: ['Sits without support', 'Crawls', 'Pulls to stand', 'Stands holding on', 'Walks with help'] },
+                    { title: 'Sensory Skills', completed: 2, total: 3, items: ['Responds to name', 'Looks for hidden things', 'Understands no'] },
+                ],
+                cognitive: [
+                    { title: 'Problem Solving', completed: 1, total: 2, items: ['Finds hidden objects', 'Looks at correct picture when named'] },
+                ],
+                social: [
+                    { title: 'Interaction Skills', completed: 1, total: 2, items: ['Waves bye', 'Plays peek-a-boo'] },
+                ]
+            },
+            '10-12': {
+                physical: [
+                    { title: 'Motor Skills', completed: 3, total: 5, items: ['Stands alone', 'Walks with assistance', 'Picks up small objects', 'Drinks from cup', 'Feeds self'] },
+                    { title: 'Sensory Skills', completed: 2, total: 3, items: ['Points to objects', 'Imitates gestures', 'Understands simple instructions'] },
+                ],
+                cognitive: [
+                    { title: 'Problem Solving', completed: 2, total: 3, items: ['Looks for things you hide', 'Uses objects correctly', 'Follows simple directions'] },
+                ],
+                social: [
+                    { title: 'Interaction Skills', completed: 2, total: 3, items: ['Shows affection', 'May be shy with strangers', 'Repeats sounds/actions'] },
+                ]
+            }
+        };
+
+        let selectedBaby = null;
+        let selectedMonth = '0-3';
+
+        function onBabyChange(babyId) {
+            selectedBaby = babyId;
+            renderProgress();
+            renderAllSkills();
+        }
+        function onMonthChange(month) {
+            selectedMonth = month;
+            renderAllSkills();
+        }
+        function renderProgress() {
+            const progressDiv = document.getElementById('progressContent');
+            if (!selectedBaby) {
+                progressDiv.innerHTML = '<div style="text-align:center; color:#888; font-size:18px; padding:32px 0;">Who you wanna see progress?</div>';
+                return;
+            }
+            // For demo, use static progress. Replace with AJAX for real data.
+            let p = 0, c = 0, s = 0;
+            const d = milestoneData[selectedMonth];
+            if (d) {
+                p = Math.round(100 * d.physical.reduce((a, g) => a + g.completed, 0) / d.physical.reduce((a, g) => a + g.total, 0));
+                c = Math.round(100 * d.cognitive.reduce((a, g) => a + g.completed, 0) / d.cognitive.reduce((a, g) => a + g.total, 0));
+                s = Math.round(100 * d.social.reduce((a, g) => a + g.completed, 0) / d.social.reduce((a, g) => a + g.total, 0));
+            }
+            progressDiv.innerHTML = `
+                <div style="display:flex; flex-direction:column; gap:18px;">
+                    <div style="display:flex; align-items:center; gap:16px;">
+                        <span style="font-size:2rem; color:#1976d2; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-dumbbell"></i></span>
+                        <div style="flex:1;">
+                            <div style="display:flex; align-items:center; justify-content:space-between;">
+                                <span style="font-weight:bold; color:#1976d2;">Physical</span>
+                                <span style="font-size:15px; color:#1976d2; font-weight:600;">${p}%</span>
+                            </div>
+                            <div class="progress" style="height: 14px; background:#e3f2fd;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: ${p}%; font-size: 12px;" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:16px;">
+                        <span style="font-size:2rem; color:#1976d2; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-brain"></i></span>
+                        <div style="flex:1;">
+                            <div style="display:flex; align-items:center; justify-content:space-between;">
+                                <span style="font-weight:bold; color:#1976d2;">Cognitive</span>
+                                <span style="font-size:15px; color:#1976d2; font-weight:600;">${c}%</span>
+                            </div>
+                            <div class="progress" style="height: 14px; background:#e3f2fd;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: ${c}%; font-size: 12px;" aria-valuenow="${c}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:16px;">
+                        <span style="font-size:2rem; color:#1976d2; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-users"></i></span>
+                        <div style="flex:1;">
+                            <div style="display:flex; align-items:center; justify-content:space-between;">
+                                <span style="font-weight:bold; color:#1976d2;">Social</span>
+                                <span style="font-size:15px; color:#1976d2; font-weight:600;">${s}%</span>
+                            </div>
+                            <div class="progress" style="height: 14px; background:#e3f2fd;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: ${s}%; font-size: 12px;" aria-valuenow="${s}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        function renderSkillSection(section, data) {
+            const container = document.getElementById(section + 'Skills');
+            container.innerHTML = '';
+            if (!selectedBaby) {
+                container.innerHTML = '<div style="color:#aaa; font-size:16px; padding:32px 0;">Select a baby to see milestones.</div>';
+                return;
+            }
+            data[section].forEach(group => {
+                const groupDiv = document.createElement('div');
+                groupDiv.style.minWidth = '260px';
+                groupDiv.style.background = '#e3f2fd';
+                groupDiv.style.borderRadius = '10px';
+                groupDiv.style.boxShadow = '0 2px 8px rgba(25,118,210,0.06)';
+                groupDiv.style.padding = '18px 14px';
+                groupDiv.style.display = 'flex';
+                groupDiv.style.flexDirection = 'column';
+                groupDiv.style.alignItems = 'flex-start';
+                groupDiv.style.gap = '10px';
+                groupDiv.innerHTML = `
+                    <div style="font-weight:600; color:#1976d2; margin-bottom:4px;">${group.title}</div>
+                    <span style="font-size:13px; color:#1976d2;">${group.completed}/${group.total} completed</span>
+                    <div class="progress mb-2" style="height:12px; background:#fff; width:100%;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: ${Math.round(100*group.completed/group.total)}%"></div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
+                        ${group.items.map(item => `<div class="milestone-card" style="font-size:15px; background:#fff; border-radius:6px; padding:8px 12px; margin-bottom:0; display:flex; align-items:center; justify-content:space-between;"><span>${item}</span><button class="milestone-check"><i class="fas fa-check"></i></button></div>`).join('')}
+                    </div>
+                `;
+                container.appendChild(groupDiv);
+            });
+        }
+        function renderAllSkills() {
+            const data = milestoneData[selectedMonth];
+            renderSkillSection('physical', data);
+            renderSkillSection('cognitive', data);
+            renderSkillSection('social', data);
+            // Re-attach check button logic
+            setTimeout(() => {
+                document.querySelectorAll('.milestone-check').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        btn.classList.toggle('completed');
+                    });
+                });
+            }, 100);
+        }
+        // Initial render
+        renderProgress();
+        renderAllSkills();
+        </script>
+        <style>
+        .skills-horizontal::-webkit-scrollbar {
+            height: 8px;
+        }
+        .skills-horizontal::-webkit-scrollbar-thumb {
+            background: #bbdefb;
+            border-radius: 4px;
+        }
+        .skills-horizontal {
+            scrollbar-color: #bbdefb #e3f2fd;
+            scrollbar-width: thin;
+        }
+        </style>
+        <!-- END MAIN LAYOUT RESTRUCTURE -->
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
