@@ -9,13 +9,13 @@
 	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Sigmar&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Outfit:wght@100..900&family=Sigmar&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Outfit', sans-serif;
         }
 
         body {
@@ -45,6 +45,8 @@
             font-size: 20px;
             margin-bottom: 30px;
             color: #1976d2;
+            font-family: 'Outfit', sans-serif;
+            font-weight: bold;
         }
 
         .sidebar a {
