@@ -428,6 +428,57 @@
             box-shadow: 0 2px 12px rgba(25, 118, 210, 0.18); /* stronger shadow for active */
             border: 2px solid #1976d2; /* darker outline for active */
         }
+        /* Profile edit form styles to match design */
+        .profile-photo-wrapper {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 10px auto;
+        }
+
+        .profile-photo-wrapper img.profile-img-preview {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #fff;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .edit-photo-icon {
+            position: absolute;
+            right: -6px;
+            bottom: -6px;
+            background: linear-gradient(180deg,#ff7a18,#ff5c00);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 18px rgba(255,92,0,0.22);
+            border: 4px solid #fff;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background: linear-gradient(180deg,#ff7a18,#ff5c00);
+            color: #fff;
+            border: none;
+            padding: 12px 42px;
+            border-radius: 28px;
+            box-shadow: 0 18px 36px rgba(255,92,0,0.18);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .form-input {
+            border-radius: 8px;
+            box-shadow: none;
+            border: 1px solid #e6eef9;
+            padding: 12px 14px;
+        }
     </style>
 </head>
 <body>
@@ -510,56 +561,60 @@
                             <h3>Profile Information</h3>
                         </div>
                         <div class="card-body">
-                            <div class="profile-img-container mb-3" style="width:140px; height:140px; margin:0 auto;">
-                                <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img" style="width:100%; height:100%;">
-                            </div>
-                            <h4>{{ Auth::user()->name }}</h4>
-                            <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important">User ID: TT{{ Auth::user()->id }}</p>
-                            <!-- View Mode -->
-                            <div id="viewMode">
-                                <div class="row mb-3 justify-content-center">
-                                    <div class="col-sm-4 text-end"><strong>Email Address</strong></div>
-                                    <div class="col-sm-6 text-start text-secondary">{{ Auth::user()->email }}</div>
+                        <!-- Inline Edit Mode (matches design) -->
+                            @php
+                                $nameParts = explode(' ', trim(Auth::user()->name ?? ''), 2);
+                                $firstName = $nameParts[0] ?? '';
+                                $lastName = $nameParts[1] ?? '';
+                            @endphp
+                            <form method="POST" action="{{ route('user-profile-information.update') }}" enctype="multipart/form-data" class="text-start" id="inlineProfileForm">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="name" id="full_name_input" value="{{ old('name', Auth::user()->name) }}">
+
+                                <div class="profile-photo-wrapper">
+                                    <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img-preview">
+                                    <label class="edit-photo-icon" title="Change photo">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        <input type="file" name="profile_photo" id="inline_profile_photo" style="display:none">
+                                    </label>
                                 </div>
-                                <div class="row mb-3 justify-content-center">
-                                    <div class="col-sm-4 text-end"><strong>Gender</strong></div>
-                                    <div class="col-sm-6 text-start text-secondary">{{ ucfirst(strtolower(Auth::user()->gender)) }}</div>
-                                </div>
-                                <div class="row mb-3 justify-content-center">
-                                    <div class="col-sm-4 text-end"><strong>Mobile Number</strong></div>
-                                    <div class="col-sm-6 text-start text-secondary">
-                                        @php
-                                            $number = Auth::user()->mobile_number;
-                                            $formattedNumber = (strlen($number) > 3) ? substr($number, 0, 3) . '-' . substr($number, 3) : $number;
-                                        @endphp
-                                        {{ $formattedNumber }}
+
+                                <h4 class="text-center mb-3">{{ Auth::user()->name }}</h4>
+                                <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important">User ID: TT{{ Auth::user()->id }}</p>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" name="first_name" class="form-control form-input" value="{{ old('first_name', $firstName) }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" name="last_name" class="form-control form-input" value="{{ old('last_name', $lastName) }}">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Email Address</label>
+                                        <input type="email" name="email" class="form-control form-input" value="{{ old('email', Auth::user()->email) }}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="text" name="mobile_number" class="form-control form-input" value="{{ old('mobile_number', Auth::user()->mobile_number) }}">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Location</label>
+                                        <input type="text" name="location" class="form-control form-input" value="{{ old('location', '') }}" placeholder="e.g. New York, USA">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Postal Code</label>
+                                        <input type="text" name="postal_code" class="form-control form-input" value="{{ old('postal_code', '') }}">
                                     </div>
                                 </div>
-                                <div class="row mb-3 justify-content-center">
-                                    <div class="col-sm-4 text-end"><strong>Total Babies</strong></div>
-                                    <div class="col-sm-6 text-start text-secondary">
-                                        {{ Auth::user()->babies->count() }}
-                                        @php
-                                            $maleBabies = Auth::user()->babies->where('gender', 'male')->count();
-                                            $femaleBabies = Auth::user()->babies->where('gender', 'female')->count();
-                                            $otherBabies = Auth::user()->babies->whereNotIn('gender', ['male', 'female'])->count();
-                                        @endphp
-                                        Babies
-                                        <span class="text-muted" style="font-size: 13px;">
-                                            (
-                                            @if($maleBabies) {{ $maleBabies }} Male @endif
-                                            @if($maleBabies && $femaleBabies) , @endif
-                                            @if($femaleBabies) {{ $femaleBabies }} Female @endif
-                                            @if(($maleBabies || $femaleBabies) && $otherBabies) , @endif
-                                            @if($otherBabies) {{ $otherBabies }} Other @endif
-                                            )
-                                        </span>
-                                    </div>
+
+                                <div class="d-flex justify-content-center mt-4">
+                                    <button type="submit" class="save-btn">Save Changes</button>
                                 </div>
-                                <div class="text-end">
-                                    <button style="background-color:#258ef7 !important" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">Update</button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                     <!-- Favourited Baby Tips Card -->
@@ -791,6 +846,35 @@
             let notifModal = new bootstrap.Modal(document.getElementById('notifModal'));
             notifModal.show();
         }
+        // Inline profile photo preview and name combine
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('inline_profile_photo');
+            const preview = document.querySelector('.profile-img-preview');
+
+            if (fileInput && preview) {
+                fileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        preview.src = ev.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            // Combine first and last names into 'name' hidden input before submit
+            const form = document.getElementById('inlineProfileForm');
+            if (form) {
+                form.addEventListener('submit', function() {
+                    const f = form.querySelector('input[name="first_name"]')?.value || '';
+                    const l = form.querySelector('input[name="last_name"]')?.value || '';
+                    const full = (f + ' ' + l).trim();
+                    const hidden = document.getElementById('full_name_input');
+                    if (hidden) hidden.value = full || '{{ Auth::user()->name }}';
+                });
+            }
+        });
     </script>
 </body>
 </html>
