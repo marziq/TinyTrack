@@ -688,14 +688,13 @@
             <h2 style="margin-bottom: 0; font-weight: bold;">My Dashboard</h2>
         </a>
         <hr style="color: #1976d2">
-        <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
-        <a href="{{route('growth')}}" class="active"><i class="fas fa-chart-line"></i> Growth</a>
-        <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
-        <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
-        <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
-        <a href="{{route('chatbot')}}"><i class="fas fa-robot"></i> Chat With Sage</a>
-        <a href="{{route('checkup')}}"><i class="fas fa-check"></i> Checkups</a>
-        <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
+        <a href="{{route('mybaby')}}"><i class="fas fa-child" style="color: rgb(31, 63, 221)"></i> My Baby</a>
+        <a href="{{route('growth')}}" class="active"><i class="fas fa-chart-line" style="color: rgb(242, 114, 136)"></i> Growth</a>
+        <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb" style="color: #FFD700;"></i> Baby Tips</a>
+        <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye" style="color: red"></i> Milestone</a>
+        <a href="{{route('appointment')}}"><i class="fas fa-calendar" style="color: #16fc38"></i> Appointment</a>
+        <a href="{{route('chatbot')}}"><i class="fas fa-robot" style="color: orangered"></i> Chat With Sage</a>
+        <a href="{{route('settings')}}"><i class="fas fa-cog" style="color: #666"></i> Settings</a>
     </div>
 
 

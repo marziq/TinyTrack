@@ -64,6 +64,17 @@
             box-shadow: 0 4px 16px rgba(25, 118, 210, 0.30);
             margin-bottom: 20px;
         }
+        /* Active state for sidebar links (ensure Settings link shows highlighted) */
+        .sidebar a.active {
+            background-color: #1976d2;
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(25, 118, 210, 0.30);
+        }
+        /* Force icon color to white even if inline styles were used on the <i> */
+        .sidebar a.active i {
+            color: #fff !important;
+        }
         .sidebar a:hover {
             background-color: #bbdefb;
             color: #0d47a1;
@@ -408,26 +419,30 @@
         }
 
         /* Settings Menu Card Styling */
+        /* Make the menu a natural column that doesn't force large fixed height and allows consistent gaps */
         .settings-menu-card {
-            height: 450px;
+            height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: stretch;
+            justify-content: flex-start;
+            gap: 12px;
         }
+        /* Make the list-group a column layout with consistent gap between items.
+           Use flex-start (not space-between) so gaps between items are equal. */
         #settingsMenu {
-            flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            gap: 18px;
+            justify-content: flex-start;
+            gap: 12px;
             height: 100%;
         }
         #settingsMenu .list-group-item {
             font-size: 1.18rem;
-            padding: 18px 16px;
+            padding: 14px 16px;
             border-radius: 8px;
             text-align: center;
             transition: background 0.2s, color 0.2s;
+            margin-bottom: 0; /* ensure no extra margins create uneven spacing */
         }
         #settingsMenu .list-group-item.active {
             background-color: #1976d2;
@@ -448,6 +463,11 @@
                 font-size: 1.1rem;
                 padding: 14px 12px;
             }
+        }
+
+        /* Ensure the two columns inside the combined card stretch to the same height */
+        .card .card-body .row {
+            align-items: stretch;
         }
         body.dark-mode {
             background-color: #181a1b !important;
@@ -495,17 +515,16 @@
     <div class="sidebar" id="sidebar">
         <a href="{{route('mybaby')}}" style="display: flex; align-items: center; gap: 10px;">
             <img src="{{ asset('img/tinytrack-logo.png') }}" alt="Logo" style="height: 36px; width: 36px; object-fit: contain;">
-            <h2 style="margin-bottom: 0;">My Dashboard</h2>
+            <h2 style="margin-bottom: 0; font-weight: bold;">My Dashboard</h2>
         </a>
         <hr style="color: #1976d2">
-        <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
-        <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
-        <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
-        <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
-        <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
-        <a href="{{route('chatbot')}}"><i class="fas fa-robot"></i> Chat With Sage</a>
-        <a href="{{route('checkup')}}"><i class="fas fa-check"></i> Checkups</a>
-        <a href="{{route('settings')}}" class="active"><i class="fas fa-cog"></i> Settings</a>
+        <a href="{{route('mybaby')}}"><i class="fas fa-child" style="color:rgb(31, 63, 221)"></i> My Baby</a>
+        <a href="{{route('growth')}}"><i class="fas fa-chart-line" style="color: rgb(242, 114, 136)"></i> Growth</a>
+        <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb" style="color: #FFD700;"></i> Baby Tips</a>
+        <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye" style="color: red"></i> Milestone</a>
+        <a href="{{route('appointment')}}"><i class="fas fa-calendar" style="color: #16fc38"></i> Appointment</a>
+        <a href="{{route('chatbot')}}"><i class="fas fa-robot" style="color: orangered"></i> Chat With Sage</a>
+        <a href="{{route('settings')}}" class="active"><i class="fas fa-cog" style="color: #666"></i> Settings</a>
     </div>
 
 
@@ -567,111 +586,119 @@
        {{--Main Content--}}
        <div class="container" style="max-width: 950px;">
             <div class="settings-row">
-                <!-- Settings Menu Card (Left Side) -->
-                <div style="min-width: 260px; flex: 0 0 260px;">
-                    <div class="card settings-menu-card">
-                        <div class="card-header">
-                            <h4 style="font-size:1.25rem;">Settings Menu</h4>
-                        </div>
-                        <br>
-                        <div class="list-group" id="settingsMenu">
-                            <button type="button" class="list-group-item list-group-item-action active" data-section="basic">Basic Settings</button>
-                            <button type="button" class="list-group-item list-group-item-action" data-section="notifications">Notification Preferences</button>
-                            <button type="button" class="list-group-item list-group-item-action" data-section="password">Update Password</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Divider -->
-                <div class="settings-divider"></div>
-                <!-- Settings Content (Right Side) -->
+                <!-- Combined Settings Card (Menu + Content) -->
                 <div style="flex: 1 1 0;">
-                    <!-- Basic Settings Card -->
-                    <div id="basicSettingsSection">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h3>Basic Settings</h3>
-                            </div>
-                            <div class="card-body">
-                                <!-- ...existing Basic Settings content... -->
-                                <!-- Dark Mode Switch -->
-                                <div class="form-check form-switch mb-3">
-                                    <input class="form-check-input" type="checkbox" id="darkModeSwitch">
-                                    <label class="form-check-label" for="darkModeSwitch">Enable Dark Mode</label>
-                                </div>
-                                <!-- Font Size Adjustment -->
-                                <div class="mb-3">
-                                    <label for="fontSizeSelect" class="form-label">Font Size</label>
-                                    <select class="form-select" id="fontSizeSelect">
-                                        <option value="normal" selected>Normal</option>
-                                        <option value="large">Large</option>
-                                        <option value="xlarge">Extra Large</option>
-                                    </select>
-                                </div>
-                                <!-- Privacy Settings -->
-                                <div class="mb-3">
-                                    <label class="form-label">Privacy</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showProfile" checked>
-                                        <label class="form-check-label" for="showProfile">Show my profile to other users</label>
-                                    </div>
-                                </div>
-                                <!-- Account Actions -->
-                                <div class="mb-3">
-                                    <button class="btn btn-outline-danger" type="button" onclick="alert('Account deletion is not implemented in this demo.')">Delete Account</button>
-                                    <button class="btn btn-outline-secondary" type="button" onclick="alert('Data download is not implemented in this demo.')">Download My Data</button>
-                                </div>
-                            </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 style="font-size:1.25rem; margin:0;">Settings</h4>
                         </div>
-                    </div>
-                    <!-- Notification Preferences Section -->
-                    <div id="notificationSettingsSection" style="display:none;">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h3>Notification Preferences</h3>
-                            </div>
-                            <div class="card-body">
-                                <!-- Notification Preferences -->
-                                <div class="mb-3">
-                                    <label class="form-label">Choose how you want to be notified:</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="notifEmail" checked>
-                                        <label class="form-check-label" for="notifEmail">Email Notifications</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="notifApp" checked>
-                                        <label class="form-check-label" for="notifApp">App Notifications</label>
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- Menu Column -->
+                                <div class="col-md-4 mb-3">
+                                    <div class="settings-menu-card" style="height:100%;">
+                                        <div class="list-group" id="settingsMenu">
+                                            <button type="button" class="list-group-item list-group-item-action active" data-section="basic">Basic Settings</button>
+                                            <button type="button" class="list-group-item list-group-item-action" data-section="notifications">Notification Preferences</button>
+                                            <button type="button" class="list-group-item list-group-item-action" data-section="password">Update Password</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Update Password Section -->
-                    <div id="passwordSettingsSection" style="display:none;">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>Update Password</h3>
-                            </div>
-                            <div class="card-body">
-                                <form method="POST" action="{{ route('user-password.update') }}">
-                                    @csrf
-                                    @method('PUT')
-                                    <!-- Current Password -->
-                                    <div class="mb-3">
-                                        <label for="current_password" class="form-label">Current Password</label>
-                                        <input type="password" name="current_password" id="current_password" class="form-control" required>
+
+                                <!-- Content Column -->
+                                <div class="col-md-8">
+                                    <!-- Basic Settings Section -->
+                                    <div id="basicSettingsSection">
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h3>Basic Settings</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <!-- Dark Mode Switch -->
+                                                <div class="form-check form-switch mb-3">
+                                                    <input class="form-check-input" type="checkbox" id="darkModeSwitch">
+                                                    <label class="form-check-label" for="darkModeSwitch">Enable Dark Mode</label>
+                                                </div>
+                                                <!-- Font Size Adjustment -->
+                                                <div class="mb-3">
+                                                    <label for="fontSizeSelect" class="form-label">Font Size</label>
+                                                    <select class="form-select" id="fontSizeSelect">
+                                                        <option value="normal" selected>Normal</option>
+                                                        <option value="large">Large</option>
+                                                        <option value="xlarge">Extra Large</option>
+                                                    </select>
+                                                </div>
+                                                <!-- Privacy Settings -->
+                                                <div class="mb-3">
+                                                    <label class="form-label">Privacy</label>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="showProfile" checked>
+                                                        <label class="form-check-label" for="showProfile">Show my profile to other users</label>
+                                                    </div>
+                                                </div>
+                                                <!-- Account Actions -->
+                                                <div class="mb-3">
+                                                    <button class="btn btn-outline-danger" type="button" onclick="alert('Account deletion is not implemented in this demo.')">Delete Account</button>
+                                                    <button class="btn btn-outline-secondary" type="button" onclick="alert('Data download is not implemented in this demo.')">Download My Data</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <!-- New Password -->
-                                    <div class="mb-3">
-                                        <label for="password" class="form-label">New Password</label>
-                                        <input type="password" name="password" id="password" class="form-control" required>
+
+                                    <!-- Notification Preferences Section -->
+                                    <div id="notificationSettingsSection" style="display:none;">
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h3>Notification Preferences</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <!-- Notification Preferences -->
+                                                <div class="mb-3">
+                                                    <label class="form-label">Choose how you want to be notified:</label>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="notifEmail" checked>
+                                                        <label class="form-check-label" for="notifEmail">Email Notifications</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="notifApp" checked>
+                                                        <label class="form-check-label" for="notifApp">App Notifications</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <!-- Confirm Password -->
-                                    <div class="mb-3">
-                                        <label for="password_confirmation" class="form-label">Confirm Password</label>
-                                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
+
+                                    <!-- Update Password Section -->
+                                    <div id="passwordSettingsSection" style="display:none;">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3>Update Password</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <form method="POST" action="{{ route('user-password.update') }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <!-- Current Password -->
+                                                    <div class="mb-3">
+                                                        <label for="current_password" class="form-label">Current Password</label>
+                                                        <input type="password" name="current_password" id="current_password" class="form-control" required>
+                                                    </div>
+                                                    <!-- New Password -->
+                                                    <div class="mb-3">
+                                                        <label for="password" class="form-label">New Password</label>
+                                                        <input type="password" name="password" id="password" class="form-control" required>
+                                                    </div>
+                                                    <!-- Confirm Password -->
+                                                    <div class="mb-3">
+                                                        <label for="password_confirmation" class="form-label">Confirm Password</label>
+                                                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Update Password</button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Update Password</button>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>

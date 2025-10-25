@@ -534,7 +534,7 @@
             justify-content: center;
             background-color: #e3f2fd;
             border-radius: 50%;
-            color: #1976d2;
+            color: #16fc38; /* light green for milestone check icon */
             font-size: 18px;
         }
 
@@ -580,7 +580,7 @@
 
         .vaccine-card {
             padding: 15px;
-            border-left: 5px solid #1976d2;
+            border-left: 5px solid #9c27b0; /* purple left border for vaccinations */
             background-color: #e3f2fd;
             border-radius: 8px;
             margin-bottom: 15px;
@@ -679,14 +679,13 @@
             <h2 style="margin-bottom: 0; font-weight: bold;">My Dashboard</h2>
         </a>
         <hr style="color: #1976d2">
-        <a href="{{route('mybaby')}}" class="active"><i class="fas fa-child"></i> My Baby</a>
-        <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
-        <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
-        <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
-        <a href="{{route('appointment')}}"><i class="fas fa-calendar"></i> Appointment</a>
-        <a href="{{route('chatbot')}}"><i class="fas fa-robot"></i> Chat With Sage</a>
-        <a href="{{route('checkup')}}"><i class="fas fa-check"></i> Checkups</a>
-        <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
+        <a href="{{route('mybaby')}}" class="active"><i class="fas fa-child" style="color:rgb(31, 63, 221)"></i> My Baby</a>
+        <a href="{{route('growth')}}"><i class="fas fa-chart-line" style="color: rgb(242, 114, 136)"></i> Growth</a>
+        <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb" style="color: #FFD700;"></i> Baby Tips</a>
+        <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye" style="color: red"></i> Milestone</a>
+        <a href="{{route('appointment')}}"><i class="fas fa-calendar" style="color: #16fc38"></i> Appointment</a>
+        <a href="{{route('chatbot')}}"><i class="fas fa-robot" style="color: orangered"></i> Chat With Sage</a>
+        <a href="{{route('settings')}}"><i class="fas fa-cog" style="color: #666"></i> Settings</a>
     </div>
 
     <div class="main">
@@ -826,13 +825,17 @@
                 </div>
 
                 <div class="chart-container">
-                    <h3 class="chart-title">Height Growth Chart</h3>
+                    <h3 class="chart-title" id="growthChartTitle">Growth</h3>
+                    <div style="position: absolute; top: 18px; right: 20px; z-index:3; display:flex; gap:8px;">
+                        <button id="toggleHeight" class="btn btn-sm" style="background:#43a047;color:#fff;border-radius:8px;">Height</button>
+                        <button id="toggleWeight" class="btn btn-sm" style="background:#ff8a65;color:#fff;border-radius:8px;">Weight</button>
+                    </div>
                     <div class="chart-column">
-                        <canvas id="heightGrowthChart"></canvas>
+                        <canvas id="growthChart"></canvas>
                     </div>
                     <div class="text-column">
-                        <h4>Storytelling</h4>
-                        <p>Height: </br> Measurement: cm </br> Status: Normal</p>
+                        <h4>Summary</h4>
+                        <p id="growthStory">Select a baby to view growth data (height / weight) over time.</p>
                     </div>
                 </div>
 
@@ -917,22 +920,22 @@
                             <div class="vaccine-date">July 15, 2023</div>
                             <div class="vaccine-days">in 12 days</div>
                         </div>
-                        <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
+                        <div class="vaccine-card" style="border-left-color: #9c27b0; opacity: 0.7;">
                             <div class="vaccine-name">DTaP (2nd dose)</div>
                             <div class="vaccine-date">August 5, 2023</div>
                             <div class="vaccine-days">in 33 days</div>
                         </div>
-                        <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
+                        <div class="vaccine-card" style="border-left-color: #9c27b0; opacity: 0.7;">
                             <div class="vaccine-name">MMR (1st dose)</div>
                             <div class="vaccine-date">September 5, 2023</div>
                             <div class="vaccine-days">in 63 days</div>
                         </div>
-                        <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
+                        <div class="vaccine-card" style="border-left-color: #9c27b0; opacity: 0.7;">
                             <div class="vaccine-name">Pneumokokal (1st dose)</div>
                             <div class="vaccine-date">October 25, 2023</div>
                             <div class="vaccine-days">in 93 days</div>
                         </div>
-                        <div class="vaccine-card" style="border-left-color: #4scaf50; opacity: 0.7;">
+                        <div class="vaccine-card" style="border-left-color: #9c27b0; opacity: 0.7;">
                             <div class="vaccine-name">Pneumokokal (2nd dose)</div>
                             <div class="vaccine-date">November 15, 2023</div>
                             <div class="vaccine-days">in 123 days</div>
@@ -945,8 +948,8 @@
                     <h4>Baby Tips</h4>
                     <div class="baby-tips-list baby-tips-scroll" style="display: flex; flex-direction: column; gap: 10px;">
                         <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
-                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #bbdefb; border-radius: 50%; color: #1976d2;">
-                                <i class="fas fa-lightbulb"></i>
+                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff8e1; border-radius: 50%; color: #FFD700;">
+                                <i class="fas fa-lightbulb" style="color: #FFD700;"></i>
                             </div>
                             <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
                                 Always place your baby on their back to sleep.
@@ -956,8 +959,8 @@
                             </button>
                         </div>
                         <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
-                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #bbdefb; border-radius: 50%; color: #1976d2;">
-                                <i class="fas fa-lightbulb"></i>
+                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff8e1; border-radius: 50%; color: #FFD700;">
+                                <i class="fas fa-lightbulb" style="color: #FFD700;"></i>
                             </div>
                             <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
                                 Talk, read, and sing to your baby every day.
@@ -967,8 +970,8 @@
                             </button>
                         </div>
                         <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
-                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #bbdefb; border-radius: 50%; color: #1976d2;">
-                                <i class="fas fa-lightbulb"></i>
+                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff8e1; border-radius: 50%; color: #FFD700;">
+                                <i class="fas fa-lightbulb" style="color: #FFD700;"></i>
                             </div>
                             <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
                                 Never leave your baby unattended on high surfaces.
@@ -978,8 +981,8 @@
                             </button>
                         </div>
                         <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
-                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #bbdefb; border-radius: 50%; color: #1976d2;">
-                                <i class="fas fa-lightbulb"></i>
+                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff8e1; border-radius: 50%; color: #FFD700;">
+                                <i class="fas fa-lightbulb" style="color: #FFD700;"></i>
                             </div>
                             <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
                                 Eat healthy as suggested.
@@ -989,7 +992,7 @@
                             </button>
                         </div>
                         <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
-                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #bbdefb; border-radius: 50%; color: #1976d2;">
+                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff8e1; border-radius: 50%; color: #FFD700;">
                                 <i class="fas fa-lightbulb"></i>
                             </div>
                             <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
@@ -1082,58 +1085,137 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        //chart
+        // Growth chart: single canvas that toggles between Height and Weight
         document.addEventListener('DOMContentLoaded', function () {
-        const ctx = document.getElementById('heightGrowthChart').getContext('2d');
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            let growthChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: []
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true, position: 'top' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Age (Months)' } },
+                        y: { title: { display: true, text: '' }, beginAtZero: true }
+                    }
+                }
+            });
 
-        // Example data for height growth (in cm) over months
-        const labels = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']; // Months
-        const data = {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Baby Height (cm)',
-                    data: [50, 54, 58, 61, 63, 65, 67, 69, 71, 73, 74, 75, 76], // Example height data
-                    borderColor: '#1976d2',
-                    backgroundColor: 'rgba(25, 118, 210, 0.2)',
+            const GREEN = '#43a047';
+            const ORANGE = '#ff8a65';
+
+            function renderGrowth(type, labels, values) {
+                growthChart.data.labels = labels;
+                growthChart.data.datasets = [{
+                    label: type === 'height' ? 'Height (cm)' : 'Weight (g)',
+                    data: values,
+                    borderColor: type === 'height' ? GREEN : ORANGE,
+                    backgroundColor: type === 'height' ? 'rgba(67,160,71,0.12)' : 'rgba(255,138,101,0.15)',
                     borderWidth: 2,
-                    tension: 0.4, // Smooth curvature
-                },
-            ],
-        };
+                    tension: 0.4,
+                    fill: true
+                }];
+                growthChart.options.scales.y.title.text = type === 'height' ? 'Height (cm)' : 'Weight (g)';
+                // Update chart title
+                const titleEl = document.getElementById('growthChartTitle');
+                if (titleEl) titleEl.textContent = type === 'height' ? 'Height Chart' : 'Weight Chart';
+                growthChart.update();
 
-        const config = {
-            type: 'line',
-            data: data,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
-                    },
-                },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Age (Months)',
-                        },
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Height (cm)',
-                        },
-                        beginAtZero: true,
-                    },
-                },
-            },
-        };
+                // update storytelling summary
+                const storyEl = document.getElementById('growthStory');
+                if (storyEl) {
+                    if (!labels || labels.length === 0) {
+                        storyEl.innerText = 'No growth data available for this baby.';
+                    } else {
+                        const last = values[values.length - 1];
+                        const lastLabel = labels[labels.length - 1];
+                        storyEl.innerText = `${type === 'height' ? 'Height' : 'Weight'} at ${lastLabel} month(s): ${last} ${type === 'height' ? 'cm' : 'g'}`;
+                    }
+                }
+            }
 
-        // Render the chart
-        new Chart(ctx, config);
-    });
+            // Toggle buttons
+            const btnH = document.getElementById('toggleHeight');
+            const btnW = document.getElementById('toggleWeight');
+            let currentType = 'height';
+            btnH?.addEventListener('click', function() {
+                currentType = 'height';
+                btnH.style.opacity = '1'; btnW.style.opacity = '0.75';
+                const titleEl = document.getElementById('growthChartTitle');
+                if (titleEl) titleEl.textContent = 'Height Chart';
+                // if we have last loaded data stored, re-render from it
+                if (window._lastGrowthData) renderGrowth('height', window._lastGrowthData.labels, window._lastGrowthData.height);
+            });
+            btnW?.addEventListener('click', function() {
+                currentType = 'weight';
+                btnW.style.opacity = '1'; btnH.style.opacity = '0.75';
+                const titleEl = document.getElementById('growthChartTitle');
+                if (titleEl) titleEl.textContent = 'Weight Chart';
+                if (window._lastGrowthData) renderGrowth('weight', window._lastGrowthData.labels, window._lastGrowthData.weight);
+            });
+
+            // Expose loader for other scripts
+            window.loadGrowthChart = async function(babyId) {
+                if (!babyId) return;
+                try {
+                    const res = await fetch(`/dashboard/growth/${babyId}`);
+                    if (!res.ok) throw new Error('Failed to fetch growth data');
+                    const payload = await res.json();
+
+                    // Normalize response into { labels:[], height:[], weight:[] }
+                    let labels = [];
+                    let height = [];
+                    let weight = [];
+
+                    if (Array.isArray(payload)) {
+                        // handle Growth model array entries { growthMonth, height, weight, ... }
+                        payload.sort((a,b)=> (a.growthMonth ?? a.age_months ?? 0) - (b.growthMonth ?? b.age_months ?? 0));
+                        labels = payload.map(p => String(p.growthMonth ?? p.age_months ?? '0'));
+                        height = payload.map(p => p.height ?? p.height_cm ?? null);
+                        weight = payload.map(p => p.weight ?? p.weight_g ?? null);
+                    } else if (payload.labels && (payload.heightData || payload.height) ) {
+                        labels = payload.labels;
+                        height = payload.heightData || payload.height || [];
+                        weight = payload.weightData || payload.weight || [];
+                    } else if (payload.growths) {
+                        const g = payload.growths;
+                        g.sort((a,b)=> (a.age_months||0)-(b.age_months||0));
+                        labels = g.map(x=> String(x.age_months ?? '0'));
+                        height = g.map(x=> x.height_cm ?? null);
+                        weight = g.map(x=> x.weight_g ?? null);
+                    } else {
+                        // fallback: try to find arrays
+                        labels = payload.labels || [];
+                        height = payload.height || payload.heightData || [];
+                        weight = payload.weight || payload.weightData || [];
+                    }
+
+                    // store last data for toggling
+                    window._lastGrowthData = { labels, height, weight };
+
+                    // render current type
+                    if (currentType === 'weight') {
+                        renderGrowth('weight', labels, weight);
+                    } else {
+                        renderGrowth('height', labels, height);
+                    }
+                } catch (err) {
+                    console.error('Growth load error', err);
+                }
+            };
+
+            // Small visual initial state
+            btnH && (btnH.style.opacity = '1');
+            btnW && (btnW.style.opacity = '0.75');
+            // Set initial title
+            const initialTitle = document.getElementById('growthChartTitle');
+            if (initialTitle) initialTitle.textContent = 'Height Chart';
+        });
 
         // Initialize modal globally
         let addEditBabyModal;
@@ -1225,6 +1307,10 @@
             document.getElementById('selectedBabyPhoto').src = babyPhoto && babyPhoto !== 'null' ? babyPhoto : defaultPhoto;
 
             document.getElementById('babyDashboard').style.display = 'block';
+            // Load growth chart data for selected baby (if loader is available)
+            if (typeof window.loadGrowthChart === 'function') {
+                window.loadGrowthChart(babyId);
+            }
         }
 
         // Edit the currently selected baby

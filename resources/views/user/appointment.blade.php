@@ -383,7 +383,7 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
+            max-width: 1100px; /* increased width to make containers wider */
             margin: 0 auto;
             margin-bottom: 30px;
         }
@@ -544,17 +544,16 @@
     <div class="sidebar" id="sidebar">
         <a href="{{route('mybaby')}}" style="display: flex; align-items: center; gap: 10px;">
             <img src="{{ asset('img/tinytrack-logo.png') }}" alt="Logo" style="height: 36px; width: 36px; object-fit: contain;">
-            <h2 style="margin-bottom: 0;">My Dashboard</h2>
+            <h2 style="margin-bottom: 0; font-weight: bold;">My Dashboard</h2>
         </a>
         <hr style="color: #1976d2">
-        <a href="{{route('mybaby')}}"><i class="fas fa-child"></i> My Baby</a>
-        <a href="{{route('growth')}}"><i class="fas fa-chart-line"></i> Growth</a>
-        <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb"></i> Baby Tips</a>
-        <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye"></i> Milestone</a>
-        <a href="{{route('appointment')}}" class="active"><i class="fas fa-calendar"></i> Appointment</a>
-        <a href="{{route('chatbot')}}"><i class="fas fa-robot"></i> Chat With Sage</a>
-        <a href="{{route('checkup')}}"><i class="fas fa-check"></i> Checkups</a>
-        <a href="{{route('settings')}}"><i class="fas fa-cog"></i> Settings</a>
+        <a href="{{route('mybaby')}}"><i class="fas fa-child" style="color:rgb(31, 63, 221)"></i> My Baby</a>
+        <a href="{{route('growth')}}"><i class="fas fa-chart-line" style="color: rgb(242, 114, 136)"></i> Growth</a>
+        <a href="{{route('tips')}}"><i class="fa-solid fa-lightbulb" style="color: #FFD700;"></i> Baby Tips</a>
+        <a href="{{route('milestone')}}"><i class="fa-solid fa-bullseye" style="color: red"></i> Milestone</a>
+        <a href="{{route('appointment')}}"  class="active"><i class="fas fa-calendar" style="color: #16fc38"></i> Appointment</a>
+        <a href="{{route('chatbot')}}"><i class="fas fa-robot" style="color: orangered"></i> Chat With Sage</a>
+        <a href="{{route('settings')}}"><i class="fas fa-cog" style="color: #666"></i> Settings</a>
     </div>
 
 
