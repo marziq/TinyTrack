@@ -767,11 +767,11 @@
                     const summaryResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                         method: "POST",
                         headers: {
-                            "Authorization": "Bearer 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",
+                            "Authorization": "Bearer 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",
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            model: "gpt-4o-mini",
+                            model: "deepseek/deepseek-r1-distill-llama-70b:free",
                             messages: [
                                 { role: "system", content: "Summarize this baby-related conversation into a structured memory. Focus on baby's age, weight, height, diet, health goals, and other important details. Ignore chit-chat." },
                                 { role: "user", content: JSON.stringify(oldMessages) }
@@ -797,7 +797,7 @@
                 const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                     method: "POST",
                     headers: {
-                        "Authorization": "Bearer sk-APIKEY",
+                        "Authorization": "Bearer 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",
                         "Referer": "https://www.TinyTrack.com",
                         "X-Title": "TinyTrack Sage Chatbot",
                         "Content-Type": "application/json"

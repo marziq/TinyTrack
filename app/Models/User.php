@@ -33,6 +33,10 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function favoriteTips()
+    {
+        return $this->hasMany(FavoriteTip::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

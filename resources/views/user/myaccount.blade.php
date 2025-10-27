@@ -556,66 +556,81 @@
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="card mb-3 text-center">
-                        <div class="card-header">
-                            <h3>Profile Information</h3>
-                        </div>
+                    <!-- Profile Information Card -->
+                    <div class="card">
+                        <h3>Profile Information</h3>
                         <div class="card-body">
-                        <!-- Inline Edit Mode (matches design) -->
-                            @php
-                                $nameParts = explode(' ', trim(Auth::user()->name ?? ''), 2);
-                                $firstName = $nameParts[0] ?? '';
-                                $lastName = $nameParts[1] ?? '';
-                            @endphp
-                            <form method="POST" action="{{ route('user-profile-information.update') }}" enctype="multipart/form-data" class="text-start" id="inlineProfileForm">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="name" id="full_name_input" value="{{ old('name', Auth::user()->name) }}">
+                            <!-- Inline Edit Mode (matches design) -->
+                                @php
+                                    $nameParts = explode(' ', trim(Auth::user()->name ?? ''), 2);
+                                    $firstName = $nameParts[0] ?? '';
+                                    $lastName = $nameParts[1] ?? '';
+                                @endphp
+                                <form method="POST" action="{{ route('user.update') }}" enctype="multipart/form-data" class="text-start" id="inlineProfileForm">
+                                    @csrf
+                                    <input type="hidden" name="name" id="full_name_input" value="{{ old('name', Auth::user()->name) }}">
 
-                                <div class="profile-photo-wrapper">
-                                    <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img-preview">
-                                    <label class="edit-photo-icon" title="Change photo">
-                                        <i class="fas fa-pencil-alt"></i>
-                                        <input type="file" name="profile_photo" id="inline_profile_photo" style="display:none">
-                                    </label>
-                                </div>
-
-                                <h4 class="text-center mb-3">{{ Auth::user()->name }}</h4>
-                                <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important">User ID: TT{{ Auth::user()->id }}</p>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">First Name</label>
-                                        <input type="text" name="first_name" class="form-control form-input" value="{{ old('first_name', $firstName) }}">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Last Name</label>
-                                        <input type="text" name="last_name" class="form-control form-input" value="{{ old('last_name', $lastName) }}">
+                                    <div class="profile-photo-wrapper">
+                                        <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img-preview">
+                                        <label class="edit-photo-icon" title="Change photo">
+                                            <i class="fas fa-pencil-alt"></i>
+                                            <input type="file" name="profile_photo" id="inline_profile_photo" style="display:none">
+                                        </label>
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <label class="form-label">Email Address</label>
-                                        <input type="email" name="email" class="form-control form-input" value="{{ old('email', Auth::user()->email) }}" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Phone Number</label>
-                                        <input type="text" name="mobile_number" class="form-control form-input" value="{{ old('mobile_number', Auth::user()->mobile_number) }}">
+                                    <h4 class="text-center mb-3">{{ Auth::user()->name }}</h4>
+                                    <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important">User ID: TT{{ Auth::user()->id }}</p>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">First Name</label>
+                                            <input type="text" name="first_name" class="form-control form-input" value="{{ old('first_name', $firstName) }}">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Last Name</label>
+                                            <input type="text" name="last_name" class="form-control form-input" value="{{ old('last_name', $lastName) }}">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Email Address</label>
+                                            <input type="email" name="email" class="form-control form-input" value="{{ old('email', Auth::user()->email) }}" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Phone Number</label>
+                                            <input type="text" name="mobile_number" class="form-control form-input" value="{{ old('mobile_number', Auth::user()->mobile_number) }}">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Gender</label>
+                                            <select name="gender" class="form-control form-input" {{ !isset($isEditing) ? 'disabled' : '' }}>
+                                                <option value="Male" {{ Auth::user()->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                                                <option value="Female" {{ Auth::user()->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                                                <option value="Other" {{ Auth::user()->gender == 'Other' ? 'selected' : '' }}>Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Total Babies</label>
+                                            <div class="form-control form-input" style="background-color: #f8f9fa;">
+                                                @php
+                                                    $boys = Auth::user()->babies()->where('gender', 'Male')->count();
+                                                    $girls = Auth::user()->babies()->where('gender', 'Female')->count();
+                                                    $total = $boys + $girls;
+                                                @endphp
+                                                {{ $total }} ({{ $boys }} boy{{ $boys != 1 ? 's' : '' }}, {{ $girls }} girl{{ $girls != 1 ? 's' : '' }})
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <label class="form-label">Location</label>
-                                        <input type="text" name="location" class="form-control form-input" value="{{ old('location', '') }}" placeholder="e.g. New York, USA">
+                                    <!-- Replace the save button section with: -->
+                                    <div class="d-flex justify-content-center mt-4">
+                                        @if(!isset($isEditing))
+                                            <button type="button" class="save-btn" id="editButton" onclick="toggleEditMode(true)">Update Profile</button>
+                                        @else
+                                            <button type="submit" class="save-btn">Save Changes</button>
+                                            <button type="button" class="btn btn-secondary ms-2" onclick="toggleEditMode(false)">Cancel</button>
+                                        @endif
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Postal Code</label>
-                                        <input type="text" name="postal_code" class="form-control form-input" value="{{ old('postal_code', '') }}">
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-center mt-4">
-                                    <button type="submit" class="save-btn">Save Changes</button>
-                                </div>
-                            </form>
-                        </div>
+                                </form>
+                            </div>
                     </div>
                     <!-- Favourited Baby Tips Card -->
                     <div class="card mt-4">
@@ -638,6 +653,8 @@
                                 </li>
                             </ul>
                         </div>
+                    </div>
+                </div>
                     </div>
                 </div>
             </div>
@@ -759,18 +776,37 @@
             }
         });
 
-        function toggleEditMode() {
-            const viewMode = document.getElementById('viewMode');
-            const editMode = document.getElementById('editMode');
+        function toggleEditMode(edit) {
+            const form = document.getElementById('inlineProfileForm');
+            const inputs = form.querySelectorAll('input:not([type="hidden"]), select');
+            const editButton = document.getElementById('editButton');
 
-            if (viewMode.style.display === 'none') {
-                viewMode.style.display = 'block';
-                editMode.style.display = 'none';
+            inputs.forEach(input => {
+                if (input.type !== 'file') {  // Don't disable file input
+                    input.disabled = !edit;
+                }
+            });
+
+            if (edit) {
+                editButton.closest('.d-flex').innerHTML = `
+                    <button type="submit" class="save-btn">Save Changes</button>
+                    <button type="button" class="btn btn-secondary ms-2" onclick="toggleEditMode(false)">Cancel</button>
+                `;
             } else {
-                viewMode.style.display = 'none';
-                editMode.style.display = 'block';
+                location.reload(); // Reload page to reset form
             }
         }
+
+        // Initialize form in disabled state
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('inlineProfileForm');
+            const inputs = form.querySelectorAll('input:not([type="hidden"]), select');
+            inputs.forEach(input => {
+                if (input.type !== 'file') {
+                    input.disabled = true;
+                }
+            });
+        });
         document.addEventListener('DOMContentLoaded', function() {
             const bell = document.getElementById('notificationBell');
             const popup = document.getElementById('notificationPopup');

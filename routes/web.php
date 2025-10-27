@@ -10,6 +10,8 @@ use App\Http\Controllers\AppointmentController;
 use App\Models\Baby;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\FavoriteTipController;
 
 // Public routes
 Route::get('/', function () {
@@ -33,6 +35,13 @@ Route::get('/contact', function () {
 })->name('contact');
 
 // Public routes end
+
+// Favorite Tips routes
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/save-favorite-tip', [FavoriteTipController::class, 'store']);
+    Route::delete('/favorite-tip/{id}', [FavoriteTipController::class, 'destroy']);
+    Route::get('/check-favorite/{tipId}', [FavoriteTipController::class, 'checkFavorite']);
+});
 
 // Admin routes
 Route::get('/login-admin', function () {
@@ -129,3 +138,9 @@ Route::resource('notifications', NotificationsController::class);
 Route::post('/notifications/{id}/mark-read', [NotificationsController::class, 'markRead'])->name('notifications.markRead');
 Route::put('/notifications/{notification}', [NotificationsController::class, 'update'])->name('notifications.update');
 Route::get('/notifications/{id}', [NotificationsController::class, 'getNotification']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/myaccount', [UserController::class, 'index'])->name('myaccount');
+    Route::post('/user/update', [UserController::class, 'update'])->name('user.update');
+    Route::get('/user/babies-count', [UserController::class, 'getBabiesCount'])->name('user.babies-count');
+});
