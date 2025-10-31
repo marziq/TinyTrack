@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Outfit:wght@100..900&family=Sigmar&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
@@ -413,7 +414,16 @@
             border: 1px solid #ccc;
             border-radius: 8px;
             padding: 15px;
-            background-color: #f5f5f5;
+            background-color: #ffffff;
+            min-width: 300px;
+        }
+
+        .flatpickr-calendar {
+            background-color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+            border-radius: 8px !important;
+            border: none !important;
+            width: 100% !important;
         }
 
         .calendar h4 {
@@ -635,8 +645,6 @@
                         <tr>
                             <th>Appointment Date</th>
                             <th>Appointment Time</th>
-                            <th>Doctor Name</th>
-                            <th>Location</th>
                             <th>Purpose</th>
                             <th>Status</th>
                         </tr>
@@ -694,18 +702,6 @@
                 </select>
             </div>
 
-            <div class="form-group" id="vaccination-type-group" style="display: none;">
-                <label for="vaccination-type">Select Vaccination Type</label>
-                <select id="vaccination-type" class="form-control small-select">
-                    <option value="" selected disabled>Select vaccination</option>
-                    <option value="bcg">BCG</option>
-                    <option value="hepatitis_b">Hepatitis B</option>
-                    <option value="polio">Polio</option>
-                    <option value="dpt">DPT</option>
-                    <option value="measles">Measles</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
             <button class="btn" id="submit-appointment">Submit Appointment</button>
         </div>
         <!-- Vaccination Container -->
@@ -797,6 +793,10 @@
                 dateFormat: "Y-m-d",
                 minDate: "today", // Disable past dates
                 defaultDate: "today", // Set default date to today
+                theme: "material_blue",
+                animate: true,
+                time_24hr: false,
+                enableTime: false
             });
 
             // Time button selection logic
@@ -808,45 +808,54 @@
                 });
             });
 
-            // Show/hide vaccination type
+            // Get appointment type select element
             const appointmentTypeSelect = document.getElementById('appointment-type');
-            const vaccinationTypeGroup = document.getElementById('vaccination-type-group');
-
-            appointmentTypeSelect.addEventListener('change', function () {
-                if (this.value === 'vaccination') {
-                    vaccinationTypeGroup.style.display = 'block';
-                } else {
-                    vaccinationTypeGroup.style.display = 'none';
-                    document.getElementById('vaccination-type').selectedIndex = 0;
-                }
-            });
 
             // Submit appointment logic
             document.getElementById('submit-appointment').addEventListener('click', function () {
-                const date = document.querySelector('.flatpickr-day.selected')?.ariaLabel;
-                const time = document.querySelector('.appointment-time-btn.focus')?.innerText;
-                const appointmentType = appointmentTypeSelect.value;
-                const babySelect = document.getElementById('baby-select');
-                const babyName = babySelect.options[babySelect.selectedIndex]?.text;
+                const selectedDate = document.querySelector('.flatpickr-day.selected');
+                const selectedTime = document.querySelector('.appointment-time-btn.focus');
+                const babySelect = document.getElementById('baby-select');                if (!selectedDate || !selectedTime || !appointmentTypeSelect || !babySelect.value) {
+                alert('Please fill out all fields before submitting.');
+                return;
+            }
 
-                let vaccinationType = '';
-                if (appointmentType === 'vaccination') {
-                    vaccinationType = document.getElementById('vaccination-type').value;
-                }
+            // Get the selected date from flatpickr
+            const selectedDateValue = document.querySelector('#appointment-calendar').value;
 
-                if (!date || !time || !appointmentType || !babyName || (appointmentType === 'vaccination' && !vaccinationType)) {
-                    alert('Please fill out all fields before submitting.');
-                } else {
-                    let message = `Appointment scheduled for ${date} at ${time} for a ${appointmentType}`;
-                    if (appointmentType === 'vaccination') {
-                        message += ` (${document.getElementById('vaccination-type').options[document.getElementById('vaccination-type').selectedIndex].text})`;
+            const formData = {
+                baby_id: babySelect.value,
+                appointmentDate: selectedDateValue, // This will be in YYYY-MM-DD format
+                appointmentTime: selectedTime.innerText,
+                purpose: appointmentTypeSelect.value,
+                _token: document.querySelector('meta[name="csrf-token"]').content
+            };
+
+                // Send the appointment data to the server
+                fetch('/appointments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Appointment scheduled successfully!');
+                    // Refresh the appointment list if the baby is selected in the list view
+                    const listBabySelector = document.getElementById('baby-appointment-select');
+                    if (listBabySelector.value === babySelect.value) {
+                        listBabySelector.dispatchEvent(new Event('change'));
                     }
-                    message += ` for ${babyName}.`;
-                    alert(message);
-                }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to schedule appointment. Please try again.');
+                });
             });
         });
-
         //vaccination section
         document.addEventListener('DOMContentLoaded', function () {
             const babyVaccinationSelector = document.getElementById('baby-vaccination-select');
@@ -891,47 +900,132 @@
                 });
                 // Initial state
                 babyVaccinationSelector.dispatchEvent(new Event('change'));
-            }
-            // Event delegation for tick button
-            vaccinationList.addEventListener('click', function(e) {
-                if (e.target.closest('.vaccination-tick-btn')) {
-                    const btn = e.target.closest('.vaccination-tick-btn');
-                    const idx = btn.getAttribute('data-idx');
-                    vaccineStatus[idx] = !vaccineStatus[idx];
-                    btn.classList.toggle('active');
-                    const icon = btn.querySelector('i');
-                    if (btn.classList.contains('active')) {
-                        icon.className = 'fas fa-check';
-                    } else {
-                        icon.className = 'fas fa-check-circle';
+
+                // Event delegation for tick button
+                vaccinationList.addEventListener('click', function(e) {
+                    if (e.target.closest('.vaccination-tick-btn')) {
+                        const btn = e.target.closest('.vaccination-tick-btn');
+                        const idx = btn.getAttribute('data-idx');
+                        vaccineStatus[idx] = !vaccineStatus[idx];
+                        btn.classList.toggle('active');
+                        const icon = btn.querySelector('i');
+                        if (btn.classList.contains('active')) {
+                            icon.className = 'fas fa-check';
+                        } else {
+                            icon.className = 'fas fa-check-circle';
+                        }
                     }
-                }
-            });
+                });
+            }
         });
 
         document.addEventListener('DOMContentLoaded', function () {
         const babySelector = document.getElementById('baby-appointment-select');
         const appointmentList = document.getElementById('appointment-list');
 
+        // Helper: format date string (YYYY-MM-DD) to 'D Month YYYY' (e.g. '1 November 2025')
+        function formatDateDisplay(dateStr) {
+            if (!dateStr) return '';
+            // Normalize and take only the date part
+            const dpart = dateStr.split('T')[0].split(' ')[0];
+            const parts = dpart.split('-');
+            if (parts.length < 3) return dateStr;
+            const year = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10) - 1;
+            const day = parseInt(parts[2], 10);
+            const d = new Date(year, month, day);
+            return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+
+        // Helper: convert various time strings to 12-hour format with AM/PM
+        function formatTimeDisplay(timeStr) {
+            if (!timeStr) return '';
+            const s = timeStr.trim();
+            // If already contains AM/PM, normalize spacing and casing
+            if (/[APap][.]?M[.]?$/.test(s) || /[APap][mM]$/.test(s)) {
+                // Remove dots and ensure single space before AM/PM
+                return s.replace(/\./g, '').replace(/\s+([AaPp][Mm])$/,' $1').toUpperCase();
+            }
+
+            // Match HH:MM or HH:MM:SS (24-hour)
+            const m = s.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+            if (m) {
+                let hh = parseInt(m[1], 10);
+                const mm = m[2];
+                const ampm = hh >= 12 ? 'PM' : 'AM';
+                hh = hh % 12;
+                if (hh === 0) hh = 12;
+                return `${hh}:${mm} ${ampm}`;
+            }
+
+            // Match '9 AM' or '9PM' style
+            const m2 = s.match(/^(\d{1,2})\s*([AaPp][Mm])$/);
+            if (m2) {
+                return `${parseInt(m2[1],10)} ${m2[2].toUpperCase()}`;
+            }
+
+            // Fallback: return original
+            return s;
+        }
+
+        // Helper: compute timestamp for sorting using appointment date and time
+        function parseDatetimeTimestamp(appt) {
+            const dateRaw = (appt.appointmentDate || '').split('T')[0];
+            const parts = dateRaw.split('-');
+            if (parts.length < 3) return 0;
+            const year = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10) - 1;
+            const day = parseInt(parts[2], 10);
+
+            let hours = 0, minutes = 0;
+            const t = (appt.appointmentTime || '').trim();
+            if (t) {
+                // AM/PM format
+                const ampmMatch = t.match(/^(\d{1,2})(?::(\d{2}))?\s*([AaPp][Mm])$/);
+                if (ampmMatch) {
+                    let h = parseInt(ampmMatch[1], 10);
+                    const mm = ampmMatch[2] ? parseInt(ampmMatch[2], 10) : 0;
+                    const ampm = ampmMatch[3].toUpperCase();
+                    if (ampm === 'PM' && h < 12) h += 12;
+                    if (ampm === 'AM' && h === 12) h = 0;
+                    hours = h; minutes = mm;
+                } else {
+                    // 24-hour HH:MM
+                    const m = t.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+                    if (m) {
+                        hours = parseInt(m[1], 10);
+                        minutes = parseInt(m[2], 10);
+                    }
+                }
+            }
+
+            return new Date(year, month, day, hours, minutes).getTime();
+        }
+
         babySelector.addEventListener('change', function () {
             const babyId = this.value;
 
             if (babyId) {
-                fetch(`dashboard/appointment/${babyId}`)
+                fetch(`/appointments/baby/${babyId}`)
                     .then(response => response.json())
                     .then(data => {
                         appointmentList.innerHTML = '';
 
                         if (data.length > 0) {
+                            // Sort by date/time ascending (earliest first)
+                            data.sort((a, b) => parseDatetimeTimestamp(a) - parseDatetimeTimestamp(b));
+
                             data.forEach(appointment => {
+                                const statusClass = appointment.status === 'Waiting' ? 'text-warning' : 'text-success';
+                                const dateDisplay = formatDateDisplay(appointment.appointmentDate);
+                                const timeDisplay = formatTimeDisplay(appointment.appointmentTime);
+                                const purposeDisplay = appointment.purpose ? (appointment.purpose.charAt(0).toUpperCase() + appointment.purpose.slice(1)) : '';
                                 const row = `
                                     <tr>
-                                        <td>${appointment.appointmentDate}</td>
-                                        <td>${appointment.appointmentTime}</td>
-                                        <td>${appointment.doctorName}</td>
-                                        <td>${appointment.location}</td>
-                                        <td>${appointment.purpose}</td>
-                                        <td>${appointment.status}</td>
+                                        <td>${dateDisplay}</td>
+                                        <td>${timeDisplay}</td>
+                                        <td>${purposeDisplay}</td>
+                                        <td><span class="${statusClass}">${appointment.status}</span></td>
                                     </tr>
                                 `;
                                 appointmentList.innerHTML += row;
@@ -939,16 +1033,16 @@
                         } else {
                             appointmentList.innerHTML = `
                                 <tr>
-                                    <td colspan="6" class="text-center">No appointments found for this baby.</td>
+                                    <td colspan="4" class="text-center">No appointments found for this baby.</td>
                                 </tr>
                             `;
                         }
                     })
                     .catch(error => {
-                        console.error('Error fetching appointments:', error);
+                        console.error('Error:', error);
                         appointmentList.innerHTML = `
                             <tr>
-                                <td colspan="6" class="text-center text-danger">Failed to load appointments.</td>
+                                <td colspan="4" class="text-center text-danger">Failed to load appointments.</td>
                             </tr>
                         `;
                     });

@@ -767,7 +767,7 @@
                     const summaryResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                         method: "POST",
                         headers: {
-                            "Authorization": "Bearer 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",
+                            "Authorization": "Bearer sk-KEY",
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
@@ -797,7 +797,7 @@
                 const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                     method: "POST",
                     headers: {
-                        "Authorization": "Bearer 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",
+                        "Authorization": "Bearer sk-KEY",
                         "Referer": "https://www.TinyTrack.com",
                         "X-Title": "TinyTrack Sage Chatbot",
                         "Content-Type": "application/json"

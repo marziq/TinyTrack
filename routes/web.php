@@ -144,3 +144,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user/update', [UserController::class, 'update'])->name('user.update');
     Route::get('/user/babies-count', [UserController::class, 'getBabiesCount'])->name('user.babies-count');
 });
+
+Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+Route::get('/appointments/baby/{babyId}', [AppointmentController::class, 'getAppointmentsByBaby'])->name('appointments.by.baby');

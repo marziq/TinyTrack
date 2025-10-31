@@ -16,8 +16,6 @@ class Appointment extends Model
         'baby_id',
         'appointmentDate',
         'appointmentTime',
-        'doctorName',
-        'location',
         'purpose',
         'status'
     ];

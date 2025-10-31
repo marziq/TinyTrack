@@ -1199,7 +1199,7 @@
                 const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                     method: 'POST',
                     headers: {
-                        Authorization: 'Bearer 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',
+                        Authorization: 'Bearer sk-KEY',
                         'HTTP-Referer': 'https://TinyTrack.com',
                         'X-Title': 'TinyTrack',
                         'Content-Type': 'application/json',

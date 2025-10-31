@@ -575,6 +575,73 @@
         }
         .milestone-check i {
             pointer-events: none;
+        }
+
+        /* Skill Cards Styling */
+        .skills-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .skills-section h3 {
+            color: #333;
+            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+
+        .skill-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid #e9ecef;
+            height: 100%;
+        }
+
+        .skill-card h4 {
+            color: #1976d2;
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .skill-card .progress {
+            margin-bottom: 12px;
+        }
+
+        .skill-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .skill-items li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skill-items li:last-child {
+            border-bottom: none;
+        }
+
+        .skill-items li i {
+            color: #19d276;
+        }
 }
     </style>
 </head>
@@ -784,38 +851,38 @@
             progressDiv.innerHTML = `
                 <div style="display:flex; flex-direction:column; gap:18px;">
                     <div style="display:flex; align-items:center; gap:16px;">
-                        <span style="font-size:2rem; color:#1976d2; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-dumbbell"></i></span>
+                        <span style="font-size:2rem; color: red; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-dumbbell"></i></span>
                         <div style="flex:1;">
                             <div style="display:flex; align-items:center; justify-content:space-between;">
                                 <span style="font-weight:bold; color:#1976d2;">Physical</span>
                                 <span style="font-size:15px; color:#1976d2; font-weight:600;">${p}%</span>
                             </div>
                             <div class="progress" style="height: 14px; background:#e3f2fd;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: ${p}%; font-size: 12px;" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar" role="progressbar" style="width: ${p}%; font-size: 12px; background-color: #FF0000;" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
                     <div style="display:flex; align-items:center; gap:16px;">
-                        <span style="font-size:2rem; color:#1976d2; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-brain"></i></span>
+                        <span style="font-size:2rem; color: green; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-brain"></i></span>
                         <div style="flex:1;">
                             <div style="display:flex; align-items:center; justify-content:space-between;">
                                 <span style="font-weight:bold; color:#1976d2;">Cognitive</span>
                                 <span style="font-size:15px; color:#1976d2; font-weight:600;">${c}%</span>
                             </div>
                             <div class="progress" style="height: 14px; background:#e3f2fd;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: ${c}%; font-size: 12px;" aria-valuenow="${c}" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar" role="progressbar" style="width: ${c}%; font-size: 12px; background-color: #008000;" aria-valuenow="${c}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
                     <div style="display:flex; align-items:center; gap:16px;">
-                        <span style="font-size:2rem; color:#1976d2; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-users"></i></span>
+                        <span style="font-size:2rem; color: gold; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-users"></i></span>
                         <div style="flex:1;">
                             <div style="display:flex; align-items:center; justify-content:space-between;">
                                 <span style="font-weight:bold; color:#1976d2;">Social</span>
                                 <span style="font-size:15px; color:#1976d2; font-weight:600;">${s}%</span>
                             </div>
                             <div class="progress" style="height: 14px; background:#e3f2fd;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: ${s}%; font-size: 12px;" aria-valuenow="${s}" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar" role="progressbar" style="width: ${s}%; font-size: 12px; background-color: #FFD700;" aria-valuenow="${s}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
