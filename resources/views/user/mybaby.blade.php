@@ -356,6 +356,85 @@
             gap: 15px; /* Add spacing between elements */
         }
 
+        /* Favorite Tips Panel Styles */
+        .favorite-tips-panel {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(48, 48, 48, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .favorite-tips-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e3f2fd;
+        }
+
+        .favorite-tips-header h3 {
+            color: #1976d2;
+            font-size: 1.25rem;
+            margin: 0;
+        }
+
+        .favorite-tips-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .favorite-tip-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 15px;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .favorite-tip-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .favorite-tip-title {
+            color: #1976d2;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .favorite-tip-category {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .favorite-tip-remove {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .favorite-tip-remove:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+
         .baby-photo-container {
             width: 120px;
             height: 120px;
@@ -746,6 +825,19 @@
            <div class="baby-selector-container">
             <div>
                 <h2>Welcome Back, {{ Auth::user()->name }}!</h2>
+                <!-- Tip Info Modal -->
+                <div class="modal fade" id="tipInfoModal" tabindex="-1" aria-labelledby="tipInfoModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tipInfoModalLabel"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="tipInfoModalBody">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <p>Let's make parenting smarter, together.
 
                 </p>
@@ -793,7 +885,7 @@
         <hr>
         <div id="babyDashboard" style="display: none;">
             <h1 class="babyh1" id="selectedBabyProfileHeading">Select a baby to view their profile</h1>
-            <div class="dashboard-grid">
+                <div class="dashboard-grid">
                 <!-- Row 1 -->
                 <div class="baby-info-panel">
                     <div class="baby-photo-container">
@@ -943,72 +1035,33 @@
                     </div>
                 </div>
 
-                <!-- Baby Tips -->
+                <!-- Baby Tips (render favourited tips here) -->
                 <div class="baby-tips-panel">
                     <h4>Baby Tips</h4>
-                    <div class="baby-tips-list baby-tips-scroll" style="display: flex; flex-direction: column; gap: 10px;">
-                        <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
-                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff8e1; border-radius: 50%; color: #FFD700;">
-                                <i class="fas fa-lightbulb" style="color: #FFD700;"></i>
+                    <div class="baby-tips-list baby-tips-scroll">
+                        @forelse(Auth::user()->favoriteTips as $tip)
+                            <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;"
+                                 data-id="{{ $tip->id }}"
+                                 data-title="{{ $tip->title }}"
+                                 data-content="{{ $tip->rich_content }}"
+                                 data-image="{{ $tip->image_url }}"
+                                 data-video="{{ $tip->video_url }}"
+                                 onclick="showTipDetails(event, this)">
+                                <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff8e1; border-radius: 50%; color: #FFD700;">
+                                    <i class="fas fa-lightbulb" style="color: #FFD700;"></i>
+                                </div>
+                                <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
+                                    {{ $tip->title }}
+                                </div>
+                                <button class="btn btn-xs btn-outline-danger" style="font-size: 10px; padding: 2px 6px; min-width: unset; height: 22px;" onclick="removeFavoriteTip(event, {{ $tip->id }})">
+                                    <i class="fas fa-times" style="font-size: 12px;"></i>
+                                </button>
                             </div>
-                            <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
-                                Always place your baby on their back to sleep.
-                            </div>
-                            <button class="btn btn-xs btn-outline-danger" style="font-size: 10px; padding: 2px 6px; min-width: unset; height: 22px;" onclick="removeTip(this)">
-                                <i class="fas fa-times" style="font-size: 12px;"></i>
-                            </button>
-                        </div>
-                        <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
-                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff8e1; border-radius: 50%; color: #FFD700;">
-                                <i class="fas fa-lightbulb" style="color: #FFD700;"></i>
-                            </div>
-                            <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
-                                Talk, read, and sing to your baby every day.
-                            </div>
-                            <button class="btn btn-xs btn-outline-danger" style="font-size: 10px; padding: 2px 6px; min-width: unset; height: 22px;" onclick="removeTip(this)">
-                                <i class="fas fa-times" style="font-size: 12px;"></i>
-                            </button>
-                        </div>
-                        <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
-                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff8e1; border-radius: 50%; color: #FFD700;">
-                                <i class="fas fa-lightbulb" style="color: #FFD700;"></i>
-                            </div>
-                            <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
-                                Never leave your baby unattended on high surfaces.
-                            </div>
-                            <button class="btn btn-xs btn-outline-danger" style="font-size: 10px; padding: 2px 6px; min-width: unset; height: 22px;" onclick="removeTip(this)">
-                                <i class="fas fa-times" style="font-size: 12px;"></i>
-                            </button>
-                        </div>
-                        <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
-                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff8e1; border-radius: 50%; color: #FFD700;">
-                                <i class="fas fa-lightbulb" style="color: #FFD700;"></i>
-                            </div>
-                            <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
-                                Eat healthy as suggested.
-                            </div>
-                            <button class="btn btn-xs btn-outline-danger" style="font-size: 10px; padding: 2px 6px; min-width: unset; height: 22px;" onclick="removeTip(this)">
-                                <i class="fas fa-times" style="font-size: 12px;"></i>
-                            </button>
-                        </div>
-                        <div class="baby-tip-item" style="display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid #e3f2fd; border-radius: 8px; background-color: #e3f2fd; margin-bottom: 5px;">
-                            <div class="tip-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff8e1; border-radius: 50%; color: #FFD700;">
-                                <i class="fas fa-lightbulb"></i>
-                            </div>
-                            <div class="tip-text" style="flex: 1; font-size: 15px; color: #333;">
-                                Quality Sleeps.
-                            </div>
-                            <button class="btn btn-xs btn-outline-danger" style="font-size: 10px; padding: 2px 6px; min-width: unset; height: 22px;" onclick="removeTip(this)">
-                                <i class="fas fa-times" style="font-size: 12px;"></i>
-                            </button>
-                        </div>
+                        @empty
+                            <div class="baby-tip-item" style="padding:12px; color:#666;">You haven't favourited any tips yet.</div>
+                        @endforelse
                     </div>
                 </div>
-                <script>
-                    function removeTip(btn) {
-                        btn.closest('.baby-tip-item').remove();
-                    }
-                </script>
             </div>
         </div>
 
@@ -1564,5 +1617,126 @@
             to { transform: rotate(360deg); }
         }
     </style>
+        <script>
+            // Show tip details in modal
+            function showTipDetails(event, element) {
+                // Prevent triggering when clicking remove button
+                if (event.target.closest('.favorite-tip-remove')) {
+                    return;
+                }
+
+                const tipData = element.dataset;
+                const modalTitle = document.getElementById('tipInfoModalLabel');
+                const modalBody = document.getElementById('tipInfoModalBody');
+
+                modalTitle.innerText = tipData.title;
+
+                // Parse the rich content to extract sections
+                const richContent = tipData.content || '';
+                const sections = richContent.split('\n').filter(s => s.trim() !== '');
+
+                modalBody.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h3 style="color: #1976d2; margin: 0; font-size: 28px;">${tipData.title}</h3>
+                            <div style="margin-top:8px; color:#1976d2; font-size:13px; line-height:1.2;">
+                                <div>Reviewed By:</div>
+                                <div>Dr Aiman Khalid</div>
+                                <div>Consultant Pediatrician at Selangor Specialist Hospital</div>
+                            </div>
+                        </div>
+                        <div>
+                            <button id="removeFavoriteModalBtn" class="btn btn-primary">Remove from Favourites</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="lead mb-4" style="color:#333;">${sections[0] || tipData.content || ''}</p>
+                    </div>
+
+                    ${tipData.image ? `
+                    <div class="text-center mb-4">
+                        <img src="${tipData.image}" alt="${tipData.title}" class="img-fluid rounded" style="max-width: 700px; width:100%;">
+                    </div>
+                    ` : ''}
+
+                    ${tipData.video ? `
+                    <div class="mb-4">
+                        <div class="ratio ratio-16x9">
+                            <iframe src="${tipData.video}" allowfullscreen style="border-radius:10px;"></iframe>
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <div>
+                        ${sections.slice(1).map((section) => {
+                            if (section.startsWith('</br>')) {
+                                return '<h4 class="text-primary mt-4">' + section.replace('</br>', '') + '</h4>';
+                            } else {
+                                return '<p class="mb-3" style="color:#444;">' + section + '</p>';
+                            }
+                        }).join('')}
+                    </div>`;
+
+                // wire up remove button in modal
+                const removeBtn = document.getElementById('removeFavoriteModalBtn');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        // call existing removal which also updates UI
+                        removeFavoriteTip(e, tipData.id || tipData['id']);
+                    });
+                }
+
+                let tipModal = new bootstrap.Modal(document.getElementById('tipInfoModal'));
+                tipModal.show();
+            }
+
+            // Remove favorite tip
+            function removeFavoriteTip(event, tipId) {
+                event.stopPropagation();
+                if (!confirm('Are you sure you want to remove this tip from favorites?')) {
+                    return;
+                }
+
+                fetch(`/favorite-tip/${tipId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Remove any matching favorite card(s) from UI
+                        const favCard = document.querySelector(`.favorite-tip-card[data-id="${tipId}"]`);
+                        const babyCard = document.querySelector(`.baby-tip-item[data-id="${tipId}"]`);
+                        if (favCard) favCard.remove();
+                        if (babyCard) babyCard.remove();
+
+                        // Hide modal if open
+                        try {
+                            const modalEl = document.getElementById('tipInfoModal');
+                            if (modalEl) {
+                                const bsModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                                bsModal.hide();
+                            }
+                        } catch (err) {
+                            // ignore
+                        }
+
+                        // Show success message
+                        showNotificationModal('Success', 'Tip removed from favorites!', new Date().toLocaleDateString());
+                    } else {
+                        alert(data.message || 'Error removing tip from favorites');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error removing tip from favorites');
+                });
+            }
+        </script>
 </body>
 </html>

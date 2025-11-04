@@ -1015,14 +1015,14 @@
                     additionalText5: '“Skin-to-skin care, even for a few minutes a day, can help parents feel more connected and confident, while giving babies a better start in life.” </br> — Nurse Supervisor, Klinik Kesihatan Selangor'
                 },
                 bonding2: {
-                    title: 'Skin-to-Skin & Baby Massage Tips',
+                    title: 'Gentle Baby Massage',
                     content: 'Skin-to-skin contact helps regulate your baby’s temperature and heartbeat. Baby massage can soothe and relax your baby.',
                     heroImage: '{{ asset("img/baby-massage.jpg") }}',
                     videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
 
                 },
                 bonding3: {
-                    title: 'Skin-to-Skin & Baby Massage Tips',
+                    title: 'Talk & Sing to Baby',
                     content: 'Skin-to-skin contact helps regulate your baby’s temperature and heartbeat. Baby massage can soothe and relax your baby.',
                     heroImage: '{{ asset("img/baby-massage.jpg") }}',
                     videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
@@ -1235,22 +1235,71 @@
                 let tipModal = new bootstrap.Modal(document.getElementById('tipInfoModal'));
                 tipModal.show();
 
-                // Add event listener for the favourite button
+                // Add event listener for the favourite button (uses server-side favorites)
                 setTimeout(() => {
                     const favouriteButton = document.getElementById('favouriteButton');
                     if (favouriteButton) {
-                        favouriteButton.addEventListener('click', function () {
-                            const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
-                            const index = favourites.indexOf(topicId);
-
-                            if (index === -1) {
-                                favourites.push(topicId);
+                        // Initialize button state by checking backend
+                        favouriteButton.dataset.favoriteId = '';
+                        fetch(`/check-favorite/${topicId}`, {
+                            headers: { 'Accept': 'application/json' }
+                        }).then(r => r.json()).then(data => {
+                            if (data.success && data.isFavorite) {
                                 favouriteButton.textContent = 'Remove from Favourites';
+                                favouriteButton.dataset.favoriteId = data.favoriteId || '';
                             } else {
-                                favourites.splice(index, 1);
                                 favouriteButton.textContent = 'Add to Favourites';
+                                favouriteButton.dataset.favoriteId = '';
                             }
-                            localStorage.setItem('favourites', JSON.stringify(favourites));
+                        }).catch(() => {
+                            favouriteButton.textContent = 'Add to Favourites';
+                        });
+
+                        favouriteButton.addEventListener('click', function () {
+                            const favId = this.dataset.favoriteId;
+                            if (!favId) {
+                                // Save favorite
+                                fetch('/save-favorite-tip', {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Content-Type': 'application/json',
+                                        'Accept': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        tip_id: topicId,
+                                        title: topic.title || topicId,
+                                        content: topic.content || '',
+                                        category: topic.category || 'General',
+                                        rich_content: topic.content, // Full content with formatting
+                                        image_url: topic.heroImage || '',
+                                        video_url: topic.videoUrl || '',
+                                    })
+                                }).then(r => r.json()).then(resp => {
+                                    if (resp.success) {
+                                        this.textContent = 'Remove from Favourites';
+                                        this.dataset.favoriteId = resp.data.id || '';
+                                    } else {
+                                        alert(resp.message || 'Error saving favorite');
+                                    }
+                                }).catch(() => alert('Error saving favorite'));
+                            } else {
+                                // Remove favorite
+                                fetch(`/favorite-tip/${favId}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Accept': 'application/json'
+                                    }
+                                }).then(r => r.json()).then(resp => {
+                                    if (resp.success) {
+                                        this.textContent = 'Add to Favourites';
+                                        this.dataset.favoriteId = '';
+                                    } else {
+                                        alert(resp.message || 'Error removing favorite');
+                                    }
+                                }).catch(() => alert('Error removing favorite'));
+                            }
                         });
                     }
                 }, 100);

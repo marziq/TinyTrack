@@ -14,7 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('user.myaccount');
+        $user = auth()->user();
+        $favorites = $user ? $user->favoriteTips()->latest()->get() : collect();
+        return view('user.myaccount', compact('favorites'));
     }
 
     /**

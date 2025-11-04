@@ -14,7 +14,10 @@ class FavoriteTip extends Model
         'tip_id',
         'title',
         'content',
-        'category'
+        'category',
+        'rich_content',
+        'image_url',
+        'video_url'
     ];
 
     public function user()

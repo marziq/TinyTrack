@@ -29,12 +29,15 @@ class FavoriteTipController extends Controller
                 ]);
             }
 
-            // Create new favorite tip
+            // Create new favorite tip with rich content
             $favoriteTip = $user->favoriteTips()->create([
                 'tip_id' => $request->tip_id,
                 'title' => $request->title,
                 'content' => $request->content,
                 'category' => $request->category,
+                'rich_content' => $request->input('rich_content', $request->content), // Use rich content if provided, fallback to plain
+                'image_url' => $request->input('image_url'),
+                'video_url' => $request->input('video_url'),
             ]);
 
             return response()->json([
@@ -74,18 +77,28 @@ class FavoriteTipController extends Controller
     public function checkFavorite($tipId)
     {
         try {
-            $isFavorite = FavoriteTip::where('user_id', auth()->id())
+            $favorite = FavoriteTip::where('user_id', auth()->id())
                 ->where('tip_id', $tipId)
-                ->exists();
+                ->first();
+
+            if ($favorite) {
+                return response()->json([
+                    'success' => true,
+                    'isFavorite' => true,
+                    'favoriteId' => $favorite->id
+                ]);
+            }
 
             return response()->json([
                 'success' => true,
-                'isFavorite' => $isFavorite
+                'isFavorite' => false,
+                'favoriteId' => null
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'isFavorite' => false
+                'isFavorite' => false,
+                'favoriteId' => null
             ]);
         }
     }

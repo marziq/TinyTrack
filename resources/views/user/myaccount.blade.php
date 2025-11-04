@@ -638,24 +638,42 @@
                             <h3>Favourited Baby Tips</h3>
                         </div>
                         <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <a href="#">How to Soothe a Crying Baby</a>
-                                    <span style="background-color: #258ef7 !important" class="badge bg-primary">Favourited</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <a href="#">Safe Sleep Practices</a>
-                                    <span style="background-color: #258ef7 !important" class="badge bg-primary">Favourited</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <a href="#">Introducing Solid Foods</a>
-                                    <span style="background-color: #258ef7 !important" class="badge bg-primary">Favourited</span>
-                                </li>
+                            <ul class="list-group" id="favoritesList">
+                                @if(isset($favorites) && $favorites->count())
+                                    @foreach($favorites as $fav)
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a href="javascript:void(0)" class="fav-item"
+                                               data-id="{{ $fav->id }}"
+                                               data-title="{{ e($fav->title) }}"
+                                               data-content="{{ e($fav->rich_content ?? $fav->content) }}"
+                                               data-image="{{ e($fav->image_url) }}"
+                                               data-video="{{ e($fav->video_url) }}">
+                                                {{ $fav->title }}
+                                            </a>
+                                            <span class="badge bg-primary">Favourited</span>
+                                        </li>
+                                    @endforeach
+                                @else
+                                    <li class="list-group-item">You have no favourited tips yet.</li>
+                                @endif
                             </ul>
                         </div>
                     </div>
                 </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tip Info Modal (for favourited tips) -->
+        <div class="modal fade" id="tipInfoModal" tabindex="-1" aria-labelledby="tipInfoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tipInfoModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="tipInfoModalBody"></div>
                 </div>
             </div>
         </div>
@@ -910,6 +928,71 @@
                     if (hidden) hidden.value = full || '{{ Auth::user()->name }}';
                 });
             }
+        });
+
+        // Show favourited tip details in a modal and allow removing from here
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.fav-item').forEach(function(el) {
+                el.addEventListener('click', function(e) {
+                    const title = this.dataset.title || '';
+                    const content = this.dataset.content || '';
+                    const favId = this.dataset.id;
+
+                    const modalTitle = document.getElementById('tipInfoModalLabel');
+                    const modalBody = document.getElementById('tipInfoModalBody');
+
+                    const imageUrl = this.dataset.image;
+                    const videoUrl = this.dataset.video;
+
+                    modalTitle.innerText = title;
+                    modalBody.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; flex-direction: column; flex: 1;">
+                                <h3 style="color: #1976d2; margin: 0;">${title}</h3>
+                                <a style="color: #1976d2; margin: 0; font-size: 12px;">
+                                    <br> Reviewed By: <br> Dr Aiman Khalid <br> Consultant Pediatrician at Selangor Specialist Hospital
+                                </a>
+                            </div>
+                            <button id="removeFavoriteBtn" class="btn btn-primary">Remove from Favourites</button>
+                        </div>
+                        <div style="margin: 20px auto; max-width: 600px; text-align: center; line-height: 1.6; color: #555;">
+                            <p>${content}</p>
+                        </div>
+                        ${imageUrl ? `
+                        <div style="margin: 20px auto; max-width: 600px; text-align: center;">
+                            <img src="${imageUrl}" alt="${title}" style="width:100%; border-radius:10px;">
+                        </div>
+                        ` : ''}
+                        ${videoUrl ? `
+                        <div style="margin: 20px auto; max-width: 600px; text-align: center;">
+                            <iframe width="100%" height="315" src="${videoUrl}" frameborder="0" allowfullscreen style="border-radius:10px;"></iframe>
+                        </div>
+                        ` : ''}
+                    `;
+
+                    let tipModal = new bootstrap.Modal(document.getElementById('tipInfoModal'));
+                    tipModal.show();
+
+                    // Wire remove button
+                    document.getElementById('removeFavoriteBtn').addEventListener('click', function() {
+                        fetch(`/favorite-tip/${favId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        }).then(r => r.json()).then(resp => {
+                            if (resp.success) {
+                                // Remove the list item from UI
+                                el.closest('li')?.remove();
+                                tipModal.hide();
+                            } else {
+                                alert(resp.message || 'Error removing favorite');
+                            }
+                        }).catch(() => alert('Error removing favorite'));
+                    });
+                });
+            });
         });
     </script>
 </body>
