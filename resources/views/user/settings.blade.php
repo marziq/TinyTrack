@@ -631,10 +631,6 @@
                                                 <!-- Privacy Settings -->
                                                 <div class="mb-3">
                                                     <label class="form-label">Privacy</label>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="showProfile" checked>
-                                                        <label class="form-check-label" for="showProfile">Show my profile to other users</label>
-                                                    </div>
                                                 </div>
                                                 <!-- Account Actions -->
                                                 <div class="mb-3">
