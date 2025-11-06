@@ -984,12 +984,24 @@
                         label: 'Height (cm)',
                         data: [],
                         borderColor: '#1976d2',
-                        fill: false,
+                        backgroundColor: 'rgba(25, 118, 210, 0.1)',
+                        fill: true,
+                        tension: 0.4
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
                 }
             });
 
@@ -1001,12 +1013,24 @@
                         label: 'Weight (g)',
                         data: [],
                         borderColor: '#e74c3c',
-                        fill: false,
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        fill: true,
+                        tension: 0.4
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
                 }
             });
 
