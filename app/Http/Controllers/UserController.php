@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -95,10 +96,29 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the authenticated user's account from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $user = Auth::user();
+
+        // Require current password for safety
+        $request->validate([
+            'password' => ['required', 'string'],
+        ]);
+
+        if (! Hash::check($request->input('password'), $user->password)) {
+            return back()->withErrors(['password' => 'The provided password does not match our records.']);
+        }
+
+        // Perform deletion. If there are related records with foreign keys, cascade or handle accordingly.
+        Auth::logout();
+        $user->delete();
+
+        // Invalidate the session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('mainpage')->with('status', 'Your account has been deleted.');
     }
 }

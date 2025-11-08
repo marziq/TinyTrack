@@ -2,6 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Design tokens: light and dark CSS variables. Components should use these
+   variables (fallbacks provided) to ensure consistent color across the app. */
+:root {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --muted: #6b7280; /* gray-500 */
+    --text: #111827; /* gray-900 */
+    --accent: #1976d2; /* brand blue */
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --border: #e5e7eb; /* gray-200 */
+}
+
+/* Dark theme variables (applied when .dark class is present on <html> or <body>) */
+.dark {
+    --bg: #0b0f12;        /* near black */
+    --surface: #111317;   /* cards, panels */
+    --muted: #9ca3af;     /* gray-400 */
+    --text: #e6eef8;      /* off-white for readability */
+    --accent: #60a5fa;    /* softer blue accent */
+    --card-shadow: 0 8px 20px rgba(2,6,23,0.6);
+    --border: #2b2f33;
+}
+
 [x-cloak] {
     display: none;
 }
+
+/* Global element defaults using variables */
+html, body {
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+/* Utility classes to map to the variables for legacy inline styles and components */
+.bg-surface { background-color: var(--surface) !important; }
+.text-muted { color: var(--muted) !important; }
+.border-theme { border-color: var(--border) !important; }
+

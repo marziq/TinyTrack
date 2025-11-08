@@ -28,6 +28,21 @@
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
 
+        <!-- Inline script to set initial theme early to avoid flash-of-incorrect-theme -->
+        <script>
+            (function() {
+                try {
+                    var stored = localStorage.getItem('userDarkMode');
+                    if (stored !== null) {
+                        if (stored === 'true') document.documentElement.classList.add('dark');
+                        else document.documentElement.classList.remove('dark');
+                    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.documentElement.classList.add('dark');
+                    }
+                } catch (e) { /* ignore */ }
+            })();
+        </script>
+
 
 
     </head>

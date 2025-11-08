@@ -4,6 +4,10 @@ import typography from '@tailwindcss/typography';
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    // Use class strategy so dark mode can be toggled by adding/removing the
+    // `dark` class on the document element. This gives deterministic control
+    // (preferred for user toggles and persisting preference).
+    darkMode: 'class',
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './vendor/laravel/jetstream/**/*.blade.php',

@@ -119,6 +119,9 @@ Route::middleware([
         return view('user/checkup');
     })->name('checkup');
 
+    // User account deletion
+    Route::delete('/user/delete', [UserController::class, 'destroy'])->name('user.destroy');
+
     //Ai testing
     Route::get('/test', function () {
         return view('user/test');

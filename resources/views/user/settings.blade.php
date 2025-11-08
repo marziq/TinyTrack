@@ -469,38 +469,85 @@
         .card .card-body .row {
             align-items: stretch;
         }
-        body.dark-mode {
-            background-color: #181a1b !important;
-            color: #e0e0e0 !important;
+        /* Dark-mode styles: this uses the `.dark` root class and the CSS variables
+           defined in resources/css/app.css for consistent theming. */
+        .dark {
+            background-color: var(--bg, #0b0f12) !important;
+            color: var(--text, #e6eef8) !important;
         }
-        .dark-mode .sidebar {
-            background-color: #23272b !important;
-            color: #e0e0e0 !important;
-        }
-        .dark-mode .main, .dark-mode .card, .dark-mode .welcome-section {
-            background-color: #23272b !important;
-            color: #e0e0e0 !important;
+        .dark .sidebar {
+            background-color: var(--surface, #111317) !important;
+            color: var(--text, #e6eef8) !important;
             box-shadow: none;
         }
-        .dark-mode .card-header, .dark-mode .dropdown-menu {
-            background-color: #23272b !important;
-            color: #e0e0e0 !important;
+        .dark .sidebar a {
+            color: var(--text, #e6eef8) !important;
         }
-        .dark-mode .form-control, .dark-mode .form-select {
-            background-color: #23272b !important;
-            color: #e0e0e0 !important;
-            border-color: #444;
+        .dark .sidebar a.active {
+            background-color: var(--accent, #60a5fa) !important;
+            color: #fff !important;
+            box-shadow: 0 6px 18px rgba(25,118,210,0.18);
+            border-color: var(--accent, #60a5fa) !important;
         }
-        .dark-mode .dropdown-item {
-            color: #e0e0e0 !important;
+        .dark .main, .dark .card, .dark .welcome-section {
+            background-color: var(--surface, #111317) !important;
+            color: var(--text, #e6eef8) !important;
+            box-shadow: none;
+            border: 1px solid var(--border, #2b2f33);
         }
-        .dark-mode .dropdown-item:hover {
-            background-color: #333 !important;
+        .dark .card-header, .dark .dropdown-menu {
+            background-color: transparent !important;
+            color: var(--text, #e6eef8) !important;
         }
-        .dark-mode .notification-popup {
-            background: #23272b !important;
-            color: #e0e0e0 !important;
-            border-color: #444;
+        .dark .form-control, .dark .form-select {
+            background-color: var(--surface, #111317) !important;
+            color: var(--text, #e6eef8) !important;
+            border-color: var(--border, #2b2f33) !important;
+        }
+        .dark .dropdown-item {
+            color: var(--text, #e6eef8) !important;
+        }
+        .dark .dropdown-item:hover {
+            background-color: rgba(255,255,255,0.03) !important;
+        }
+        .dark .notification-popup {
+            background: var(--surface, #111317) !important;
+            color: var(--text, #e6eef8) !important;
+            border-color: var(--border, #2b2f33) !important;
+        }
+        /* Ensure primary headings are white in dark mode */
+        .dark .topbar h1 {
+            color: #ffffff !important;
+        }
+        /* Card headers and section headings */
+        .dark .card-header h3,
+        .dark #basicSettingsSection h3,
+        .dark #notificationSettingsSection h3,
+        .dark #passwordSettingsSection h3,
+        .dark .card h3 {
+            color: #ffffff !important;
+        }
+        /* Dark mode styles for the settings menu buttons */
+        .dark #settingsMenu .list-group-item {
+            background-color: transparent !important;
+            color: var(--text, #e6eef8) !important;
+            border: 1px solid var(--border, #2b2f33) !important;
+            box-shadow: none !important;
+        }
+        .dark #settingsMenu .list-group-item:hover {
+            background-color: rgba(255,255,255,0.02) !important;
+            color: var(--text, #e6eef8) !important;
+        }
+        .dark #settingsMenu .list-group-item.active {
+            background-color: var(--accent, #60a5fa) !important;
+            color: #fff !important;
+            font-weight: bold;
+            box-shadow: 0 6px 18px rgba(25,118,210,0.18) !important;
+            border: 2px solid var(--accent, #60a5fa) !important;
+        }
+        .dark #settingsMenu .list-group-item:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(96,165,250,0.12) !important;
         }
         /* Font size adjustment */
         body.font-large, .font-large .main, .font-large .card, .font-large .form-control, .font-large .form-select {
@@ -634,8 +681,10 @@
                                                 </div>
                                                 <!-- Account Actions -->
                                                 <div class="mb-3">
-                                                    <button class="btn btn-outline-danger" type="button" onclick="alert('Account deletion is not implemented in this demo.')">Delete Account</button>
-                                                    <button class="btn btn-outline-secondary" type="button" onclick="alert('Data download is not implemented in this demo.')">Download My Data</button>
+                                                    <!-- Button triggers delete confirmation modal -->
+                                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                                                        Delete Account
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -708,39 +757,36 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     // --- Dark Mode Logic Start ---
-        const body = document.body;
         const darkModeSwitch = document.getElementById('darkModeSwitch');
         const localStorageKey = 'userDarkMode';
 
-        // 1. Function to apply the class
+        // Apply or remove the `dark` class on the document element (works with Tailwind's
+        // class strategy and our CSS variables defined in resources/css/app.css).
         function applyTheme(isDark) {
+            const root = document.documentElement;
             if (isDark) {
-                body.classList.add('dark-mode');
+                root.classList.add('dark');
             } else {
-                body.classList.remove('dark-mode');
+                root.classList.remove('dark');
             }
         }
 
-        // 2. Load the initial state from Local Storage (or default to false/light)
-        let initialDarkMode = localStorage.getItem(localStorageKey) === 'true';
+        // Determine initial preference: prefer saved preference, otherwise use system setting.
+        let stored = localStorage.getItem(localStorageKey);
+        let initialDarkMode = (stored !== null)
+            ? stored === 'true'
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
         applyTheme(initialDarkMode);
 
-        // 3. Set the switch state on page load
         if (darkModeSwitch) {
             darkModeSwitch.checked = initialDarkMode;
 
-            // 4. Listener for the toggle switch
             darkModeSwitch.addEventListener('change', function() {
                 const isChecked = this.checked;
-                // a. Apply theme immediately
                 applyTheme(isChecked);
-
-                // b. Save preference to Local Storage
                 localStorage.setItem(localStorageKey, isChecked);
-
-                // c. OPTIONAL: You can also send an AJAX request here to save it in the database
-                // (This is better if you want the setting to sync across devices)
-                // saveDarkModePreference(isChecked);
+                // Optionally, send preference to server here for cross-device sync.
             });
         }
 
@@ -892,6 +938,36 @@
             });
         });
     </script>
+
+        <!-- Delete Account Modal -->
+        <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteAccountModalLabel">Delete Account</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="{{ route('user.destroy') }}">
+                        @csrf
+                        @method('DELETE')
+                        <div class="modal-body">
+                            <p>Are you sure you want to permanently delete your account? This action cannot be undone. Please enter your password to confirm.</p>
+                            <div class="mb-3">
+                                <label for="confirm_password" class="form-label">Password</label>
+                                <input type="password" name="password" id="confirm_password" class="form-control" required>
+                                @error('password')
+                                        <div class="text-danger mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger">Delete Account</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
 
 </body>

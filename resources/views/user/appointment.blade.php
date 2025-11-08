@@ -7,6 +7,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('css/dark-mode.css') }}" rel="stylesheet">
+    <script>
+        (function(){
+            try{
+                var s = localStorage.getItem('userDarkMode');
+                if(s !== null){ if(s === 'true') document.documentElement.classList.add('dark'); else document.documentElement.classList.remove('dark'); }
+                else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){ document.documentElement.classList.add('dark'); }
+            }catch(e){}
+        })();
+    </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
     <style>
@@ -547,6 +557,25 @@
             font-weight: bold;
             box-shadow: 0 2px 12px rgba(25, 118, 210, 0.18); /* stronger shadow for active */
             border: 2px solid #1976d2; /* darker outline for active */
+        }
+        /*Dark mode sidebar*/
+        .dark .sidebar {
+            background-color: var(--surface, #111317) !important;
+            color: var(--text, #e6eef8) !important;
+            box-shadow: none;
+        }
+        .dark .sidebar a {
+            color: var(--text, #e6eef8) !important;
+        }
+        .dark .sidebar a.active {
+            background-color: var(--accent, #60a5fa) !important;
+            color: #fff !important;
+            box-shadow: 0 6px 18px rgba(25,118,210,0.18);
+            border-color: var(--accent, #60a5fa) !important;
+        }
+        /*Dark mode Text*/
+        .dark .topbar h1 {
+            color: #ffffff !important;
         }
     </style>
 </head>

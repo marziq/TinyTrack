@@ -1,0 +1,58 @@
+/* Shared dark mode stylesheet for TinyTrack
+   This file provides CSS variables and dark styles used across pages that
+   include it. Toggle dark mode by adding the `dark` class to <html> or <body>.
+*/
+:root{
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --accent: #1976d2;
+  --border: #e5e7eb;
+}
+
+/* Dark theme tokens */
+.dark{
+  --bg: #0b0f12;
+  --surface: #111317;
+  --text: #ffffff;
+  --muted: #9ca3af;
+  --accent: #60a5fa;
+  --border: #2b2f33;
+}
+
+/* Base overrides */
+html, body{ background-color: var(--bg) !important; transition: background-color .2s ease; }
+
+/* Common layout components used across views */
+.sidebar{ background-color: var(--surface) !important; }
+.main, .card, .welcome-section, .main-content{ background-color: var(--surface) !important; }
+.card, .card-body{ border: 1px solid var(--border) !important; box-shadow: none !important; }
+.card-header, .dropdown-menu{ background-color: transparent !important; }
+.form-control, .form-select{ background-color: var(--surface) !important; border-color: var(--border) !important; }
+.notification-popup{ background: var(--surface) !important; border-color: var(--border) !important; }
+
+/* Sidebar link active states */
+.sidebar a.active{ background-color: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important; }
+
+/* Settings menu and list-group styles used on settings page and similar components */
+#settingsMenu .list-group-item{ background-color: transparent !important; color: var(--text) !important; border: 1px solid var(--border) !important; }
+#settingsMenu .list-group-item.active{ background-color: var(--accent) !important; color: #fff !important; border: 2px solid var(--accent) !important; }
+
+/* Note: we intentionally avoid forcing text color globally so pages with
+  manually-styled white text remain visible. Use per-page rules (e.g.
+  settings page) to control heading/text color where needed. */
+
+/* Buttons: keep primary look but readable */
+.btn-primary{ background-color: var(--accent) !important; border-color: var(--accent) !important; color: #fff !important; }
+.btn-outline-danger{ color: #fff !important; border-color: rgba(255,255,255,0.12) !important; }
+
+/* Small helpers */
+.text-muted{ color: var(--muted) !important; }
+.border-theme{ border-color: var(--border) !important; }
+
+/* Avoid breaking images */
+img{ color: initial !important }
+svg{ color: initial !important }
+
+/* End of dark-mode.css */
