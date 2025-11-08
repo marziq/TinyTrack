@@ -48,4 +48,9 @@ class Baby extends Model
     {
         return $this->hasMany(Milestone::class, 'baby_id', 'id');
     }
+
+    public function vaccinations()
+    {
+        return $this->hasMany(Vaccination::class, 'baby_id', 'id');
+    }
 }

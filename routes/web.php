@@ -7,6 +7,7 @@ use App\Http\Controllers\GrowthController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\MilestoneController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\VaccinationController;
 use App\Models\Baby;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -152,3 +153,6 @@ Route::middleware(['auth'])->group(function () {
 
 Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 Route::get('/appointments/baby/{babyId}', [AppointmentController::class, 'getAppointmentsByBaby'])->name('appointments.by.baby');
+// Vaccination routes
+Route::get('/vaccinations/baby/{babyId}', [VaccinationController::class, 'getVaccinationsByBaby'])->name('vaccinations.by.baby');
+Route::post('/vaccinations/{id}/toggle', [VaccinationController::class, 'toggle'])->name('vaccinations.toggle');

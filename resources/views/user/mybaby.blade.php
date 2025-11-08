@@ -1018,32 +1018,8 @@
 
                 <div class="vaccine-container">
                     <h4>Next Vaccination</h4>
-                    <div class="vaccine-scroll" style="display: flex; flex-direction: column; gap: 10px;">
-                        <div class="vaccine-card">
-                            <div class="vaccine-name">Hepatitis B (3rd dose)</div>
-                            <div class="vaccine-date">July 15, 2023</div>
-                            <div class="vaccine-days">in 12 days</div>
-                        </div>
-                        <div class="vaccine-card" style="border-left-color: #9c27b0; opacity: 0.7;">
-                            <div class="vaccine-name">DTaP (2nd dose)</div>
-                            <div class="vaccine-date">August 5, 2023</div>
-                            <div class="vaccine-days">in 33 days</div>
-                        </div>
-                        <div class="vaccine-card" style="border-left-color: #9c27b0; opacity: 0.7;">
-                            <div class="vaccine-name">MMR (1st dose)</div>
-                            <div class="vaccine-date">September 5, 2023</div>
-                            <div class="vaccine-days">in 63 days</div>
-                        </div>
-                        <div class="vaccine-card" style="border-left-color: #9c27b0; opacity: 0.7;">
-                            <div class="vaccine-name">Pneumokokal (1st dose)</div>
-                            <div class="vaccine-date">October 25, 2023</div>
-                            <div class="vaccine-days">in 93 days</div>
-                        </div>
-                        <div class="vaccine-card" style="border-left-color: #9c27b0; opacity: 0.7;">
-                            <div class="vaccine-name">Pneumokokal (2nd dose)</div>
-                            <div class="vaccine-date">November 15, 2023</div>
-                            <div class="vaccine-days">in 123 days</div>
-                        </div>
+                    <div id="vaccineScroll" class="vaccine-scroll" style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="padding:12px; color:#666;">Select a baby to view upcoming vaccinations.</div>
                     </div>
                 </div>
 
@@ -1410,6 +1386,106 @@
                     console.error(err);
                 }
             })();
+            // Load upcoming vaccinations for this baby
+            // Expose a function so other scripts (and events) can refresh the list
+            window.loadVaccinationsForBaby = async function(babyIdToLoad) {
+                try {
+                    const res = await fetch(`/vaccinations/baby/${babyIdToLoad}`, { headers: { 'Accept': 'application/json' } });
+                    if (!res.ok) throw new Error('Failed to fetch vaccinations');
+                    const payload = await res.json();
+                    const container = document.getElementById('vaccineScroll');
+                    if (!container) return;
+
+                    container.innerHTML = '';
+
+                    // Separate pending (not administered) and administered vaccines
+                    const all = Array.isArray(payload) ? payload : [];
+                    const pending = all.filter(v => v.status !== 'administered');
+                    const administered = all.filter(v => v.status === 'administered');
+
+                    // Sort both by scheduled_date ascending (nearest first)
+                    function sortByDateAsc(a, b) {
+                        const da = a.scheduled_date ? new Date(a.scheduled_date) : new Date(8640000000000000); // far future if missing
+                        const db = b.scheduled_date ? new Date(b.scheduled_date) : new Date(8640000000000000);
+                        return da - db;
+                    }
+
+                    pending.sort(sortByDateAsc);
+                    administered.sort(sortByDateAsc);
+
+                    if (pending.length === 0 && administered.length === 0) {
+                        container.innerHTML = '<div style="padding:12px; color:#666;">No vaccinations scheduled.</div>';
+                        return;
+                    }
+
+                    // Render pending vaccines first (nearest on top)
+                    // For pending: show vaccine name and status (Pending)
+                    pending.slice(0, 10).forEach((v, idx) => {
+                        const styleParts = [];
+                        if (container.children.length !== 0) styleParts.push('border-left-color: #9c27b0');
+
+                        const card = document.createElement('div');
+                        card.className = 'vaccine-card';
+                        if (styleParts.length) card.setAttribute('style', styleParts.join('; ') + ';');
+                        card.innerHTML = `
+                            <div class="vaccine-name">${v.vaccine_name}</div>
+                            <div class="vaccine-date">Pending</div>
+                        `;
+                        container.appendChild(card);
+                    });
+
+                    // If there are administered vaccines, add a small separator label then render them faded
+                    if (administered.length > 0) {
+                        const sep = document.createElement('div');
+                        sep.style.padding = '6px 0';
+                        sep.style.color = '#666';
+                        sep.style.fontWeight = '600';
+                        sep.textContent = 'Administered';
+                        container.appendChild(sep);
+
+                        administered.slice(0, 50).forEach((v) => {
+                            // For administered vaccines: show vaccine name and administered date (if available)
+                            const administeredAt = v.administered_at ? new Date(v.administered_at) : null;
+                            const administeredText = administeredAt ? administeredAt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : (v.scheduled_date ? new Date(v.scheduled_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '');
+
+                            const styleParts = ['opacity: 0.5'];
+                            if (container.children.length !== 0) styleParts.push('border-left-color: #9c27b0');
+
+                            const card = document.createElement('div');
+                            card.className = 'vaccine-card';
+                            if (styleParts.length) card.setAttribute('style', styleParts.join('; ') + ';');
+                            card.innerHTML = `
+                                <div class="vaccine-name">${v.vaccine_name}</div>
+                                <div class="vaccine-date">${administeredText}</div>
+                            `;
+                            container.appendChild(card);
+                        });
+                    }
+
+                } catch (err) {
+                    console.error(err);
+                }
+            };
+
+            // call it initially for this selection
+            window.loadVaccinationsForBaby(babyId);
+
+            // Listen for vaccination toggle events from other pages (appointment) and refresh if it concerns the currently selected baby
+            window.addEventListener('vaccinationToggled', function(e) {
+                try {
+                    const detail = e.detail || {};
+                    const toggledBabyId = detail.baby_id || detail.babyId || detail.babyId;
+                    const selector = document.getElementById('babySelector');
+                    if (!selector) return;
+                    const current = selector.value;
+                    if (String(current) === String(toggledBabyId)) {
+                        // refresh only vaccinations for the currently selected baby
+                        window.loadVaccinationsForBaby(current);
+                    }
+                } catch (err) {
+                    console.error('vaccinationToggled handler error', err);
+                }
+            });
         }
 
         // Edit the currently selected baby

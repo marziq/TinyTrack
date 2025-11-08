@@ -729,12 +729,13 @@
                         <tr>
                             <th>Vaccination Date</th>
                             <th>Vaccine Type</th>
+                            <th>Administered Date</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody id="vaccination-list">
                         <tr>
-                            <td colspan="3" class="text-center">Select a baby to view vaccinations.</td>
+                            <td colspan="4" class="text-center">Select a baby to view vaccinations.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -856,64 +857,126 @@
                 });
             });
         });
-        //vaccination section
+        // vaccination section (dynamic + persisted)
         document.addEventListener('DOMContentLoaded', function () {
             const babyVaccinationSelector = document.getElementById('baby-vaccination-select');
             const vaccinationList = document.getElementById('vaccination-list');
 
-            // Hardcoded vaccine list
-            const vaccines = [
-                { date: 'At birth', type: 'BCG' },
-                { date: 'At birth', type: 'Hepatitis B' },
-                { date: '2 months', type: 'DTP' },
-                { date: '2 months', type: 'Polio' },
-                { date: '3 months', type: 'DTP' },
-                { date: '3 months', type: 'Polio' },
-                { date: '4 months', type: 'DTP' },
-                { date: '4 months', type: 'Polio' },
-                { date: '9 months', type: 'Measles' },
-                { date: '12 months', type: 'MMR' },
-            ];
-            // Store status in memory (per session)
-            let vaccineStatus = Array(vaccines.length).fill(false);
+            function renderVaccinations(vaccinations) {
+                vaccinationList.innerHTML = '';
+                if (!vaccinations || vaccinations.length === 0) {
+                    vaccinationList.innerHTML = '<tr><td colspan="4" class="text-center">No vaccinations found for this baby.</td></tr>';
+                    return;
+                }
+
+                vaccinations.forEach((vaccine) => {
+                    const isAdmin = vaccine.status === 'administered';
+                    const iconClass = isAdmin ? 'fas fa-check' : 'fas fa-check-circle';
+                    const btnClass = isAdmin ? 'active' : '';
+                    const scheduled = vaccine.scheduled_date ? (new Date(vaccine.scheduled_date)).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+                    const administeredText = vaccine.administered_at ? (new Date(vaccine.administered_at)).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Pending';
+                    const row = `
+                        <tr>
+                            <td>${scheduled}</td>
+                            <td>${vaccine.vaccine_name}</td>
+                            <td>${administeredText}</td>
+                            <td style="text-align:center;">
+                                <button class="btn btn-outline-success vaccination-tick-btn ${btnClass}" data-id="${vaccine.id}">
+                                    <i class="${iconClass}"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    vaccinationList.innerHTML += row;
+                });
+            }
+
+            async function fetchVaccinationsForBaby(babyId) {
+                vaccinationList.innerHTML = '<tr><td colspan="4" class="text-center">Loading...</td></tr>';
+                try {
+                    const res = await fetch(`/vaccinations/baby/${babyId}`);
+                    if (!res.ok) throw new Error('Failed to load');
+                    const data = await res.json();
+                    renderVaccinations(data);
+                } catch (err) {
+                    console.error(err);
+                    vaccinationList.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Failed to load vaccinations.</td></tr>';
+                }
+            }
 
             if (babyVaccinationSelector) {
                 babyVaccinationSelector.addEventListener('change', function () {
-                    // Always show the same hardcoded list
-                    vaccinationList.innerHTML = '';
-                    vaccines.forEach((vaccine, idx) => {
-                        const checked = vaccineStatus[idx] ? 'active' : '';
-                        const iconClass = vaccineStatus[idx] ? 'fas fa-check' : 'fas fa-check-circle';
-                        const row = `
-                            <tr>
-                                <td>${vaccine.date}</td>
-                                <td>${vaccine.type}</td>
-                                <td style="text-align:center;">
-                                    <button class="btn btn-outline-success vaccination-tick-btn ${checked}" data-idx="${idx}">
-                                        <i class="${iconClass}"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
-                        vaccinationList.innerHTML += row;
-                    });
+                    const babyId = this.value;
+                    if (!babyId) return;
+                    fetchVaccinationsForBaby(babyId);
                 });
-                // Initial state
-                babyVaccinationSelector.dispatchEvent(new Event('change'));
 
-                // Event delegation for tick button
-                vaccinationList.addEventListener('click', function(e) {
-                    if (e.target.closest('.vaccination-tick-btn')) {
-                        const btn = e.target.closest('.vaccination-tick-btn');
-                        const idx = btn.getAttribute('data-idx');
-                        vaccineStatus[idx] = !vaccineStatus[idx];
-                        btn.classList.toggle('active');
+                // initial
+                if (babyVaccinationSelector.value) {
+                    fetchVaccinationsForBaby(babyVaccinationSelector.value);
+                }
+
+                // Event delegation for tick button: toggle vaccination
+                vaccinationList.addEventListener('click', async function (e) {
+                    const btn = e.target.closest('.vaccination-tick-btn');
+                    if (!btn) return;
+                    const id = btn.getAttribute('data-id');
+                    if (!id) return;
+
+                    btn.disabled = true;
+                    try {
+                        const res = await fetch(`/vaccinations/${id}/toggle`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json'
+                            }
+                        });
+                        if (!res.ok) throw new Error('Failed to update');
+                        const updated = await res.json();
+
+                        // Update the button/icon state in-place
                         const icon = btn.querySelector('i');
-                        if (btn.classList.contains('active')) {
+                        if (updated.status === 'administered') {
+                            btn.classList.add('active');
                             icon.className = 'fas fa-check';
                         } else {
+                            btn.classList.remove('active');
                             icon.className = 'fas fa-check-circle';
                         }
+
+                        // Also update the Administered Date cell in the same row immediately
+                        try {
+                            const row = btn.closest('tr');
+                            if (row) {
+                                const tds = row.querySelectorAll('td');
+                                // Administered Date is the 3rd column (index 2)
+                                const adminCell = tds[2];
+                                if (adminCell) {
+                                    if (updated.administered_at) {
+                                        const d = new Date(updated.administered_at);
+                                        adminCell.textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                                    } else {
+                                        adminCell.textContent = 'Pending';
+                                    }
+                                }
+                            }
+                        } catch (err) {
+                            console.error('Failed to update administered cell', err);
+                        }
+
+                        // Broadcast event so other parts of the app (e.g., My Baby) can refresh if needed
+                        try {
+                            window.dispatchEvent(new CustomEvent('vaccinationToggled', { detail: updated }));
+                        } catch (err) {
+                            // ignore if dispatch fails
+                            console.error('Event dispatch failed', err);
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Failed to update vaccination status.');
+                    } finally {
+                        btn.disabled = false;
                     }
                 });
             }
