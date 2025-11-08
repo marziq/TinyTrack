@@ -770,173 +770,218 @@
         </div>
 
         <script>
-        // --- DATA PLACEHOLDER ---
-        const milestoneData = {
-            '0-3': {
-                physical: [
-                    { title: 'Motor Skills', completed: 1, total: 3, items: ['Lifts head', 'Turns head side to side', 'Makes smooth arm/leg movements'] },
-                    { title: 'Sensory Skills', completed: 0, total: 2, items: ['Responds to loud sounds', 'Stares at faces'] },
-                ],
-                cognitive: [
-                    { title: 'Problem Solving', completed: 0, total: 2, items: ['Follows moving objects', 'Recognizes familiar people'] },
-                ],
-                social: [
-                    { title: 'Interaction Skills', completed: 0, total: 2, items: ['Begins to smile', 'Looks at parent'] },
-                ]
-            },
-            '4-6': {
-                physical: [
-                    { title: 'Motor Skills', completed: 2, total: 4, items: ['Rolls over', 'Sits with support', 'Pushes up on arms', 'Reaches for toys'] },
-                    { title: 'Sensory Skills', completed: 1, total: 2, items: ['Responds to sounds', 'Explores with mouth'] },
-                ],
-                cognitive: [
-                    { title: 'Problem Solving', completed: 1, total: 2, items: ['Finds partially hidden objects', 'Transfers objects hand to hand'] },
-                ],
-                social: [
-                    { title: 'Interaction Skills', completed: 1, total: 2, items: ['Laughs', 'Enjoys playing with people'] },
-                ]
-            },
-            '7-9': {
-                physical: [
-                    { title: 'Motor Skills', completed: 2, total: 5, items: ['Sits without support', 'Crawls', 'Pulls to stand', 'Stands holding on', 'Walks with help'] },
-                    { title: 'Sensory Skills', completed: 2, total: 3, items: ['Responds to name', 'Looks for hidden things', 'Understands no'] },
-                ],
-                cognitive: [
-                    { title: 'Problem Solving', completed: 1, total: 2, items: ['Finds hidden objects', 'Looks at correct picture when named'] },
-                ],
-                social: [
-                    { title: 'Interaction Skills', completed: 1, total: 2, items: ['Waves bye', 'Plays peek-a-boo'] },
-                ]
-            },
-            '10-12': {
-                physical: [
-                    { title: 'Motor Skills', completed: 3, total: 5, items: ['Stands alone', 'Walks with assistance', 'Picks up small objects', 'Drinks from cup', 'Feeds self'] },
-                    { title: 'Sensory Skills', completed: 2, total: 3, items: ['Points to objects', 'Imitates gestures', 'Understands simple instructions'] },
-                ],
-                cognitive: [
-                    { title: 'Problem Solving', completed: 2, total: 3, items: ['Looks for things you hide', 'Uses objects correctly', 'Follows simple directions'] },
-                ],
-                social: [
-                    { title: 'Interaction Skills', completed: 2, total: 3, items: ['Shows affection', 'May be shy with strangers', 'Repeats sounds/actions'] },
-                ]
-            }
-        };
-
+        // --- Dynamic milestone loading and persisting ---
         let selectedBaby = null;
         let selectedMonth = '0-3';
 
-        function onBabyChange(babyId) {
+        document.getElementById('babySelector')?.addEventListener('change', function() {
+            const babyId = this.value;
             selectedBaby = babyId;
-            renderProgress();
-            renderAllSkills();
+            const babyName = this.options[this.selectedIndex].getAttribute('data-name');
+            document.getElementById('selectedBabyNameHeading').textContent = `${babyName}'s Progress`;
+            fetchMilestones(babyId);
+        });
+
+        document.getElementById('monthRange')?.addEventListener('change', function() {
+            selectedMonth = this.value;
+            // month filtering could be applied server-side later; for now re-render using same data
+            if (selectedBaby) fetchMilestones(selectedBaby);
+        });
+
+        function fetchMilestones(babyId) {
+            if (!babyId) return;
+            const url = `/babies/${babyId}/milestones?range=${encodeURIComponent(selectedMonth)}`;
+            fetch(url, { headers: { 'Accept': 'application/json' } })
+                .then(r => r.json())
+                .then(data => {
+                    renderProgressFromData(data);
+                    renderCategoryFromData('physical', data.physical);
+                    renderCategoryFromData('cognitive', data.cognitive);
+                    renderCategoryFromData('social', data.social);
+                }).catch(err => console.error(err));
         }
-        function onMonthChange(month) {
-            selectedMonth = month;
-            renderAllSkills();
-        }
-        function renderProgress() {
+
+        function renderProgressFromData(data) {
             const progressDiv = document.getElementById('progressContent');
             if (!selectedBaby) {
                 progressDiv.innerHTML = '<div style="text-align:center; color:#888; font-size:18px; padding:32px 0;">Who you wanna see progress?</div>';
                 return;
             }
-            // For demo, use static progress. Replace with AJAX for real data.
-            let p = 0, c = 0, s = 0;
-            const d = milestoneData[selectedMonth];
-            if (d) {
-                p = Math.round(100 * d.physical.reduce((a, g) => a + g.completed, 0) / d.physical.reduce((a, g) => a + g.total, 0));
-                c = Math.round(100 * d.cognitive.reduce((a, g) => a + g.completed, 0) / d.cognitive.reduce((a, g) => a + g.total, 0));
-                s = Math.round(100 * d.social.reduce((a, g) => a + g.completed, 0) / d.social.reduce((a, g) => a + g.total, 0));
-            }
+            const p = data.physical.percentage ?? 0;
+            const c = data.cognitive.percentage ?? 0;
+            const s = data.social.percentage ?? 0;
+
             progressDiv.innerHTML = `
                 <div style="display:flex; flex-direction:column; gap:18px;">
-                    <div style="display:flex; align-items:center; gap:16px;">
-                        <span style="font-size:2rem; color: red; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-dumbbell"></i></span>
-                        <div style="flex:1;">
-                            <div style="display:flex; align-items:center; justify-content:space-between;">
-                                <span style="font-weight:bold; color:#1976d2;">Physical</span>
-                                <span style="font-size:15px; color:#1976d2; font-weight:600;">${p}%</span>
-                            </div>
-                            <div class="progress" style="height: 14px; background:#e3f2fd;">
-                                <div class="progress-bar" role="progressbar" style="width: ${p}%; font-size: 12px; background-color: #FF0000;" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:16px;">
-                        <span style="font-size:2rem; color: green; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-brain"></i></span>
-                        <div style="flex:1;">
-                            <div style="display:flex; align-items:center; justify-content:space-between;">
-                                <span style="font-weight:bold; color:#1976d2;">Cognitive</span>
-                                <span style="font-size:15px; color:#1976d2; font-weight:600;">${c}%</span>
-                            </div>
-                            <div class="progress" style="height: 14px; background:#e3f2fd;">
-                                <div class="progress-bar" role="progressbar" style="width: ${c}%; font-size: 12px; background-color: #008000;" aria-valuenow="${c}" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:16px;">
-                        <span style="font-size:2rem; color: gold; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-users"></i></span>
-                        <div style="flex:1;">
-                            <div style="display:flex; align-items:center; justify-content:space-between;">
-                                <span style="font-weight:bold; color:#1976d2;">Social</span>
-                                <span style="font-size:15px; color:#1976d2; font-weight:600;">${s}%</span>
-                            </div>
-                            <div class="progress" style="height: 14px; background:#e3f2fd;">
-                                <div class="progress-bar" role="progressbar" style="width: ${s}%; font-size: 12px; background-color: #FFD700;" aria-valuenow="${s}" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
+                    ${renderProgressRow('Physical', 'fas fa-dumbbell', p, '#FF69B4')}
+                    ${renderProgressRow('Cognitive', 'fas fa-brain', c, '#008000')}
+                    ${renderProgressRow('Social', 'fas fa-users', s, '#FFD700')}
                 </div>
             `;
         }
-        function renderSkillSection(section, data) {
+
+        function renderProgressRow(title, iconClass, percent, color) {
+            return `<div style="display:flex; align-items:center; gap:16px;">
+                        <span style="font-size:2rem; color: ${color}; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="${iconClass}"></i></span>
+                        <div style="flex:1;">
+                            <div style="display:flex; align-items:center; justify-content:space-between;">
+                                <span style="font-weight:bold; color:#1976d2;">${title}</span>
+                                <span style="font-size:15px; color:#1976d2; font-weight:600;">${percent}%</span>
+                            </div>
+                            <div class="progress" style="height: 14px; background:#e3f2fd;">
+                                <div class="progress-bar" role="progressbar" style="width: ${percent}%; font-size: 12px; background-color: ${color};" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>`;
+        }
+
+        function renderCategoryFromData(section, payload) {
             const container = document.getElementById(section + 'Skills');
             container.innerHTML = '';
             if (!selectedBaby) {
                 container.innerHTML = '<div style="color:#aaa; font-size:16px; padding:32px 0;">Select a baby to see milestones.</div>';
                 return;
             }
-            data[section].forEach(group => {
+
+            // payload.groups is an array of group objects
+            payload.groups.forEach(group => {
                 const groupDiv = document.createElement('div');
                 groupDiv.style.minWidth = '260px';
                 groupDiv.style.background = '#e3f2fd';
                 groupDiv.style.borderRadius = '10px';
                 groupDiv.style.boxShadow = '0 2px 8px rgba(25,118,210,0.06)';
-                groupDiv.style.padding = '18px 14px';
+                groupDiv.style.padding = '14px';
                 groupDiv.style.display = 'flex';
                 groupDiv.style.flexDirection = 'column';
                 groupDiv.style.alignItems = 'flex-start';
-                groupDiv.style.gap = '10px';
-                groupDiv.innerHTML = `
-                    <div style="font-weight:600; color:#1976d2; margin-bottom:4px;">${group.title}</div>
-                    <span style="font-size:13px; color:#1976d2;">${group.completed}/${group.total} completed</span>
-                    <div class="progress mb-2" style="height:12px; background:#fff; width:100%;">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: ${Math.round(100*group.completed/group.total)}%"></div>
-                    </div>
-                    <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
-                        ${group.items.map(item => `<div class="milestone-card" style="font-size:15px; background:#fff; border-radius:6px; padding:8px 12px; margin-bottom:0; display:flex; align-items:center; justify-content:space-between;"><span>${item}</span><button class="milestone-check"><i class="fas fa-check"></i></button></div>`).join('')}
-                    </div>
-                `;
+                groupDiv.style.gap = '8px';
+                groupDiv.style.width = '320px';
+
+                const title = document.createElement('div');
+                title.style.fontWeight = '700';
+                title.style.color = '#0d47a1';
+                title.style.fontSize = '16px';
+                title.textContent = group.groupTitle;
+                groupDiv.appendChild(title);
+
+                const sub = document.createElement('div');
+                sub.style.display = 'flex';
+                sub.style.justifyContent = 'space-between';
+                sub.style.width = '100%';
+                const stat = document.createElement('span');
+                stat.style.fontSize = '13px';
+                stat.style.color = '#1976d2';
+                stat.textContent = `${group.achieved}/${group.total} completed`;
+                const percent = document.createElement('span');
+                percent.style.fontSize = '13px';
+                percent.style.color = '#1976d2';
+                percent.style.fontWeight = '600';
+                percent.textContent = `${group.percentage}%`;
+                sub.appendChild(stat);
+                sub.appendChild(percent);
+                groupDiv.appendChild(sub);
+
+                const progWrap = document.createElement('div');
+                progWrap.className = 'progress mb-2';
+                progWrap.style.height = '10px';
+                progWrap.style.background = '#fff';
+                progWrap.style.width = '100%';
+                const progBar = document.createElement('div');
+                progBar.className = 'progress-bar';
+                progBar.setAttribute('role','progressbar');
+                progBar.style.width = `${group.percentage}%`;
+                // color matches category main progress color
+                const colorMap = { physical: '#FF69B4', cognitive: '#008000', social: '#FFD700' };
+                progBar.style.backgroundColor = colorMap[section] || '#1976d2';
+                progBar.style.height = '10px';
+                progWrap.appendChild(progBar);
+                groupDiv.appendChild(progWrap);
+
+                const listWrap = document.createElement('div');
+                listWrap.style.display = 'flex';
+                listWrap.style.flexDirection = 'column';
+                listWrap.style.gap = '8px';
+                listWrap.style.width = '100%';
+
+                group.items.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'milestone-card';
+                    itemDiv.style.fontSize = '14px';
+                    itemDiv.style.background = '#fff';
+                    itemDiv.style.borderRadius = '8px';
+                    itemDiv.style.padding = '10px';
+                    itemDiv.style.display = 'flex';
+                    itemDiv.style.alignItems = 'center';
+                    itemDiv.style.justifyContent = 'space-between';
+
+                    const left = document.createElement('div');
+                    left.style.display = 'flex';
+                    left.style.flexDirection = 'column';
+                    left.style.gap = '4px';
+                    const titleSpan = document.createElement('span');
+                    titleSpan.textContent = item.title;
+                    titleSpan.style.fontWeight = '600';
+                    const dateSpan = document.createElement('small');
+                    dateSpan.style.color = '#666';
+                    dateSpan.textContent = item.achievedDate ? `Achieved: ${item.achievedDate}` : '';
+                    left.appendChild(titleSpan);
+                    left.appendChild(dateSpan);
+
+                    const btn = document.createElement('button');
+                    btn.className = 'milestone-check';
+                    btn.style.marginLeft = '12px';
+                    btn.setAttribute('data-id', item.id);
+                    if (item.achieved) {
+                        btn.classList.add('completed');
+                    }
+                    btn.innerHTML = `<i class="fas fa-check"></i>`;
+
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const milestoneId = this.getAttribute('data-id');
+                        const currently = this.classList.contains('completed');
+                        const newState = !currently;
+                        const payload = { achieved: newState };
+                        if (newState) payload.achievedDate = new Date().toISOString().slice(0,10);
+
+                        fetch(`/milestones/${milestoneId}/toggle`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify(payload)
+                        }).then(r => r.json()).then(resp => {
+                            if (resp.achieved) {
+                                btn.classList.add('completed');
+                                dateSpan.textContent = `Achieved: ${resp.achievedDate}`;
+                            } else {
+                                btn.classList.remove('completed');
+                                dateSpan.textContent = '';
+                            }
+                            if (selectedBaby) fetchMilestones(selectedBaby);
+                        }).catch(console.error);
+                    });
+
+                    itemDiv.appendChild(left);
+                    itemDiv.appendChild(btn);
+                    listWrap.appendChild(itemDiv);
+                });
+
+                groupDiv.appendChild(listWrap);
                 container.appendChild(groupDiv);
             });
         }
-        function renderAllSkills() {
-            const data = milestoneData[selectedMonth];
-            renderSkillSection('physical', data);
-            renderSkillSection('cognitive', data);
-            renderSkillSection('social', data);
-            // Re-attach check button logic
-            setTimeout(() => {
-                document.querySelectorAll('.milestone-check').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        btn.classList.toggle('completed');
-                    });
-                });
-            }, 100);
-        }
-        // Initial render
-        renderProgress();
-        renderAllSkills();
+
+        // initial state: no baby selected
+        document.addEventListener('DOMContentLoaded', function() {
+            // pre-select first baby if present
+            const sel = document.getElementById('babySelector');
+            if (sel && sel.options.length > 0) {
+                // do nothing automatic to avoid surprising the user
+            }
+        });
         </script>
         <style>
         .skills-horizontal::-webkit-scrollbar {

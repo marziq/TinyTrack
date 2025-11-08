@@ -43,4 +43,9 @@ class Baby extends Model
     {
         return $this->hasMany(Growth::class);
     }
+
+    public function milestones()
+    {
+        return $this->hasMany(Milestone::class, 'baby_id', 'id');
+    }
 }

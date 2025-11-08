@@ -16,7 +16,10 @@ class Milestone extends Model
         'baby_id',
         'title',
         'description',
+        'category',
+        'group',
         'achievedDate',
+        'range',
     ];
 
     public function baby()

@@ -96,6 +96,11 @@ Route::middleware([
         return view('user/milestone');
     })->name('milestone');
 
+    // Milestones API for frontend
+    Route::get('/babies/{babyId}/milestones', [MilestoneController::class, 'byBaby']);
+    Route::get('/babies/{babyId}/milestones/recent', [MilestoneController::class, 'recent']);
+    Route::post('/milestones/{milestone}/toggle', [MilestoneController::class, 'toggle']);
+
     Route::get('/dashboard/appointment', [BabyController::class, 'index'])->name('appointment'); // Already using BabyController
 
     Route::get('/dashboard/settings', function () {

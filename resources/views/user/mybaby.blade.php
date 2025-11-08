@@ -628,9 +628,21 @@
             color: #333;
         }
 
+        .milestone-item {
+            position: relative; /* allow absolute positioning of date */
+        }
+
         .milestone-date {
-            font-size: 14px;
-            color: #666;36
+            font-size: 12px;
+            color: #666;
+            position: absolute;
+            right: 12px;
+            bottom: 8px;
+        }
+
+        .milestone-text {
+            flex: 1; /* take remaining space so date doesn't overlap */
+            padding-right: 100px; /* leave room for absolute date */
         }
 
         .milestone-scroll {
@@ -1364,6 +1376,40 @@
             if (typeof window.loadGrowthChart === 'function') {
                 window.loadGrowthChart(babyId);
             }
+            // Load recent achieved milestones for this baby
+            (async function loadRecentMilestones() {
+                try {
+                    const res = await fetch(`/babies/${babyId}/milestones/recent`, { headers: { 'Accept': 'application/json' } });
+                    if (!res.ok) throw new Error('Failed to fetch recent milestones');
+                    const payload = await res.json();
+                    const container = document.querySelector('.milestone-scroll');
+                    if (!container) return;
+                    container.innerHTML = '';
+                    const items = payload.recent || [];
+                    if (items.length === 0) {
+                        container.innerHTML = '<div style="padding:12px; color:#666;">No recent milestones.</div>';
+                        return;
+                    }
+                    items.forEach(it => {
+                        const itemEl = document.createElement('div');
+                        itemEl.className = 'milestone-item';
+                        itemEl.innerHTML = `
+                            <div class="milestone-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="milestone-text">
+                                ${it.title}
+                            </div>
+                            <div class="milestone-date">
+                                ${it.achievedDate || ''}
+                            </div>
+                        `;
+                        container.appendChild(itemEl);
+                    });
+                } catch (err) {
+                    console.error(err);
+                }
+            })();
         }
 
         // Edit the currently selected baby
