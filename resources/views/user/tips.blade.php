@@ -683,12 +683,6 @@
         {{-- Main content goes here --}}
         <div class="explore-header">
             <h2>Tips for your Baby</h2>
-            <select>
-                <option value="0">Less Than Year</option>
-                <option value="1-2">1-2 Years</option>
-                <option value="3-4">3-4 Years</option>
-                <option value="5-6">5-6 Years</option>
-            </select>
         </div>
         <div class="topics-section">
             <button class="slider-btn prev-btn" onclick="moveSlide(-1)">&#10094;</button>
