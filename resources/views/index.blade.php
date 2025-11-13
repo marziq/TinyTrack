@@ -131,6 +131,48 @@
         </div>
         <!-- Service End -->
 
+        <!-- Partners Start -->
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+                    <h4 class="mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius" style="color: #393d72; border-bottom: 1px solid #4a92d9 !important;">Our Partners</h4>
+                </div>
+
+                <div class="row g-4 justify-content-center wow fadeIn" data-wow-delay="0.3s">
+
+                    <div class="col-lg-3 col-md-4 col-sm-6 text-center">
+                        <div class="p-3 border border-primary img-border-radius" style="background-color: #f7f9fd;">
+                            <img src="img/moh.png" class="img-fluid p-2" style="max-width: 150px; height: auto;" alt="Ministry of Health Malaysia Logo">
+                            <p class="mt-2 mb-0 fw-bold">Kementerian Kesihatan <br> Malaysia</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-4 col-sm-6 text-center">
+                        <div class="p-3 border border-primary img-border-radius" style="background-color: #f7f9fd;">
+                            <img src="img/who.png" class="img-fluid p-2" style="max-width: 150px; height: auto;" alt="World Health Organization Logo">
+                            <p class="mt-2 mb-0 fw-bold">World Health Organization (WHO)</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-4 col-sm-6 text-center">
+                        <div class="p-3 border border-primary img-border-radius" style="background-color: #f7f9fd;">
+                            <img src="img/unicef.png" class="img-fluid p-2" style="max-width: 150px; height: auto;" alt="UNICEF Logo">
+                            <p class="mt-2 mb-0 fw-bold">UNICEF</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-4 col-sm-6 text-center">
+                        <div class="p-3 border border-primary img-border-radius" style="background-color: #f7f9fd;">
+                            <img src="img/mpa.png" class="img-fluid p-2" style="max-width: 150px; height: auto;" alt="Malaysian Paediatric Association Logo">
+                            <p class="mt-2 mb-0 fw-bold">Malaysian Paediatric<br> Association</p>
+                        </div>
+                    </div>
+
+                </div>
+                </div>
+        </div>
+        <!-- Partners End -->
+
         <!-- Testimonial Start -->
         <div class="container-fluid testimonial py-5">
             <div class="container py-5">
