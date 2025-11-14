@@ -478,6 +478,11 @@
             border: 1px solid #ccc;
             border-radius: 8px;
             text-align: center;
+            color: #000;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #000;
         }
 
         .input-wrapper .unit {
@@ -711,9 +716,34 @@
         .dark h2{
             color: #ffffff !important;
         }
-        .dark select, input, input::placeholder {
+                .dark select {
             color: #ffffff !important;
         }
+
+        .dark input {
+            color: #ffffff !important;
+        }
+
+        .dark input::placeholder {
+            color: #ffffff !important;
+        }
+
+        /* Input placeholder and text color for default mode */
+        input::placeholder {
+            color: #000 !important;
+        }
+        input {
+            color: #000 !important;
+        }
+
+        /* Font size adjustment */
+        body.font-large * {
+            font-size: 1.15rem !important;
+        }
+        body.font-xlarge * {
+            font-size: 1.3rem !important;
+        }
+    </style>
     </style>
 </head>
 <body>
@@ -1276,6 +1306,28 @@
                 recText.innerHTML = 'Error: ' + error.message;
                 recSection.style.display = "block";
             }
+        }
+
+        // --- Font Size Logic ---
+        const fontStorageKey = 'userFontSize';
+        const body = document.body;
+
+        function applyFontSize(size) {
+            // Reset all font classes
+            body.classList.remove('font-large', 'font-xlarge');
+
+            if (size === 'large') {
+                body.classList.add('font-large');
+            } else if (size === 'xlarge') {
+                body.classList.add('font-xlarge');
+            }
+            // 'normal' = no class
+        }
+
+        // Load saved font size preference on page load
+        const savedSize = localStorage.getItem(fontStorageKey);
+        if (savedSize) {
+            applyFontSize(savedSize);
         }
     </script>
 </body>

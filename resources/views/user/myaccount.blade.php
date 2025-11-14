@@ -509,6 +509,14 @@
         .dark .topbar h1 {
             color: #ffffff !important;
         }
+
+        /* Font size adjustment */
+        body.font-large * {
+            font-size: 1.15rem !important;
+        }
+        body.font-xlarge * {
+            font-size: 1.3rem !important;
+        }
     </style>
 </head>
 <body>
@@ -1024,6 +1032,28 @@
                 });
             });
         });
+
+        // --- Font Size Logic ---
+        const fontStorageKey = 'userFontSize';
+        const body = document.body;
+
+        function applyFontSize(size) {
+            // Reset all font classes
+            body.classList.remove('font-large', 'font-xlarge');
+
+            if (size === 'large') {
+                body.classList.add('font-large');
+            } else if (size === 'xlarge') {
+                body.classList.add('font-xlarge');
+            }
+            // 'normal' = no class
+        }
+
+        // Load saved font size preference on page load
+        const savedSize = localStorage.getItem(fontStorageKey);
+        if (savedSize) {
+            applyFontSize(savedSize);
+        }
     </script>
 </body>
 </html>

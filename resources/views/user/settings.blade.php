@@ -550,10 +550,10 @@
             box-shadow: 0 0 0 3px rgba(96,165,250,0.12) !important;
         }
         /* Font size adjustment */
-        body.font-large, .font-large .main, .font-large .card, .font-large .form-control, .font-large .form-select {
+        body.font-large * {
             font-size: 1.15rem !important;
         }
-        body.font-xlarge, .font-xlarge .main, .font-xlarge .card, .font-xlarge .form-control, .font-xlarge .form-select {
+        body.font-xlarge * {
             font-size: 1.3rem !important;
         }
     </style>
