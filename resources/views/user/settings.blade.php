@@ -646,7 +646,6 @@
                                     <div class="settings-menu-card" style="height:100%;">
                                         <div class="list-group" id="settingsMenu">
                                             <button type="button" class="list-group-item list-group-item-action active" data-section="basic">Basic Settings</button>
-                                            <button type="button" class="list-group-item list-group-item-action" data-section="notifications">Notification Preferences</button>
                                             <button type="button" class="list-group-item list-group-item-action" data-section="password">Update Password</button>
                                         </div>
                                     </div>
@@ -690,29 +689,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Notification Preferences Section -->
-                                    <div id="notificationSettingsSection" style="display:none;">
-                                        <div class="card mb-4">
-                                            <div class="card-header">
-                                                <h3>Notification Preferences</h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <!-- Notification Preferences -->
-                                                <div class="mb-3">
-                                                    <label class="form-label">Choose how you want to be notified:</label>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="notifEmail" checked>
-                                                        <label class="form-check-label" for="notifEmail">Email Notifications</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="notifApp" checked>
-                                                        <label class="form-check-label" for="notifApp">App Notifications</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <!-- Update Password Section -->
                                     <div id="passwordSettingsSection" style="display:none;">
                                         <div class="card">
@@ -720,23 +696,75 @@
                                                 <h3>Update Password</h3>
                                             </div>
                                             <div class="card-body">
+                                                <!-- Success Message -->
+                                                @if (session('status') === 'password-updated')
+                                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                        <i class="fas fa-check-circle"></i> Your password has been successfully updated.
+                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                    </div>
+                                                @endif
+
+                                                <!-- Error Messages -->
+                                                @if ($errors->updatePassword->any())
+                                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                        <i class="fas fa-exclamation-circle"></i> <strong>Password Update Failed!</strong>
+                                                        <ul class="mt-2 mb-0">
+                                                            @foreach ($errors->updatePassword->all() as $error)
+                                                                <li>{{ $error }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                    </div>
+                                                @endif
+
                                                 <form method="POST" action="{{ route('user-password.update') }}">
                                                     @csrf
                                                     @method('PUT')
                                                     <!-- Current Password -->
                                                     <div class="mb-3">
                                                         <label for="current_password" class="form-label">Current Password</label>
-                                                        <input type="password" name="current_password" id="current_password" class="form-control" required>
+                                                        <input type="password"
+                                                               name="current_password"
+                                                               id="current_password"
+                                                               class="form-control @error('current_password', 'updatePassword') is-invalid @enderror"
+                                                               required
+                                                               autofocus>
+                                                        @error('current_password', 'updatePassword')
+                                                            <div class="invalid-feedback d-block">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                     <!-- New Password -->
                                                     <div class="mb-3">
                                                         <label for="password" class="form-label">New Password</label>
-                                                        <input type="password" name="password" id="password" class="form-control" required>
+                                                        <input type="password"
+                                                               name="password"
+                                                               id="password"
+                                                               class="form-control @error('password', 'updatePassword') is-invalid @enderror"
+                                                               required>
+                                                        @error('password', 'updatePassword')
+                                                            <div class="invalid-feedback d-block">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                        <small class="form-text text-muted d-block mt-2">
+                                                            Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number.
+                                                        </small>
                                                     </div>
                                                     <!-- Confirm Password -->
                                                     <div class="mb-3">
                                                         <label for="password_confirmation" class="form-label">Confirm Password</label>
-                                                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
+                                                        <input type="password"
+                                                               name="password_confirmation"
+                                                               id="password_confirmation"
+                                                               class="form-control @error('password_confirmation', 'updatePassword') is-invalid @enderror"
+                                                               required>
+                                                        @error('password_confirmation', 'updatePassword')
+                                                            <div class="invalid-feedback d-block">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                     <button type="submit" class="btn btn-primary">Update Password</button>
                                                 </form>
