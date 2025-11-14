@@ -31,6 +31,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'gender',
+        'mobile_number',
+        'website',
+        'github',
+        'twitter',
+        'instagram',
+        'facebook',
     ];
 
     public function favoriteTips()

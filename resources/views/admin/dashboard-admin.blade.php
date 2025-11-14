@@ -619,11 +619,11 @@
                 </div>
                 <div class="card">
                     <h3>Vaccine Completed</h3>
-                    <p>15 Pending</p>
+                    <p>{{ $vaccineCompleted ?? 0 }} Completed · {{ $vaccinePending ?? 0 }} Pending</p>
                 </div>
                 <div class="card">
-                    <h3>Activities Completed</h3>
-                    <p>15 Pending</p>
+                    <h3>Milestones Completed</h3>
+                    <p>{{ $milestonesCompleted ?? 0 }} Completed · {{ $milestonesPending ?? 0 }} Pending</p>
                 </div>
             </div>
 
@@ -643,13 +643,12 @@
             <!-- Progress Bar Section -->
             <div class="projects-card">
                 <h3>Appointment Progression</h3>
-
                 <!-- Project for Server Migration -->
                 <div class="progress-bar">
                     <p>General</p>
                     <div class="progress">
-                        <div class="progress-bar-fill server-migration"></div>
-                        <span class="percentage" style="color: black;">20%</span>
+                        <div class="progress-bar-fill server-migration" style="width: {{ $appointmentProgress['general'] ?? 0 }}%;"></div>
+                        <span class="percentage" style="color: black;">{{ $appointmentProgress['general'] ?? 0 }}%</span>
                     </div>
                 </div>
 
@@ -657,8 +656,8 @@
                 <div class="progress-bar">
                     <p>Checkup</p>
                     <div class="progress">
-                        <div class="progress-bar-fill sales-tracking"></div>
-                        <span class="percentage" style="color: black;">40%</span>
+                        <div class="progress-bar-fill sales-tracking" style="width: {{ $appointmentProgress['checkup'] ?? 0 }}%;"></div>
+                        <span class="percentage" style="color: black;">{{ $appointmentProgress['checkup'] ?? 0 }}%</span>
                     </div>
                 </div>
 
@@ -666,8 +665,8 @@
                 <div class="progress-bar">
                     <p>Vaccination</p>
                     <div class="progress">
-                        <div class="progress-bar-fill customer-database"></div>
-                        <span class="percentage" style="color: black;">60%</span>
+                        <div class="progress-bar-fill customer-database" style="width: {{ $appointmentProgress['vaccination'] ?? 0 }}%;"></div>
+                        <span class="percentage" style="color: black;">{{ $appointmentProgress['vaccination'] ?? 0 }}%</span>
                     </div>
                 </div>
 
@@ -675,8 +674,8 @@
                 <div class="progress-bar">
                     <p>Others</p>
                     <div class="progress">
-                        <div class="progress-bar-fill" style="width: 80%; background-color: #2ecc71;"></div>
-                        <span class="percentage" style="color: black;">80%</span>
+                        <div class="progress-bar-fill" style="width: {{ $appointmentProgress['others'] ?? 0 }}%; background-color: #2ecc71;"></div>
+                        <span class="percentage" style="color: black;">{{ $appointmentProgress['others'] ?? 0 }}%</span>
                     </div>
                 </div>
             </div>
@@ -830,14 +829,18 @@
             notifModal.show();
         }
 
+        // Babies chart: data provided by server as $babiesPerMonth (12 values, Jan-Dec)
+        const babiesLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const babiesData = {!! json_encode($babiesPerMonth ?? array_fill(0,12,0)) !!};
+
         var ctx1 = document.getElementById('babiesChart').getContext('2d');
         var babiesChart = new Chart(ctx1, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                labels: babiesLabels,
                 datasets: [{
                     label: 'Babies Added',
-                    data: [5, 8, 7, 10, 9, 12, 14, 11, 15, 18, 20, 22],
+                    data: babiesData,
                     borderColor: 'rgba(54, 162, 235, 1)',
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     fill: true,
@@ -846,15 +849,13 @@
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,  // Allow the height to stretch to fit the container
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } }
             }
         });
 
+        // Gender distribution: server should pass an array [maleCount, femaleCount]
+        const genderData = {!! json_encode($genderDistribution ?? [0,0]) !!};
         var ctx2 = document.getElementById('genderChart').getContext('2d');
         var genderChart = new Chart(ctx2, {
             type: 'doughnut',
@@ -862,15 +863,12 @@
                 labels: ['Male', 'Female'],
                 datasets: [{
                     label: 'User Gender Distribution',
-                    data: [60, 40],
+                    data: genderData,
                     backgroundColor: ['#36A2EB', '#FF6384'],
                     hoverOffset: 4
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,  // Allow the height to stretch to fit the container
-            }
+            options: { responsive: true, maintainAspectRatio: false }
         });
 
     </script>

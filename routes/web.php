@@ -64,9 +64,8 @@ Route::get('/admin/calendar', function () {
     return view('admin/calendar');
 })->name('admincalendar');
 
-Route::get('/admin/settings', function () {
-    return view('admin/settings');
-})->name('adminsettings');
+Route::get('/admin/settings', [AdminController::class, 'settings'])->name('adminsettings');
+Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
 
 Route::get('admin/dashboard', [AdminController::class, 'index'])->name('dashboard-admin');
 Route::get('admin/users', [AdminController::class, 'usersAdmin'])->name('users-admin');
