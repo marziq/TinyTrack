@@ -800,8 +800,8 @@
                         <!-- Weight Slider -->
                         <div class="input-group slider-group weight-slider">
                             <label for="weight-input">Weight(g)</label>
-                            <input type="range" id="weight-input" name="weight" min="1000" max="6000" value="2010" step="1">
-                            <input type="number" id="weight-value" min="1000" max="6000" step="1" value="2010" class="form-control mt-2" style="width: 100px; text-align: center;">
+                            <input type="range" id="weight-input" name="weight" min="1000" max="10000" value="2010" step="1">
+                            <input type="number" id="weight-value" min="1000" max="10000" step="1" value="2010" class="form-control mt-2" style="width: 100px; text-align: center;">
                         </div>
 
                         <!-- Baby Icon Silhouette -->
@@ -812,8 +812,8 @@
                         <!-- Height Slider -->
                         <div class="input-group slider-group height-slider">
                             <label for="height-input">Height(cm)</label>
-                            <input type="range" id="height-input" name="height" min="40" max="70" value="50" step="1">
-                            <input type="number" id="height-value" min="40" max="70" step="1" value="50" class="form-control mt-2" style="width: 100px; text-align: center;">
+                            <input type="range" id="height-input" name="height" min="40" max="200" value="50" step="1">
+                            <input type="number" id="height-value" min="10" max="200" step="1" value="50" class="form-control mt-2" style="width: 100px; text-align: center;">
                         </div>
 
                         <div class="input-row">
