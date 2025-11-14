@@ -209,18 +209,13 @@
                         <span class="form-icon"><i class="fas fa-lock"></i></span>
                         <input id="password_confirmation" class="form-input" type="password" name="password_confirmation" required placeholder="Confirm Password" />
                     </div>
-
-                    @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                        <div class="terms">
+                    <div class="terms">
                             <label>
                                 <input type="checkbox" name="terms" required />
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                    'terms_of_service' => '<a href="'.route('terms.show').'" target="_blank">Terms of Service</a>',
-                                    'privacy_policy' => '<a href="'.route('policy.show').'" target="_blank">Privacy Policy</a>',
-                                ]) !!}
+                                I agree to the
+                                <a href="#" onclick="document.getElementById('tncModal').style.display='block'">Terms & Conditions</a>.
                             </label>
-                        </div>
-                    @endif
+                    </div>
 
                     <button type="submit" class="btn-register">Sign Up</button>
 
@@ -241,4 +236,71 @@
 
     <!-- FontAwesome CDN -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- Terms & Conditions Modal -->
+    <div id="tncModal"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.5); padding:40px; overflow:auto;">
+
+        <div style="background:#fff; padding:30px; border-radius:15px; max-width:700px; margin:auto;">
+            <h2 style="margin-bottom:15px;">Terms & Conditions</h2>
+
+            <p>
+                By creating an account on TinyTrack, you acknowledge and agree to the following terms regarding
+                your personal data and your baby's developmental information.
+            </p>
+
+            <h3>1. Collection of Personal and Baby Data</h3>
+            <p>
+                TinyTrack collects personal information such as your name, email, and account details, along with
+                data about your baby including name, birthdate, growth measurements, milestones, and health
+                records. This information is necessary for the accurate tracking of your baby's development.
+            </p>
+
+            <h3>2. Purpose of Data Usage</h3>
+            <p>
+                All collected data is used strictly for providing TinyTrack's features, such as growth charts,
+                milestone tracking, vaccination reminders, and personalized insights. Your data will not be sold,
+                shared, or used for advertising without your explicit consent.
+            </p>
+
+            <h3>3. Parental Consent</h3>
+            <p>
+                By registering, you confirm that you are the parent or legal guardian of the baby whose data is
+                submitted. You agree you have the authority to provide this information and permit TinyTrack to
+                store and process it.
+            </p>
+
+            <h3>4. Data Protection and Security</h3>
+            <p>
+                TinyTrack implements security measures to protect your personal and baby data. However, no system
+                is entirely risk-free. By using the platform, you acknowledge that you understand and accept the
+                inherent risks of online data storage.
+            </p>
+
+            <h3>5. Access and Control</h3>
+            <p>
+                You maintain full ownership and control of both your data and your baby's data. You may update,
+                download, or request deletion of your account and related information at any time.
+            </p>
+
+            <h3>6. Accuracy of Information</h3>
+            <p>
+                You are responsible for ensuring that all information provided (including baby weights, heights,
+                milestones, and medical notes) is accurate to maintain correct tracking and insights.
+            </p>
+
+            <h3>7. Updates to Terms</h3>
+            <p>
+                TinyTrack may update these Terms & Conditions periodically. Continued use of the platform
+                indicates your acceptance of any changes.
+            </p>
+
+            <br>
+            <button onclick="document.getElementById('tncModal').style.display='none'"
+                    style="background:#789DBC; color:white; border:none; padding:10px 20px;
+                        border-radius:8px; cursor:pointer;">
+                Close
+            </button>
+        </div>
+    </div>
 </x-guest-layout>

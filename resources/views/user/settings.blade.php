@@ -921,21 +921,77 @@
             notifModal.show();
         }
         // Settings Menu switching logic
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // --- Settings Menu switching logic ---
             const menuButtons = document.querySelectorAll('#settingsMenu button');
             const sections = {
                 basic: document.getElementById('basicSettingsSection'),
                 notifications: document.getElementById('notificationSettingsSection'),
                 password: document.getElementById('passwordSettingsSection')
             };
-            menuButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    menuButtons.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    Object.values(sections).forEach(sec => sec.style.display = 'none');
-                    sections[this.dataset.section].style.display = '';
+
+            // Run only if sections exist (means we are on the correct page)
+            if (sections.basic) {
+                menuButtons.forEach(btn => {
+                    btn.addEventListener('click', function () {
+
+                        // Remove active state from all buttons
+                        menuButtons.forEach(b => b.classList.remove('active'));
+
+                        // Set the clicked button as active
+                        this.classList.add('active');
+
+                        // Hide all sections
+                        Object.values(sections).forEach(sec => {
+                            if (sec) sec.style.display = 'none';
+                        });
+
+                        // Show the selected section
+                        const target = this.dataset.section;
+                        if (sections[target]) {
+                            sections[target].style.display = '';
+                        }
+                    });
                 });
-            });
+            }
+
+            // --- Font Size Logic ---
+            const fontSizeSelect = document.getElementById('fontSizeSelect');
+            const body = document.body;
+            const fontStorageKey = 'userFontSize';
+
+            function applyFontSize(size) {
+                // Reset all font classes
+                body.classList.remove('font-large', 'font-xlarge');
+
+                if (size === 'large') {
+                    body.classList.add('font-large');
+                } else if (size === 'xlarge') {
+                    body.classList.add('font-xlarge');
+                }
+                // 'normal' = no class
+            }
+
+            // 1. Load saved font size preference
+            const savedSize = localStorage.getItem(fontStorageKey);
+            if (savedSize) {
+                applyFontSize(savedSize);
+
+                if (fontSizeSelect) {
+                    fontSizeSelect.value = savedSize;
+                }
+            }
+
+            // 2. Save new selection and apply it
+            if (fontSizeSelect) {
+                fontSizeSelect.addEventListener('change', function () {
+                    const selectedSize = this.value;
+                    applyFontSize(selectedSize);
+                    localStorage.setItem(fontStorageKey, selectedSize);
+                });
+            }
+
         });
     </script>
 

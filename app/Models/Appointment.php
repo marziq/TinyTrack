@@ -19,8 +19,17 @@ class Appointment extends Model
         'purpose',
         'status'
     ];
+    /**
+     * Get the user associated with the appointment.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-
+    /**
+     * Get the baby associated with the appointment.
+     */
     public function baby()
     {
         return $this->belongsTo(Baby::class);
