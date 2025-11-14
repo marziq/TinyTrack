@@ -612,7 +612,7 @@
                     <div id="notificationPopup" class="notification-popup" style="display: none;">
                         <ul class="notification-list">
                             @forelse($userNotifications as $notif)
-                                <li class="notification-item {{ $notif->status == 'unread' ? 'fw-bold' : '' }}" data-id="{{ $notif->notification_id }}">
+                                <li class="notification-item {{ $notif->status == 'unread' ? 'fw-bold' : '' }}" data-id="{{ $notif->notification_id }}" data-title="{{ $notif->title }}" data-message="{{ $notif->message }}" data-date="{{ $notif->dateSent }}">
                                     <strong>{{ $notif->title }}</strong><br>
                                     <span>{{ $notif->message }}</span>
                                     <div style="font-size: 11px; color: #888;">{{ $notif->dateSent }}</div>
@@ -1146,134 +1146,79 @@
         const bell = document.getElementById('notificationBell');
         const popup = document.getElementById('notificationPopup');
 
-        // Load notifications when page loads
-        loadNotifications();
-
-        // Refresh notifications every 30 seconds
-        setInterval(loadNotifications, 30000);
-
         bell.addEventListener('click', function(e) {
             e.stopPropagation();
             popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-            if (popup.style.display === 'block') {
-                loadNotifications();
-            }
         });
 
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.notification-icon')) {
-                popup.style.display = 'none';
-            }
+        document.addEventListener('click', function() {
+            popup.style.display = 'none';
         });
 
         // Mark notification as read and show full message
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.notification-item')) {
-                const item = e.target.closest('.notification-item');
+        document.querySelectorAll('.notification-item').forEach(item => {
+            item.addEventListener('click', function(e) {
                 e.stopPropagation();
-                const notifId = item.getAttribute('data-id');
-                const title = item.getAttribute('data-title');
-                const message = item.getAttribute('data-message');
-                const date = item.getAttribute('data-date');
-
-                // Mark as read via API
-                fetch(`/api/notifications/${notifId}/mark-read`, {
+                const notifId = this.getAttribute('data-id');
+                fetch(`/notifications/${notifId}/mark-read`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                         'Accept': 'application/json'
                     }
-                }).then(response => response.json()).then(data => {
-                    if (data.success) {
-                        // Remove the notification from the popup view
-                        item.remove();
+                }).then(() => {
+                    // Remove the notification from the popup view
+                    this.remove();
 
-                        // Show full notification in a modal
-                        showNotificationModal(title, message, date);
+                    // Show full notification in a modal
+                    showNotificationModal(
+                        this.getAttribute('data-title'),
+                        this.getAttribute('data-message'),
+                        this.getAttribute('data-date')
+                    );
 
-                        // Update badge count
-                        loadNotifications();
-
-                        // If no notifications left, show "No notifications."
-                        if (document.querySelectorAll('.notification-item').length === 0) {
-                            const list = document.querySelector('.notification-list');
-                            list.innerHTML = '<li class="no-notification">No notifications.</li>';
-                        }
+                    // Optionally update badge count
+                    let badge = document.querySelector('.notification-badge');
+                    if (badge) {
+                        let count = parseInt(badge.innerText) - 1;
+                        badge.innerText = count > 0 ? count : '';
+                        if (count <= 0) badge.style.display = 'none';
                     }
-                }).catch(error => console.error('Error marking notification as read:', error));
-            }
-        });
 
-        // Load and display notifications
-        function loadNotifications() {
-            fetch('/api/notifications/unread', {
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                const notificationList = document.querySelector('.notification-list');
-                const notificationBadge = document.querySelector('.notification-badge');
-
-                if (data.count > 0) {
-                    let html = '';
-                    data.notifications.forEach(notification => {
-                        const dateFormatted = new Date(notification.dateSent).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric'
-                        });
-                        html += `
-                            <li class="notification-item"
-                                data-id="${notification.notification_id}"
-                                data-title="${notification.title}"
-                                data-message="${notification.message}"
-                                data-date="${dateFormatted}">
-                                <strong>${notification.title}</strong>
-                                <span>${notification.message.substring(0, 100)}...</span>
-                                <div style="font-size: 11px; color: #999; margin-top: 5px;">${dateFormatted}</div>
-                            </li>
-                        `;
-                    });
-                    notificationList.innerHTML = html;
-                    notificationBadge.innerText = data.count;
-                    notificationBadge.style.display = 'block';
-                } else {
-                    notificationList.innerHTML = '<li class="no-notification">No unread notifications.</li>';
-                    notificationBadge.style.display = 'none';
-                }
-            })
-            .catch(error => {
-                console.error('Error loading notifications:', error);
+                    // If no notifications left, show "No notifications."
+                    if (document.querySelectorAll('.notification-item').length === 0) {
+                        const list = document.querySelector('.notification-list');
+                        list.innerHTML = '<li class="no-notification">No notifications.</li>';
+                    }
+                });
             });
-        }
+        });
+    });
 
-        // Show notification modal
-        function showNotificationModal(title, message, date) {
-            let modalHtml = `
-            <div class="modal fade" id="notifModal" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="notifModalLabel">${title}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <p>${message}</p>
-                    <div style="font-size: 12px; color: #888;">Received: ${date}</div>
-                  </div>
-                </div>
+    // Show notification modal
+    function showNotificationModal(title, message, date) {
+        let modalHtml = `
+        <div class="modal fade" id="notifModal" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="notifModalLabel">${title}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>${message}</p>
+                <div style="font-size: 12px; color: #888;">${date}</div>
               </div>
             </div>
-            `;
-            // Remove existing modal if any
-            document.getElementById('notifModal')?.remove();
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-            let notifModal = new bootstrap.Modal(document.getElementById('notifModal'));
-            notifModal.show();
-        }
-    });
+          </div>
+        </div>
+        `;
+        // Remove existing modal if any
+        document.getElementById('notifModal')?.remove();
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        let notifModal = new bootstrap.Modal(document.getElementById('notifModal'));
+        notifModal.show();
+    }
     </script>
 </body>
 </html>
