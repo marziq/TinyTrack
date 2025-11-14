@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Appointment;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -15,13 +16,25 @@ class AppointmentReminder extends Mailable
     use Queueable, SerializesModels;
 
     public $appointment; // <-- Make appointment public
+    public $user; // optional user provided to the mailable
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Appointment $appointment) // <-- Pass in the Appointment
+    public function __construct(Appointment $appointment, User $user = null) // <-- Pass in the Appointment and optional User
     {
         $this->appointment = $appointment;
+        $this->user = $user;
+
+        // If appointment->user is null but a user was provided, attach it so the view can access it
+        if ($this->user && (is_null($this->appointment->user) || empty($this->appointment->user))) {
+            $this->appointment->setRelation('user', $this->user);
+        }
+
+        // Ensure baby relation exists (no-op if already loaded)
+        if ($this->appointment->baby) {
+            $this->appointment->setRelation('baby', $this->appointment->baby);
+        }
     }
 
     /**

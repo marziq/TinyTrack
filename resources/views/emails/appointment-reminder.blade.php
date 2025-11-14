@@ -13,15 +13,15 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">Hi {{ $appointment->user->name }},</div>
+        <div class="header">Hi {{ optional($appointment->user)->name ?? 'Parent' }},</div>
 
         <div class="content">
-            <p>This is a friendly reminder for your upcoming appointment for <strong>{{ $appointment->baby->name }}</strong>.</p>
+            <p>This is a friendly reminder for your upcoming appointment for <strong>{{ optional($appointment->baby)->name ?? 'your baby' }}</strong>.</p>
 
             <p>
-                <strong>Date:</strong> {{ $appointment->appointmentDate->format('F j, Y') }}<br>
+                <strong>Date:</strong> {{ \Carbon\Carbon::parse($appointment->appointmentDate)->format('F j, Y') }}<br>
                 <strong>Time:</strong> {{ \Carbon\Carbon::parse($appointment->appointmentTime)->format('g:i A') }}<br>
-                <strong>Purpose:</strong> {{ $appointment->purpose }}
+                <strong>Purpose:</strong> {{ $appointment->purpose ?? '' }}
             </p>
 
             <p>If you need to reschedule, please contact us.</p>

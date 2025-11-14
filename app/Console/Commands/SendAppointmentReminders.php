@@ -50,7 +50,8 @@ class SendAppointmentReminders extends Command
 
                 // Then attempt to send email reminder
                 try {
-                    Mail::to($user->email)->send(new AppointmentReminder($appointment));
+                    // Pass resolved user to the mailable so the view can access user.name
+                    Mail::to($user->email)->send(new AppointmentReminder($appointment, $user));
                     $this->info("Sent email reminder to: {$user->email}");
                 } catch (\Exception $e) {
                     $this->error("Failed to send to: {$user->email}. Error: " . $e->getMessage());
