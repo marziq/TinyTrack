@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Appointment;
+use App\Models\Notification;
 use App\Mail\AppointmentReminder;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
@@ -11,7 +12,7 @@ use Carbon\Carbon;
 class SendAppointmentReminders extends Command
 {
     protected $signature = 'app:send-appointment-reminders';
-    protected $description = 'Send email reminders for appointments happening tomorrow';
+    protected $description = 'Send email and in-app notifications for appointments happening tomorrow';
 
     public function handle()
     {
@@ -32,14 +33,19 @@ class SendAppointmentReminders extends Command
             return 0;
         }
 
-        $this->info("Found {$appointments->count()} appointments. Sending emails...");
+        $this->info("Found {$appointments->count()} appointments. Sending emails and in-app notifications...");
 
         foreach ($appointments as $appointment) {
             // Ensure user and email exist
             if ($appointment->user && $appointment->user->email) {
                 try {
+                    // Send email reminder
                     Mail::to($appointment->user->email)->send(new AppointmentReminder($appointment));
-                    $this->info("Sent reminder to: {$appointment->user->email}");
+                    $this->info("Sent email reminder to: {$appointment->user->email}");
+
+                    // Create in-app notification
+                    $this->createInAppNotification($appointment);
+
                 } catch (\Exception $e) {
                     $this->error("Failed to send to: {$appointment->user->email}. Error: " . $e->getMessage());
                 }
@@ -48,5 +54,48 @@ class SendAppointmentReminders extends Command
 
         $this->info('All reminders sent.');
         return 0;
+    }
+
+    /**
+     * Create an in-app notification for appointment reminder
+     */
+    private function createInAppNotification($appointment)
+    {
+        try {
+            $baby = $appointment->baby;
+            $user = $appointment->user;
+
+            if (!$baby || !$user) {
+                return;
+            }
+
+            // Check if notification already exists to avoid duplicates
+            $existingNotification = Notification::where('user_id', $user->id)
+                ->whereDate('dateSent', Carbon::today())
+                ->where('title', 'like', '%' . $baby->name . '%Appointment%')
+                ->first();
+
+            if ($existingNotification) {
+                $this->info("In-app notification already exists for {$baby->name}'s appointment.");
+                return;
+            }
+
+            // Format appointment details
+            $appointmentDate = Carbon::parse($appointment->appointmentDate)->format('D, M j, Y');
+            $appointmentTime = Carbon::parse($appointment->appointmentTime)->format('g:i A');
+
+            // Create in-app notification
+            Notification::create([
+                'user_id' => $user->id,
+                'title' => "Appointment Reminder - {$baby->name}",
+                'message' => "Your baby {$baby->name} has an appointment scheduled on {$appointmentDate} at {$appointmentTime}. Purpose: {$appointment->purpose}",
+                'dateSent' => Carbon::now(),
+                'status' => 'unread'
+            ]);
+
+            $this->info("In-app notification created for user {$user->id} ({$user->email}).");
+        } catch (\Exception $e) {
+            $this->error("Error creating in-app notification: " . $e->getMessage());
+        }
     }
 }

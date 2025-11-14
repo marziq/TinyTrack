@@ -55,6 +55,11 @@ class User extends Authenticatable
         return $this->hasMany(Baby::class);
     }
 
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'user_id', 'id');
+    }
+
     /**
      * The accessors to append to the model's array form.
      *

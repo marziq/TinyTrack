@@ -148,6 +148,13 @@ Route::post('/notifications/{id}/mark-read', [NotificationsController::class, 'm
 Route::put('/notifications/{notification}', [NotificationsController::class, 'update'])->name('notifications.update');
 Route::get('/notifications/{id}', [NotificationsController::class, 'getNotification']);
 
+// Notification API endpoints for frontend
+Route::middleware(['auth'])->group(function () {
+    Route::get('/api/notifications', [NotificationsController::class, 'getUserNotifications'])->name('api.notifications.all');
+    Route::get('/api/notifications/unread', [NotificationsController::class, 'getUnreadNotifications'])->name('api.notifications.unread');
+    Route::post('/api/notifications/{id}/mark-read', [NotificationsController::class, 'markNotificationRead'])->name('api.notifications.mark-read');
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/myaccount', [UserController::class, 'index'])->name('myaccount');
     Route::post('/user/update', [UserController::class, 'update'])->name('user.update');

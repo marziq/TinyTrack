@@ -120,4 +120,52 @@ class NotificationsController extends Controller
     }
     return response()->json(['error' => 'Notification not found'], 404); // Return error if not found
 }
+
+    /**
+     * Get all unread notifications for the authenticated user (API endpoint)
+     */
+    public function getUserNotifications()
+    {
+        $userNotifications = Notification::where('user_id', auth()->id())
+            ->orderByDesc('dateSent')
+            ->get();
+
+        $unreadCount = $userNotifications->where('status', 'unread')->count();
+
+        return response()->json([
+            'notifications' => $userNotifications,
+            'unreadCount' => $unreadCount
+        ]);
+    }
+
+    /**
+     * Get only unread notifications for the authenticated user
+     */
+    public function getUnreadNotifications()
+    {
+        $unreadNotifications = Notification::where('user_id', auth()->id())
+            ->where('status', 'unread')
+            ->orderByDesc('dateSent')
+            ->get();
+
+        return response()->json([
+            'notifications' => $unreadNotifications,
+            'count' => $unreadNotifications->count()
+        ]);
+    }
+
+    /**
+     * Mark a notification as read (API endpoint)
+     */
+    public function markNotificationRead($id)
+    {
+        $notification = Notification::where('notification_id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $notification->status = 'read';
+        $notification->save();
+
+        return response()->json(['success' => true, 'message' => 'Notification marked as read']);
+    }
 }
