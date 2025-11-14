@@ -60,9 +60,8 @@ Route::post('/login-admin', function (Request $request) {
     return back()->withErrors(['email' => 'Invalid credentials.']);
 })->name('admin.login.submit');
 
-Route::get('/admin/calendar', function () {
-    return view('admin/calendar');
-})->name('admincalendar');
+Route::get('/admin/calendar', [AdminController::class, 'calendar'])->name('admincalendar');
+Route::get('/api/admin/appointments', [AdminController::class, 'getAppointments'])->name('api.admin.appointments');
 
 Route::get('/admin/settings', [AdminController::class, 'settings'])->name('adminsettings');
 Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');

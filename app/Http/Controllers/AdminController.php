@@ -191,4 +191,63 @@ class AdminController extends Controller
         $user->delete();
         return redirect()->route('users-admin')->with('success', 'User deleted successfully.');
     }
+
+    /**
+     * Display the admin calendar page
+     */
+    public function calendar()
+    {
+        $users = User::all();
+        $unreadCount = 0;
+        $userNotifications = [];
+
+        return view('admin.calendar', compact('users', 'unreadCount', 'userNotifications'));
+    }
+
+    /**
+     * Fetch appointments for a specific user (for calendar)
+     */
+    public function getAppointments(Request $request)
+    {
+        $userId = $request->query('user_id');
+
+        if (!$userId) {
+            return response()->json([]);
+        }
+
+        $appointments = Appointment::whereHas('baby', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })
+        ->select('appointmentID', 'appointmentDate', 'appointmentTime', 'purpose', 'status')
+        ->get()
+        ->map(function ($appointment) {
+            $statusColor = match($appointment->status) {
+                'completed' => '#4CAF50',
+                'cancelled' => '#f44336',
+                'pending' => '#FF9800',
+                default => '#2196F3'
+            };
+
+            $purposeClass = match($appointment->purpose) {
+                'checkup' => 'fc-event-checkup',
+                'vaccination' => 'fc-event-vaccination',
+                'consultation' => 'fc-event-consultation',
+                default => 'fc-event-general'
+            };
+
+            return [
+                'id' => $appointment->appointmentID,
+                'title' => ucfirst($appointment->purpose),
+                'start' => $appointment->appointmentDate . 'T' . $appointment->appointmentTime,
+                'backgroundColor' => $statusColor,
+                'borderColor' => $statusColor,
+                'extendedProps' => [
+                    'status' => $appointment->status,
+                    'purpose' => $appointment->purpose
+                ]
+            ];
+        });
+
+        return response()->json($appointments);
+    }
 }

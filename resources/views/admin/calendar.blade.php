@@ -444,7 +444,7 @@
                 </div>
                 <div class="dropdown">
                     <!-- Profile picture button -->
-                    <button class="profile-btn dropdown-toggle" type="button" id="accountDropdown">
+                    <button class="profile-btn" type="button" id="accountDropdown">
                         <div class="profile-img-container">
                             @if (Auth::check())
                                 <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
@@ -656,46 +656,51 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                events: [
-                    // These would normally come from your database via AJAX
-                    // Example data - in a real app, you'd fetch this from your backend
-                    {
-                        title: 'Regular Checkup',
-                        start: new Date().toISOString().split('T')[0],
-                        className: 'fc-event-checkup'
-                    },
-                    {
-                        title: 'Vaccination',
-                        start: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0],
-                        className: 'fc-event-vaccination'
-                    },
-                    {
-                        title: 'Doctor Consultation',
-                        start: new Date(new Date().setDate(new Date().getDate() + 5)).toISOString().split('T')[0],
-                        className: 'fc-event-consultation'
-                    },
-                    {
-                        title: 'Regular Checkup',
-                        start: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0],
-                        className: 'fc-event-checkup'
+                events: function(info, successCallback, failureCallback) {
+                    var userId = document.getElementById('userSelect').value;
+                    if (!userId) {
+                        successCallback([]);
+                        return;
                     }
-                ],
+
+                    fetch('/api/admin/appointments?user_id=' + userId)
+                        .then(response => response.json())
+                        .then(data => {
+                            successCallback(data);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching appointments:', error);
+                            failureCallback(error);
+                        });
+                },
+                eventDisplay: 'block',
+                eventTimeFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    meridiem: 'short'
+                },
+                eventContent: function(arg) {
+                    return { html: arg.event.title };
+                },
                 eventClick: function(info) {
                     // When an appointment is clicked, show details
                     const event = info.event;
+                    const status = event.extendedProps.status || 'pending';
+                    const purpose = event.extendedProps.purpose || 'Appointment';
+                    const time = event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
                     let modalHtml = `
                     <div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="appointmentModalLabel">Appointment Details</h5>
+                            <h5 class="modal-title" id="appointmentModalLabel">Appointment</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <p><strong>Type:</strong> ${event.title}</p>
-                            <p><strong>Date:</strong> ${event.start.toLocaleDateString()}</p>
-                            <p><strong>Time:</strong> ${event.start.toLocaleTimeString()}</p>
-                            <p><strong>Status:</strong> Confirmed</p>
+                            <p><strong>Time:</strong> ${time}</p>
+                            <p><strong>Status:</strong> <span style="text-transform: capitalize;">${status}</span></p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -715,33 +720,10 @@
 
             calendar.render();
 
-            // In a real application, you would fetch appointments from your backend
-            function fetchAppointments() {
-                // Example AJAX call (you would replace this with your actual endpoint)
-                /*
-                fetch('/api/appointments')
-                    .then(response => response.json())
-                    .then(data => {
-                        // Format the data for FullCalendar
-                        const events = data.map(appointment => {
-                            return {
-                                title: appointment.type,
-                                start: appointment.date,
-                                className: `fc-event-${appointment.type.toLowerCase()}`
-                            };
-                        });
-
-                        // Remove existing events and add new ones
-                        calendar.getEvents().forEach(event => event.remove());
-                        calendar.addEventSource(events);
-                    })
-                    .catch(error => console.error('Error fetching appointments:', error));
-                */
-            }
-
-            // Fetch appointments initially and set up periodic refresh
-            fetchAppointments();
-            setInterval(fetchAppointments, 300000); // Refresh every 5 minutes
+            // Reload calendar when user is selected
+            document.getElementById('userSelect').addEventListener('change', function() {
+                calendar.refetchEvents();
+            });
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

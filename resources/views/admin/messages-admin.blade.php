@@ -410,7 +410,7 @@
                 </div>
                 <div class="dropdown">
                     <!-- Profile picture button -->
-                    <button class="profile-btn dropdown-toggle" type="button" id="accountDropdown">
+                    <button class="profile-btn" type="button" id="accountDropdown">
                         <div class="profile-img-container">
                             @if (Auth::check())
                                 <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
