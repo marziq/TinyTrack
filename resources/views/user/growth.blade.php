@@ -1285,17 +1285,17 @@
                             empathetic recommendation.`;
             console.log("AI Prompt:", prompt);
             try {
-                const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                const response = await fetch("{{ url('/proxy/openrouter/recommendation') }}", {
                     method: 'POST',
                     headers: {
-                        Authorization: 'Bearer sk-KEY',
-                        'HTTP-Referer': 'https://TinyTrack.com',
-                        'X-Title': 'TinyTrack',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         model: 'deepseek/deepseek-r1-distill-llama-70b:free',
-                        messages: [{ role: 'user', content: prompt }]
+                        status: status,
+                        age: age,
+                        gender: gender
                     }),
                 });
                 const data = await response.json();

@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FavoriteTipController;
+use App\Http\Controllers\OpenAIProxyController;
 
 // Public routes
 Route::get('/', function () {
@@ -113,6 +114,10 @@ Route::middleware([
     Route::get('/dashboard/chat', function () {
         return view('user/chatbot');
     })->name('chatbot');
+    // Proxy endpoints for AI (use server-side secret stored in .env)
+    Route::post('/proxy/openrouter/chat', [\App\Http\Controllers\OpenAIProxyController::class, 'chat'])->name('proxy.openrouter.chat');
+    Route::post('/proxy/openrouter/summarize', [\App\Http\Controllers\OpenAIProxyController::class, 'summarize'])->name('proxy.openrouter.summarize');
+    Route::post('/proxy/openrouter/recommendation', [\App\Http\Controllers\OpenAIProxyController::class, 'recommendation'])->name('proxy.openrouter.recommendation');
     Route::get('/dashboard/checkup', function () {
         return view('user/checkup');
     })->name('checkup');

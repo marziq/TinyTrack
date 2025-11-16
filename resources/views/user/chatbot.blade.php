@@ -804,10 +804,10 @@
                 if (conversationHistory.length > 12) {
                     const oldMessages = conversationHistory.slice(1, conversationHistory.length - 6);
 
-                    const summaryResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                    const summaryResponse = await fetch("{{ url('/proxy/openrouter/summarize') }}", {
                         method: "POST",
                         headers: {
-                            "Authorization": "Bearer sk-KEY",
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
@@ -834,12 +834,10 @@
                 }
 
                 //Call main AI for answer
-                const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                const response = await fetch("{{ url('/proxy/openrouter/chat') }}", {
                     method: "POST",
                     headers: {
-                        "Authorization": "Bearer sk-KEY",
-                        "Referer": "https://www.TinyTrack.com",
-                        "X-Title": "TinyTrack Sage Chatbot",
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
