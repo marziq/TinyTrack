@@ -1019,7 +1019,7 @@
             });
 
             weightValue.addEventListener('input', function () {
-                let val = Math.min(Math.max(weightValue.value, 1000), 6000); // clamp between min/max
+                let val = Math.min(Math.max(weightValue.value, 1000), 10000); // clamp between min/max
                 weightSlider.value = val;
             });
 
@@ -1032,7 +1032,7 @@
             });
 
             heightValue.addEventListener('input', function () {
-                let val = Math.min(Math.max(heightValue.value, 40), 70); // clamp between min/max
+                let val = Math.min(Math.max(heightValue.value, 40), 200); // clamp between min/max
                 heightSlider.value = val;
             });
         });

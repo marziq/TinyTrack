@@ -201,6 +201,23 @@
                     </div>
 
                     <div class="form-group">
+                        <span class="form-icon"><i class="fas fa-phone"></i></span>
+                        <input id="mobile_number" class="form-input" type="text" name="mobile_number" value="{{ old('mobile_number') }}" placeholder="Mobile Number" />
+                        @error('mobile_number')
+                            <div style="color:#d9534f; font-size:0.85rem; margin-top:6px;">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group" style="padding-left:10px;">
+                        <label style="display:block; margin-bottom:6px; color:#666; font-size:0.9rem;">Gender</label>
+                        <label style="margin-right:12px; font-size:0.95rem; color:#333;"><input type="radio" name="gender" value="male" {{ old('gender') == 'male' ? 'checked' : '' }}> Male</label>
+                        <label style="font-size:0.95rem; color:#333;"><input type="radio" name="gender" value="female" {{ old('gender') == 'female' ? 'checked' : '' }}> Female</label>
+                        @error('gender')
+                            <div style="color:#d9534f; font-size:0.85rem; margin-top:6px;">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
                         <span class="form-icon"><i class="fas fa-lock"></i></span>
                         <input id="password" class="form-input" type="password" name="password" required placeholder="Password" />
                     </div>

@@ -112,7 +112,8 @@ class UserController extends Controller
         }
 
         // Perform deletion. If there are related records with foreign keys, cascade or handle accordingly.
-        Auth::logout();
+        // Use the session (web) guard explicitly so we don't call logout() on a RequestGuard (sanctum)
+        Auth::guard('web')->logout();
         $user->delete();
 
         // Invalidate the session

@@ -51,11 +51,12 @@ Route::get('/login-admin', function () {
 })->name('login-admin');
 Route::post('/login-admin', function (Request $request) {
     $credentials = $request->only('email', 'password');
-    if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials)) {
         if (Auth::user()->email === 'support@tinytrack.com') {
             return redirect()->route('dashboard-admin');
         }
-        Auth::logout(); // Log out the non-admin user
+        // Ensure we log out using the session (web) guard — avoid calling logout on a RequestGuard
+        Auth::guard('web')->logout(); // Log out the non-admin user
         return back()->withErrors(['email' => 'You are not authorized to access the admin dashboard.']);
     }
     return back()->withErrors(['email' => 'Invalid credentials.']);
