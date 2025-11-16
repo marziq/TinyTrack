@@ -549,7 +549,7 @@
             height: 100%;
             max-width: 75%;
             /* Ensure the chart doesn't overlap the title */
-            margin-top: 40px;
+            margin-top: 15px;
         }
 
         .chart-placeholder {
@@ -976,9 +976,9 @@
 
                 <div class="chart-container">
                     <h3 class="chart-title" id="growthChartTitle">Growth</h3>
-                    <div style="position: absolute; top: 18px; right: 20px; z-index:3; display:flex; gap:8px;">
+                    <div style="position: absolute; bottom: 20px; right: 30px; z-index:3; display:flex; gap:8px;">
                         <button id="toggleHeight" class="btn btn-sm" style="background:#43a047;color:#fff;border-radius:8px;">Height</button>
-                        <button id="toggleWeight" class="btn btn-sm" style="background:#ff8a65;color:#fff;border-radius:8px;">Weight</button>
+                        <button id="toggleWeight" class="btn btn-sm" style="background:#FC8EAC;color:#fff;border-radius:8px;">Weight</button>
                     </div>
                     <div class="chart-column">
                         <canvas id="growthChart"></canvas>
@@ -1214,15 +1214,15 @@
             });
 
             const GREEN = '#43a047';
-            const ORANGE = '#ff8a65';
+            const PINK = '#FC8EAC';
 
             function renderGrowth(type, labels, values) {
                 growthChart.data.labels = labels;
                 growthChart.data.datasets = [{
                     label: type === 'height' ? 'Height (cm)' : 'Weight (g)',
                     data: values,
-                    borderColor: type === 'height' ? GREEN : ORANGE,
-                    backgroundColor: type === 'height' ? 'rgba(67,160,71,0.12)' : 'rgba(255,138,101,0.15)',
+                    borderColor: type === 'height' ? GREEN : PINK,
+                    backgroundColor: type === 'height' ? 'rgba(67,160,71,0.12)' : 'rgba(252,142,172,0.15)',
                     borderWidth: 2,
                     tension: 0.4,
                     fill: true
