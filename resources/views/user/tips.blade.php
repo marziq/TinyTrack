@@ -1032,179 +1032,343 @@
             const modalTitle = document.getElementById('tipInfoModalLabel');
             const modalBody = document.getElementById('tipInfoModalBody');
             const topics = {
+                /* ---------------------------------------------------------
+                B O N D I N G   T I P S
+                --------------------------------------------------------- */
                 bonding1: {
                     title: 'Skin-to-Skin Cuddles',
                     content: 'Explore the science and tradition behind skin-to-skin cuddles — a beautiful first step in bonding that supports your baby’s health, emotional well-being and development from the very first hours of life.',
                     additionalText: 'Skin-to-skin contact also helps regulate your baby’s temperature, heart rate, and breathing. It promotes bonding and can even help with breastfeeding success.',
-                    heroImage: '{{ asset("img/skintoskin2.jpeg") }}', // Replace with actual image path
-                    videoUrl: 'https://www.youtube.com/embed/VOjGhwMuWFU?si=EEowDG50bdKRLGHo', // Replace with actual video URL
+                    heroImage: '{{ asset("img/skintoskin2.jpeg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/VOjGhwMuWFU?si=EEowDG50bdKRLGHo',
                     title2: '</br>What Is Skin-to-Skin Contact?',
-                    additionalText2: 'Skin-to-skin contact, also known as kangaroo care, is when a newborn (usually wearing just a diaper) is placed directly against the bare chest of a parent. This natural method is recommended right after birth and can be practiced daily during the baby’s first year. It helps babies feel safe, warm, and calm — and encourages parents to feel more confident in caring for their newborn.',
+                    additionalText2: 'Skin-to-skin contact, also known as kangaroo care, is when a newborn is placed directly against the bare chest of a parent. This natural method helps babies feel safe, warm, and calm.',
                     title3: '</br>Why It Matters for Malaysian Parents',
-                    additionalText3: 'According to the Child Health Record Book issued by the Ministry of Health Malaysia, early care and close bonding are essential for your baby’s development. Although the book may not use the exact phrase "skin-to-skin," it strongly encourages immediate closeness after birth and exclusive breastfeeding for the first six months — both of which are supported by skin-to-skin cuddles. This practice is also aligned with public health advice in Malaysia to promote breastfeeding, bonding, and safer sleep patterns in babies.',
-                    title4:'</br>Benefits of Skin-to-Skin Cuddles',
-                    additionalText4: '- Regulates your baby’s body temperature, heartbeat and breathing <br/> - Encourages exclusive breastfeeding by triggering natural milk supply. </br> - Reduces crying, supports better sleep, and lowers stress for both baby and parent. </br> - Boosts baby immune system and healthy weight gain </br> Strengthens emotional bonding and early brain development.',
-                    title5: '</br> Expert Tip From Malaysian Healthcare',
-                    additionalText5: '“Skin-to-skin care, even for a few minutes a day, can help parents feel more connected and confident, while giving babies a better start in life.” </br> — Nurse Supervisor, Klinik Kesihatan Selangor'
+                    additionalText3: 'The Malaysian Child Health Record Book encourages early contact, closeness, and exclusive breastfeeding, all of which are supported by skin-to-skin cuddles.',
+                    title4: '</br>Benefits of Skin-to-Skin Cuddles',
+                    additionalText4: '- Regulates temperature and heartbeat<br/>- Encourages better breastfeeding<br/>- Reduces crying and stress<br/>- Supports weight gain and immune health<br/>- Strengthens bonding and early development',
+                    title5: '</br>Expert Tip From Malaysian Healthcare',
+                    additionalText5: '“Just a few minutes of skin-to-skin daily can give your newborn emotional security and help parents feel more connected.” </br> — Nurse Supervisor, Klinik Kesihatan'
                 },
+
                 bonding2: {
                     title: 'Gentle Baby Massage',
-                    content: 'Skin-to-skin contact helps regulate your baby’s temperature and heartbeat. Baby massage can soothe and relax your baby.',
-                    heroImage: '{{ asset("img/baby-massage.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
-
+                    content: 'Baby massage is a calming bonding practice that helps babies feel secure, improves circulation, and reduces fussiness.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Regular massage can improve sleep quality and strengthen the emotional bond between parent and baby.',
+                    title2: '</br>What Is Baby Massage?',
+                    additionalText2: 'Baby massage uses gentle strokes on your baby’s arms, legs, tummy, and back. Parents commonly practice it after bath time when the baby is calm.',
+                    title3: '</br>Why Malaysian Parents Love This Tip',
+                    additionalText3: 'Many Malaysian families already practice “urut bayi,” a traditional form of baby massage. Modern research supports its benefits in reducing colic and promoting relaxation.',
+                    title4: '</br>Benefits of Baby Massage',
+                    additionalText4: '- Improves digestion and reduces gas<br/>- Promotes longer, deeper sleep<br/>- Reduces crying and fussiness<br/>- Helps your baby learn body awareness<br/>- Builds trust and bonding',
+                    title5: '</br>Expert Tip',
+                    additionalText5: 'Use natural, baby-safe oils and watch your baby’s cues. If they turn away or cry, try again later.'
                 },
+
                 bonding3: {
                     title: 'Talk & Sing to Baby',
-                    content: 'Skin-to-skin contact helps regulate your baby’s temperature and heartbeat. Baby massage can soothe and relax your baby.',
-                    heroImage: '{{ asset("img/baby-massage.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
-
+                    content: 'Your voice is your baby’s favourite sound. Talking and singing help build language skills and emotional bonding from day one.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Simple words, lullabies, and playful tones help your baby feel connected and loved.',
+                    title2: '</br>What Does Talking & Singing Do?',
+                    additionalText2: 'It stimulates baby’s brain development, supports early communication, and strengthens your relationship.',
+                    title3: '</br>Malaysian Context',
+                    additionalText3: 'Using Malay, English, Tamil, Mandarin, or any home language boosts bilingual readiness and cultural bonding.',
+                    title4: '</br>Benefits',
+                    additionalText4: '- Boosts early language development<br/>- Helps your baby feel calm and secure<br/>- Strengthens memory and attention<br/>- Supports emotional connection',
+                    title5: '</br>Expert Tip',
+                    additionalText5: 'Use a gentle, exaggerated tone (“parentese”). Babies respond best to expressive voices.'
                 },
+
                 bonding4: {
                     title: 'Tummy Time Play',
-                    content: 'Tummy time is important for your baby’s development. It helps strengthen their neck, shoulders, and back muscles.',
-                    heroImage: '{{ asset("img/tummy-time.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Tummy time helps your baby strengthen neck, shoulder, and upper body muscles needed for crawling and sitting.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Start with a few minutes a day and increase gradually.',
+                    title2: '</br>What Is Tummy Time?',
+                    additionalText2: 'It is supervised time when your baby lies on their tummy while awake.',
+                    title3: '</br>Why It Matters',
+                    additionalText3: 'The Malaysian Child Health Record Book highlights tummy time as an essential motor development activity.',
+                    title4: '</br>Benefits',
+                    additionalText4: '- Prevents flat head syndrome<br/>- Strengthens muscles<br/>- Builds coordination<br/>- Prepares baby for crawling',
+                    title5: '</br>Expert Tip',
+                    additionalText5: 'Place toys or your face at eye level to encourage your baby to lift their head.'
                 },
+
                 bonding5: {
                     title: 'Help Baby Learn Language',
-                    content: 'Talking and singing to your baby helps them learn language. It’s never too early to start reading to your baby!',
-                    heroImage: '{{ asset("img/language-learning.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Babies learn language long before they speak. Early exposure shapes how they understand and communicate.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Reading, talking, and singing build strong language foundations.',
+                    title2: '</br>How Babies Learn Language',
+                    additionalText2: 'They absorb sounds, rhythms, and expressions from the people around them.',
+                    title3: '</br>Why Malaysian Babies Benefit',
+                    additionalText3: 'Multilingual environments (BM, English, Mandarin, Tamil) strengthen brain flexibility.',
+                    title4: '</br>Benefits',
+                    additionalText4: '- Builds vocabulary early<br/>- Improves attention and listening<br/>- Supports emotional bonding<br/>- Encourages confidence when speaking later',
+                    title5: '</br>Expert Tip',
+                    additionalText5: 'Read picture books daily—even newborns benefit.'
                 },
+
                 bonding6: {
                     title: 'How to Build Trust with Your Baby',
-                    content: 'Building trust with your baby is important for their emotional development. Responding to their needs helps build this trust.',
-                    heroImage: '{{ asset("img/build-trust.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Trust forms when babies know their parents will respond to their needs with love and consistency.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'A secure attachment leads to confident, emotionally healthy children.',
+                    title2: '</br>How Babies Build Trust',
+                    additionalText2: 'Responding to cries, cuddling, and comforting teaches your baby that the world is safe.',
+                    title3: '</br>Why Malaysian Parents Should Know This',
+                    additionalText3: 'Healthy parent-child attachment is highlighted in local child development guidelines.',
+                    title4: '</br>Trust-Building Behaviours',
+                    additionalText4: '- Respond to cries<br/>- Give cuddles freely<br/>- Maintain routines<br/>- Talk gently and consistently',
+                    title5: '</br>Expert Tip',
+                    additionalText5: 'You don’t have to be perfect — just consistent and loving.'
                 },
+
+                /* ---------------------------------------------------------
+                S E N S O R Y   T I P S
+                --------------------------------------------------------- */
                 sensory1: {
                     title: 'Eye Contact & Smiles',
-                    content: 'From the very first gaze to their very first smile — learn how your baby uses these powerful early interactions to bond with you, grow emotionally and develop key brain functions during their first year.',
+                    content: 'From the very first gaze to their very first smile — learn how your baby uses these interactions to bond and grow.',
                     heroImage: '{{ asset("img/eye-contact.jpg") }}',
-                    additionalText: 'This Malaysian parenting segment explains how eye contact and facial expressions help babies recognise, connect and communicate. Watch how small actions can spark big developments in your little one.',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id', // Replace with actual video URL
-                    title2: 'What Is Eye Contact and Smiling in Baby Development?',
-                    additionalText2: 'Eye contact and smiling are two of the very first ways your baby interacts with the world. As early as a few weeks old, babies begin to focus on faces — especially those of parents and caregivers. Smiling is often their first social behaviour.',
-                    additionalText3: 'The Child Health Record Book by the Ministry of Health Malaysia includes these milestones in its early screening checklist: <br/> <ul><li> Does your child look at your face when you speak?</li><li>Does your child look into your eyes?</li> <li> Does your child smile in response to your face or voice?</li></ul> These actions are important indicators of emotional growth and healthy brain development.',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Eye contact helps babies recognise faces and communicate.',
+                    title2: 'What Is Eye Contact and Smiling?',
+                    additionalText2: 'These are early social skills that show your baby is learning to connect.',
+                    additionalText3: 'Malaysia’s Child Health Record Book includes eye contact and smiling as early developmental milestones.'
                 },
+
                 sensory2: {
                     title: 'Respond to Sounds',
-                    content: 'Your baby is learning to recognize your voice and other sounds around them. Responding to sounds helps your baby learn about their world.',
-                    additionalText: 'Play soft music or talk to your baby. This helps them learn to recognize different sounds and voices.',
-                    heroImage: '{{ asset("img/respond-to-sounds.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Your baby is learning to recognise voices and everyday sounds.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Responding to your baby’s sounds helps them learn communication.',
+                    title2: '</br>How Babies Learn Through Sound',
+                    additionalText2: 'Babies notice tones, rhythms, and voices long before they talk.',
+                    title3: '</br>Benefits',
+                    additionalText3: '- Improves listening<br/>- Builds speech foundations<br/>- Helps emotional bonding',
+                    title4: '</br>Expert Tip',
+                    additionalText4: 'Talk back when your baby coos—this teaches turn-taking.'
                 },
+
                 sensory3: {
                     title: 'Touch & Texture Play',
-                    content: 'Your baby is learning about the world through touch. Different textures can help stimulate your baby’s senses.',
-                    heroImage: '{{ asset("img/touch-texture.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Different textures help stimulate your baby’s senses and curiosity.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Soft cloths, toys, and safe objects help with sensory learning.',
+                    title2: '</br>What Is Texture Play?',
+                    additionalText2: 'Babies use their hands to learn about the world.',
+                    title3: '</br>Benefits',
+                    additionalText3: '- Enhances sensory development<br/>- Builds motor skills<br/>- Encourages exploration',
+                    title4: '</br>Expert Tip',
+                    additionalText4: 'Always supervise texture play to ensure safety.'
                 },
+
                 sensory4: {
                     title: 'Watch for Jaundice',
-                    content: 'Jaundice is common in newborns. It’s important to monitor your baby for signs of jaundice and seek medical advice if necessary.',
-                    heroImage: '{{ asset("img/jaundice.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Jaundice is common in newborns. Early monitoring helps ensure safe recovery.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Look for yellowing of eyes and skin, especially in the first week.',
+                    title2: '</br>What Is Jaundice?',
+                    additionalText2: 'It happens when bilirubin levels rise. Most cases are mild and resolve naturally.',
+                    title3: '</br>When to Seek Help',
+                    additionalText3: '- Baby looks more yellow<br/>- Poor feeding<br/>- Excessive sleepiness',
+                    title4: '</br>Expert Tip',
+                    additionalText4: 'Refer to Klinik Kesihatan quickly if symptoms worsen.'
                 },
+
                 sensory5: {
                     title: 'The "Balance" Sense',
-                    content: 'Your baby is learning to balance and coordinate their movements. This is an important part of their physical development.',
-                    heroImage: '{{ asset("img/balance-sense.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Your baby’s balance develops through movement and body control.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Rocking, carrying, and gentle motion stimulate your baby’s balance system.',
+                    title2: '</br>How Babies Develop Balance',
+                    additionalText2: 'The inner ear and muscles learn coordination through movement.',
+                    title3: '</br>Benefits',
+                    additionalText3: '- Better motor skills<br/>- Earlier sitting and crawling<br/>- Improved body awareness'
                 },
+
                 sensory6: {
                     title: 'How to Stimulate Baby\'s Vision',
-                    content: 'Your baby’s vision is developing rapidly. There are many ways to stimulate your baby’s vision and help them learn.',
-                    heroImage: '{{ asset("img/stimulate-vision.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Your baby’s vision is developing rapidly in the first months.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'High-contrast shapes and faces help babies learn to focus.',
+                    title2: '</br>How Vision Develops',
+                    additionalText2: 'Newborns see shapes and light — clarity improves over time.',
+                    title3: '</br>Tips',
+                    additionalText3: '- Use black-and-white toys<br/>- Hold your face close<br/>- Move objects slowly for tracking practice'
                 },
+
+                /* ---------------------------------------------------------
+                S L E E P   T I P S
+                --------------------------------------------------------- */
                 sleep1: {
                     title: 'How Much Sleep Does Baby Need?',
-                    content: 'Newborns sleep a lot! They need about 14-17 hours of sleep a day. This includes naps and nighttime sleep.',
-                    heroImage: '{{ asset("img/sleep-needs.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Newborns need 14–17 hours of sleep per day, including naps.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Sleep supports brain growth and emotional health.',
+                    title2: '</br>Sleep Patterns',
+                    additionalText2: 'Babies sleep in short cycles and wake often for feeding.',
+                    title3: '</br>Tips',
+                    additionalText3: '- Follow hunger cues<br/>- Create calm sleep surroundings'
                 },
+
                 sleep2: {
                     title: 'Creating a Bedtime Routine',
-                    content: 'A consistent bedtime routine can help your baby learn when it’s time to sleep. This can include activities like bathing, reading, and cuddling.',
-                    heroImage: '{{ asset("img/bedtime-routine.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'A consistent bedtime routine helps your baby recognize sleep time.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Routines give babies emotional security.',
+                    title2: '</br>Examples',
+                    additionalText2: 'Bathing, gentle massage, book reading, soft music.',
+                    title3: '</br>Benefits',
+                    additionalText3: '- Improves sleep quality<br/>- Reduces night fussiness'
                 },
+
                 sleep3: {
                     title: 'Back is Best',
-                    content: 'Always place your baby on their back to sleep. This helps reduce the risk of Sudden Infant Death Syndrome (SIDS).',
-                    heroImage: '{{ asset("img/back-is-best.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Always place your baby on their back to reduce the risk of SIDS.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Safe sleep guidelines are emphasised in Malaysia’s health system.',
+                    title2: '</br>Why Back-Sleeping?',
+                    additionalText2: 'It ensures the airway stays open and reduces breathing risks.',
+                    title3: '</br>Safety Tips',
+                    additionalText3: '- Firm mattress<br/>- No pillows or toys<br/>- No bed-sharing'
                 },
+
                 sleep4: {
                     title: 'Avoid Baby Walkers',
-                    content: 'Baby walkers can be dangerous. They can lead to falls and injuries. It’s best to avoid using them.',
-                    heroImage: '{{ asset("img/avoid-walkers.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Baby walkers are unsafe and delay walking skills.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Malaysia’s Ministry of Health discourages walker use.',
+                    title2: '</br>Why Avoid Walkers?',
+                    additionalText2: 'They increase fall risk and interfere with natural development.',
+                    title3: '</br>Healthy Alternatives',
+                    additionalText3: '- Floor play<br/>- Push toys (supervised)<br/>- Tummy time'
                 },
+
                 sleep5: {
                     title: 'Create Calm Nights',
-                    content: 'Creating a calm and quiet environment can help your baby sleep better. This includes dimming the lights and reducing noise.',
-                    heroImage: '{{ asset("img/calm-nights.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Calm, quiet environments help babies sleep better.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Reduce noise and dim lights before sleep.',
+                    title2: '</br>Benefits',
+                    additionalText2: 'Your baby learns to settle quickly and sleep longer.'
                 },
+
+                /* ---------------------------------------------------------
+                F E E D I N G   T I P S
+                --------------------------------------------------------- */
                 feeding1: {
                     title: 'Breastfeeding Basics',
-                    content: 'Breastfeeding is the best way to feed your baby. It provides all the nutrients your baby needs.',
-                    heroImage: '{{ asset("img/breastfeeding.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Breastmilk provides perfect nutrition for newborns.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Breastfeeding also strengthens immunity and bonding.',
+                    title2: '</br>Tips',
+                    additionalText2: 'Correct latch, frequent feeding, and supportive positioning.'
                 },
+
                 feeding2: {
                     title: 'Exclusive Breastfeeding (0–6 Months)',
-                    content: 'Exclusive breastfeeding is recommended for the first 6 months. This means no other foods or drinks, not even water.',
-                    heroImage: '{{ asset("img/exclusive-breastfeeding.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Babies should receive only breastmilk for the first six months.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'No water, juices, or solids are needed.',
+                    title2: '</br>Benefits',
+                    additionalText2: 'Stronger immunity, healthy weight gain, better bonding.'
                 },
+
                 feeding3: {
                     title: 'Feed on Demand',
-                    content: 'Feed your baby whenever they show signs of hunger. This helps ensure they get enough milk.',
-                    heroImage: '{{ asset("img/feed-on-demand.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Feed whenever your baby shows hunger cues.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Cues include rooting, sucking, and fussing.',
+                    title2: '</br>Benefits',
+                    additionalText2: 'Improves milk supply and keeps baby satisfied.'
                 },
+
                 feeding4: {
                     title: 'Start Solids at 6 Months',
-                    content: 'Introduce solid foods around 6 months. Start with single-grain cereals and pureed fruits and vegetables.',
-                    heroImage: '{{ asset("img/start-solids.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Introduce solid foods around 6 months of age.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Start with iron-rich foods and simple purees.',
+                    title2: '</br>Tips',
+                    additionalText2: 'Introduce one food at a time and watch for allergies.'
                 },
+
                 feeding5: {
                     title: 'No Sugar, No Honey',
-                    content: 'Avoid giving your baby sugar and honey. These can be harmful to their health.',
-                    heroImage: '{{ asset("img/no-sugar.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Avoid giving sugar and honey to babies under 12 months.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Honey can cause infant botulism; sugar harms early teeth.',
+                    title2: '</br>What To Give Instead',
+                    additionalText2: 'Natural fruits, breastmilk, and age-appropriate solids.'
                 },
+
+                /* ---------------------------------------------------------
+                S A F E T Y   T I P S
+                --------------------------------------------------------- */
                 safety1: {
                     title: 'Wash Hands Often',
-                    content: 'Washing hands often helps prevent the spread of germs. Make sure to wash your hands before handling your baby.',
-                    heroImage: '{{ asset("img/wash-hands.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Handwashing prevents the spread of germs and protects your newborn.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Always wash before feeding, changing, or handling your baby.',
+                    title2: '</br>Why It Matters',
+                    additionalText2: 'Newborns have weak immune systems and need protection.'
                 },
+
                 safety2: {
                     title: 'Bathe with Care',
-                    content: 'Bathing your  baby is important for hygiene. Make sure to use gentle products and be careful with water temperature.',
-                    heroImage: '{{ asset("img/bathe-with-care.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Use gentle products and check water temperature carefully.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Support your baby’s head and never leave them unattended.',
+                    title2: '</br>Tips',
+                    additionalText2: 'Test water with your wrist and use mild soap.'
                 },
+
                 safety3: {
                     title: 'No Baby Alone',
-                    content: 'Never leave your baby alone on a high surface. Always keep an eye on them to prevent falls.',
-                    heroImage: '{{ asset("img/no-baby-alone.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Never leave your baby alone on beds, sofas, or changing tables.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Falls can happen within seconds.',
+                    title2: '</br>Safe Habits',
+                    additionalText2: 'Keep one hand on baby, use safe spaces like playpens.'
                 },
+
                 safety4: {
                     title: 'Choose Safe Toys',
-                    content: 'Make sure to choose age-appropriate toys for your baby. Avoid toys with small parts that can be a choking hazard.',
-                    heroImage: '{{ asset("img/safe-toys.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id' // Replace with actual video URL
+                    content: 'Select age-appropriate toys with no small, detachable parts.',
+                    heroImage: '{{ asset("img/placeholder.jpg") }}',
+                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    additionalText: 'Check labels and avoid choking hazards.',
+                    title2: '</br>Tips',
+                    additionalText2: 'Soft, large toys are safest for newborns.'
                 }
             };
+
 
             if (topics[topicId]) {
                 const topic = topics[topicId];
