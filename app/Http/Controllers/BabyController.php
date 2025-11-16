@@ -47,18 +47,45 @@ class BabyController extends Controller
     public function store(Request $request)
     {
     try {
+        // basic validation for textual fields
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'birth_date' => 'required|date',
             'gender' => 'required|string|in:male,female',
             'ethnicity' => 'required|string',
             'premature' => 'nullable|boolean',
-            'baby_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            // 'baby_photo' will be handled below (either uploaded file or preset filename)
         ]);
 
-        // Handle file upload
+        // Handle baby photo: either an uploaded file or a preset filename sent from the gallery
+        $presetFilenames = ['baby1.png','baby2.png','baby3.png','baby4.png','baby5.png','baby6.png'];
+
         if ($request->hasFile('baby_photo')) {
             $validated['baby_photo_path'] = $request->file('baby_photo')->store('baby-photos', 'public');
+        } elseif ($request->filled('baby_photo')) {
+            $inputVal = $request->input('baby_photo');
+            // if the client sent a preset filename (e.g. baby1.png)
+            if (in_array($inputVal, $presetFilenames)) {
+                // ensure preset exists in public/img/baby-options and copy to storage/public/baby-photos
+                $source = public_path('img/baby-options/' . $inputVal);
+                $targetRelative = 'baby-photos/' . $inputVal;
+                $target = storage_path('app/public/' . $targetRelative);
+                if (file_exists($source) && !file_exists($target)) {
+                    // create directory if not exists
+                    @mkdir(dirname($target), 0755, true);
+                    copy($source, $target);
+                }
+                // if copied or already exists, store relative path
+                if (file_exists($target)) {
+                    $validated['baby_photo_path'] = $targetRelative;
+                }
+            } else {
+                // if the client provided a storage path already, accept it (basic sanitation)
+                if (str_contains($inputVal, 'baby-photos/') || str_contains($inputVal, 'storage/')) {
+                    // normalize
+                    $validated['baby_photo_path'] = str_replace('storage/', '', $inputVal);
+                }
+            }
         }
 
         // Create baby record
@@ -109,14 +136,17 @@ class BabyController extends Controller
     public function update(Request $request, Baby $baby)
 {
     try {
+        // basic validation for textual fields
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'birth_date' => 'required|date',
             'gender' => 'required|string|in:male,female',
             'ethnicity' => 'required|string',
             'premature' => 'nullable|boolean',
-            'baby_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            // 'baby_photo' handled below
         ]);
+
+        $presetFilenames = ['baby1.png','baby2.png','baby3.png','baby4.png','baby5.png','baby6.png'];
 
         // Handle file upload if present
         if ($request->hasFile('baby_photo')) {
@@ -125,6 +155,28 @@ class BabyController extends Controller
                 Storage::disk('public')->delete($baby->baby_photo_path);
             }
             $validated['baby_photo_path'] = $request->file('baby_photo')->store('baby-photos', 'public');
+        } elseif ($request->filled('baby_photo')) {
+            $inputVal = $request->input('baby_photo');
+            if (in_array($inputVal, $presetFilenames)) {
+                $source = public_path('img/baby-options/' . $inputVal);
+                $targetRelative = 'baby-photos/' . $inputVal;
+                $target = storage_path('app/public/' . $targetRelative);
+                if (file_exists($source) && !file_exists($target)) {
+                    @mkdir(dirname($target), 0755, true);
+                    copy($source, $target);
+                }
+                if (file_exists($target)) {
+                    // delete old custom photo if it was stored under baby-photos and is different
+                    if ($baby->baby_photo_path && $baby->baby_photo_path !== $targetRelative) {
+                        Storage::disk('public')->delete($baby->baby_photo_path);
+                    }
+                    $validated['baby_photo_path'] = $targetRelative;
+                }
+            } else {
+                if (str_contains($inputVal, 'baby-photos/') || str_contains($inputVal, 'storage/')) {
+                    $validated['baby_photo_path'] = str_replace('storage/', '', $inputVal);
+                }
+            }
         }
 
         $baby->update($validated);

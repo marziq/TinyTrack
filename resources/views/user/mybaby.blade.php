@@ -1100,57 +1100,77 @@
         </div>
 
 
-        <!-- Add/Edit Baby Modal -->
+        <!-- Add/Edit Baby Modal (select from preset images instead of uploading) -->
             <div class="modal fade" id="addEditBabyModal" tabindex="-1" aria-labelledby="addEditBabyModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="addEditBabyModalLabel">Add New Baby</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form id="babyForm" method="POST" enctype="multipart/form-data">
+                        <form id="babyForm" method="POST">
                             @csrf
                             <input type="hidden" id="babyId" name="id">
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="babyPhotoInput" class="form-label">Baby Photo</label>
-                                    <input type="file" class="form-control" id="babyPhotoInput" name="baby_photo" accept="image/*">
+                                    <label class="form-label">Choose Baby Photo</label>
+                                    <input type="hidden" id="selectedBabyPhotoOption" name="baby_photo">
+
+                                    @php
+                                        $babyOptions = ['baby1.png','baby2.png','baby3.png','baby4.png','baby5.png','baby6.png'];
+                                    @endphp
+
+                                    <div id="babyOptionsGallery" style="display:flex; gap:12px; overflow-x:auto; padding:8px 4px;">
+                                        @foreach($babyOptions as $opt)
+                                            <label class="gallery-item" style="flex:0 0 auto; cursor:pointer;">
+                                                <input type="radio" name="baby_photo_option" class="d-none" value="{{ $opt }}">
+                                                <img src="{{ asset('img/baby-options/' . $opt) }}" alt="Baby option" style="width:120px; height:120px; object-fit:cover; border-radius:8px; border:3px solid transparent; box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+                                            </label>
+                                        @endforeach
+                                    </div>
+
                                     <div id="photoPreview" class="mt-3 text-center"></div>
+                                    <small class="form-text text-muted">Select one of the provided baby images. Parents can't upload personal photos.</small>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="babyName" class="form-label">Name</label>
-                                    <input type="text" class="form-control" id="babyName" name="name" required>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="babyName" class="form-label">Nickname</label>
+                                        <input type="text" class="form-control" id="babyName" name="name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="babyBirthDate" class="form-label">Birth Date</label>
+                                        <input type="date" class="form-control" id="babyBirthDate" name="birth_date" required>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="babyBirthDate" class="form-label">Birth Date</label>
-                                    <input type="date" class="form-control" id="babyBirthDate" name="birth_date" required>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="babyGender" class="form-label">Gender</label>
+                                        <select class="form-select" id="babyGender" name="gender" required>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="babyEthnicity" class="form-label">Ethnicity</label>
+                                        <select class="form-select" id="babyEthnicity" name="ethnicity" required>
+                                            <option value="" disabled selected hidden>Select Ethnicity</option>
+                                            <option value="Malay">Malay</option>
+                                            <option value="Chinese">Chinese</option>
+                                            <option value="Indian">Indian</option>
+                                            <option value="Orang Asli">Orang Asli</option>
+                                            <option value="Bumiputera Sabah">Bumiputera Sabah</option>
+                                            <option value="Bumiputera Sarawak">Bumiputera Sarawak</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="babyGender" class="form-label">Gender</label>
-                                    <select class="form-select" id="babyGender" name="gender" required>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="babyEthnicity" class="form-label">Ethnicity</label>
-                                    <select class="form-select" id="babyEthnicity" name="ethnicity" required>
-                                        <option value="" disabled selected hidden>Select Ethnicity</option>
-                                        <option value="Malay">Malay</option>
-                                        <option value="Chinese">Chinese</option>
-                                        <option value="Indian">Indian</option>
-                                        <option value="Orang Asli">Orang Asli</option>
-                                        <option value="Bumiputera Sabah">Bumiputera Sabah</option>
-                                        <option value="Bumiputera Sarawak">Bumiputera Sarawak</option>
-                                    </select>
-                                </div>
+
                                 <div class="mb-3">
                                     <label for="babyPremature" class="form-label">Is the baby premature?</label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="babyPremature" name="premature" value="1">
-                                        <label class="form-check-label" for="babyPremature">
-                                            Yes
-                                        </label>
+                                        <label class="form-check-label" for="babyPremature">Yes</label>
                                     </div>
                                 </div>
                             </div>
@@ -1313,19 +1333,44 @@
             // Initialize modal
             addEditBabyModal = new bootstrap.Modal(document.getElementById('addEditBabyModal'));
 
-            // Photo preview handler
-            document.getElementById('babyPhotoInput')?.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        document.getElementById('photoPreview').innerHTML = `
-                            <img src="${event.target.result}" class="img-thumbnail rounded-circle" width="150" height="150">
-                        `;
-                    };
-                    reader.readAsDataURL(file);
+            // Gallery selection handler (preset images, no uploads)
+            (function setupGallery() {
+                const gallery = document.getElementById('babyOptionsGallery');
+                const previewEl = document.getElementById('photoPreview');
+                const hiddenInput = document.getElementById('selectedBabyPhotoOption');
+
+                function clearSelection() {
+                    if (!gallery) return;
+                    gallery.querySelectorAll('img').forEach(img => img.style.borderColor = 'transparent');
                 }
-            });
+
+                function selectItemByElement(labelEl) {
+                    if (!labelEl) return;
+                    const radio = labelEl.querySelector('input[type="radio"]');
+                    if (radio) radio.checked = true;
+                    const img = labelEl.querySelector('img');
+                    const filename = radio ? radio.value : null;
+                    if (hiddenInput && filename) hiddenInput.value = filename;
+                    clearSelection();
+                    if (img) {
+                        img.style.borderColor = '#1976d2';
+                        if (previewEl) previewEl.innerHTML = `<img src="${img.src}" class="img-thumbnail rounded-circle" width="150" height="150">`;
+                    }
+                }
+
+                if (gallery) {
+                    gallery.querySelectorAll('.gallery-item').forEach(label => {
+                        label.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            selectItemByElement(this);
+                        });
+                    });
+
+                    // default select first option so modal shows a preview immediately
+                    const first = gallery.querySelector('.gallery-item');
+                    if (first) selectItemByElement(first);
+                }
+            })();
 
             // Form submission handler
             document.getElementById('babyForm').addEventListener('submit', async function(e) {
@@ -1570,12 +1615,18 @@
             form.reset();
             form.action = "/babies";
             document.getElementById('addEditBabyModalLabel').textContent = 'Add New Baby';
-            document.getElementById('photoPreview').innerHTML = '';
             document.getElementById('deleteBabyButton').style.display = 'none'; // Hide delete button for creation
 
             // Clear any existing hidden _method field
             const methodInput = form.querySelector('input[name="_method"]');
             if (methodInput) methodInput.remove();
+
+            // ensure a gallery option is selected by default
+            const gallery = document.getElementById('babyOptionsGallery');
+            if (gallery) {
+                const first = gallery.querySelector('.gallery-item');
+                if (first) first.click();
+            }
 
             const addEditBabyModal = new bootstrap.Modal(document.getElementById('addEditBabyModal'));
             addEditBabyModal.show();
@@ -1609,12 +1660,39 @@
         document.getElementById('babyEthnicity').value = baby.ethnicity || '';
         document.getElementById('babyPremature').checked = baby.premature == '1';
 
-        // Set photo preview with default image if no photo is available
+        // Set photo preview: try to match one of the preset gallery options first
         const photoPreview = document.getElementById('photoPreview');
-        const defaultPhoto = '/path/to/default-baby-photo.jpg'; // Replace with the actual path to your default image
-        photoPreview.innerHTML = baby.baby_photo_path
-            ? `<img src="/storage/${baby.baby_photo_path}" class="img-thumbnail rounded-circle" width="150" height="150">`
-            : `<img src="${defaultPhoto}" class="img-thumbnail rounded-circle" width="150" height="150">`;
+        const hiddenInput = document.getElementById('selectedBabyPhotoOption');
+        const gallery = document.getElementById('babyOptionsGallery');
+
+        // normalize filename from stored path
+        const storedPath = baby.baby_photo_path || '';
+        const storedFilename = storedPath ? storedPath.split('/').pop() : '';
+
+        let matched = false;
+        if (gallery && storedFilename) {
+            const radios = gallery.querySelectorAll('input[type="radio"]');
+            radios.forEach(r => {
+                if (r.value === storedFilename) {
+                    const label = r.closest('.gallery-item');
+                    label && label.click();
+                    matched = true;
+                }
+            });
+        }
+
+        if (!matched) {
+            if (storedPath) {
+                // show the existing stored photo (may be a storage path)
+                const src = storedPath.startsWith('/') || storedPath.startsWith('http') ? storedPath : ('/storage/' + storedPath);
+                if (photoPreview) photoPreview.innerHTML = `<img src="${src}" class="img-thumbnail rounded-circle" width="150" height="150">`;
+                if (hiddenInput) hiddenInput.value = storedPath;
+            } else {
+                // no stored path, select the first gallery image
+                const first = gallery?.querySelector('.gallery-item');
+                first && first.click();
+            }
+        }
 
         // Add hidden input for PUT method
         let methodInput = form.querySelector('input[name="_method"]');

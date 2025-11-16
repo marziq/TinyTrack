@@ -1067,69 +1067,86 @@
                     additionalText5: 'Use natural, baby-safe oils and watch your baby’s cues. If they turn away or cry, try again later.'
                 },
 
-                bonding3: {
-                    title: 'Talk & Sing to Baby',
-                    content: 'Your voice is your baby’s favourite sound. Talking and singing help build language skills and emotional bonding from day one.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Simple words, lullabies, and playful tones help your baby feel connected and loved.',
-                    title2: '</br>What Does Talking & Singing Do?',
-                    additionalText2: 'It stimulates baby’s brain development, supports early communication, and strengthens your relationship.',
-                    title3: '</br>Malaysian Context',
-                    additionalText3: 'Using Malay, English, Tamil, Mandarin, or any home language boosts bilingual readiness and cultural bonding.',
-                    title4: '</br>Benefits',
-                    additionalText4: '- Boosts early language development<br/>- Helps your baby feel calm and secure<br/>- Strengthens memory and attention<br/>- Supports emotional connection',
-                    title5: '</br>Expert Tip',
-                    additionalText5: 'Use a gentle, exaggerated tone (“parentese”). Babies respond best to expressive voices.'
-                },
+                    bonding3: {
+                        title: 'Talk & Sing to Baby',
+                        content: 'Your voice is your baby’s favourite sound. Talking and singing help build language skills and emotional bonding from day one.',
+                        heroImage: '{{ asset("img/placeholder.jpg") }}',
+                        videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                        additionalText: 'Simple words, lullabies, and playful tones help your baby feel connected and loved.',
 
-                bonding4: {
-                    title: 'Tummy Time Play',
-                    content: 'Tummy time helps your baby strengthen neck, shoulder, and upper body muscles needed for crawling and sitting.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Start with a few minutes a day and increase gradually.',
-                    title2: '</br>What Is Tummy Time?',
-                    additionalText2: 'It is supervised time when your baby lies on their tummy while awake.',
-                    title3: '</br>Why It Matters',
-                    additionalText3: 'The Malaysian Child Health Record Book highlights tummy time as an essential motor development activity.',
-                    title4: '</br>Benefits',
-                    additionalText4: '- Prevents flat head syndrome<br/>- Strengthens muscles<br/>- Builds coordination<br/>- Prepares baby for crawling',
-                    title5: '</br>Expert Tip',
-                    additionalText5: 'Place toys or your face at eye level to encourage your baby to lift their head.'
-                },
+                        title2: '</br>What Does Talking & Singing Do?',
+                        additionalText2: 'It stimulates baby’s brain development, supports early communication, and strengthens your relationship.',
 
-                bonding5: {
-                    title: 'Help Baby Learn Language',
-                    content: 'Babies learn language long before they speak. Early exposure shapes how they understand and communicate.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Reading, talking, and singing build strong language foundations.',
-                    title2: '</br>How Babies Learn Language',
-                    additionalText2: 'They absorb sounds, rhythms, and expressions from the people around them.',
-                    title3: '</br>Why Malaysian Babies Benefit',
-                    additionalText3: 'Multilingual environments (BM, English, Mandarin, Tamil) strengthen brain flexibility.',
-                    title4: '</br>Benefits',
-                    additionalText4: '- Builds vocabulary early<br/>- Improves attention and listening<br/>- Supports emotional bonding<br/>- Encourages confidence when speaking later',
-                    title5: '</br>Expert Tip',
-                    additionalText5: 'Read picture books daily—even newborns benefit.'
-                },
+                        title3: '</br>Malaysian Context',
+                        additionalText3: 'Using Malay, English, Tamil, Mandarin, or any home language boosts bilingual readiness and cultural bonding.',
 
-                bonding6: {
-                    title: 'How to Build Trust with Your Baby',
-                    content: 'Trust forms when babies know their parents will respond to their needs with love and consistency.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'A secure attachment leads to confident, emotionally healthy children.',
-                    title2: '</br>How Babies Build Trust',
-                    additionalText2: 'Responding to cries, cuddling, and comforting teaches your baby that the world is safe.',
-                    title3: '</br>Why Malaysian Parents Should Know This',
-                    additionalText3: 'Healthy parent-child attachment is highlighted in local child development guidelines.',
-                    title4: '</br>Trust-Building Behaviours',
-                    additionalText4: '- Respond to cries<br/>- Give cuddles freely<br/>- Maintain routines<br/>- Talk gently and consistently',
-                    title5: '</br>Expert Tip',
-                    additionalText5: 'You don’t have to be perfect — just consistent and loving.'
-                },
+                        title4: '</br>Benefits',
+                        additionalText4: '- Boosts early language development<br/>- Helps your baby feel calm and secure<br/>- Strengthens memory and attention<br/>- Supports emotional connection',
+
+                        title5: '</br>Expert Tip',
+                        additionalText5: 'Use a gentle, exaggerated tone (“parentese”). Babies respond best to expressive voices.'
+                    },
+
+                    bonding4: {
+                        title: 'Tummy Time Play',
+                        content: 'Tummy time helps your baby strengthen neck, shoulder, and upper body muscles needed for crawling and sitting.',
+                        heroImage: '{{ asset("img/placeholder.jpg") }}',
+                        videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                        additionalText: 'Start with a few minutes a day and increase gradually.',
+
+                        title2: '</br>What Is Tummy Time?',
+                        additionalText2: 'It is supervised time when your baby lies on their tummy while awake.',
+
+                        title3: '</br>Why It Matters',
+                        additionalText3: 'The Malaysian Child Health Record Book highlights tummy time as an essential motor development activity.',
+
+                        title4: '</br>Benefits',
+                        additionalText4: '- Prevents flat head syndrome<br/>- Strengthens muscles<br/>- Builds coordination<br/>- Prepares baby for crawling',
+
+                        title5: '</br>Expert Tip',
+                        additionalText5: 'Place toys or your face at eye level to encourage your baby to lift their head.'
+                    },
+
+                    bonding5: {
+                        title: 'Help Baby Learn Language',
+                        content: 'Babies learn language long before they speak. Early exposure shapes how they understand and communicate.',
+                        heroImage: '{{ asset("img/placeholder.jpg") }}',
+                        videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                        additionalText: 'Reading, talking, and singing build strong language foundations.',
+
+                        title2: '</br>How Babies Learn Language',
+                        additionalText2: 'They absorb sounds, rhythms, and expressions from the people around them.',
+
+                        title3: '</br>Why Malaysian Babies Benefit',
+                        additionalText3: 'Multilingual environments (BM, English, Mandarin, Tamil) strengthen brain flexibility.',
+
+                        title4: '</br>Benefits',
+                        additionalText4: '- Builds vocabulary early<br/>- Improves attention and listening<br/>- Supports emotional bonding<br/>- Encourages confidence when speaking later',
+
+                        title5: '</br>Expert Tip',
+                        additionalText5: 'Read picture books daily—even newborns benefit.'
+                    },
+
+                    bonding6: {
+                        title: 'How to Build Trust with Your Baby',
+                        content: 'Trust forms when babies know their parents will respond to their needs with love and consistency.',
+                        heroImage: '{{ asset("img/placeholder.jpg") }}',
+                        videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                        additionalText: 'A secure attachment leads to confident, emotionally healthy children.',
+
+                        title2: '</br>How Babies Build Trust',
+                        additionalText2: 'Responding to cries, cuddling, and comforting teaches your baby that the world is safe.',
+
+                        title3: '</br>Why Malaysian Parents Should Know This',
+                        additionalText3: 'Healthy parent-child attachment is highlighted in local child development guidelines.',
+
+                        title4: '</br>Trust-Building Behaviours',
+                        additionalText4: '- Respond to cries<br/>- Give cuddles freely<br/>- Maintain routines<br/>- Talk gently and consistently',
+
+                        title5: '</br>Expert Tip',
+                        additionalText5: 'You don’t have to be perfect — just consistent and loving.'
+                    },
+
 
                 /* ---------------------------------------------------------
                 S E N S O R Y   T I P S
