@@ -115,7 +115,6 @@
             box-shadow: none;
             border: 1px solid #e6eef9;
             padding: 12px 14px;
-        }
             position: relative;
         }
 
@@ -133,6 +132,16 @@
 
         .toggle-btn:hover {
             background-color: #e3f2fd;
+        }
+
+        /* Ensure topbar layout matches other pages (keeps right-side icons aligned) */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 10px 0;
+            position: relative;
         }
 
         .topbar h1 {
@@ -487,7 +496,7 @@
         }
 
         .save-btn{
-            background: #0d47a1;/*
+            background: #0d47a1;
             color: #fff;
             border: none;
             padding: 12px 42px;
