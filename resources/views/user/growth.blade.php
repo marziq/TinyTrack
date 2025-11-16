@@ -1275,14 +1275,14 @@
 
         // Fetch AI recommendation
         async function fetchAIRecommendation(status, age, gender) {
-            console.log("AI Prompt Params:", { status, age, gender }); // <--- Add this line
+            console.log("AI Prompt Params:", { status, age, gender });
             const recSection = document.getElementById('recommendation-section');
             const recText = document.getElementById('recommendation-text');
             recText.innerHTML = "Loading AI recommendation...";
 
             const prompt = `A ${age} month old ${gender} baby has the following growth status:
                             ${status}. What should the parent do? Give a practical, and
-                            empathetic recommendation.`;
+                            empathetic recommendation. Make 'Consult to pediatrician' the last resort. Provide the answer in markdown format.`;
             console.log("AI Prompt:", prompt);
             try {
                 const response = await fetch("{{ url('/proxy/openrouter/recommendation') }}", {
