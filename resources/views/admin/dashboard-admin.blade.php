@@ -640,47 +640,6 @@
                 </div>
             </div>
 
-            <!-- Progress Bar Section -->
-            <div class="projects-card">
-                <h3>Appointment Progression</h3>
-                <!-- Project for Server Migration -->
-                <div class="progress-bar">
-                    <p>General</p>
-                    <div class="progress">
-                        <div class="progress-bar-fill server-migration" style="width: {{ $appointmentProgress['general'] ?? 0 }}%;"></div>
-                        <span class="percentage" style="color: black;">{{ $appointmentProgress['general'] ?? 0 }}%</span>
-                    </div>
-                </div>
-
-                <!-- Project for Sales Tracking -->
-                <div class="progress-bar">
-                    <p>Checkup</p>
-                    <div class="progress">
-                        <div class="progress-bar-fill sales-tracking" style="width: {{ $appointmentProgress['checkup'] ?? 0 }}%;"></div>
-                        <span class="percentage" style="color: black;">{{ $appointmentProgress['checkup'] ?? 0 }}%</span>
-                    </div>
-                </div>
-
-                <!-- Project for Customer Database -->
-                <div class="progress-bar">
-                    <p>Vaccination</p>
-                    <div class="progress">
-                        <div class="progress-bar-fill customer-database" style="width: {{ $appointmentProgress['vaccination'] ?? 0 }}%;"></div>
-                        <span class="percentage" style="color: black;">{{ $appointmentProgress['vaccination'] ?? 0 }}%</span>
-                    </div>
-                </div>
-
-                <!-- Project for Payout Details -->
-                <div class="progress-bar">
-                    <p>Others</p>
-                    <div class="progress">
-                        <div class="progress-bar-fill" style="width: {{ $appointmentProgress['others'] ?? 0 }}%; background-color: #2ecc71;"></div>
-                        <span class="percentage" style="color: black;">{{ $appointmentProgress['others'] ?? 0 }}%</span>
-                    </div>
-                </div>
-            </div>
-
-
 
         </div>
     </div>

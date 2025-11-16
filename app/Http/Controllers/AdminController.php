@@ -209,45 +209,39 @@ class AdminController extends Controller
      */
     public function getAppointments(Request $request)
     {
-        $userId = $request->query('user_id');
+        $appointments = Appointment::with('baby')
+            ->select('appointmentID', 'appointmentDate', 'appointmentTime', 'purpose', 'status')
+            ->get()
+            ->map(function ($appointment) {
+                $statusColor = match($appointment->status) {
+                    'Done' => '#4CAF50',
+                    'cancelled' => '#f44336',
+                    'Waiting' => '#FF9800',
+                    default => '#2196F3'
+                };
 
-        if (!$userId) {
-            return response()->json([]);
-        }
+                $purposeClass = match($appointment->purpose) {
+                    'checkup' => 'fc-event-checkup',
+                    'vaccination' => 'fc-event-vaccination',
+                    'consultation' => 'fc-event-consultation',
+                    default => 'fc-event-general'
+                };
 
-        $appointments = Appointment::whereHas('baby', function ($query) use ($userId) {
-            $query->where('user_id', $userId);
-        })
-        ->select('appointmentID', 'appointmentDate', 'appointmentTime', 'purpose', 'status')
-        ->get()
-        ->map(function ($appointment) {
-            $statusColor = match($appointment->status) {
-                'completed' => '#4CAF50',
-                'cancelled' => '#f44336',
-                'pending' => '#FF9800',
-                default => '#2196F3'
-            };
-
-            $purposeClass = match($appointment->purpose) {
-                'checkup' => 'fc-event-checkup',
-                'vaccination' => 'fc-event-vaccination',
-                'consultation' => 'fc-event-consultation',
-                default => 'fc-event-general'
-            };
-
-            return [
-                'id' => $appointment->appointmentID,
-                'title' => ucfirst($appointment->purpose),
-                'start' => $appointment->appointmentDate . 'T' . $appointment->appointmentTime,
-                'backgroundColor' => $statusColor,
-                'borderColor' => $statusColor,
-                'extendedProps' => [
-                    'status' => $appointment->status,
-                    'purpose' => $appointment->purpose
-                ]
-            ];
-        });
+                return [
+                    'id' => $appointment->appointmentID,
+                    'title' => ucfirst($appointment->purpose),
+                    'start' => $appointment->appointmentDate . 'T' . $appointment->appointmentTime,
+                    'backgroundColor' => $statusColor,
+                    'borderColor' => $statusColor,
+                    'extendedProps' => [
+                        'status' => $appointment->status,
+                        'purpose' => $appointment->purpose,
+                        'baby' => $appointment->baby?->name
+                    ]
+                ];
+            });
 
         return response()->json($appointments);
     }
+
 }

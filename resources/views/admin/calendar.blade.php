@@ -484,16 +484,6 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="mb-0"> </h5>
-                            <form id="userSelectForm" method="GET" action="">
-                                <select id="userSelect" name="user_id" class="form-select" style="min-width: 180px;" onchange="this.form.submit()">
-                                    <option value="" disabled selected>Select User</option>
-                                    @foreach($users as $user)
-                                        <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
-                                            {{ $user->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </form>
                         </div>
                         <div id="appointmentCalendar"></div>
                     </div>
@@ -657,13 +647,7 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 events: function(info, successCallback, failureCallback) {
-                    var userId = document.getElementById('userSelect').value;
-                    if (!userId) {
-                        successCallback([]);
-                        return;
-                    }
-
-                    fetch('/api/admin/appointments?user_id=' + userId)
+                    fetch('/api/admin/appointments')
                         .then(response => response.json())
                         .then(data => {
                             successCallback(data);
@@ -719,11 +703,6 @@
             });
 
             calendar.render();
-
-            // Reload calendar when user is selected
-            document.getElementById('userSelect').addEventListener('change', function() {
-                calendar.refetchEvents();
-            });
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
