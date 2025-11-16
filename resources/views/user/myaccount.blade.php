@@ -459,7 +459,7 @@
             position: absolute;
             right: -6px;
             bottom: -6px;
-            background: linear-gradient(180deg,#ff7a18,#ff5c00);
+            background: #0d47a1;
             color: #fff;
             width: 36px;
             height: 36px;
@@ -473,7 +473,7 @@
         }
 
         .save-btn {
-            background: linear-gradient(180deg,#ff7a18,#ff5c00);
+            background: #0d47a1;/*
             color: #fff;
             border: none;
             padding: 12px 42px;
@@ -481,7 +481,7 @@
             box-shadow: 0 18px 36px rgba(255,92,0,0.18);
             font-weight: 600;
             font-size: 16px;
-        }
+        }-
 
         .form-input {
             border-radius: 8px;
