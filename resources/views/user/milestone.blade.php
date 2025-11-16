@@ -786,21 +786,21 @@
                 </div>
                 <!-- PHYSICAL CARD -->
                 <div class="card" style="padding: 24px 18px; border-radius: 14px;">
-                    <h3 style="color:#1976d2; font-weight:bold; margin-bottom: 18px;">Physical</h3>
+                    <h3 style="color:#FF69B4; font-weight:bold; margin-bottom: 18px;">Physical</h3>
                     <div class="skills-horizontal" id="physicalSkills" style="display: flex; gap: 18px; overflow-x: auto; padding-bottom: 8px;">
                         <!-- Skill groups will be injected here -->
                     </div>
                 </div>
                 <!-- COGNITIVE CARD -->
                 <div class="card" style="padding: 24px 18px; border-radius: 14px;">
-                    <h3 style="color:#1976d2; font-weight:bold; margin-bottom: 18px;">Cognitive</h3>
+                    <h3 style="color:#008000 !important; font-weight:bold; margin-bottom: 18px;">Cognitive</h3>
                     <div class="skills-horizontal" id="cognitiveSkills" style="display: flex; gap: 18px; overflow-x: auto; padding-bottom: 8px;">
                         <!-- Skill groups will be injected here -->
                     </div>
                 </div>
                 <!-- SOCIAL CARD -->
                 <div class="card" style="padding: 24px 18px; border-radius: 14px;">
-                    <h3 style="color:#1976d2; font-weight:bold; margin-bottom: 18px;">Social</h3>
+                    <h3 style="color:#ad9201; font-weight:bold; margin-bottom: 18px;">Social</h3>
                     <div class="skills-horizontal" id="socialSkills" style="display: flex; gap: 18px; overflow-x: auto; padding-bottom: 8px;">
                         <!-- Skill groups will be injected here -->
                     </div>
@@ -854,7 +854,7 @@
                 <div style="display:flex; flex-direction:column; gap:18px;">
                     ${renderProgressRow('Physical', 'fas fa-dumbbell', p, '#FF69B4')}
                     ${renderProgressRow('Cognitive', 'fas fa-brain', c, '#008000')}
-                    ${renderProgressRow('Social', 'fas fa-users', s, '#FFD700')}
+                    ${renderProgressRow('Social', 'fas fa-users', s, '#ad9201')}
                 </div>
             `;
         }
@@ -864,7 +864,7 @@
                         <span style="font-size:2rem; color: ${color}; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="${iconClass}"></i></span>
                         <div style="flex:1;">
                             <div style="display:flex; align-items:center; justify-content:space-between;">
-                                <span style="font-weight:bold; color:#1976d2;">${title}</span>
+                                <span style="font-weight:bold; color:${color};">${title}</span>
                                 <span style="font-size:15px; color:#1976d2; font-weight:600;">${percent}%</span>
                             </div>
                             <div class="progress" style="height: 14px; background:#e3f2fd;">
@@ -881,14 +881,29 @@
                 container.innerHTML = '<div style="color:#aaa; font-size:16px; padding:32px 0;">Select a baby to see milestones.</div>';
                 return;
             }
-
             // payload.groups is an array of group objects
+            const colorMap = { physical: '#FF69B4', cognitive: '#008000', social: '#ad9201' };
+
+            // helper to convert hex to rgba for light backgrounds/shadows
+            function hexToRgba(hex, alpha) {
+                const c = hex.replace('#','');
+                const bigint = parseInt(c, 16);
+                const r = (bigint >> 16) & 255;
+                const g = (bigint >> 8) & 255;
+                const b = bigint & 255;
+                return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            }
+
             payload.groups.forEach(group => {
+                const mainColor = colorMap[section] || '#1976d2';
+                const lightBg = hexToRgba(mainColor, 0.10);
+                const shadowColor = hexToRgba(mainColor, 0.10);
+
                 const groupDiv = document.createElement('div');
                 groupDiv.style.minWidth = '260px';
-                groupDiv.style.background = '#e3f2fd';
+                groupDiv.style.background = lightBg; // follow category color (light)
                 groupDiv.style.borderRadius = '10px';
-                groupDiv.style.boxShadow = '0 2px 8px rgba(25,118,210,0.06)';
+                groupDiv.style.boxShadow = `0 2px 8px ${shadowColor}`;
                 groupDiv.style.padding = '14px';
                 groupDiv.style.display = 'flex';
                 groupDiv.style.flexDirection = 'column';
@@ -898,7 +913,7 @@
 
                 const title = document.createElement('div');
                 title.style.fontWeight = '700';
-                title.style.color = '#0d47a1';
+                title.style.color = mainColor; // use category color
                 title.style.fontSize = '16px';
                 title.textContent = group.groupTitle;
                 groupDiv.appendChild(title);
@@ -909,11 +924,11 @@
                 sub.style.width = '100%';
                 const stat = document.createElement('span');
                 stat.style.fontSize = '13px';
-                stat.style.color = '#1976d2';
+                stat.style.color = mainColor; // use category color
                 stat.textContent = `${group.achieved}/${group.total} completed`;
                 const percent = document.createElement('span');
                 percent.style.fontSize = '13px';
-                percent.style.color = '#1976d2';
+                percent.style.color = mainColor; // use category color
                 percent.style.fontWeight = '600';
                 percent.textContent = `${group.percentage}%`;
                 sub.appendChild(stat);
@@ -929,9 +944,7 @@
                 progBar.className = 'progress-bar';
                 progBar.setAttribute('role','progressbar');
                 progBar.style.width = `${group.percentage}%`;
-                // color matches category main progress color
-                const colorMap = { physical: '#FF69B4', cognitive: '#008000', social: '#FFD700' };
-                progBar.style.backgroundColor = colorMap[section] || '#1976d2';
+                progBar.style.backgroundColor = mainColor; // color matches category main progress color
                 progBar.style.height = '10px';
                 progWrap.appendChild(progBar);
                 groupDiv.appendChild(progWrap);

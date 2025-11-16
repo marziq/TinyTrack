@@ -709,7 +709,7 @@
 
         .vaccine-card {
             padding: 15px;
-            border-left: 5px solid #9c27b0; /* purple left border for vaccinations */
+            border-left: 5px solid #cc5de0; /* purple left border for vaccinations */
             background-color: #e3f2fd;
             border-radius: 8px;
             margin-bottom: 15px;
@@ -1513,7 +1513,7 @@
                     // For pending: show vaccine name and status (Pending)
                     pending.slice(0, 10).forEach((v, idx) => {
                         const styleParts = [];
-                        if (container.children.length !== 0) styleParts.push('border-left-color: #9c27b0');
+                        if (container.children.length !== 0) styleParts.push('border-left-color: #cc5de0');
 
                         const card = document.createElement('div');
                         card.className = 'vaccine-card';

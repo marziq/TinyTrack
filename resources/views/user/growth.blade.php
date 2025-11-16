@@ -1281,7 +1281,7 @@
             recText.innerHTML = "Loading AI recommendation...";
 
             const prompt = `A ${age} month old ${gender} baby has the following growth status:
-                            ${status}. What should the parent do? Give a short, practical, and
+                            ${status}. What should the parent do? Give a practical, and
                             empathetic recommendation.`;
             console.log("AI Prompt:", prompt);
             try {
