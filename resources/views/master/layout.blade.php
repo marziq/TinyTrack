@@ -81,7 +81,6 @@
                         <div class="navbar-nav mx-auto">
                             <a href="{{route('mainpage')}}" class="nav-item nav-link">Home</a>
                             <a href="{{route('expert')}}" class="nav-item nav-link">Experts</a>
-                            <a href="{{route('service')}}" class="nav-item nav-link">Services</a>
                             <a href="{{route('faq')}}" class="nav-item nav-link">FAQ</a>
                             <a href="{{route('contact')}}" class="nav-item nav-link">Contact</a>
                         </div>
