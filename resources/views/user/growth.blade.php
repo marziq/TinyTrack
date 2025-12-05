@@ -1292,7 +1292,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        model: 'deepseek/deepseek-r1-distill-llama-70b:free',
+                        model: 'openai/gpt-oss-20b:free',
                         status: status,
                         age: age,
                         gender: gender

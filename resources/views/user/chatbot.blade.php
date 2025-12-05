@@ -811,7 +811,7 @@
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            model: "deepseek/deepseek-r1-distill-llama-70b:free",
+                            model: "openai/gpt-oss-20b:free",
                             messages: [
                                 { role: "system", content: "Summarize this baby-related conversation into a structured memory. Focus on baby's age, weight, height, diet, health goals, and other important details. Ignore chit-chat." },
                                 { role: "user", content: JSON.stringify(oldMessages) }
@@ -841,7 +841,7 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        model: "deepseek/deepseek-r1-distill-llama-70b:free",
+                        model: "openai/gpt-oss-20b:free",
                         messages: conversationHistory
                     })
                 });
