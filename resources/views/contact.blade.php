@@ -33,7 +33,7 @@
                                 <i class="fa fa-phone-alt fa-2x text-secondary me-4"></i>
                                 <div class="">
                                     <h4>Telephone</h4>
-                                    <p class="mb-2" style="color: black;">(+012) 3456 7890 123</p>
+                                    <p class="mb-2" style="color: black;">+60-19457890</p>
                                 </div>
                             </div>
                         </div>
