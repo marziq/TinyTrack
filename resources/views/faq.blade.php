@@ -17,7 +17,8 @@
                     </h2>
                     <div id="faqCollapseOne" class="accordion-collapse collapse show" aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
                         <div class="accordion-body" style="color: black;">
-                            TinyTrack is a platform designed to help parents track and support their child's early development with expert tips and resources.
+                            The TinyTrack: Digital Baby Wellness and Growth Platform is designed to address the challenges faced by parents in monitoring the early development stages of their children.
+                            The purpose of this project is to develop a user-friendly, web-based system that centralizes and simplifies baby wellness management.
                         </div>
                     </div>
                 </div>

@@ -15,7 +15,7 @@
                                 <i class="fas fa-map-marker-alt fa-2x text-secondary me-4"></i>
                                 <div class="">
                                     <h4>Address</h4>
-                                    <p class="mb-2" style="color: black;">Setapak, KL</p>
+                                    <p class="mb-2" style="color: black;">Gombak, Selangor</p>
                                 </div>
                             </div>
                         </div>
