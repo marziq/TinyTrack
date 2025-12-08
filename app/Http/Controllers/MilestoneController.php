@@ -34,16 +34,19 @@ class MilestoneController extends Controller
                     ['group' => 'Motor', 'items' => ['Lifts head', 'Turns head', 'Makes smooth arm/leg movements']],
                     ['group' => 'Sensory', 'items' => ['Responds to loud sounds', 'Stares at faces', 'Follows objects']],
                     ['group' => 'Feeding', 'items' => ['Sucks well', 'Suckles and swallows', 'Begins solids']],
+                    ['group' => 'Reflexes', 'items' => ['Grasps reflex present', 'Startle reflex works', 'Rooting reflex present']],
                 ],
                 'cognitive' => [
                     ['group' => 'Problem Solving', 'items' => ['Follows moving objects', 'Recognizes faces', 'Explores objects']],
                     ['group' => 'Attention', 'items' => ['Responds to voice', 'Follows simple movement', 'Focuses briefly']],
                     ['group' => 'Language', 'items' => ['Makes cooing sounds', 'Responds to voice', 'Babbles']],
+                    ['group' => 'Memory', 'items' => ['Remembers mother', 'Recognizes routines', 'Shows familiar preference']],
                 ],
                 'social' => [
                     ['group' => 'Interaction', 'items' => ['Smiles responsively', 'Looks at parent', 'Enjoys playing']],
                     ['group' => 'Emotional', 'items' => ['Shows comfort', 'Cries for needs', 'Expresses pleasure']],
                     ['group' => 'Communication', 'items' => ['Makes eye contact', 'Vocalizes', 'Responds to sound']],
+                    ['group' => 'Bonding', 'items' => ['Recognizes caregiver', 'Seeks comfort from parent', 'Shows preference for familiar faces']],
                 ],
             ],
             '4-6' => [
@@ -51,16 +54,19 @@ class MilestoneController extends Controller
                     ['group' => 'Motor', 'items' => ['Rolls over', 'Sits with support', 'Reaches for toys']],
                     ['group' => 'Sensory', 'items' => ['Responds to sounds', 'Explores with mouth', 'Tracks objects']],
                     ['group' => 'Fine Motor', 'items' => ['Grasps objects', 'Transfers objects', 'Rakes to pick up']],
+                    ['group' => 'Coordination', 'items' => ['Uses both hands together', 'Brings hand to mouth', 'Reaches with coordination']],
                 ],
                 'cognitive' => [
                     ['group' => 'Problem Solving', 'items' => ['Finds partially hidden objects', 'Transfers objects hand to hand', 'Explores cause/effect']],
                     ['group' => 'Attention', 'items' => ['Looks for dropped toys', 'Focuses longer', 'Recognizes routines']],
                     ['group' => 'Language', 'items' => ['Babbles with intent', 'Makes varied sounds', 'Responds to name']],
+                    ['group' => 'Learning', 'items' => ['Learns cause and effect', 'Recognizes patterns', 'Anticipates familiar events']],
                 ],
                 'social' => [
                     ['group' => 'Interaction', 'items' => ['Laughs', 'Enjoys games', 'Shows interest in others']],
                     ['group' => 'Emotional', 'items' => ['Expresses joy', 'Shows distress', 'Seeks comfort']],
                     ['group' => 'Communication', 'items' => ['Responds to name', 'Imitates sounds', 'Uses gestures']],
+                    ['group' => 'Social Play', 'items' => ['Engages with caregiver', 'Shows excitement', 'Participates in games']],
                 ],
             ],
             '7-9' => [
@@ -68,16 +74,19 @@ class MilestoneController extends Controller
                     ['group' => 'Motor', 'items' => ['Sits without support', 'Crawls', 'Pulls to stand']],
                     ['group' => 'Sensory', 'items' => ['Responds to name', 'Looks for hidden things', 'Understands no']],
                     ['group' => 'Mobility', 'items' => ['Stands holding on', 'Cruises', 'Walks with help']],
+                    ['group' => 'Balance', 'items' => ['Maintains balance while crawling', 'Sits steadily', 'Stands with minimal support']],
                 ],
                 'cognitive' => [
                     ['group' => 'Problem Solving', 'items' => ['Finds hidden objects', 'Looks at correct picture when named', 'Explores toys']],
                     ['group' => 'Attention', 'items' => ['Follows simple instructions', 'Shows curiosity', 'Looks at pictures']],
                     ['group' => 'Language', 'items' => ['Babbles with intonation', 'Responds to simple words', 'Repeats sounds']],
+                    ['group' => 'Understanding', 'items' => ['Understands simple words', 'Recognizes object names', 'Responds to familiar sounds']],
                 ],
                 'social' => [
                     ['group' => 'Interaction', 'items' => ['Waves bye', 'Plays peek-a-boo', 'Enjoys social play']],
                     ['group' => 'Emotional', 'items' => ['Shows preferences', 'Has separation awareness', 'Expresses frustration']],
                     ['group' => 'Communication', 'items' => ['Uses gestures', 'Responds to social cues', 'Vocalizes']],
+                    ['group' => 'Stranger Awareness', 'items' => ['Shows caution with strangers', 'Prefers familiar people', 'Expresses stranger anxiety']],
                 ],
             ],
             '10-12' => [
@@ -85,16 +94,19 @@ class MilestoneController extends Controller
                     ['group' => 'Motor', 'items' => ['Stands alone', 'Walks with assistance', 'Picks up small objects']],
                     ['group' => 'Sensory', 'items' => ['Points to objects', 'Imitates gestures', 'Understands simple instructions']],
                     ['group' => 'Self-help', 'items' => ['Drinks from cup', 'Feeds self', 'Holds spoon']],
+                    ['group' => 'Dexterity', 'items' => ['Uses pincer grasp', 'Turns pages', 'Claps hands together']],
                 ],
                 'cognitive' => [
                     ['group' => 'Problem Solving', 'items' => ['Looks for things you hide', 'Uses objects correctly', 'Follows simple directions']],
                     ['group' => 'Attention', 'items' => ['Completes simple tasks', 'Notices changes', 'Explores more']],
                     ['group' => 'Language', 'items' => ['Says simple words', 'Imitates speech', 'Responds to requests']],
+                    ['group' => 'Knowledge', 'items' => ['Names common objects', 'Points to body parts', 'Understands "yes" and "no"']],
                 ],
                 'social' => [
                     ['group' => 'Interaction', 'items' => ['Shows affection', 'May be shy with strangers', 'Repeats sounds/actions']],
                     ['group' => 'Emotional', 'items' => ['Expresses empathy', 'Shows frustration', 'Seeks attention']],
                     ['group' => 'Communication', 'items' => ['Uses simple words', 'Gestures to communicate', 'Copies sounds']],
+                    ['group' => 'Independence', 'items' => ['Asserts independence', 'Shows likes/dislikes', 'Waves goodbye']],
                 ],
             ],
         ];
