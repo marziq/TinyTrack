@@ -418,6 +418,101 @@
             margin-bottom: 15px;
             border: 1px solid #c3e6cb;
         }
+        /* Profile Photo Wrapper Styles */
+        .profile-photo-wrapper {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 10px auto;
+        }
+
+        .profile-photo-wrapper img.profile-img-preview {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #fff;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .edit-photo-icon {
+            position: absolute;
+            right: -6px;
+            bottom: -6px;
+            background: #0d47a1;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 18px rgba(255,92,0,0.22);
+            border: 4px solid #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .edit-photo-icon:hover {
+            background-color: #1565c0;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
+        }
+
+        .form-input {
+            border-radius: 8px;
+            box-shadow: none;
+            border: 1px solid #e6eef9;
+            padding: 12px 14px;
+        }
+
+        .form-input:focus {
+            border-color: #0d47a1;
+            box-shadow: 0 0 0 0.2rem rgba(13, 71, 161, 0.25);
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 42px;
+            border-radius: 28px;
+            box-shadow: 0 18px 36px rgba(255,92,0,0.18);
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+            display: inline-block;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgba(13,71,161,0.22);
+        }
+
+        .save-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .card-header {
+            background-color: transparent;
+            border-bottom: 1px solid #e9ecef;
+            padding: 0 0 15px 0;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            color: #555;
+            font-size: 18px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -516,140 +611,117 @@
                     </div>
                 @endif
 
-                <div class="row">
-
-                    <!-- Left Column: Profile Card (Hardcoded Edit) -->
-                    <div class="col-md-4">
-                        <div class="card text-center">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <!-- Profile Information Card -->
+                        <div class="card">
+                            <h3>Profile Information</h3>
                             <div class="card-body">
-                                @if (Auth::check())
-                                    <img src="{{ Auth::user()->profile_photo_url }}" class="rounded-circle mb-3" width="120" alt="Profile" style="border: 3px solid #3498db; !important">
-                                    <h4 id="display-name">{{ Auth::user()->name }}</h4>
-                                    <p class="text-secondary mb-1" style="color: #3498db !important">Admin</p>
-                                    <p class="text-muted" style="color:#3498db !important; font-size: 15px;">User ID: TT{{ Auth::user()->id }}</p>
-                                @else
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle mb-3" width="120" alt="Profile">
-                                    <h4>Guest</h4>
-                                    <p class="text-secondary mb-1">Admin</p>
-                                    <p class="text-muted">-</p>
-                                @endif
-                            </div>
-                            <ul class="list-group list-group-flush text-start">
-                                <li class="list-group-item"><i class="fas fa-globe me-2"></i> Website: <span class="text-muted" id="display-website">{{ Auth::user()->website ?? 'Not provided' }}</span></li>
-                                <li class="list-group-item"><i class="fab fa-github me-2"></i> Github: <span class="text-muted" id="display-github">{{ Auth::user()->github ?? 'Not provided' }}</span></li>
-                                <li class="list-group-item"><i class="fab fa-twitter me-2"></i> Twitter: <span class="text-muted" id="display-twitter">{{ Auth::user()->twitter ?? 'Not provided' }}</span></li>
-                                <li class="list-group-item"><i class="fab fa-instagram me-2"></i> Instagram: <span class="text-muted" id="display-instagram">{{ Auth::user()->instagram ?? 'Not provided' }}</span></li>
-                                <li class="list-group-item"><i class="fab fa-facebook me-2"></i> Facebook: <span class="text-muted" id="display-facebook">{{ Auth::user()->facebook ?? 'Not provided' }}</span></li>
-                            </ul>
-                            <div class="mb-2">
-                                <br>
-                                <button class="btn btn-outline-primary btn-sm" id="editProfileBtn">Edit</button>
-                            </div>
-                        </div>
-
-                        <!-- Edit Modal for Profile Card -->
-                        <div id="editProfileModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
-                            <div style="background: white; padding: 30px; border-radius: 8px; width: 90%; max-width: 400px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-                                <h5 style="margin-bottom: 20px; font-weight: 600;">Edit Social Links</h5>
-                                <form id="socialLinksForm" method="POST" action="{{ route('admin.settings.update') }}">
+                                <!-- Inline Edit Mode (matches myaccount design) -->
+                                @php
+                                    $nameParts = explode(' ', trim(Auth::user()->name ?? ''), 2);
+                                    $firstName = $nameParts[0] ?? '';
+                                    $lastName = $nameParts[1] ?? '';
+                                @endphp
+                                <form method="POST" action="{{ route('admin.settings.update') }}" enctype="multipart/form-data" class="text-start" id="inlineProfileForm">
                                     @csrf
-                                    <div class="form-group">
-                                        <label for="edit-website">Website:</label>
-                                        <input type="text" id="edit-website" name="website" placeholder="https://example.com" value="{{ Auth::user()->website ?? '' }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="edit-github">Github:</label>
-                                        <input type="text" id="edit-github" name="github" placeholder="github-username" value="{{ Auth::user()->github ?? '' }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="edit-twitter">Twitter:</label>
-                                        <input type="text" id="edit-twitter" name="twitter" placeholder="@twitter-handle" value="{{ Auth::user()->twitter ?? '' }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="edit-instagram">Instagram:</label>
-                                        <input type="text" id="edit-instagram" name="instagram" placeholder="instagram-username" value="{{ Auth::user()->instagram ?? '' }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="edit-facebook">Facebook:</label>
-                                        <input type="text" id="edit-facebook" name="facebook" placeholder="facebook-username" value="{{ Auth::user()->facebook ?? '' }}">
-                                    </div>
-                                    <input type="hidden" name="name" value="{{ Auth::user()->name }}">
-                                    <input type="hidden" name="email" value="{{ Auth::user()->email }}">
-                                    <div class="btn-group-edit">
-                                        <button type="submit" class="btn-save" id="saveProfileBtn">Save</button>
-                                        <button type="button" class="btn-cancel" id="cancelProfileBtn">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                                    <input type="hidden" name="name" id="full_name_input" value="{{ old('name', Auth::user()->name) }}">
 
-                    <!-- Right Column: User Info (Database Edit) -->
-                    <div class="col-md-8">
-                        <div class="card mb-3">
-                            <!-- View Mode -->
-                            <div class="view-mode" id="viewMode">
-                                <div class="card-body">
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3"><strong>Full Name</strong></div>
-                                        <div class="col-sm-9 text-secondary" id="display-full-name">{{ Auth::user()->name }}</div>
+                                    <div class="profile-photo-wrapper">
+                                        <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img-preview">
+                                        <label class="edit-photo-icon" title="Change photo">
+                                            <i class="fas fa-pencil-alt"></i>
+                                            <input type="file" name="profile_photo" id="inline_profile_photo" style="display:none">
+                                        </label>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3"><strong>Email</strong></div>
-                                        <div class="col-sm-9 text-secondary" id="display-email">{{ Auth::user()->email }}</div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3"><strong>Gender</strong></div>
-                                        <div class="col-sm-9 text-secondary" id="display-gender">{{ Auth::user()->gender ?? 'Not specified' }}</div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3"><strong>Mobile</strong></div>
-                                        <div class="col-sm-9 text-secondary" id="display-mobile">{{ Auth::user()->mobile_number ?? 'Not provided' }}</div>
-                                    </div>
-                                    <div class="text-end">
-                                        <button class="btn btn-primary" id="editUserInfoBtn" style="padding:5px 20px 5px 20px; !important;">Edit</button>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- Edit Mode -->
-                            <div class="edit-mode" id="editMode">
-                                <form id="userSettingsForm" method="POST" action="{{ route('admin.settings.update') }}">
-                                    @csrf
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="edit-name">Full Name</label>
-                                            <input type="text" id="edit-name" name="name" class="form-control" value="{{ Auth::user()->name }}" required>
-                                            @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                                    <h4 class="text-center mb-3">{{ Auth::user()->name }}</h4>
+                                    <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important">User ID: {{ Auth::user()->id }}</p>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">First Name</label>
+                                            <input type="text" name="first_name" class="form-control form-input" value="{{ old('first_name', $firstName) }}">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="edit-email">Email</label>
-                                            <input type="email" id="edit-email" name="email" class="form-control" value="{{ Auth::user()->email }}" required>
-                                            @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                                        <div class="col-md-6">
+                                            <label class="form-label">Last Name</label>
+                                            <input type="text" name="last_name" class="form-control form-input" value="{{ old('last_name', $lastName) }}">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="edit-gender">Gender</label>
-                                            <select id="edit-gender" name="gender" class="form-control">
-                                                <option value="">Select Gender</option>
-                                                <option value="male" {{ Auth::user()->gender === 'male' ? 'selected' : '' }}>Male</option>
-                                                <option value="female" {{ Auth::user()->gender === 'female' ? 'selected' : '' }}>Female</option>
-                                                <option value="other" {{ Auth::user()->gender === 'other' ? 'selected' : '' }}>Other</option>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Email Address</label>
+                                            <input type="email" name="email" class="form-control form-input" value="{{ old('email', Auth::user()->email) }}" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Phone Number</label>
+                                            <input type="text" name="mobile_number" class="form-control form-input" value="{{ old('mobile_number', Auth::user()->mobile_number) }}">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Gender</label>
+                                            <select name="gender" class="form-control form-input">
+                                                <option value="Male" {{ Auth::user()->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                                                <option value="Female" {{ Auth::user()->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                                                <option value="Other" {{ Auth::user()->gender == 'Other' ? 'selected' : '' }}>Other</option>
                                             </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="edit-mobile">Mobile Number</label>
-                                            <input type="text" id="edit-mobile" name="mobile_number" class="form-control" value="{{ Auth::user()->mobile_number ?? '' }}">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Account Type</label>
+                                            <div class="form-control form-input" style="background-color: #f8f9fa;">
+                                                Admin
+                                            </div>
                                         </div>
-                                        <div class="text-end">
-                                            <button type="submit" class="btn btn-primary" style="padding:5px 20px 5px 20px; !important;">Save</button>
-                                            <button type="button" id="cancelUserInfoBtn" class="btn btn-secondary" style="padding:5px 20px 5px 20px; !important;">Cancel</button>
+                                    </div>
+
+                                    <!-- Save button section -->
+                                    <div class="d-flex justify-content-center mt-4">
+                                        @if(!isset($isEditing))
+                                            <button type="button" class="save-btn" id="editButton" onclick="toggleEditMode(true)">Update Profile</button>
+                                        @else
+                                            <button type="submit" class="save-btn">Save Changes</button>
+                                            <button type="button" class="btn btn-secondary ms-2" onclick="toggleEditMode(false)">Cancel</button>
+                                        @endif
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Social Media Settings Card -->
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h3>Social Media Settings</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="socialMediaForm" method="POST" action="{{ route('admin.settings.update') }}" class="text-start">
+                                    @csrf
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fas fa-globe me-2"></i>Website</label>
+                                            <input type="url" name="website" class="form-control form-input" placeholder="https://example.com" value="{{ Auth::user()->website ?? '' }}">
                                         </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fab fa-github me-2"></i>Github</label>
+                                            <input type="text" name="github" class="form-control form-input" placeholder="github-username" value="{{ Auth::user()->github ?? '' }}">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fab fa-twitter me-2"></i>Twitter</label>
+                                            <input type="text" name="twitter" class="form-control form-input" placeholder="@twitter-handle" value="{{ Auth::user()->twitter ?? '' }}">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fab fa-instagram me-2"></i>Instagram</label>
+                                            <input type="text" name="instagram" class="form-control form-input" placeholder="instagram-username" value="{{ Auth::user()->instagram ?? '' }}">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fab fa-facebook me-2"></i>Facebook</label>
+                                            <input type="text" name="facebook" class="form-control form-input" placeholder="facebook-username" value="{{ Auth::user()->facebook ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center mt-4">
+                                        <button type="submit" class="save-btn">Save Social Links</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -773,57 +845,63 @@
                 });
             });
 
-            // Edit Profile Card (Database - Left Column)
-            const editProfileBtn = document.getElementById('editProfileBtn');
-            const editProfileModal = document.getElementById('editProfileModal');
-            const cancelProfileBtn = document.getElementById('cancelProfileBtn');
-            const saveProfileBtn = document.getElementById('saveProfileBtn');
-            const socialLinksForm = document.getElementById('socialLinksForm');
+            // Profile form edit/save functionality
+            function toggleEditMode(edit) {
+                const form = document.getElementById('inlineProfileForm');
+                const inputs = form.querySelectorAll('input:not([type="hidden"]), select');
+                const editButton = document.getElementById('editButton');
 
-            editProfileBtn.addEventListener('click', function() {
-                editProfileModal.style.display = 'flex';
-            });
+                inputs.forEach(input => {
+                    if (input.type !== 'file') {  // Don't disable file input
+                        input.disabled = !edit;
+                    }
+                });
 
-            cancelProfileBtn.addEventListener('click', function() {
-                editProfileModal.style.display = 'none';
-            });
+                if (edit) {
+                    editButton.closest('.d-flex').innerHTML = `
+                        <button type="submit" class="save-btn">Save Changes</button>
+                        <button type="button" class="btn btn-secondary ms-2" onclick="toggleEditMode(false)">Cancel</button>
+                    `;
+                } else {
+                    location.reload(); // Reload page to reset form
+                }
+            }
 
-            editProfileModal.addEventListener('click', function(e) {
-                if (e.target === editProfileModal) {
-                    editProfileModal.style.display = 'none';
+            // Initialize form in disabled state
+            const form = document.getElementById('inlineProfileForm');
+            const inputs = form.querySelectorAll('input:not([type="hidden"]), select');
+            inputs.forEach(input => {
+                if (input.type !== 'file') {
+                    input.disabled = true;
                 }
             });
 
-            saveProfileBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                socialLinksForm.submit();
-            });
+            // Profile photo preview handler
+            const fileInput = document.getElementById('inline_profile_photo');
+            const preview = document.querySelector('.profile-img-preview');
 
-            // Edit User Info (Database - Right Column)
-            const editUserInfoBtn = document.getElementById('editUserInfoBtn');
-            const cancelUserInfoBtn = document.getElementById('cancelUserInfoBtn');
-            const viewMode = document.getElementById('viewMode');
-            const editMode = document.getElementById('editMode');
+            if (fileInput && preview) {
+                fileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        preview.src = ev.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
 
-            editUserInfoBtn.addEventListener('click', function() {
-                viewMode.classList.add('hidden');
-                editMode.classList.add('active');
-            });
-
-            cancelUserInfoBtn.addEventListener('click', function() {
-                viewMode.classList.remove('hidden');
-                editMode.classList.remove('active');
-                // Reset form to current values
-                document.getElementById('edit-name').value = document.getElementById('display-full-name').textContent;
-                document.getElementById('edit-email').value = document.getElementById('display-email').textContent;
-                document.getElementById('edit-mobile').value = document.getElementById('display-mobile').textContent;
-            });
-
-            // User settings form submission
-            document.getElementById('userSettingsForm').addEventListener('submit', function(e) {
-                // Form will submit normally to update the database
-                // After submission, the page will redirect with success message
-            });
+            // Combine first and last names into 'name' hidden input before submit
+            if (form) {
+                form.addEventListener('submit', function() {
+                    const f = form.querySelector('input[name="first_name"]')?.value || '';
+                    const l = form.querySelector('input[name="last_name"]')?.value || '';
+                    const full = (f + ' ' + l).trim();
+                    const hidden = document.getElementById('full_name_input');
+                    if (hidden) hidden.value = full || '{{ Auth::user()->name }}';
+                });
+            }
         });
 
         // Show notification modal
