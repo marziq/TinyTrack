@@ -53,4 +53,9 @@ class Baby extends Model
     {
         return $this->hasMany(Vaccination::class, 'baby_id', 'id');
     }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'baby_id', 'id');
+    }
 }
