@@ -27,11 +27,42 @@
             font-family: 'Outfit', sans-serif;
         }
 
+        /* Make sure the page background covers the full scrollable area
+           Use min-height so body can grow beyond the viewport when content is long
+           Also set the html background so any area outside body inherits the same color */
+        html {
+            background-color: #f8fafc;
+            min-height: 100%;
+        }
+
         body {
             display: flex;
-            height: 100vh;
-            background-color: #f8fafc;
+            min-height: 100vh;
+            background-color: transparent; /* html already provides the background */
             overflow-x: hidden;
+        }
+
+        /* Ensure the main content area grows to fill remaining width and doesn't cause horizontal gaps */
+        .main {
+            flex: 1 1 auto;
+            min-width: 0; /* allows flex items to shrink correctly and prevents unwanted overflow */
+            width: 100%;
+            background: transparent;
+            transition: margin-left 0.3s ease; /* match other pages so toggling sidebar is smooth */
+        }
+
+        /* When sidebar is hidden, shift the main content to occupy the freed space (matches other pages) */
+        .sidebar.hidden + .main {
+            margin-left: -250px;
+        }
+
+        /* Make the container responsive and centered while allowing full-width background to show */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
         }
 
         .sidebar {
@@ -140,7 +171,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            padding: 10px 0;
+            padding: 10px 20px; /* align spacing with other pages */
             position: relative;
         }
 
@@ -640,7 +671,7 @@
                                     </div>
 
                                     <h4 class="text-center mb-3">{{ Auth::user()->name }}</h4>
-                                    <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important">User ID: TT{{ Auth::user()->id }}</p>
+                                    <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important">User ID: {{ Auth::user()->id }}</p>
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label">First Name</label>
