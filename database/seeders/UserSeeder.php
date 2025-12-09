@@ -8,6 +8,7 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        User::factory()->count(10)->create();
+        // Create 15 Malaysian users
+        User::factory()->count(15)->create();
     }
 }

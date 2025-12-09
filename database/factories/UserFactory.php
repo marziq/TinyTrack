@@ -26,9 +26,22 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $maleNames = ['Ahmad', 'Muhammad', 'Ali', 'Rizki', 'Farhan', 'Arjun', 'Budi', 'Candra', 'David', 'Eka', 'Farid', 'Gani', 'Hadi', 'Irfan', 'Jamal'];
+        $femaleNames = ['Siti', 'Nurul', 'Aishah', 'Fatimah', 'Nur', 'Aisyah', 'Zainab', 'Leila', 'Mira', 'Nadia', 'Ovi', 'Putri', 'Rina', 'Sasha', 'Tina'];
+        $lastNames = ['Abdullah', 'Ahmad', 'Ali', 'Aziz', 'Baharudin', 'Chew', 'Che', 'Chua', 'Dato', 'Din', 'Dollah', 'Ghani', 'Hamid', 'Hashim', 'Hassan', 'Ibrahim', 'Ismail', 'Jahangir', 'Jalaluddin', 'Jamaludin', 'Jani', 'Junos', 'Kadir', 'Khalid', 'Khalifah', 'Khoo', 'Kong', 'Kusumo', 'Lau', 'Lee', 'Lew', 'Lim', 'Long', 'Loong', 'Lye', 'Mahmod', 'Mahmud', 'Manaf', 'Maniam', 'Mattar', 'Mirza', 'Mohamed', 'Mohamad', 'Mohammed', 'Mohd', 'Mokhtar', 'Mualim', 'Muhamad', 'Muhammad', 'Mukherjee', 'Mul', 'Musa', 'Mustafa', 'Muthalib', 'Mydin', 'Ng', 'Noor', 'Nor', 'Noraini', 'Norzela', 'Norizan', 'Norliza', 'Norliza', 'Norliza'];
+
+        $gender = fake()->randomElement(['male', 'female']);
+        $firstName = $gender === 'male' ? fake()->randomElement($maleNames) : fake()->randomElement($femaleNames);
+        $lastName = fake()->randomElement($lastNames);
+        $name = $firstName . ' ' . $lastName;
+
+        // Generate email from name
+        $emailName = strtolower(str_replace(' ', '.', $name));
+        $email = $emailName . '@example.com';
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $name,
+            'email' => $email,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'two_factor_secret' => null,
@@ -36,9 +49,20 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'profile_photo_path' => null,
             'current_team_id' => null,
-            'gender' => fake()->randomElement(['male', 'female']),
-            'mobile_number' => fake()->phoneNumber(),
+            'gender' => $gender,
+            'mobile_number' => $this->generateMalaysianPhoneNumber(),
         ];
+    }
+
+    /**
+     * Generate a Malaysian phone number.
+     */
+    private function generateMalaysianPhoneNumber(): string
+    {
+        $prefixes = ['010', '011', '012', '013', '014', '015', '016', '017', '018', '019'];
+        $prefix = fake()->randomElement($prefixes);
+        $number = fake()->numberBetween(10000000, 99999999);
+        return $prefix . $number;
     }
 
     /**
