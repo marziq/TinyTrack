@@ -630,7 +630,7 @@
             <!-- Chart Section -->
             <div class="chart-container">
                 <div>
-                    <h3 style="padding-top: 30px !important;">Babies Added Each Month</h3>
+                    <h3 style="padding-top: 30px !important;">Babies Added Each Month - {{ $babiesYear ?? date('Y') }}</h3>
                     <canvas id="babiesChart"></canvas>
                 </div>
 
@@ -788,9 +788,31 @@
             notifModal.show();
         }
 
-        // Babies chart: data provided by server as $babiesPerMonth (12 values, Jan-Dec)
-        const babiesLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const babiesData = {!! json_encode($babiesPerMonth ?? array_fill(0,12,0)) !!};
+    // Babies chart: data provided by server as $babiesPerMonth (12 values, Jan-Dec)
+        const allMonthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const babiesAllData = {!! json_encode($babiesPerMonth ?? array_fill(0,12,0)) !!};
+    // Year for the babies data: use server-provided year if available, else fall back to current year
+    const babiesChartYear = {!! json_encode($babiesYear ?? date('Y')) !!};
+
+        // Determine the visible slice: start from the month before the first month that has a baby,
+        // and end at the last month that has a baby. If there are no babies at all, show the full year.
+        let firstNonZeroIndex = babiesAllData.findIndex(v => v > 0);
+        let lastNonZeroIndex = -1;
+        if (firstNonZeroIndex !== -1) {
+            // find last non-zero index
+            for (let i = babiesAllData.length - 1; i >= 0; i--) {
+                if (babiesAllData[i] > 0) { lastNonZeroIndex = i; break; }
+            }
+            // include the previous month as starting point when possible
+            firstNonZeroIndex = Math.max(0, firstNonZeroIndex - 1);
+        } else {
+            // no babies: show full 12 months
+            firstNonZeroIndex = 0;
+            lastNonZeroIndex = babiesAllData.length - 1;
+        }
+
+        const babiesLabels = allMonthLabels.slice(firstNonZeroIndex, lastNonZeroIndex + 1);
+        const babiesData = babiesAllData.slice(firstNonZeroIndex, lastNonZeroIndex + 1);
 
         var ctx1 = document.getElementById('babiesChart').getContext('2d');
         var babiesChart = new Chart(ctx1, {
@@ -809,6 +831,12 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Babies Added (' + babiesChartYear + ')'
+                    }
+                },
                 scales: { y: { beginAtZero: true } }
             }
         });
