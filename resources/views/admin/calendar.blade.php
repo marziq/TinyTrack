@@ -6,7 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
-    <title>Dashboard</title>
+    <title>Calendar</title>
     <style>
         * {
             margin: 0;
@@ -363,22 +363,26 @@
 
         .fc-event {
             cursor: pointer;
+            color: #000 !important;
         }
 
         /* Custom colors for different appointment types */
         .fc-event-checkup {
             background-color: #4CAF50;
             border-color: #4CAF50;
+            color: #000 !important;
         }
 
         .fc-event-vaccination {
             background-color: #2196F3;
             border-color: #2196F3;
+            color: #000 !important;
         }
 
         .fc-event-consultation {
             background-color: #FF9800;
             border-color: #FF9800;
+            color: #000 !important;
         }
 
         .fc-toolbar-title {
@@ -387,6 +391,19 @@
 
         .fc-col-header-cell {
             background-color: #f8f9fa;
+        }
+
+        /* Override FullCalendar default text colors */
+        .fc-h-event .fc-event-main {
+            color: #000 !important;
+        }
+
+        .fc-event .fc-event-title {
+            color: #000 !important;
+        }
+
+        .fc-daygrid-event .fc-event-title {
+            color: #000 !important;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -665,6 +682,21 @@
                 },
                 eventContent: function(arg) {
                     return { html: arg.event.title };
+                },
+                eventDidMount: function(info) {
+                    let status = info.event.extendedProps.status;
+
+                    if (status === 'Done') {
+                        info.el.style.backgroundColor = '#A8DCAB';
+                        info.el.style.borderColor = '#27ae60';
+                        info.el.style.color = '#000';
+                    }
+
+                    if (status === 'Waiting') {
+                        info.el.style.backgroundColor = '#FFEE8C';
+                        info.el.style.borderColor = '#d4ac0d';
+                        info.el.style.color = '#000';
+                    }
                 },
                 eventClick: function(info) {
                     // When an appointment is clicked, show details

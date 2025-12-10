@@ -20,7 +20,7 @@ class BabyFactory extends Factory
         return [
             'user_id' => null, // Set in seeder
             'name' => $name,
-            'birth_date' => $this->faker->date('Y-m-d', '-1 year'),
+            'birth_date' => $this->faker->dateTimeBetween('-6 years', 'now')->format('Y-m-d'),
             'gender' => $gender,
             'ethnicity' => $this->faker->randomElement($ethnicities),
             'premature' => $this->faker->boolean(),

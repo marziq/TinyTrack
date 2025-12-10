@@ -14,7 +14,7 @@ class AppointmentFactory extends Factory
             'baby_id' => null, // Set in seeder
             'appointmentDate' => $this->faker->dateTimeBetween('+1 days', '+1 month')->format('Y-m-d'),
             'appointmentTime' => $this->faker->time('H:i'),
-            'purpose' => $this->faker->randomElement(['Checkup', 'Vaccination', 'Consultation']),
+            'purpose' => $this->faker->randomElement(['Checkup', 'Vaccination', 'Other']),
             'status' => $this->faker->randomElement(['Waiting', 'Done']),
         ];
     }
