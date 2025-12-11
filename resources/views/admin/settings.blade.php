@@ -866,6 +866,8 @@
                     location.reload(); // Reload page to reset form
                 }
             }
+            // Make function available to inline onclick handlers
+            window.toggleEditMode = toggleEditMode;
 
             // Initialize form in disabled state
             const form = document.getElementById('inlineProfileForm');
