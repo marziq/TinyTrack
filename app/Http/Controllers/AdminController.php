@@ -112,6 +112,7 @@ class AdminController extends Controller
             'twitter' => 'nullable|string|max:255',
             'instagram' => 'nullable|string|max:255',
             'facebook' => 'nullable|string|max:255',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user->update($request->only([
@@ -125,6 +126,11 @@ class AdminController extends Controller
             'instagram',
             'facebook',
         ]));
+
+        // Handle profile photo upload
+        if ($request->hasFile('profile_photo')) {
+            $user->updateProfilePhoto($request->file('profile_photo'));
+        }
 
         return redirect()->route('adminsettings')->with('success', 'Settings updated successfully!');
     }

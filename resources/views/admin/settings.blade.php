@@ -659,9 +659,9 @@
                                         <div class="col-md-6">
                                             <label class="form-label">Gender</label>
                                             <select name="gender" class="form-control form-input">
-                                                <option value="Male" {{ Auth::user()->gender == 'Male' ? 'selected' : '' }}>Male</option>
-                                                <option value="Female" {{ Auth::user()->gender == 'Female' ? 'selected' : '' }}>Female</option>
-                                                <option value="Other" {{ Auth::user()->gender == 'Other' ? 'selected' : '' }}>Other</option>
+                                                <option value="male" {{ strtolower(Auth::user()->gender ?? '') == 'male' ? 'selected' : '' }}>Male</option>
+                                                <option value="female" {{ strtolower(Auth::user()->gender ?? '') == 'female' ? 'selected' : '' }}>Female</option>
+                                                <option value="other" {{ strtolower(Auth::user()->gender ?? '') == 'other' ? 'selected' : '' }}>Other</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
@@ -848,35 +848,71 @@
             // Profile form edit/save functionality
             function toggleEditMode(edit) {
                 const form = document.getElementById('inlineProfileForm');
-                const inputs = form.querySelectorAll('input:not([type="hidden"]), select');
+                const inputs = form.querySelectorAll('input[name="first_name"], input[name="last_name"], input[name="email"], input[name="mobile_number"], select[name="gender"]');
                 const editButton = document.getElementById('editButton');
 
                 inputs.forEach(input => {
-                    if (input.type !== 'file') {  // Don't disable file input
-                        input.disabled = !edit;
-                    }
+                    input.disabled = !edit;
                 });
 
                 if (edit) {
                     editButton.closest('.d-flex').innerHTML = `
-                        <button type="submit" class="save-btn">Save Changes</button>
+                        <button type="submit" class="save-btn" id="submitBtn">Save Changes</button>
                         <button type="button" class="btn btn-secondary ms-2" onclick="toggleEditMode(false)">Cancel</button>
                     `;
+                    // Re-attach submit handler to new submit button
+                    form.addEventListener('submit', handleFormSubmit);
                 } else {
                     location.reload(); // Reload page to reset form
                 }
             }
+
+            // Handle form submission
+            function handleFormSubmit(e) {
+                e.preventDefault();
+                const form = document.getElementById('inlineProfileForm');
+                const f = form.querySelector('input[name="first_name"]')?.value || '';
+                const l = form.querySelector('input[name="last_name"]')?.value || '';
+                const full = (f + ' ' + l).trim();
+                const hidden = document.getElementById('full_name_input');
+                if (hidden) hidden.value = full || '{{ Auth::user()->name }}';
+
+                // Use FormData to properly handle file uploads
+                const formData = new FormData(form);
+
+                // Submit the form with proper CSRF token
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = form.action; // Redirect to refresh
+                    } else {
+                        return response.text().then(text => { throw new Error(text); });
+                    }
+                })
+                .catch(error => {
+                    console.error('Form submission error:', error);
+                    alert('An error occurred while saving. Please try again.');
+                });
+            }
+
             // Make function available to inline onclick handlers
             window.toggleEditMode = toggleEditMode;
 
             // Initialize form in disabled state
             const form = document.getElementById('inlineProfileForm');
-            const inputs = form.querySelectorAll('input:not([type="hidden"]), select');
+            const inputs = form.querySelectorAll('input[name="first_name"], input[name="last_name"], input[name="email"], input[name="mobile_number"], select[name="gender"]');
             inputs.forEach(input => {
-                if (input.type !== 'file') {
-                    input.disabled = true;
-                }
+                input.disabled = true;
             });
+
+            // Attach submit handler
+            form.addEventListener('submit', handleFormSubmit);
 
             // Profile photo preview handler
             const fileInput = document.getElementById('inline_profile_photo');
@@ -891,17 +927,6 @@
                         preview.src = ev.target.result;
                     }
                     reader.readAsDataURL(file);
-                });
-            }
-
-            // Combine first and last names into 'name' hidden input before submit
-            if (form) {
-                form.addEventListener('submit', function() {
-                    const f = form.querySelector('input[name="first_name"]')?.value || '';
-                    const l = form.querySelector('input[name="last_name"]')?.value || '';
-                    const full = (f + ' ' + l).trim();
-                    const hidden = document.getElementById('full_name_input');
-                    if (hidden) hidden.value = full || '{{ Auth::user()->name }}';
                 });
             }
         });
