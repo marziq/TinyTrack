@@ -359,10 +359,12 @@
         }
 
         .card {
-            background-color: white;
+            /* solid card background matching the light-blue theme */
+            background: #e3f2fd !important;
             padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 6px 20px rgba(13,71,161,0.06);
+            border: 1px solid rgba(25,118,210,0.08);
             transition: all 0.3s ease;
             /* Make card wider but still responsive: cap at 1000px and center */
             width: min(100%, 1000px);
@@ -371,14 +373,29 @@
         }
 
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(13,71,161,0.10);
         }
 
-        .card h3 {
-            margin-bottom: 15px;
-            color: #555;
+        /* Card header and body styling to match site accent */
+        .card-header {
+            background: transparent;
+            border-bottom: 1px solid rgba(25,118,210,0.06);
+            padding: 14px 0 18px 0;
+        }
+
+        .card-body {
+            background: transparent;
+            padding: 0;
+            color: #39424a;
+        }
+
+        .card h3,
+        .card .card-title {
+            margin-bottom: 12px;
+            color: #1976d2; /* primary accent */
             font-size: 18px;
+            font-weight: 600;
         }
 
         .card p {

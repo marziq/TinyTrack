@@ -424,13 +424,13 @@
             flex: 1; /* fill remaining space */
             overflow-y: auto;
             padding: 10px;
-            background: #fefefe;
+            background: #e3f2fd;
             border-top: 1px solid #ccc;
             border-bottom: none;
         }
 
         .chat-input {
-            background: #fff;
+            background: #e3f2fd;
             flex-shrink: 0;
             margin: 0;
             padding: 8px; /* add slight breathing space */
