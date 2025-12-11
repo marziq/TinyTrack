@@ -733,7 +733,7 @@
                 <div class="dropdown">
                     <button class="profile-btn" type="button" id="accountDropdown">
                         <div class="profile-img-container">
-                            <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
+                            <img src="{{ Auth::user()->profile_photo_path ? asset('storage/' . Auth::user()->profile_photo_path) : Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
                         </div>
                         <i class="fas fa-chevron-down arrow-icon"></i>
                     </button>

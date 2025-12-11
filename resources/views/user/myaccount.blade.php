@@ -621,7 +621,8 @@
                 <div class="dropdown">
                     <button class="profile-btn" type="button" id="accountDropdown">
                         <div class="profile-img-container">
-                            <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
+                            {{-- Use stored asset if user uploaded a profile photo (profile_photo_path), otherwise fall back to profile_photo_url --}}
+                            <img src="{{ Auth::user()->profile_photo_path ? asset('storage/' . Auth::user()->profile_photo_path) : Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
                         </div>
                         <i class="fas fa-chevron-down arrow-icon"></i>
                     </button>
@@ -663,7 +664,8 @@
                                     <input type="hidden" name="name" id="full_name_input" value="{{ old('name', Auth::user()->name) }}">
 
                                     <div class="profile-photo-wrapper">
-                                        <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img-preview">
+                                        {{-- Use stored asset if present (profile_photo_path), otherwise fall back to profile_photo_url --}}
+                                        <img src="{{ Auth::user()->profile_photo_path ? asset('storage/' . Auth::user()->profile_photo_path) : Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img-preview">
                                         <label class="edit-photo-icon" title="Change photo">
                                             <i class="fas fa-pencil-alt"></i>
                                             <input type="file" name="profile_photo" id="inline_profile_photo" style="display:none">
@@ -784,8 +786,8 @@
                     <div class="modal-body">
                         <div class="row mb-3 justify-content-center">
                             <label class="col-sm-4 col-form-label text-end">Profile Photo</label>
-                            <div class="col-sm-6 d-flex align-items-center">
-                                <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile Photo" class="rounded-circle me-3" width="60">
+                                <div class="col-sm-6 d-flex align-items-center">
+                                <img src="{{ Auth::user()->profile_photo_path ? asset('storage/' . Auth::user()->profile_photo_path) : Auth::user()->profile_photo_url }}" alt="Profile Photo" class="rounded-circle me-3" width="60">
                                 <input type="file" name="profile_photo" id="profile_photo" class="form-control">
                             </div>
                         </div>
