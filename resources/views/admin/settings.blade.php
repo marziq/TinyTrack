@@ -573,7 +573,8 @@
                     <button class="profile-btn" type="button" id="accountDropdown">
                         <div class="profile-img-container">
                             @if (Auth::check())
-                                <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
+                                {{-- Use stored asset if user uploaded a profile photo (profile_photo_path), otherwise fall back to profile_photo_url --}}
+                                <img src="{{ Auth::user()->profile_photo_path ? asset('storage/' . Auth::user()->profile_photo_path) : Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
                             @else
                                 <script>
                                     window.location.href = "{{ route('login') }}";  // Redirect to login page
@@ -628,7 +629,8 @@
                                     <input type="hidden" name="name" id="full_name_input" value="{{ old('name', Auth::user()->name) }}">
 
                                     <div class="profile-photo-wrapper">
-                                        <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img-preview">
+                                        {{-- Use stored asset if present (profile_photo_path), otherwise keep existing profile_photo_url (may be external) --}}
+                                        <img src="{{ Auth::user()->profile_photo_path ? asset('storage/' . Auth::user()->profile_photo_path) : Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img-preview">
                                         <label class="edit-photo-icon" title="Change photo">
                                             <i class="fas fa-pencil-alt"></i>
                                             <input type="file" name="profile_photo" id="inline_profile_photo" style="display:none">
