@@ -25,7 +25,7 @@
 html, body{ background-color: var(--bg) !important; transition: background-color .2s ease; }
 
 /* Common layout components used across views */
-.sidebar{ background-color: var(--surface) !important; }
+.sidebar{ background-color: #e3f2fd !important; }
 .main, .card, .welcome-section, .main-content{ background-color: var(--surface) !important; }
 .card, .card-body{ border: 1px solid var(--border) !important; box-shadow: none !important; }
 .card-header, .dropdown-menu{ background-color: transparent !important; }
