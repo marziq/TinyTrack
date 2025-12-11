@@ -37,18 +37,18 @@
 
         body {
             display: flex;
-            min-height: 100vh;
-            background-color: transparent; /* html already provides the background */
+            height: 100vh; /* match other pages so sidebar/main sizing is consistent */
+            background-color: #f8fafc;
             overflow-x: hidden;
         }
 
         /* Ensure the main content area grows to fill remaining width and doesn't cause horizontal gaps */
         .main {
-            flex: 1 1 auto;
-            min-width: 0; /* allows flex items to shrink correctly and prevents unwanted overflow */
-            width: 100%;
-            background: transparent;
-            transition: margin-left 0.3s ease; /* match other pages so toggling sidebar is smooth */
+            flex: 1;
+            padding: 20px;
+            position: relative;
+            transition: margin-left 0.3s ease;
+            overflow-y: auto;
         }
 
         /* When sidebar is hidden, shift the main content to occupy the freed space (matches other pages) */
@@ -364,6 +364,10 @@
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
+            /* Make card wider but still responsive: cap at 1000px and center */
+            width: min(100%, 1000px);
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .card:hover {
@@ -648,7 +652,8 @@
        {{--Main Content--}}
         <div class="container mt-5">
             <div class="row justify-content-center">
-                <div class="col-lg-8">
+                <!-- wider, responsive column so .card can expand up to its max-width -->
+                <div class="col-12 col-lg-10 mx-auto">
                     <!-- Profile Information Card -->
                     <div class="card">
                         <h3>Profile Information</h3>
