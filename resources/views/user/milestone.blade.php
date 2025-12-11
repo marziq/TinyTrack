@@ -248,7 +248,7 @@
             position: absolute;
             right: 0;
             top: 100%;
-            background-color: white;
+            background-color: white !important;
             min-width: 200px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 8px;

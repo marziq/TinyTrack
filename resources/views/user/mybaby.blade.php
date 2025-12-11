@@ -255,7 +255,7 @@
             position: absolute;
             right: 0;
             top: 100%;
-            background-color: white;
+            background-color: white !important;
             min-width: 200px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 8px;
@@ -264,6 +264,8 @@
             z-index: 1000;
             display: none;
             list-style: none;
+            opacity: 1 !important;
+            background-clip: padding-box;
         }
 
         .dropdown-menu.show {
@@ -608,6 +610,21 @@
             color: #fff !important;
             box-shadow: 0 6px 18px rgba(25,118,210,0.18);
             border-color: var(--accent, #60a5fa) !important;
+        }
+
+        /* Dark mode dropdown menu */
+        .dark .dropdown-menu {
+            background-color: var(--surface, #1e1e2e) !important;
+            border: 1px solid var(--surface, #2a2a3e) !important;
+            color: var(--text, #e6eef8) !important;
+        }
+
+        .dark .dropdown-item {
+            color: var(--text, #e6eef8) !important;
+        }
+
+        .dark .dropdown-item:hover {
+            background-color: var(--accent-light, #374151) !important;
         }
 
         /* Milestones Container */
