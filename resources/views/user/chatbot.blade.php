@@ -480,8 +480,8 @@
             word-wrap: break-word;
         }
         .bot .bubble {
-            background: #e3f2fd;
-            color: #000;
+            background: #1976d2;
+            color: white;
             border-top-left-radius: 0;
         }
         .user .bubble {
@@ -779,7 +779,8 @@
             userMessage.className = "message user";
             userMessage.innerHTML = `
                 <div class="bubble">${input}</div>
-                <img src="{{ Auth::user()->profile_photo_url }}" class="avatar" alt="User" />
+                <img src="{{ Auth::user()->profile_photo_path ? asset('storage/' . Auth::user()->profile_photo_path) : Auth::user()->profile_photo_url }}" alt="User" class="avatar">
+
             `;
             chatbox.appendChild(userMessage);
             chatbox.scrollTop = chatbox.scrollHeight;
