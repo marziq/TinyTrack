@@ -29,7 +29,7 @@ Route::get('/services', function () {
 })->name('service');
 
 Route::get('/experts', function () {
-    return view('team');
+    return view('expert');
 })->name('expert');
 
 Route::get('/contact', function () {
