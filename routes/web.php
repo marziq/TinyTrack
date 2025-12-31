@@ -192,25 +192,41 @@ Route::get('/send-reminder', function () {
     }
 });
 
+use Illuminate\Support\Facades\Schema;
+
 Route::get('/send-appointment-reminder', function () {
-    $appointment = Appointment::with(['baby', 'user'])->first();
-    if (! $appointment) {
-        return response('No appointment found', 404);
+    if (! Auth::check()) {
+        return response('Not authenticated. Please log in to send a test appointment reminder.', 401);
     }
 
-    if (Auth::check()) {
-        $recipient = Auth::user()->email;
-        $user = Auth::user();
-    } elseif ($appointment->user && $appointment->user->email) {
-        $recipient = $appointment->user->email;
-        $user = $appointment->user;
+    $user = Auth::user();
+
+    // Build query: prefer direct appointment.user_id only if column exists, otherwise rely on baby->user_id
+    $query = Appointment::with(['baby', 'user']);
+
+    if (Schema::hasColumn('appointments', 'user_id')) {
+        $query->where(function ($q) use ($user) {
+            $q->where('user_id', $user->id)
+              ->orWhereHas('baby', function ($qb) use ($user) {
+                  $qb->where('user_id', $user->id);
+              });
+        });
     } else {
-        return response('No recipient found for this appointment', 400);
+        // appointments table doesn't have user_id, match via baby relation only
+        $query->whereHas('baby', function ($qb) use ($user) {
+            $qb->where('user_id', $user->id);
+        });
+    }
+
+    $appointment = $query->first();
+
+    if (! $appointment) {
+        return response('No appointment found for the current user', 404);
     }
 
     try {
-        Mail::to($recipient)->send(new AppointmentReminder($appointment, $user ?? null));
-        return 'Appointment reminder sent to '.$recipient;
+        Mail::to($user->email)->send(new AppointmentReminder($appointment, $user));
+        return 'Appointment reminder sent to '.$user->email;
     } catch (\Throwable $e) {
         \Log::error('Send appointment reminder failed: '.$e->getMessage());
         return response('Failed to send: '.$e->getMessage(), 500);

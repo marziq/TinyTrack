@@ -39,6 +39,16 @@ class SendAppointmentReminders extends Command
             // Resolve the user: some appointments are linked to a baby which has the user
             $user = $appointment->user ?? ($appointment->baby ? $appointment->baby->user : null);
 
+            // Log resolved relations for debugging: appointmentID, baby_id, baby name, resolved user
+            try {
+                $babyName = $appointment->baby->name ?? 'N/A';
+            } catch (\Throwable $e) {
+                $babyName = 'N/A';
+            }
+            $resolvedUserId = $user->id ?? 'N/A';
+            $resolvedUserEmail = $user->email ?? 'N/A';
+            \Log::info("Reminder: appointment={$appointment->appointmentID}, baby_id={$appointment->baby_id}, baby_name={$babyName}, resolved_user_id={$resolvedUserId}, resolved_user_email={$resolvedUserEmail}");
+
             // Ensure user and email exist
             if ($user && !empty($user->email)) {
                 // Create in-app notification first (so it's created even if email fails)
