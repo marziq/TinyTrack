@@ -480,7 +480,7 @@
             word-wrap: break-word;
         }
         .bot .bubble {
-            background: #1976d2;
+            background: #678cb1;
             color: white;
             border-top-left-radius: 0;
         }
@@ -812,7 +812,6 @@
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            model: "openai/gpt-oss-20b:free",
                             messages: [
                                 { role: "system", content: "Summarize this baby-related conversation into a structured memory. Focus on baby's age, weight, height, diet, health goals, and other important details. Ignore chit-chat." },
                                 { role: "user", content: JSON.stringify(oldMessages) }
@@ -842,7 +841,6 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        model: "openai/gpt-oss-20b:free",
                         messages: conversationHistory
                     })
                 });
@@ -852,13 +850,15 @@
 
                 // Error handling
                 if (!response.ok) {
-                    let errorMessage = "⚠️ Something went wrong.";
+                    // prefer server-provided error message when available
+                    let errorMessage = data?.error?.message || "⚠️ Something went wrong.";
                     if (response.status === 429) {
                         errorMessage = "⚠️ Rate limit exceeded. Please wait and try again.";
                     } else if (response.status === 401) {
                         errorMessage = "⚠️ Unauthorized (check your API key).";
                     } else if (response.status >= 500) {
-                        errorMessage = "⚠️ Server error. Please try again later.";
+                        // keep server-provided message if present (e.g., OpenRouter privacy error)
+                        errorMessage = data?.error?.message || "⚠️ Server error. Please try again later.";
                     }
                     botMessage.querySelector(".bubble").innerText = errorMessage;
                     return;

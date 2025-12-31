@@ -1292,7 +1292,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        model: 'openai/gpt-oss-20b:free',
+                        model: 'deepseek/deepseek-r1-0528:free',
                         status: status,
                         age: age,
                         gender: gender

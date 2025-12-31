@@ -23,8 +23,11 @@ class OpenAIProxyController extends Controller
 
         $apiKey = config('services.openrouter.key');
 
+        // prefer server-configured model to avoid clients forcing disallowed/public/free models
+        $model = config('services.openrouter.default_model') ?: $request->input('model', 'deepseek/deepseek-r1-0528:free');
+
         $payload = [
-            'model' => $request->input('model', 'deepseek/deepseek-r1-distill-llama-70b:free'),
+            'model' => $model,
             'messages' => $request->input('messages'),
         ];
 
@@ -32,7 +35,21 @@ class OpenAIProxyController extends Controller
             ->post($this->base . '/chat/completions', $payload);
 
         if ($resp->failed()) {
-            return response()->json(['error' => 'AI request failed', 'details' => $resp->body()], 500);
+            // try to decode JSON details for clearer client feedback
+            $bodyJson = $resp->json();
+            \Log::error('OpenRouter API error', ['status' => $resp->status(), 'body' => $resp->body()]);
+
+            $openrouterMessage = null;
+            if (is_array($bodyJson) && isset($bodyJson['error']['message'])) {
+                $openrouterMessage = $bodyJson['error']['message'];
+            }
+
+            return response()->json([
+                'error' => [
+                    'message' => $openrouterMessage ?: 'AI request failed',
+                    'details' => $bodyJson ?: $resp->body(),
+                ]
+            ], $resp->status());
         }
 
         return response()->json($resp->json());
@@ -47,8 +64,10 @@ class OpenAIProxyController extends Controller
 
         $apiKey = config('services.openrouter.key');
 
+        $model = config('services.openrouter.default_model') ?: $request->input('model', 'deepseek/deepseek-r1-0528:free');
+
         $payload = [
-            'model' => $request->input('model', 'deepseek/deepseek-r1-distill-llama-70b:free'),
+            'model' => $model,
             'messages' => $request->input('messages'),
         ];
 
@@ -56,7 +75,15 @@ class OpenAIProxyController extends Controller
             ->post($this->base . '/chat/completions', $payload);
 
         if ($resp->failed()) {
-            return response()->json(['error' => 'AI request failed', 'details' => $resp->body()], 500);
+            $bodyJson = $resp->json();
+            \Log::error('OpenRouter API error (summarize)', ['status' => $resp->status(), 'body' => $resp->body()]);
+            $openrouterMessage = is_array($bodyJson) && isset($bodyJson['error']['message']) ? $bodyJson['error']['message'] : null;
+            return response()->json([
+                'error' => [
+                    'message' => $openrouterMessage ?: 'AI request failed',
+                    'details' => $bodyJson ?: $resp->body(),
+                ]
+            ], $resp->status());
         }
 
         return response()->json($resp->json());
@@ -76,7 +103,7 @@ class OpenAIProxyController extends Controller
         $prompt = "A {$request->age} month old {$request->gender} baby has the following growth status:\n{$request->status}. What should the parent do? Give a short, practical, and empathetic recommendation.";
 
         $payload = [
-            'model' => $request->input('model', 'deepseek/deepseek-r1-distill-llama-70b:free'),
+            'model' => config('services.openrouter.default_model') ?: $request->input('model', 'deepseek/deepseek-r1-0528:free'),
             'messages' => [
                 ['role' => 'system', 'content' => 'You are an expert pediatric assistant.'],
                 ['role' => 'user', 'content' => $prompt],
@@ -87,7 +114,15 @@ class OpenAIProxyController extends Controller
             ->post($this->base . '/chat/completions', $payload);
 
         if ($resp->failed()) {
-            return response()->json(['error' => 'AI request failed', 'details' => $resp->body()], 500);
+            $bodyJson = $resp->json();
+            \Log::error('OpenRouter API error (recommendation)', ['status' => $resp->status(), 'body' => $resp->body()]);
+            $openrouterMessage = is_array($bodyJson) && isset($bodyJson['error']['message']) ? $bodyJson['error']['message'] : null;
+            return response()->json([
+                'error' => [
+                    'message' => $openrouterMessage ?: 'AI request failed',
+                    'details' => $bodyJson ?: $resp->body(),
+                ]
+            ], $resp->status());
         }
 
         return response()->json($resp->json());
