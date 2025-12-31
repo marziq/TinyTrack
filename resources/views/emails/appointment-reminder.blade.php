@@ -21,10 +21,9 @@
             <p>
                 <strong>Date:</strong> {{ \Carbon\Carbon::parse($appointment->appointmentDate)->format('F j, Y') }}<br>
                 <strong>Time:</strong> {{ \Carbon\Carbon::parse($appointment->appointmentTime)->format('g:i A') }}<br>
-                <strong>Purpose:</strong> {{ $appointment->purpose ?? '' }}
+                <strong>Purpose:</strong> {{ ucfirst($appointment->purpose ?? '') }}
             </p>
 
-            <p>If you need to reschedule, please contact us.</p>
         </div>
 
         <div class="footer">

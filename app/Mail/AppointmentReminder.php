@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 
 class AppointmentReminder extends Mailable
@@ -43,7 +44,8 @@ class AppointmentReminder extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your Appointment Reminder', // <-- Set email subject
+            from: new Address('support@tinytrack.com', 'TinyTrack Support'),
+            subject: 'Your Appointment Reminder',
         );
     }
 

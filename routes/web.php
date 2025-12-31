@@ -1,19 +1,23 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BabyController;
-use App\Http\Controllers\GrowthController;
-use App\Http\Controllers\NotificationsController;
-use App\Http\Controllers\MilestoneController;
-use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\VaccinationController;
 use App\Models\Baby;
+use App\Models\Appointment;
+use App\Mail\SendReminder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BabyController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GrowthController;
+use App\Http\Controllers\MilestoneController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\FavoriteTipController;
 use App\Http\Controllers\OpenAIProxyController;
+use App\Http\Controllers\VaccinationController;
+use App\Http\Controllers\NotificationsController;
+use App\Mail\AppointmentReminder;
 
 // Public routes
 Route::get('/', function () {
@@ -170,3 +174,45 @@ Route::get('/appointments/baby/{babyId}', [AppointmentController::class, 'getApp
 // Vaccination routes
 Route::get('/vaccinations/baby/{babyId}', [VaccinationController::class, 'getVaccinationsByBaby'])->name('vaccinations.by.baby');
 Route::post('/vaccinations/{id}/toggle', [VaccinationController::class, 'toggle'])->name('vaccinations.toggle');
+
+Route::get('/send-reminder', function () {
+    $message = "This is a test appointment reminder email.";
+    try {
+        if (Auth::check()) {
+            $recipient = Auth::user()->email;
+        } else {
+            return response('Not authenticated. Please log in to send a test reminder.', 401);
+        }
+
+        Mail::to($recipient)->send(new SendReminder($message));
+        return 'Reminder email sent';
+    } catch (\Throwable $e) {
+        \Log::error('Send reminder failed: '.$e->getMessage());
+        return response('Failed to send: '.$e->getMessage(), 500);
+    }
+});
+
+Route::get('/send-appointment-reminder', function () {
+    $appointment = Appointment::with(['baby', 'user'])->first();
+    if (! $appointment) {
+        return response('No appointment found', 404);
+    }
+
+    if (Auth::check()) {
+        $recipient = Auth::user()->email;
+        $user = Auth::user();
+    } elseif ($appointment->user && $appointment->user->email) {
+        $recipient = $appointment->user->email;
+        $user = $appointment->user;
+    } else {
+        return response('No recipient found for this appointment', 400);
+    }
+
+    try {
+        Mail::to($recipient)->send(new AppointmentReminder($appointment, $user ?? null));
+        return 'Appointment reminder sent to '.$recipient;
+    } catch (\Throwable $e) {
+        \Log::error('Send appointment reminder failed: '.$e->getMessage());
+        return response('Failed to send: '.$e->getMessage(), 500);
+    }
+});
