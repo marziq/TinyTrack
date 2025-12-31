@@ -444,10 +444,30 @@
 
         <!-- Dashboard Content -->
         <div class="dashboard-content">
+            @if(session('status'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('status') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2>Notifications</h2>
-                <!-- Create Notification Button -->
-                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNotificationModal">Create Notification</a>
+                <div>
+                    <!-- Reminder Button: runs artisan command -->
+                    <form action="{{ route('admin.run-reminders') }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-secondary me-2" style="background-color: #0daa4f !important ;" onclick="return confirm('Run appointment reminder job now?')">Run Reminders</button>
+                    </form>
+
+                    <!-- Create Notification Button -->
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNotificationModal">Create Notification</a>
+                </div>
 
                 <!-- Create Notification Modal -->
                 <div class="modal fade" id="createNotificationModal" tabindex="-1" aria-labelledby="createNotificationModalLabel" aria-hidden="true">

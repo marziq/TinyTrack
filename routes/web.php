@@ -2,11 +2,11 @@
 
 use App\Models\Baby;
 use App\Models\Appointment;
-use App\Mail\SendReminder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\BabyController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
@@ -18,6 +18,8 @@ use App\Http\Controllers\OpenAIProxyController;
 use App\Http\Controllers\VaccinationController;
 use App\Http\Controllers\NotificationsController;
 use App\Mail\AppointmentReminder;
+use Illuminate\Support\Facades\Schema;
+
 
 // Public routes
 Route::get('/', function () {
@@ -77,6 +79,25 @@ Route::get('admin/users', [AdminController::class, 'usersAdmin'])->name('users-a
 Route::delete('admin/users/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
 Route::put('/admin/users/{user}', [AdminController::class, 'update'])->name('admin.users.update');
 Route::get('/admin/messages', [NotificationsController::class, 'index'])->name('messages-admin');
+
+Route::post('/admin/run-reminders', function (Request $request) {
+    if (! Auth::check()) {
+        abort(403);
+    }
+
+    // Optional: restrict to admin email if desired
+    if (Auth::user()->email !== 'support@tinytrack.com') {
+        abort(403);
+    }
+
+    try {
+        Artisan::call('app:send-appointment-reminders');
+        return redirect()->back()->with('status', 'Appointment reminders dispatched.');
+    } catch (\Throwable $e) {
+        \Log::error('Run reminders failed: '.$e->getMessage());
+        return redirect()->back()->with('error', 'Failed to dispatch reminders.');
+    }
+})->name('admin.run-reminders')->middleware('auth');
 
 //admin routes end
 
@@ -174,25 +195,6 @@ Route::get('/appointments/baby/{babyId}', [AppointmentController::class, 'getApp
 // Vaccination routes
 Route::get('/vaccinations/baby/{babyId}', [VaccinationController::class, 'getVaccinationsByBaby'])->name('vaccinations.by.baby');
 Route::post('/vaccinations/{id}/toggle', [VaccinationController::class, 'toggle'])->name('vaccinations.toggle');
-
-Route::get('/send-reminder', function () {
-    $message = "This is a test appointment reminder email.";
-    try {
-        if (Auth::check()) {
-            $recipient = Auth::user()->email;
-        } else {
-            return response('Not authenticated. Please log in to send a test reminder.', 401);
-        }
-
-        Mail::to($recipient)->send(new SendReminder($message));
-        return 'Reminder email sent';
-    } catch (\Throwable $e) {
-        \Log::error('Send reminder failed: '.$e->getMessage());
-        return response('Failed to send: '.$e->getMessage(), 500);
-    }
-});
-
-use Illuminate\Support\Facades\Schema;
 
 Route::get('/send-appointment-reminder', function () {
     if (! Auth::check()) {
