@@ -453,7 +453,8 @@
                     <button class="profile-btn" type="button" id="accountDropdown">
                         <div class="profile-img-container">
                             @if (Auth::check())
-                                <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
+                                {{-- Use stored asset if user uploaded a profile photo (profile_photo_path), otherwise fall back to profile_photo_url --}}
+                                <img src="{{ Auth::user()->profile_photo_path ? asset('storage/' . Auth::user()->profile_photo_path) : Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
                             @else
                                 <script>
                                     window.location.href = "{{ route('login') }}";  // Redirect to login page
