@@ -11,8 +11,8 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="card h-100 shadow-sm img-border-radius border-0" style="border-radius:20px; overflow:hidden;">
                             <div class="card-body text-center p-4" style="background: linear-gradient(to right, #c1c8e4, #c4fff9)">
-                                <div class="mx-auto bg-white rounded-circle d-flex align-items-center justify-content-center" style="width:100px;height:100px;border:4px dotted #393d72;">
-                                    <img src="img/doctor-maimunah.jpg" class="rounded-circle" style="width:92px;height:92px;" alt="">
+                                <div class="mx-auto bg-white rounded-circle d-flex align-items-center justify-content-center" style="width:200px;height:200px;border:4px dotted #393d72;">
+                                    <img src="img/doctor-maimunah.jpg" class="rounded-circle" style="width:200px;height:200px;" alt="">
                                 </div>
                                 <h5 class="mt-3 mb-1 text-dark">Dr. Maimunah</h5>
                                 <p class="text-muted small mb-3">Pediatrician</p>
@@ -24,8 +24,8 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="card h-100 shadow-sm img-border-radius border-0" style="border-radius:20px; overflow:hidden;">
                             <div class="card-body text-center p-4" style="background: linear-gradient(to right, #c1c8e4, #c4fff9)">
-                                <div class="mx-auto bg-white rounded-circle d-flex align-items-center justify-content-center" style="width:100px;height:100px;border:4px dotted #393d72;">
-                                    <img src="img/rina.jpg" class="rounded-circle" style="width:92px;height:92px;" alt="">
+                                <div class="mx-auto bg-white rounded-circle d-flex align-items-center justify-content-center" style="width:200px;height:200px;">
+                                    <img src="img/rina.jpg" class="rounded-circle" style="width:200px;height:200px;" alt="">
                                 </div>
                                 <h5 class="mt-3 mb-1 text-dark">Rina</h5>
                                 <p class="text-muted small mb-3">Parent</p>
@@ -37,8 +37,8 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="card h-100 shadow-sm img-border-radius border-0" style="border-radius:20px; overflow:hidden;">
                             <div class="card-body text-center p-4" style="background: linear-gradient(to right, #c1c8e4, #c4fff9)">
-                                <div class="mx-auto bg-white rounded-circle d-flex align-items-center justify-content-center" style="width:100px;height:100px;border:4px dotted #393d72;">
-                                    <img src="img/nurse.webp" class="rounded-circle" style="width:92px;height:92px;" alt="">
+                                <div class="mx-auto bg-white rounded-circle d-flex align-items-center justify-content-center" style="width:200px;height:200px;border:4px dotted #393d72;">
+                                    <img src="img/nurse.webp" class="rounded-circle" style="width:200px;height:200px;" alt="">
                                 </div>
                                 <h5 class="mt-3 mb-1 text-dark">Nurse Siti</h5>
                                 <p class="text-muted small mb-3">Nurse</p>
@@ -50,8 +50,8 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="card h-100 shadow-sm img-border-radius border-0" style="border-radius:20px; overflow:hidden;">
                             <div class="card-body text-center p-4" style="background: linear-gradient(to right, #c1c8e4, #c4fff9)">
-                                <div class="mx-auto bg-white rounded-circle d-flex align-items-center justify-content-center" style="width:100px;height:100px;border:4px dotted #393d72;">
-                                    <img src="img/nurse.webp" class="rounded-circle" style="width:92px;height:92px;" alt="">
+                                <div class="mx-auto bg-white rounded-circle d-flex align-items-center justify-content-center" style="width:200px;height:200px;border:4px dotted #393d72;">
+                                    <img src="img/nurse.webp" class="rounded-circle" style="width:200px;height:200px;" alt="">
                                 </div>
                                 <h5 class="mt-3 mb-1 text-dark">Nurse Rafidah</h5>
                                 <p class="text-muted small mb-3">Nurse</p>
