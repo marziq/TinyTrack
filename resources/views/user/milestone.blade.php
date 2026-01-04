@@ -767,7 +767,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="card" style="max-width: 500px; margin: 0 auto 32px auto; padding: 32px 24px; border-radius: 18px; box-shadow: 0 4px 16px rgba(25,118,210,0.10);">
+            <div class="card" style="max-width: 800px; margin: 0 auto 32px auto; padding: 32px 24px; border-radius: 18px; box-shadow: 0 4px 16px rgba(25,118,210,0.10);">
                 <h3 style="color:#1976d2; font-weight:bold; margin-bottom: 18px;">Progress Overview</h3>
                 <div id="progressContent">
                     <div style="text-align:center; color:#888; font-size:18px; padding:32px 0;">Who you wanna see progress?</div>
@@ -785,23 +785,23 @@
                     </select>
                 </div>
                 <!-- PHYSICAL CARD -->
-                <div class="card" style="padding: 24px 18px; border-radius: 14px;">
+                <div class="card" style="padding: 24px 18px; border-radius: 14px; width: 100%;">
                     <h3 style="color:#FF69B4; font-weight:bold; margin-bottom: 18px;">Physical</h3>
-                    <div class="skills-horizontal" id="physicalSkills" style="display: flex; gap: 18px; overflow-x: auto; padding-bottom: 8px;">
+                    <div class="skills-horizontal" id="physicalSkills" style="display: flex; gap: 58px; overflow-x: auto; padding-bottom: 8px; width: 100%; justify-content: center;">
                         <!-- Skill groups will be injected here -->
                     </div>
                 </div>
                 <!-- COGNITIVE CARD -->
-                <div class="card" style="padding: 24px 18px; border-radius: 14px;">
+                <div class="card" style="padding: 24px 18px; border-radius: 14px; width: 100%;">
                     <h3 style="color:#008000 !important; font-weight:bold; margin-bottom: 18px;">Cognitive</h3>
-                    <div class="skills-horizontal" id="cognitiveSkills" style="display: flex; gap: 18px; overflow-x: auto; padding-bottom: 8px;">
+                    <div class="skills-horizontal" id="cognitiveSkills" style="display: flex; gap: 58px; overflow-x: auto; padding-bottom: 8px; width: 100%; justify-content: center;">
                         <!-- Skill groups will be injected here -->
                     </div>
                 </div>
                 <!-- SOCIAL CARD -->
-                <div class="card" style="padding: 24px 18px; border-radius: 14px;">
+                <div class="card" style="padding: 24px 18px; border-radius: 14px; width: 100%;">
                     <h3 style="color:#ad9201; font-weight:bold; margin-bottom: 18px;">Social</h3>
-                    <div class="skills-horizontal" id="socialSkills" style="display: flex; gap: 18px; overflow-x: auto; padding-bottom: 8px;">
+                    <div class="skills-horizontal" id="socialSkills" style="display: flex; gap: 58px; overflow-x: auto; padding-bottom: 8px; width: 100%; justify-content: center;">
                         <!-- Skill groups will be injected here -->
                     </div>
                 </div>
