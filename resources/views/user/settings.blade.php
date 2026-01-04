@@ -157,19 +157,123 @@
 
         .notification-badge {
             position: absolute;
-            top: 0;
-            right: 0;
+            top: -4px;
+            right: -6px;
             background-color: #e74c3c;
             color: white;
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: bold;
         }
+
+        /* Bigger bell icon for the redesigned notification */
+        .notification-btn i {
+            font-size: 22px; /* increase bell size */
+            color: #555;
+        }
+
+        /* Notification Popup Styles — redesigned */
+        .notification-popup {
+            position: absolute;
+            top: 44px;
+            right: 0;
+            width: 560px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(20,30,60,0.12);
+            z-index: 1001;
+            padding: 12px;
+            overflow: hidden;
+        }
+
+        .notification-popup .popup-header {
+            padding: 8px 12px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .notification-popup .popup-header h4 {
+            margin:0;
+            font-size:18px;
+            color:#0f172a;
+        }
+
+        .notification-list {
+            list-style: none;
+            margin: 0;
+            padding: 8px 4px;
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px;
+            border-radius: 10px;
+            background: transparent;
+            transition: background .12s, transform .06s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            background: #fbfdff;
+            transform: translateY(-2px);
+        }
+
+        .notification-item.tint {
+            background: #f1fbff; /* subtle tint */
+        }
+
+        .notification-item + .notification-item {
+            margin-top: 6px;
+        }
+
+        .notif-avatar {
+            width:44px;
+            height:44px;
+            border-radius:50%;
+            overflow:hidden;
+            flex: 0 0 44px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(16,24,40,0.08);
+        }
+
+        .notif-avatar img{ width:100%; height:100%; object-fit:cover; }
+
+        .notif-body { flex:1; min-width:0 }
+
+        .notif-title { font-weight:700; color:#0f172a; margin-bottom:4px; font-size:14px }
+        .notif-message { color:#475569; font-size:13px; margin-bottom:8px; max-height:36px; overflow:hidden; text-overflow:ellipsis }
+
+        .notif-meta { color:#94a3b8; font-size:12px; display:flex; gap:8px; align-items:center }
+
+        /* Dot cue for unread */
+        .notif-dot {
+            width:10px;
+            height:10px;
+            border-radius:50%;
+            background:#06b6d4;
+            position:absolute;
+            left:8px;
+            top:18px;
+            box-shadow: 0 0 0 4px rgba(6,182,212,0.06);
+        }
+
+        .no-notification { padding: 18px; text-align:center; color:#64748b }
+
+        /* scrollbar styling */
+        .notification-list::-webkit-scrollbar{ width:8px }
+        .notification-list::-webkit-scrollbar-thumb{ background:#e2e8f0; border-radius:8px }
 
         /* Profile Dropdown */
         .dropdown {
@@ -384,39 +488,6 @@
                 margin-left: auto;
             }
         }
-        /* Notification Popup Styles */
-        .notification-popup {
-            position: absolute;
-            top: 35px;
-            right: 0;
-            min-width: 260px;
-            background: #fff;
-            border: 1px solid #e3f2fd;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            z-index: 1001;
-            padding: 10px 0;
-        }
-        .notification-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .notification-item {
-            padding: 10px 16px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .notification-item:last-child {
-            border-bottom: none;
-        }
-        .no-notification {
-            padding: 16px;
-            text-align: center;
-            color: #888;
-            font-size: 14px;
-        }
 
         /* Settings Menu Card Styling */
         /* Make the menu a natural column that doesn't force large fixed height and allows consistent gaps */
@@ -583,18 +654,40 @@
             <h1 style="font-weight: bold">Settings</h1>
             <div class="topbar-right">
                 <!-- Notification Icon -->
-                 <div class="notification-icon" id="notificationBell" style="position: relative;">
-                    <i class="fas fa-bell"></i>
-                    @if($unreadCount > 0)
-                        <span class="notification-badge">{{ $unreadCount }}</span>
-                    @endif
+                <div class="notification-wrapper" style="position: relative;">
+                    <button id="notificationBell" class="notification-btn" aria-expanded="false" style="background:none;border:none;padding:6px 8px;cursor:pointer;color:inherit;">
+                        <i class="fas fa-bell"></i>
+                        @if($unreadCount > 0)
+                            <span class="notification-badge">{{ $unreadCount }}</span>
+                        @endif
+                    </button>
+
                     <div id="notificationPopup" class="notification-popup" style="display: none;">
+                        <div class="popup-header">
+                            <h4>Notifications</h4>
+                            <button id="markAllRead" class="btn btn-sm" style="background:none;border:none;color:#64748b;font-size:13px;padding:6px;">Mark all read</button>
+                        </div>
+
                         <ul class="notification-list">
                             @forelse($userNotifications as $notif)
-                                <li class="notification-item {{ $notif->status == 'unread' ? 'fw-bold' : '' }}" data-id="{{ $notif->notification_id }}">
-                                    <strong>{{ $notif->title }}</strong><br>
-                                    <span>{{ $notif->message }}</span>
-                                    <div style="font-size: 11px; color: #888;">{{ $notif->dateSent }}</div>
+                                <li class="notification-item {{ $notif->status == 'unread' ? 'tint' : '' }}" data-id="{{ $notif->notification_id }}">
+                                    <div class="notif-avatar">
+                                        <img src="{{ $notif->avatar ?? asset('storage/baby-photos/default-baby.png') }}" alt="avatar">
+                                    </div>
+
+                                    <div class="notif-body">
+                                        <div class="notif-title">{{ $notif->title }}</div>
+                                        <div class="notif-message">{{ \Illuminate\Support\Str::limit($notif->message, 120) }}</div>
+                                        <div class="notif-meta">
+                                            <span>{{ $notif->category ?? '' }}</span>
+                                            @if(!empty($notif->category))<span>•</span>@endif
+                                            <span>{{ $notif->dateSent }}</span>
+                                        </div>
+                                    </div>
+
+                                    @if($notif->status == 'unread')
+                                        <div class="notif-dot" aria-hidden="true"></div>
+                                    @endif
                                 </li>
                             @empty
                                 <li class="no-notification">No notifications.</li>
