@@ -832,7 +832,7 @@
                             @forelse($userNotifications as $notif)
                                 <li class="notification-item {{ $notif->status == 'unread' ? 'tint' : '' }}" data-id="{{ $notif->notification_id }}">
                                     <div class="notif-avatar">
-                                        <img src="{{ $notif->avatar ?? asset('storage/baby-photos/default-baby.png') }}" alt="avatar">
+                                        <img src="{{ $notif->avatar ?? asset('storage/baby-photos/tinytrack-logo.png') }}" alt="avatar">
                                     </div>
 
                                     <div class="notif-body">
