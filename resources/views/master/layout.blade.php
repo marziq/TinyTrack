@@ -103,7 +103,7 @@
                             <div class="dropdown">
                                 <button class="profile-btn dropdown-toggle d-flex align-items-center gap-2" type="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background-image: none;">
                                     <div class="profile-img-container">
-                                        <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
+                                        <img src="{{ Auth::user()->profile_photo_path ? asset('storage/' . Auth::user()->profile_photo_path) : Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
                                     </div>
                                     <i class="fas fa-chevron-down text-muted arrow-icon"></i>
                                 </button>
