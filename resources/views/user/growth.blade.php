@@ -572,7 +572,7 @@
             order: 4; /* Bottom */
             flex-basis: 100%;
             text-align: center;
-            margin-top: 20px;
+            margin-top: -10px;
         }
 
         .input-row {
@@ -916,7 +916,7 @@
                             <div class="input-group">
                                 <label for="growthMonth">Growth Month</label>
                                 <div class="input-wrapper">
-                                    <input type="number" id="growthMonth" name="growthMonth" class="form-control" placeholder="Enter growth month" step="1" required>
+                                    <input type="number" id="growthMonth" name="growthMonth" class="form-control" placeholder="Enter month" step="1" required>
                                 </div>
                             </div>
 

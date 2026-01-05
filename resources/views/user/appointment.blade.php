@@ -793,12 +793,18 @@
                 <div class="calendar">
                     <h4>Select Appointment Time</h4>
                     <div class="time-options">
+                        <button class="appointment-time-btn">7:00 AM</button>
+                        <button class="appointment-time-btn">8:00 AM</button>
                         <button class="appointment-time-btn">9:00 AM</button>
                         <button class="appointment-time-btn">10:00 AM</button>
                         <button class="appointment-time-btn">11:00 AM</button>
+                        <button class="appointment-time-btn">12:00 PM</button>
+                        <button class="appointment-time-btn">1:00 PM</button>
                         <button class="appointment-time-btn">2:00 PM</button>
                         <button class="appointment-time-btn">3:00 PM</button>
                         <button class="appointment-time-btn">4:00 PM</button>
+                        <button class="appointment-time-btn">5:00 PM</button>
+
                     </div>
                 </div>
             </div>

@@ -1086,7 +1086,7 @@
                 <div class="chart-container">
                     <h3 class="chart-title" id="growthChartTitle">Growth</h3>
                     <div style="position: absolute; bottom: 20px; right: 30px; z-index:3; display:flex; gap:8px;">
-                        <button id="toggleHeight" class="btn btn-sm" style="background:#43a047;color:#fff;border-radius:8px;">Height</button>
+                        <button id="toggleHeight" class="btn btn-sm" style="background:#6D94C5;color:#fff;border-radius:8px;">Height</button>
                         <button id="toggleWeight" class="btn btn-sm" style="background:#FC8EAC;color:#fff;border-radius:8px;">Weight</button>
                     </div>
                     <div class="chart-column">
@@ -1229,7 +1229,7 @@
                                         $babyOptions = ['baby1.png','baby2.png','baby3.png','baby4.png','baby5.png','baby6.png'];
                                     @endphp
 
-                                    <div id="babyOptionsGallery" style="display:flex; gap:12px; overflow-x:auto; padding:8px 4px;">
+                                    <div id="babyOptionsGallery" style="display:flex; gap:12px; overflow-x:auto; padding:18px 4px;">
                                         @foreach($babyOptions as $opt)
                                             <label class="gallery-item" style="flex:0 0 auto; cursor:pointer;">
                                                 <input type="radio" name="baby_photo_option" class="d-none" value="{{ $opt }}">
@@ -1238,8 +1238,10 @@
                                         @endforeach
                                     </div>
 
-                                    <div id="photoPreview" class="mt-3 text-center"></div>
+                                    <div id="photoPreview" style="margin-top:3.5rem !important;" class="text-center"></div>
+                                    <br>
                                     <small class="form-text text-muted">Select one of the provided baby images. Parents can't upload personal photos.</small>
+                                    <br>
                                 </div>
 
                                 <div class="row">
@@ -1286,7 +1288,13 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-primary">Save</button>
-                                <button type="button" class="btn btn-danger" id="deleteBabyButton" onclick="deleteSelectedBaby()" style="display: none;">Delete</button>
+                                <button type="button"
+                                        class="btn btn-danger"
+                                        id="deleteBabyButton"
+                                        onclick="deleteSelectedBaby()"
+                                        style="display: none;">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -1322,7 +1330,7 @@
                 }
             });
 
-            const GREEN = '#43a047';
+            const BLUE = '#80A1BA';
             const PINK = '#FC8EAC';
 
             function renderGrowth(type, labels, values) {
@@ -1330,8 +1338,8 @@
                 growthChart.data.datasets = [{
                     label: type === 'height' ? 'Height (cm)' : 'Weight (g)',
                     data: values,
-                    borderColor: type === 'height' ? GREEN : PINK,
-                    backgroundColor: type === 'height' ? 'rgba(67,160,71,0.12)' : 'rgba(252,142,172,0.15)',
+                    borderColor: type === 'height' ? BLUE : PINK,
+                    backgroundColor: type === 'height' ? '#6D94C5' : 'rgba(252,142,172,0.15)',
                     borderWidth: 2,
                     tension: 0.4,
                     fill: true

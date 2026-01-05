@@ -432,14 +432,14 @@
 
         .card {
             /* solid card background matching the light-blue theme */
-            background: #e3f2fd !important;
+            background: #f8fbfd !important;
             padding: 25px;
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(13,71,161,0.06);
-            border: 1px solid rgba(25,118,210,0.08);
+            border: none; /* removed outer border to eliminate inner divider line (override dark-mode.css) */
             transition: all 0.3s ease;
             /* Make card wider but still responsive: cap at 1000px and center */
-            width: min(100%, 1000px);
+            width: min(150%, 1000px);
             max-width: 1000px;
             margin: 0 auto;
         }
@@ -452,7 +452,6 @@
         /* Card header and body styling to match site accent */
         .card-header {
             background: transparent;
-            border-bottom: 1px solid rgba(25,118,210,0.06);
             padding: 14px 0 18px 0;
         }
 
@@ -460,6 +459,7 @@
             background: transparent;
             padding: 0;
             color: #39424a;
+            border: none !important; /* ensure no inner border when dark-mode.css sets one */
         }
 
         .card h3,
