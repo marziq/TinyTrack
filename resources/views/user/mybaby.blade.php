@@ -1288,13 +1288,13 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-primary">Save</button>
-                                <button type="button"
-                                        class="btn btn-danger"
-                                        id="deleteBabyButton"
-                                        onclick="deleteSelectedBaby()"
-                                        style="display: none;">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
+                            <button type="button"
+                                    class="btn btn-danger"
+                                    id="deleteBabyButton"
+                                    onclick="deleteSelectedBaby()"
+                                    style="display: none;">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                             </div>
                         </form>
                     </div>
@@ -1339,7 +1339,7 @@
                     label: type === 'height' ? 'Height (cm)' : 'Weight (g)',
                     data: values,
                     borderColor: type === 'height' ? BLUE : PINK,
-                    backgroundColor: type === 'height' ? '#6D94C5' : 'rgba(252,142,172,0.15)',
+                    backgroundColor: type === 'height' ? 'rgba(109, 148, 197, 0.15)' : 'rgba(252,142,172,0.15)',
                     borderWidth: 2,
                     tension: 0.4,
                     fill: true
