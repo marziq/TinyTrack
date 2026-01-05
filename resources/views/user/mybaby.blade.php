@@ -1049,7 +1049,16 @@
 
         @endforeach
         </select>
+        <button id="generatePdfBtn" class="btn btn-primary" style="margin-left: 16px; vertical-align: middle;" onclick="generatePDFReport()">
+            <i class="fas fa-file-pdf"></i>&nbsp; Generate Report
+        </button>
         <hr>
+
+        <!-- Hidden canvases used to render charts for PDF export -->
+        <div id="pdfHiddenElements" style="position: absolute; left: -9999px; top: -9999px; width: 1200px; height: 800px; overflow: hidden;">
+            <canvas id="heightReportCanvas" width="1200" height="600"></canvas>
+            <canvas id="weightReportCanvas" width="1200" height="600"></canvas>
+        </div>
         <div id="babyDashboard" style="display: none;">
             <h1 class="babyh1" id="selectedBabyProfileHeading">Select a baby to view their profile</h1>
                 <div class="dashboard-grid">
@@ -1307,6 +1316,255 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- html2canvas and jsPDF for client-side PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        async function generatePDFReport() {
+            const btn = document.getElementById('generatePdfBtn');
+            const selector = document.getElementById('babySelector');
+            const selectedOption = selector && selector.options[selector.selectedIndex];
+            if (!selectedOption || !selectedOption.value) {
+                alert('Please select a baby to generate the report.');
+                return;
+            }
+
+            const babyId = selectedOption.value;
+            const babyName = selectedOption.dataset.name || selectedOption.text || 'baby';
+
+            try {
+                btn.disabled = true;
+                btn.innerText = 'Generating...';
+
+                // Ensure growth data is loaded for selected baby
+                if (!window._lastGrowthData || window._lastGrowthData.babyId != babyId) {
+                    if (typeof window.loadGrowthChart === 'function') {
+                        await window.loadGrowthChart(babyId);
+                    }
+                }
+
+                const data = window._lastGrowthData;
+                if (!data) {
+                    alert('No growth data available to build the report.');
+                    return;
+                }
+
+                // Render height & weight charts into hidden canvases
+                if (window._heightReportChart) { try { window._heightReportChart.destroy(); } catch(e){} }
+                if (window._weightReportChart) { try { window._weightReportChart.destroy(); } catch(e){} }
+
+                const hCtx = document.getElementById('heightReportCanvas').getContext('2d');
+                const wCtx = document.getElementById('weightReportCanvas').getContext('2d');
+
+                window._heightReportChart = new Chart(hCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.labels || [],
+                        datasets: [{
+                            label: 'Height (cm)',
+                            data: data.height || [],
+                            borderColor: '#80A1BA',
+                            backgroundColor: 'rgba(128,161,186,0.12)',
+                            fill: true,
+                            pointRadius: 3
+                        }]
+                    },
+                    options: { responsive: false, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+                });
+
+                window._weightReportChart = new Chart(wCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.labels || [],
+                        datasets: [{
+                            label: 'Weight (kg)',
+                            data: data.weight || [],
+                            borderColor: '#FC8EAC',
+                            backgroundColor: 'rgba(252,142,172,0.12)',
+                            fill: true,
+                            pointRadius: 3
+                        }]
+                    },
+                    options: { responsive: false, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+                });
+
+                // wait briefly for charts to render
+                await new Promise(r => setTimeout(r, 450));
+
+                const heightDataUrl = document.getElementById('heightReportCanvas').toDataURL('image/png', 1.0);
+                const weightDataUrl = document.getElementById('weightReportCanvas').toDataURL('image/png', 1.0);
+
+                // Try to capture milestones section (if present) otherwise capture whole dashboard
+                const milestonesEl = document.querySelector('.milestones-container') || document.getElementById('babyDashboard');
+                let milestonesImg = null;
+                try {
+                    const canvas = await html2canvas(milestonesEl, { scale: 2 });
+                    milestonesImg = canvas.toDataURL('image/png', 1.0);
+                } catch (err) {
+                    console.warn('Failed to capture milestones for PDF', err);
+                }
+
+                // Build PDF with a balanced 2x2 quadrant layout
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 40;
+                const contentWidth = pageWidth - margin * 2;
+
+                // Header
+                pdf.setFontSize(18);
+                pdf.text(`${babyName} - Growth Report`, margin, 36);
+
+                // Calculate quadrant areas
+                const startY = 56; // top content start
+                const availableHeight = pageHeight - margin - startY;
+                const gap = 14; // gap between quadrants
+                const topHeight = Math.floor((availableHeight - gap) / 2);
+                const bottomHeight = availableHeight - topHeight - gap;
+
+                const leftWidth = Math.floor((contentWidth - gap) / 2);
+                const rightWidth = contentWidth - leftWidth - gap;
+
+                // Helper to fetch image as dataURL (may return null on CORS/auth issues)
+                async function fetchImageDataUrl(url) {
+                    return new Promise((resolve) => {
+                        if (!url) return resolve(null);
+                        const img = new Image();
+                        img.crossOrigin = 'anonymous';
+                        img.onload = function() {
+                            try {
+                                const c = document.createElement('canvas');
+                                c.width = img.width;
+                                c.height = img.height;
+                                const ctx = c.getContext('2d');
+                                ctx.drawImage(img, 0, 0);
+                                resolve(c.toDataURL('image/png'));
+                            } catch (e) { resolve(null); }
+                        };
+                        img.onerror = function() { resolve(null); };
+                        img.src = url;
+                    });
+                }
+
+                const babyPhotoUrl = selectedOption.dataset.photo || null;
+                const babyPhotoDataUrl = await fetchImageDataUrl(babyPhotoUrl);
+
+                // Top-left quadrant: baby info
+                const infoX = margin;
+                const infoY = startY;
+                const photoSize = Math.min(120, topHeight - 16);
+                if (babyPhotoDataUrl) {
+                    pdf.addImage(babyPhotoDataUrl, 'PNG', infoX, infoY, photoSize, photoSize);
+                } else {
+                    pdf.setDrawColor(200);
+                    pdf.rect(infoX, infoY, photoSize, photoSize);
+                    pdf.setFontSize(10);
+                    pdf.text('No Image', infoX + 8, infoY + Math.floor(photoSize/2));
+                }
+
+                pdf.setFontSize(12);
+                const infoTxtX = infoX + photoSize + 14;
+                let infoTy = infoY + 12;
+                pdf.text(`Name: ${selectedOption.dataset.name || ''}`, infoTxtX, infoTy);
+                infoTy += 18;
+                pdf.text(`Age: ${selectedOption.dataset.age || ''}`, infoTxtX, infoTy);
+                infoTy += 16;
+                pdf.text(`Birth Date: ${selectedOption.dataset.birthdate || ''}`, infoTxtX, infoTy);
+                infoTy += 16;
+                pdf.text(`Gender: ${selectedOption.dataset.gender || ''}`, infoTxtX, infoTy);
+                infoTy += 16;
+                pdf.text(`Ethnicity: ${selectedOption.dataset.ethnicity || ''}`, infoTxtX, infoTy);
+                infoTy += 16;
+                pdf.text(`Premature: ${selectedOption.dataset.premature == '1' ? 'Yes' : 'No'}`, infoTxtX, infoTy);
+
+                // Top-right quadrant: Height chart
+                const topRightX = margin + leftWidth + gap;
+                const topRightY = startY;
+                pdf.setFontSize(14);
+                pdf.text('Height Chart', topRightX, topRightY + 12);
+                const topRightChartY = topRightY + 18;
+                const topRightChartH = topHeight - 22;
+                pdf.addImage(heightDataUrl, 'PNG', topRightX, topRightChartY, rightWidth, topRightChartH);
+
+                // Bottom-left quadrant: Milestones table
+                const bottomLeftX = margin;
+                const bottomLeftY = startY + topHeight + gap;
+                const tableW = leftWidth;
+                const tableH = bottomHeight;
+                pdf.setFontSize(14);
+                pdf.text('Milestones Achieved', bottomLeftX, bottomLeftY + 12);
+
+                // Extract milestones rows from DOM
+                const milestoneEls = Array.from(document.querySelectorAll('.milestone-item')) || [];
+                const rows = milestoneEls.map(el => ({
+                    title: (el.querySelector('.milestone-text')?.innerText || '').trim(),
+                    date: (el.querySelector('.milestone-date')?.innerText || '').trim()
+                }));
+
+                // Table header
+                const headerStartY = bottomLeftY + 18;
+                const rowH = 18;
+                const col1X = bottomLeftX + 6;
+                const col2X = bottomLeftX + tableW - 110;
+                let curY = headerStartY + 6;
+
+                pdf.setFillColor(245,245,245);
+                pdf.rect(bottomLeftX, headerStartY - 6, tableW, rowH, 'F');
+                pdf.setFontSize(11);
+                pdf.setTextColor(40);
+                pdf.text('Milestone', col1X, curY);
+                pdf.text('Date', col2X, curY);
+                curY += rowH;
+
+                pdf.setFontSize(10);
+                for (let i=0;i<rows.length;i++){
+                    const r = rows[i];
+                    if (curY + rowH > bottomLeftY + tableH - 8) {
+                        // stop if table area is full (avoid overlapping charts)
+                        break;
+                    }
+                    if (i % 2 === 0) pdf.setFillColor(255,255,255); else pdf.setFillColor(250,250,250);
+                    pdf.rect(bottomLeftX, curY - 12, tableW, rowH, 'F');
+                    pdf.setTextColor(30);
+                    pdf.text(r.title, col1X, curY);
+                    pdf.text(r.date, col2X, curY);
+                    curY += rowH;
+                }
+
+                // Bottom-right quadrant: Weight chart
+                const bottomRightX = topRightX;
+                const bottomRightY = bottomLeftY;
+                pdf.setFontSize(14);
+                pdf.text('Weight Chart', bottomRightX, bottomRightY + 12);
+                const bottomRightChartY = bottomRightY + 18;
+                const bottomRightChartH = bottomHeight - 22;
+                pdf.addImage(weightDataUrl, 'PNG', bottomRightX, bottomRightChartY, rightWidth, bottomRightChartH);
+
+                // Additional pages with full charts
+                pdf.addPage();
+                pdf.setFontSize(18);
+                pdf.text('Height Chart (Full)', margin, 36);
+                pdf.addImage(heightDataUrl, 'PNG', margin, 56, contentWidth, pageHeight - 120);
+
+                pdf.addPage();
+                pdf.setFontSize(18);
+                pdf.text('Weight Chart (Full)', margin, 36);
+                pdf.addImage(weightDataUrl, 'PNG', margin, 56, contentWidth, pageHeight - 120);
+
+                const filename = `${(babyName || 'baby').replace(/\s+/g, '_')}_report.pdf`;
+                pdf.save(filename);
+
+            } catch (err) {
+                console.error('Error generating PDF:', err);
+                alert('An error occurred while generating the PDF. See console for details.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-file-pdf"></i>&nbsp; Generate Report';
+            }
+        }
+    </script>
 
     <script>
         // Growth chart: single canvas that toggles between Height and Weight
