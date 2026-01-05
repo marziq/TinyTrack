@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Appointment;
 use App\Models\Notification;
+use App\Models\Vaccination;
 use App\Mail\AppointmentReminder;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
@@ -71,6 +72,52 @@ class SendAppointmentReminders extends Command
             }
         }
 
+        // --- Vaccination reminders: remind 7 days before scheduled_date ---
+        $weekFrom = Carbon::today()->addWeek()->toDateString();
+
+        $vaccinations = Vaccination::with(['baby.user'])
+                        ->whereDate('scheduled_date', $weekFrom)
+                        ->whereNull('administered_at')
+                        ->get();
+
+        if ($vaccinations->isEmpty()) {
+            $this->info('No vaccinations to remind for a week from now.');
+        } else {
+            $this->info("Found {$vaccinations->count()} vaccinations. Sending vaccination reminders...");
+        }
+
+        foreach ($vaccinations as $vaccination) {
+            $baby = $vaccination->baby;
+            $user = $baby ? ($baby->user ?? null) : null;
+
+            $babyName = $baby->name ?? 'N/A';
+            $resolvedUserId = $user->id ?? 'N/A';
+            $resolvedUserEmail = $user->email ?? 'N/A';
+            \Log::info("VaxReminder: vaccination={$vaccination->id}, baby_id={$vaccination->baby_id}, baby_name={$babyName}, resolved_user_id={$resolvedUserId}, resolved_user_email={$resolvedUserEmail}");
+
+            if ($user && !empty($user->email)) {
+                try {
+                    $this->createVaccinationInAppNotification($vaccination, $user);
+                } catch (\Exception $e) {
+                    $this->error("Error creating vaccination in-app notification for user {$user->id}: " . $e->getMessage());
+                }
+
+                try {
+                    $vaxDate = Carbon::parse($vaccination->scheduled_date)->format('D, M j, Y');
+                    $msg = "Your baby {$babyName} has a scheduled vaccination ({$vaccination->vaccine_name}) on {$vaxDate}. Please prepare accordingly.";
+                    Mail::raw($msg, function ($m) use ($user) {
+                        $m->to($user->email)->subject('Vaccination Reminder');
+                        $m->from('support@tinytrack.com', 'TinyTrack Support');
+                    });
+                    $this->info("Sent vaccination email reminder to: {$user->email}");
+                } catch (\Exception $e) {
+                    $this->error("Failed to send vaccination email to: {$user->email}. Error: " . $e->getMessage());
+                }
+            } else {
+                $this->warn("Skipping vaccination {$vaccination->id}: no associated user/email found.");
+            }
+        }
+
         $this->info('All reminders sent.');
         return 0;
     }
@@ -117,6 +164,47 @@ class SendAppointmentReminders extends Command
             $this->info("In-app notification created for user {$user->id} ({$user->email}).");
         } catch (\Exception $e) {
             $this->error("Error creating in-app notification: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Create an in-app notification for vaccination reminder
+     */
+    private function createVaccinationInAppNotification($vaccination, $user = null)
+    {
+        try {
+            $baby = $vaccination->baby;
+            $user = $user ?? ($baby ? $baby->user : null);
+
+            if (!$baby || !$user) {
+                return;
+            }
+
+            // Avoid duplicate notifications for the same day
+            $existingNotification = Notification::where('user_id', $user->id)
+                ->whereDate('dateSent', Carbon::today())
+                ->where('title', 'like', '%' . $baby->name . '%')
+                ->where('title', 'like', '%Vaccination%')
+                ->first();
+
+            if ($existingNotification) {
+                $this->info("In-app vaccination notification already exists for {$baby->name}.");
+                return;
+            }
+
+            $vaxDate = Carbon::parse($vaccination->scheduled_date)->format('D, M j, Y');
+
+            Notification::create([
+                'user_id' => $user->id,
+                'title' => "Vaccination Reminder - {$baby->name}",
+                'message' => "Your baby {$baby->name} is scheduled to receive {$vaccination->vaccine_name} on {$vaxDate}.",
+                'dateSent' => Carbon::now(),
+                'status' => 'unread'
+            ]);
+
+            $this->info("Vaccination in-app notification created for user {$user->id} ({$user->email}).");
+        } catch (\Exception $e) {
+            $this->error("Error creating vaccination in-app notification: " . $e->getMessage());
         }
     }
 }
