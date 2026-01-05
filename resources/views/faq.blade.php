@@ -35,6 +35,42 @@
                     </div>
                 </div>
                 <div class="accordion-item mb-3">
+                    <h2 class="accordion-header" id="faqHeadingEight">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseEight" aria-expanded="false" aria-controls="faqCollapseEight">
+                            Can I track multiple children with one account?
+                        </button>
+                    </h2>
+                    <div id="faqCollapseEight" class="accordion-collapse collapse" aria-labelledby="faqHeadingEight" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body" style="color: black;">
+                            Yes, TinyTrack allows you to manage profiles for multiple children under a single account, making it easy to monitor each child's growth and wellness individually.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item mb-3">
+                    <h2 class="accordion-header" id="faqHeadingTen">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseTen" aria-expanded="false" aria-controls="faqCollapseTen">
+                            Can I export my child's progress data?
+                        </button>
+                    </h2>
+                    <div id="faqCollapseTen" class="accordion-collapse collapse" aria-labelledby="faqHeadingTen" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body" style="color: black;">
+                            No, TinyTrack does not provides an option to export your child's growth and wellness data.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item mb-3">
+                    <h2 class="accordion-header" id="faqHeadingTwelve">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseTwelve" aria-expanded="false" aria-controls="faqCollapseTwelve">
+                            Does TinyTrack support reminders for appointments or vaccinations?
+                        </button>
+                    </h2>
+                    <div id="faqCollapseTwelve" class="accordion-collapse collapse" aria-labelledby="faqHeadingTwelve" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body" style="color: black;">
+                            Absolutely! You can set reminders for upcoming pediatric appointments, vaccinations, and wellness check-ins directly from your dashboard.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item mb-3">
                     <h2 class="accordion-header" id="faqHeadingThree">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseThree" aria-expanded="false" aria-controls="faqCollapseThree">
                             Is TinyTrack free to use?
@@ -43,6 +79,18 @@
                     <div id="faqCollapseThree" class="accordion-collapse collapse" aria-labelledby="faqHeadingThree" data-bs-parent="#faqAccordion">
                         <div class="accordion-body" style="color: black;">
                             Yes, TinyTrack offers free access to all its core features and expert content.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item mb-3">
+                    <h2 class="accordion-header" id="faqHeadingThirteen">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseThirteen" aria-expanded="false" aria-controls="faqCollapseThirteen">
+                            What kind of milestones can I track?
+                        </button>
+                    </h2>
+                    <div id="faqCollapseThirteen" class="accordion-collapse collapse" aria-labelledby="faqHeadingThirteen" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body" style="color: black;">
+                            TinyTrack helps you monitor physical, cognitive, emotional, and social milestones from birth through toddler years.
                         </div>
                     </div>
                 </div>
