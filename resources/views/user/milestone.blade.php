@@ -956,6 +956,9 @@
                 return `rgba(${r}, ${g}, ${b}, ${alpha})`;
             }
 
+            // base path for skill images (slug-based filenames)
+            const skillsBase = "{{ asset('img/skills') }}";
+
             payload.groups.forEach(group => {
                 const mainColor = colorMap[section] || '#1976d2';
                 const lightBg = hexToRgba(mainColor, 0.10);
@@ -980,6 +983,48 @@
                 title.textContent = group.groupTitle;
                 groupDiv.appendChild(title);
 
+                // Add optional group image immediately after the title so it appears above the stats
+                const imgEl = document.createElement('img');
+                imgEl.className = 'progress-image-top';
+                imgEl.alt = group.groupTitle + ' image';
+                imgEl.style.marginBottom = '8px';
+                imgEl.style.width = '100%';
+                imgEl.style.objectFit = 'cover';
+                // Use provided image fields if available; otherwise try PNG -> SVG -> placeholder
+                const pngPath = `${skillsBase}/${group.slug || group.id}.png`;
+                const svgPath = `${skillsBase}/${group.slug || group.id}.svg`;
+                const placeholderPath = `${skillsBase}/skill-placeholder.svg`;
+
+                function setFallbacks(el) {
+                    el.dataset.attempt = el.dataset.attempt || 'png';
+                    el.onerror = function() {
+                        if (this.dataset.attempt === 'png') {
+                            this.dataset.attempt = 'svg';
+                            this.src = svgPath;
+                        } else if (this.dataset.attempt === 'svg') {
+                            this.dataset.attempt = 'placeholder';
+                            this.src = placeholderPath;
+                        } else {
+                            this.src = placeholderPath;
+                        }
+                    };
+                }
+
+                if (group.image || group.imageUrl) {
+                    imgEl.src = group.image || group.imageUrl;
+                    // if custom URL fails, fall back to slug images then placeholder
+                    imgEl.dataset.attempt = 'custom';
+                    imgEl.onerror = function() {
+                        this.dataset.attempt = 'png';
+                        this.src = pngPath;
+                        setFallbacks(this);
+                    };
+                } else {
+                    imgEl.src = pngPath;
+                    setFallbacks(imgEl);
+                }
+                groupDiv.appendChild(imgEl);
+
                 const sub = document.createElement('div');
                 sub.style.display = 'flex';
                 sub.style.justifyContent = 'space-between';
@@ -996,6 +1041,8 @@
                 sub.appendChild(stat);
                 sub.appendChild(percent);
                 groupDiv.appendChild(sub);
+
+                // image relocated above; kept here intentionally empty for layout clarity
 
                 const progWrap = document.createElement('div');
                 progWrap.className = 'progress mb-2';
