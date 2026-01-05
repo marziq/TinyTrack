@@ -514,12 +514,14 @@
         }
 
         .progress-image-top {
-            width: 40%;
-            height: auto;
+            width: 100%;
+            height: 140px; /* fixed consistent height for all skill images */
+            max-height: 140px;
             border-radius: 8px;
             margin: 0 auto 10px auto; /* Center the image and add spacing below */
             display: block;
             object-fit: cover;
+            background-color: #f1f5f9; /* subtle background while image loads */
         }
 
         .dropdown-content {
@@ -989,9 +991,11 @@
                 imgEl.alt = group.groupTitle + ' image';
                 imgEl.style.marginBottom = '8px';
                 imgEl.style.width = '100%';
+                imgEl.style.height = '140px';
                 imgEl.style.objectFit = 'cover';
-                // Use provided image fields if available; otherwise try PNG -> SVG -> placeholder
+                // Use provided image fields if available; otherwise try PNG -> JPG -> SVG -> placeholder
                 const pngPath = `${skillsBase}/${group.slug || group.id}.png`;
+                const jpgPath = `${skillsBase}/${group.slug || group.id}.jpg`;
                 const svgPath = `${skillsBase}/${group.slug || group.id}.svg`;
                 const placeholderPath = `${skillsBase}/skill-placeholder.svg`;
 
@@ -999,6 +1003,9 @@
                     el.dataset.attempt = el.dataset.attempt || 'png';
                     el.onerror = function() {
                         if (this.dataset.attempt === 'png') {
+                            this.dataset.attempt = 'jpg';
+                            this.src = jpgPath;
+                        } else if (this.dataset.attempt === 'jpg') {
                             this.dataset.attempt = 'svg';
                             this.src = svgPath;
                         } else if (this.dataset.attempt === 'svg') {

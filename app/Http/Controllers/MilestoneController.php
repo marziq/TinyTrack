@@ -7,6 +7,7 @@ use App\Models\Milestone;
 use App\Models\Baby;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class MilestoneController extends Controller
 {
@@ -164,8 +165,15 @@ class MilestoneController extends Controller
                 $total = $items->count();
                 $achieved = $items->where('achieved', true)->count();
 
+                // generate a slug for the group and include an image URL if present in public/img/skills
+                $slug = Str::slug($groupName);
+                $jpgPath = public_path("img/skills/{$slug}.jpg");
+                $imageUrl = file_exists($jpgPath) ? asset("img/skills/{$slug}.jpg") : null;
+
                 return [
                     'groupTitle' => $groupName,
+                    'slug' => $slug,
+                    'image' => $imageUrl,
                     'items' => $items,
                     'total' => $total,
                     'achieved' => $achieved,
