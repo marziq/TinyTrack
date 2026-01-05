@@ -851,21 +851,21 @@
                 <!-- PHYSICAL CARD -->
                 <div class="card" style="padding: 24px 18px; border-radius: 14px; width: 100%;">
                     <h3 style="color:#FF69B4; font-weight:bold; margin-bottom: 18px;">Physical</h3>
-                    <div class="skills-horizontal" id="physicalSkills" style="display: flex; gap: 58px; overflow-x: auto; padding-bottom: 8px; width: 100%; justify-content: center;">
+                    <div class="skills-horizontal" id="physicalSkills" style="display: flex; gap: 30px; overflow-x: auto; padding-bottom: 8px; width: 100%; justify-content: center;">
                         <!-- Skill groups will be injected here -->
                     </div>
                 </div>
                 <!-- COGNITIVE CARD -->
                 <div class="card" style="padding: 24px 18px; border-radius: 14px; width: 100%;">
                     <h3 style="color:#008000 !important; font-weight:bold; margin-bottom: 18px;">Cognitive</h3>
-                    <div class="skills-horizontal" id="cognitiveSkills" style="display: flex; gap: 58px; overflow-x: auto; padding-bottom: 8px; width: 100%; justify-content: center;">
+                    <div class="skills-horizontal" id="cognitiveSkills" style="display: flex; gap: 30px; overflow-x: auto; padding-bottom: 8px; width: 100%; justify-content: center;">
                         <!-- Skill groups will be injected here -->
                     </div>
                 </div>
                 <!-- SOCIAL CARD -->
                 <div class="card" style="padding: 24px 18px; border-radius: 14px; width: 100%;">
                     <h3 style="color:#ad9201; font-weight:bold; margin-bottom: 18px;">Social</h3>
-                    <div class="skills-horizontal" id="socialSkills" style="display: flex; gap: 58px; overflow-x: auto; padding-bottom: 8px; width: 100%; justify-content: center;">
+                    <div class="skills-horizontal" id="socialSkills" style="display: flex; gap: 30px; overflow-x: auto; padding-bottom: 8px; width: 100%; justify-content: center;">
                         <!-- Skill groups will be injected here -->
                     </div>
                 </div>
