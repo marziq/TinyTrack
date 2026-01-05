@@ -914,19 +914,19 @@
 
             progressDiv.innerHTML = `
                 <div style="display:flex; flex-direction:column; gap:18px;">
-                    ${renderProgressRow('Physical', 'fas fa-dumbbell', p, '#FF69B4')}
-                    ${renderProgressRow('Cognitive', 'fas fa-brain', c, '#008000')}
-                    ${renderProgressRow('Social', 'fas fa-users', s, '#ad9201')}
+                    ${renderProgressRow('Physical', 'fas fa-dumbbell', p, '#FFD8DF', '#FF69B4')}
+                    ${renderProgressRow('Cognitive', 'fas fa-brain', c, '#A8DF8E', '#008000')}
+                    ${renderProgressRow('Social', 'fas fa-users', s, '#D9C4B0', '#ad9201')}
                 </div>
             `;
         }
 
-        function renderProgressRow(title, iconClass, percent, color) {
+        function renderProgressRow(title, iconClass, percent, color, textColor) {
             return `<div style="display:flex; align-items:center; gap:16px;">
                         <span style="font-size:2rem; color: ${color}; background:#e3f2fd; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;"><i class="${iconClass}"></i></span>
                         <div style="flex:1;">
                             <div style="display:flex; align-items:center; justify-content:space-between;">
-                                <span style="font-weight:bold; color:${color};">${title}</span>
+                                <span style="font-weight:bold; color:${textColor};">${title}</span>
                                 <span style="font-size:15px; color:#1976d2; font-weight:600;">${percent}%</span>
                             </div>
                             <div class="progress" style="height: 14px; background:#e3f2fd;">
