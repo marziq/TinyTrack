@@ -496,17 +496,16 @@
             flex: 1; /* fill remaining space */
             overflow-y: auto;
             padding: 10px;
-            background: #e3f2fd;
-            border-top: 1px solid #ccc;
+            background: #a1c9e6;
             border-bottom: none;
         }
 
         .chat-input {
-            background: #e3f2fd;
+            background: #a1c9e6;
             flex-shrink: 0;
             margin: 0;
             padding: 8px; /* add slight breathing space */
-            border-top: 1px solid #ccc; /* separate from chatbox */
+            border-top: 1px solid #5f5c5c; /* separate from chatbox */
         }
 
         .chat-input .form-control {
@@ -552,8 +551,8 @@
             word-wrap: break-word;
         }
         .bot .bubble {
-            background: #678cb1;
-            color: white;
+            background: #e3f2fd;
+            color: black !important;
             border-top-left-radius: 0;
         }
         .user .bubble {
