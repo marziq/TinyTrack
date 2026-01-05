@@ -7,14 +7,12 @@
                     <div class="col-lg-7 col-md-12">
                         <h1 class="mb-3 text-white" style="font-weight: bold; font-size: 23px;">Track Your Baby's Growth with Confidence</h1>
                         <h1 class="mb-5 display-1 text-white" style="font-weight: bold; font-size: 65px !important;">All-in-One Wellness Platform for Malaysian Parents</h1>
-                        <a href="" class="btn btn-primary px-4 py-3 px-md-5  me-4 btn-border-radius b" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important; color: #4D65F9  !important;">Get Started</a>
-                        <a href="" class="btn btn-primary px-4 py-3 px-md-5 btn-border-radius" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important; color: #4D65F9  !important;">Learn More</a>
+                        <a href="{{ route('register') }}" class="btn btn-primary px-4 py-3 px-md-5  me-4 btn-border-radius b" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important; color: #4D65F9  !important;">Get Started</a>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Hero End -->
-
 
         <!-- About Start -->
         <div class="container-fluid py-5 about" style="background-color: white; !important">

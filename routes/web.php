@@ -18,6 +18,7 @@ use App\Http\Controllers\OpenAIProxyController;
 use App\Http\Controllers\VaccinationController;
 use App\Http\Controllers\NotificationsController;
 use App\Mail\AppointmentReminder;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Schema;
 
 
@@ -234,3 +235,5 @@ Route::get('/send-appointment-reminder', function () {
         return response('Failed to send: '.$e->getMessage(), 500);
     }
 });
+
+Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
