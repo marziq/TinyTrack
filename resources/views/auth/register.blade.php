@@ -353,7 +353,7 @@
                 </p>
                 <ul>
                     <li>Data Protection Officer: TinyTrack</li>
-                    <li>Email: <a href="mailto:privacy@tinytrack.example">privacy@tinytrack.example</a></li>
+                    <li>Email: <a href="mailto:privacy@tinytrack.example">privacy@tinytrack.com</a></li>
                     <li>Address: Gombak, Selangor</li>
                 </ul>
 
