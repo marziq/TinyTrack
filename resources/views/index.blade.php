@@ -402,7 +402,7 @@
                 <li><i class="fa fa-check text-primary me-2"></i> Secure data protection & user-friendly design</li>
                 </ul>
 
-                <h4 class="mt-4">📊 Comparison with Existing Apps</h4>
+                <h4 class="mt-4"  style="font-size: 20px !important">📊 Comparison with Existing Apps</h4>
                 <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -419,7 +419,7 @@
                 </tbody>
                 </table>
 
-                <h4 class="mt-4">📸 Screenshots</h4>
+                <h4 class="mt-4" style="font-size: 20px !important">📸 Screenshots</h4>
                 <div class="row">
                 <div class="col-md-4">
                     <img src="img/dashboard.png" class="img-fluid rounded shadow" alt="TinyTrack Dashboard">
