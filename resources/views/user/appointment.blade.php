@@ -568,9 +568,13 @@
         }
 
         /* Administered date cell and edit button styling */
-        td.administered-cell { display: flex; align-items: center; justify-content: flex-start; gap: 8px; }
-        .admin-date-text { flex: 1 1 auto; }
+        td.administered-cell { display: block; position: relative; padding-right: 56px; }
+        .admin-date-text { display: block; color: #6b7280; line-height: 1.4; padding: 10px 0; }
         .admin-edit-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -582,8 +586,8 @@
             border: none;
             box-shadow: 0 2px 6px rgba(25,118,210,0.2);
             cursor: pointer;
-            flex: 0 0 auto;
             padding: 0;
+            z-index: 2;
         }
         .admin-edit-btn i { color: #fff !important; }
         .admin-save-btn, .admin-cancel-btn { display: inline-flex; align-items: center; justify-content: center; padding: 6px 8px; }
@@ -643,6 +647,7 @@
         .dark .topbar h1 {
             color: #ffffff !important;
         }
+        .dark .admin-date-text { color: #cbd5e1 !important; }
         .dark select {
             color: #ffffff !important;
         }
@@ -1015,14 +1020,15 @@
                     const btnClass = isAdmin ? 'active' : '';
                     const scheduled = vaccine.scheduled_date ? (new Date(vaccine.scheduled_date)).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
                     const administeredText = vaccine.administered_at ? (new Date(vaccine.administered_at)).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Pending';
+                    const editBtnStyle = isAdmin ? '' : 'style="display:none;"';
                     const row = `
                         <tr>
                             <td>${scheduled}</td>
                             <td>${vaccine.vaccine_name}</td>
                             <td class="administered-cell">
                                 <span class="admin-date-text">${administeredText}</span>
-                                <button class="btn btn-sm btn-link p-0 ms-2 admin-edit-btn" data-id="${vaccine.id}" title="Edit administered date">
-                                    <i class="fas fa-pencil-alt text-secondary"></i>
+                                <button class="btn btn-sm p-0 admin-edit-btn" data-id="${vaccine.id}" title="Edit administered date" ${editBtnStyle}>
+                                    <i class="fas fa-pencil-alt"></i>
                                 </button>
                             </td>
                             <td style="text-align:center;">
@@ -1090,7 +1096,7 @@
                             icon.className = 'fas fa-check-circle';
                         }
 
-                        // Also update the Administered Date cell in the same row immediately
+                        // Update the Administered Date cell in the same row immediately
                         try {
                             const row = btn.closest('tr');
                             if (row) {
@@ -1098,11 +1104,32 @@
                                 // Administered Date is the 3rd column (index 2)
                                 const adminCell = tds[2];
                                 if (adminCell) {
+                                    const span = adminCell.querySelector('.admin-date-text');
                                     if (updated.administered_at) {
                                         const d = new Date(updated.administered_at);
-                                        adminCell.textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                                        const formatted = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                                        if (span) span.textContent = formatted;
+                                        else {
+                                            const newSpan = document.createElement('span');
+                                            newSpan.className = 'admin-date-text';
+                                            newSpan.textContent = formatted;
+                                            adminCell.insertBefore(newSpan, adminCell.firstChild);
+                                        }
                                     } else {
-                                        adminCell.textContent = 'Pending';
+                                        if (span) span.textContent = 'Pending';
+                                        else {
+                                            const newSpan = document.createElement('span');
+                                            newSpan.className = 'admin-date-text';
+                                            newSpan.textContent = 'Pending';
+                                            adminCell.insertBefore(newSpan, adminCell.firstChild);
+                                        }
+                                    }
+
+                                    // toggle edit button visibility based on updated status
+                                    const editBtn = adminCell.querySelector('.admin-edit-btn');
+                                    if (editBtn) {
+                                        if (updated.status === 'administered') editBtn.style.display = '';
+                                        else editBtn.style.display = 'none';
                                     }
                                 }
                             }
@@ -1224,6 +1251,15 @@
                                     else { tickBtn.classList.remove('active'); icon.className = 'fas fa-check-circle'; }
                                 }
                             }
+
+                            // ensure edit button visibility matches updated status
+                            try {
+                                const editBtn = cell.querySelector('.admin-edit-btn') || (row ? row.querySelector('.admin-edit-btn') : null);
+                                if (editBtn) {
+                                    if (updated.status === 'administered') editBtn.style.display = '';
+                                    else editBtn.style.display = 'none';
+                                }
+                            } catch (err) { /* ignore */ }
 
                             // cleanup
                             input.remove(); saveBtn.remove(); cancelBtn.remove();
