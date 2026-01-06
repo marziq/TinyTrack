@@ -1076,9 +1076,6 @@
                             <br> Reviewed By: <br> Dr Aiman Khalid <br> Consultant Pediatrician at Selangor Specialist Hospital
                             </a>
                         </div>
-                        <button id="favouriteButton" class="btn btn-primary" style="margin-left: 20px;">
-                            ${isFavourite ? 'Remove from Favourites' : 'Add to Favourites'}
-                        </button>
                     </div>
                     <p><br>${topic.content}</p>
                     ${topic.additionalText ? `
