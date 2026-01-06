@@ -10,7 +10,7 @@
         }
         .split-container {
             display: flex;
-            min-height: 100vh;
+            min-height: 80vh;
             margin: 100px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 20px;
