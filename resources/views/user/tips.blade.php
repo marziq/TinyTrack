@@ -982,6 +982,12 @@
                                     Choose Safe Toys
                                 </button>
                             </li>
+                            <li>
+                                <button onclick="showInfo('safety5')">
+                                    <i class="fa-solid fa-hospital" style="margin-right:8px; color: #1976d2;"></i>
+                                    Premature babies
+                                </button>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -1098,8 +1104,8 @@
                 B O N D I N G   T I P S
                 --------------------------------------------------------- */
                 bonding1: {
-                    name: "Dr Amina Binti Ismail",
-                    role: "Pediatrician, Hospital Kuala Lumpur",
+                    name: "Dr Kenneth Looi Chia Chuin",
+                    role: "Pediatrician, Columbia Asia Hospital Cheras",
                     title: 'Skin-to-Skin Cuddles',
                     content: 'Explore the science and tradition behind skin-to-skin cuddles — a beautiful first step in bonding that supports your baby’s health, emotional well-being and development from the very first hours of life.',
                     additionalText: 'Skin-to-skin contact also helps regulate your baby’s temperature, heart rate, and breathing. It promotes bonding and can even help with breastfeeding success.',
@@ -1116,12 +1122,11 @@
                 },
 
                 bonding2: {
-                    name: '',
-                    role: '',
+                    name: 'Dr Kenneth Looi Chia Chuin',
+                    role: 'Pediatrician, Columbia Asia Hospital Cheras',
                     title: 'Gentle Baby Massage',
                     content: 'Baby massage is a calming bonding practice that helps babies feel secure, improves circulation, and reduces fussiness.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
+                    videoUrl: 'https://www.youtube.com/embed/WgGdAoaiDR0?si=anGlghXX3Kge1k14',
                     additionalText: 'Regular massage can improve sleep quality and strengthen the emotional bond between parent and baby.',
                     title2: '</br>What Is Baby Massage?',
                     additionalText2: 'Baby massage uses gentle strokes on your baby’s arms, legs, tummy, and back. Parents commonly practice it after bath time when the baby is calm.',
@@ -1133,322 +1138,503 @@
                     additionalText5: 'Use natural, baby-safe oils and watch your baby’s cues. If they turn away or cry, try again later.'
                 },
 
-                    bonding3: {
-                        title: 'Talk & Sing to Baby',
-                        content: 'Your voice is your baby’s favourite sound. Talking and singing help build language skills and emotional bonding from day one.',
-                        heroImage: '{{ asset("img/placeholder.jpg") }}',
-                        videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                        additionalText: 'Simple words, lullabies, and playful tones help your baby feel connected and loved.',
+                bonding3: {
+                name: "Dr Kenneth Looi Chia Chuin",
+                role: "Pediatrician, Columbia Asia Hospital Cheras",
+                title: "Talk & Sing to Baby",
+                content: "Your voice is your baby’s favourite sound. Talking and singing help build language skills and emotional bonding from day one.",
+                heroImage: '{{ asset("img/talksingbaby.jpeg") }}',
+                videoUrl: "https://www.youtube.com/embed/6OUGNgTZATw?si=fPDsSOalcD0UhsvE",
+                additionalText: "Simple words, lullabies, and playful tones help your baby feel connected and loved.",
 
-                        title2: '</br>What Does Talking & Singing Do?',
-                        additionalText2: 'It stimulates baby’s brain development, supports early communication, and strengthens your relationship.',
+                title2: "</br>What Does Talking & Singing Do?",
+                additionalText2: "It stimulates baby’s brain development, supports early communication, and strengthens your relationship.",
 
-                        title3: '</br>Malaysian Context',
-                        additionalText3: 'Using Malay, English, Tamil, Mandarin, or any home language boosts bilingual readiness and cultural bonding.',
+                title3: "</br>Why It Matters for Malaysian Parents",
+                additionalText3: "Using Malay, English, Tamil, Mandarin, or any home language boosts bilingual readiness and cultural bonding.",
 
-                        title4: '</br>Benefits',
-                        additionalText4: '- Boosts early language development<br/>- Helps your baby feel calm and secure<br/>- Strengthens memory and attention<br/>- Supports emotional connection',
+                title4: "</br>Benefits of Talking & Singing",
+                additionalText4: "- Boosts early language development<br/>- Helps your baby feel calm and secure<br/>- Strengthens memory and attention<br/>- Supports emotional connection",
 
-                        title5: '</br>Expert Tip',
-                        additionalText5: 'Use a gentle, exaggerated tone (“parentese”). Babies respond best to expressive voices.'
-                    },
+                title5: "</br>Expert Tip From Malaysian Healthcare",
+                additionalText5: "“Parents who sing and talk daily help babies feel safe and loved, while laying strong language foundations.” </br> — Speech Therapist, Hospital Kuala Lumpur"
+            },
 
-                    bonding4: {
-                        title: 'Tummy Time Play',
-                        content: 'Tummy time helps your baby strengthen neck, shoulder, and upper body muscles needed for crawling and sitting.',
-                        heroImage: '{{ asset("img/placeholder.jpg") }}',
-                        videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                        additionalText: 'Start with a few minutes a day and increase gradually.',
+            bonding4: {
+                name: "Dr Kenneth Looi Chia Chuin",
+                role: "Pediatrician, Columbia Asia Hospital Cheras",
+                title: "Tummy Time Play",
+                content: "Tummy time helps your baby strengthen neck, shoulder, and upper body muscles needed for crawling and sitting.",
+                heroImage: '{{ asset("img/tummytime.jpeg") }}',
+                videoUrl: "https://www.youtube.com/embed/UEnzqSK-j_s?si=yDar3X81datd2C28",
+                additionalText: "Start with a few minutes a day and increase gradually.",
 
-                        title2: '</br>What Is Tummy Time?',
-                        additionalText2: 'It is supervised time when your baby lies on their tummy while awake.',
+                title2: "</br>What Is Tummy Time?",
+                additionalText2: "It is supervised time when your baby lies on their tummy while awake.",
 
-                        title3: '</br>Why It Matters',
-                        additionalText3: 'The Malaysian Child Health Record Book highlights tummy time as an essential motor development activity.',
+                title3: "</br>Why It Matters for Malaysian Parents",
+                additionalText3: "The Malaysian Child Health Record Book highlights tummy time as an essential motor development activity.",
 
-                        title4: '</br>Benefits',
-                        additionalText4: '- Prevents flat head syndrome<br/>- Strengthens muscles<br/>- Builds coordination<br/>- Prepares baby for crawling',
+                title4: "</br>Benefits of Tummy Time",
+                additionalText4: "- Prevents flat head syndrome<br/>- Strengthens muscles<br/>- Builds coordination<br/>- Prepares baby for crawling",
 
-                        title5: '</br>Expert Tip',
-                        additionalText5: 'Place toys or your face at eye level to encourage your baby to lift their head.'
-                    },
+                title5: "</br>Expert Tip From Malaysian Healthcare",
+                additionalText5: "“Place colourful toys or your face at eye level to encourage lifting and interaction.” </br> — Physiotherapist, KPJ Damansara Specialist Hospital"
+            },
 
-                    bonding5: {
-                        title: 'Help Baby Learn Language',
-                        content: 'Babies learn language long before they speak. Early exposure shapes how they understand and communicate.',
-                        heroImage: '{{ asset("img/placeholder.jpg") }}',
-                        videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                        additionalText: 'Reading, talking, and singing build strong language foundations.',
+            bonding5: {
+                name: "Dr Kenneth Looi Chia Chuin",
+                role: "Pediatrician, Columbia Asia Hospital Cheras",
+                title: "Help Baby Learn Language",
+                content: "Babies learn language long before they speak. Early exposure shapes how they understand and communicate.",
+                heroImage: '{{ asset("img/babylanguage.jpeg") }}',
+                videoUrl: "https://www.youtube.com/embed/IexHdKm3Zpg?si=e8h2pJlC2WOap_9z",
+                additionalText: "Reading, talking, and singing build strong language foundations.",
 
-                        title2: '</br>How Babies Learn Language',
-                        additionalText2: 'They absorb sounds, rhythms, and expressions from the people around them.',
+                title2: "</br>How Babies Learn Language",
+                additionalText2: "They absorb sounds, rhythms, and expressions from the people around them.",
 
-                        title3: '</br>Why Malaysian Babies Benefit',
-                        additionalText3: 'Multilingual environments (BM, English, Mandarin, Tamil) strengthen brain flexibility.',
+                title3: "</br>Why It Matters for Malaysian Parents",
+                additionalText3: "Multilingual environments (BM, English, Mandarin, Tamil) strengthen brain flexibility and cultural identity.",
 
-                        title4: '</br>Benefits',
-                        additionalText4: '- Builds vocabulary early<br/>- Improves attention and listening<br/>- Supports emotional bonding<br/>- Encourages confidence when speaking later',
+                title4: "</br>Benefits of Early Language Exposure",
+                additionalText4: "- Builds vocabulary early<br/>- Improves attention and listening<br/>- Supports emotional bonding<br/>- Encourages confidence when speaking later",
 
-                        title5: '</br>Expert Tip',
-                        additionalText5: 'Read picture books daily—even newborns benefit.'
-                    },
+                title5: "</br>Expert Tip From Malaysian Healthcare",
+                additionalText5: "“Reading picture books daily—even newborns benefit. Parents who mix languages give babies a head start.” </br> — Early Childhood Educator, Universiti Malaya"
+            },
 
-                    bonding6: {
-                        title: 'How to Build Trust with Your Baby',
-                        content: 'Trust forms when babies know their parents will respond to their needs with love and consistency.',
-                        heroImage: '{{ asset("img/placeholder.jpg") }}',
-                        videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                        additionalText: 'A secure attachment leads to confident, emotionally healthy children.',
+            bonding6: {
+                name: "Dr Kenneth Looi Chia Chuin",
+                role: "Pediatrician, Columbia Asia Hospital Cheras",
+                title: "How to Build Trust with Your Baby",
+                content: "Trust forms when babies know their parents will respond to their needs with love and consistency.",
+                heroImage: "{{ asset('img/buildtrust.jpeg') }}",
+                videoUrl: "https://www.youtube.com/embed/AHMsmn6EX84?si=5vTek8lzKFKjM2PB",
+                additionalText: "A secure attachment leads to confident, emotionally healthy children.",
 
-                        title2: '</br>How Babies Build Trust',
-                        additionalText2: 'Responding to cries, cuddling, and comforting teaches your baby that the world is safe.',
+                title2: "</br>How Babies Build Trust",
+                additionalText2: "Responding to cries, cuddling, and comforting teaches your baby that the world is safe.",
 
-                        title3: '</br>Why Malaysian Parents Should Know This',
-                        additionalText3: 'Healthy parent-child attachment is highlighted in local child development guidelines.',
+                title3: "</br>Why Malaysian Parents Should Know This",
+                additionalText3: "Healthy parent-child attachment is highlighted in local child development guidelines and the Malaysian Child Health Record Book.",
 
-                        title4: '</br>Trust-Building Behaviours',
-                        additionalText4: '- Respond to cries<br/>- Give cuddles freely<br/>- Maintain routines<br/>- Talk gently and consistently',
+                title4: "</br>Trust-Building Behaviours",
+                additionalText4: "- Respond to cries<br/>- Give cuddles freely<br/>- Maintain routines<br/>- Talk gently and consistently<br/>- Be present during feeding and play",
 
-                        title5: '</br>Expert Tip',
-                        additionalText5: 'You don’t have to be perfect — just consistent and loving.'
-                    },
+                title5: "</br>Expert Tip From Malaysian Healthcare",
+                additionalText5: "“Consistency matters more than perfection. Babies thrive when parents are reliably loving and responsive.” </br> — Child Psychologist, Universiti Kebangsaan Malaysia"
+            },
+
 
 
                 /* ---------------------------------------------------------
                 S E N S O R Y   T I P S
                 --------------------------------------------------------- */
                 sensory1: {
-                    title: 'Eye Contact & Smiles',
-                    content: 'From the very first gaze to their very first smile — learn how your baby uses these interactions to bond and grow.',
-                    heroImage: '{{ asset("img/eye-contact.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Eye contact helps babies recognise faces and communicate.',
-                    title2: 'What Is Eye Contact and Smiling?',
-                    additionalText2: 'These are early social skills that show your baby is learning to connect.',
-                    additionalText3: 'Malaysia’s Child Health Record Book includes eye contact and smiling as early developmental milestones.'
+                    name: "Dr Anis Siham Binti Zainal Abidin",
+                    role: "Pediatrician, Intensive Care at Sunway Medical Center",
+                    title: "Eye Contact & Smiles",
+                    content: "From the very first gaze to their very first smile — babies use these interactions to bond, learn, and grow. Eye contact and smiling are not just adorable moments; they are powerful developmental milestones that shape emotional security and social skills.",
+                    heroImage: "{{asset('img/eyecontact.jpeg')}}",
+                    additionalText: "Eye contact helps babies recognise faces, build trust, and communicate even before they can speak.",
+
+                    title2: "</br>What Is Eye Contact and Smiling?",
+                    additionalText2: "Eye contact is one of the earliest ways babies connect with caregivers. Smiling, which usually appears around 6–8 weeks, is a sign of social recognition and joy. Together, these behaviours show that your baby is learning to interact with the world.",
+
+                    title3: "</br>Why It Matters for Malaysian Parents",
+                    additionalText3: "Malaysia’s Child Health Record Book highlights eye contact and smiling as early developmental milestones. These behaviours reassure parents that their baby is progressing well and forming healthy emotional bonds.",
+
+                    title4: "</br>Benefits of Eye Contact & Smiles",
+                    additionalText4: "- Builds emotional connection and trust<br/>- Encourages social development<br/>- Helps babies recognise caregivers<br/>- Supports early communication and language learning<br/>- Boosts confidence in parents",
+
+                    title5: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText5: "“Respond to your baby’s smile with warmth and eye contact — it teaches them that the world is safe and loving.” </br> — Pediatric Nurse, Sunway Medical Center"
                 },
 
                 sensory2: {
-                    title: 'Respond to Sounds',
-                    content: 'Your baby is learning to recognise voices and everyday sounds.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Responding to your baby’s sounds helps them learn communication.',
-                    title2: '</br>How Babies Learn Through Sound',
-                    additionalText2: 'Babies notice tones, rhythms, and voices long before they talk.',
-                    title3: '</br>Benefits',
-                    additionalText3: '- Improves listening<br/>- Builds speech foundations<br/>- Helps emotional bonding',
-                    title4: '</br>Expert Tip',
-                    additionalText4: 'Talk back when your baby coos—this teaches turn-taking.'
+                    name: "Dr Anis Siham Binti Zainal Abidin",
+                    role: "Pediatrician, Intensive Care at Sunway Medical Center",
+                    title: "Respond to Sounds",
+                    content: "Your baby is learning to recognise voices, tones, and everyday sounds. Responding to these cues helps them feel heard and teaches the basics of communication. Every coo, giggle, or babble is a step toward language development.",
+                    heroImage: "{{asset('img/respondtosound.jpeg')}}",
+                    videoUrl: "https://www.youtube.com/embed/-hDwp-xqpPU?si=Hj2ryS4vtUCaPt-Z",
+                    additionalText: "Responding to your baby’s sounds helps them learn communication and builds emotional security.",
+
+                    title2: "</br>How Babies Learn Through Sound",
+                    additionalText2: "Babies notice tones, rhythms, and voices long before they talk. By responding to their sounds, parents teach turn-taking, listening, and the joy of conversation.",
+
+                    title3: "</br>Benefits of Sound Response",
+                    additionalText3: "- Improves listening and attention<br/>- Builds speech foundations<br/>- Helps emotional bonding<br/>- Encourages curiosity and exploration",
+
+                    title4: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText4: "“Talk back when your baby coos — this simple act teaches turn-taking and builds trust.” </br> — Speech Therapist, Hospital Kuala Lumpur"
                 },
 
                 sensory3: {
-                    title: 'Touch & Texture Play',
-                    content: 'Different textures help stimulate your baby’s senses and curiosity.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Soft cloths, toys, and safe objects help with sensory learning.',
-                    title2: '</br>What Is Texture Play?',
-                    additionalText2: 'Babies use their hands to learn about the world.',
-                    title3: '</br>Benefits',
-                    additionalText3: '- Enhances sensory development<br/>- Builds motor skills<br/>- Encourages exploration',
-                    title4: '</br>Expert Tip',
-                    additionalText4: 'Always supervise texture play to ensure safety.'
+                    name: "Dr Anis Siham Binti Zainal Abidin",
+                    role: "Pediatrician, Intensive Care at Sunway Medical Center",
+                    title: "Touch & Texture Play",
+                    content: "Different textures stimulate your baby’s senses and curiosity. From soft cloths to safe toys, touch-based play helps babies explore their environment and develop motor skills. It’s one of the earliest ways they learn about the world.",
+                    heroImage: "https://images.pexels.com/photos/3933271/pexels-photo-3933271.jpeg",
+                    videoUrl: "https://www.youtube.com/embed/mFqvxHAuX7k?si=nomh6IfNwdqNI8Qae",
+                    additionalText: "Soft cloths, toys, and safe objects help with sensory learning and exploration.",
+
+                    title2: "</br>What Is Texture Play?",
+                    additionalText2: "Texture play involves letting babies feel different surfaces — smooth, rough, soft, or bumpy. This helps them build sensory awareness and body coordination.",
+
+                    title3: "</br>Benefits of Texture Play",
+                    additionalText3: "- Enhances sensory development<br/>- Builds motor skills<br/>- Encourages exploration and curiosity<br/>- Strengthens hand-eye coordination",
+
+                    title4: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText4: "“Always supervise texture play to ensure safety and choose baby-safe materials. Everyday household items like scarves or wooden spoons can be great learning tools.” </br> — Occupational Therapist, KPJ Ampang Puteri"
                 },
 
                 sensory4: {
-                    title: 'Watch for Jaundice',
-                    content: 'Jaundice is common in newborns. Early monitoring helps ensure safe recovery.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Look for yellowing of eyes and skin, especially in the first week.',
-                    title2: '</br>What Is Jaundice?',
-                    additionalText2: 'It happens when bilirubin levels rise. Most cases are mild and resolve naturally.',
-                    title3: '</br>When to Seek Help',
-                    additionalText3: '- Baby looks more yellow<br/>- Poor feeding<br/>- Excessive sleepiness',
-                    title4: '</br>Expert Tip',
-                    additionalText4: 'Refer to Klinik Kesihatan quickly if symptoms worsen.'
+                    name: "Dr Anis Siham Binti Zainal Abidin",
+                    role: "Pediatrician, Intensive Care at Sunway Medical Center",
+                    title: "Watch for Jaundice",
+                    content: "Jaundice is common in newborns and usually appears as yellowing of the skin and eyes. While most cases are mild and resolve naturally, monitoring is essential to ensure safe recovery.",
+                    heroImage: "https://images.pexels.com/photos/3933272/pexels-photo-3933272.jpeg",
+                    videoUrl: "https://www.youtube.com/embed/gODhFEH8nNQ?si=1baLX3Ttfv6ey8qT",
+                    additionalText: "Look for yellowing of eyes and skin, especially in the first week of life.",
+
+                    title2: "</br>What Is Jaundice?",
+                    additionalText2: "Jaundice happens when bilirubin levels rise in the blood. Babies’ livers are still developing, so mild jaundice is common. However, severe cases require medical attention.",
+
+                    title3: "</br>When to Seek Help",
+                    additionalText3: "- Baby looks more yellow<br/>- Poor feeding or refusal to feed<br/>- Excessive sleepiness<br/>- Difficulty waking up",
+
+                    title4: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText4: "“Refer to Klinik Kesihatan quickly if symptoms worsen — early treatment prevents complications and reassures parents.” </br> — Pediatrician, Hospital Serdang"
                 },
 
                 sensory5: {
-                    title: 'The "Balance" Sense',
-                    content: 'Your baby’s balance develops through movement and body control.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Rocking, carrying, and gentle motion stimulate your baby’s balance system.',
-                    title2: '</br>How Babies Develop Balance',
-                    additionalText2: 'The inner ear and muscles learn coordination through movement.',
-                    title3: '</br>Benefits',
-                    additionalText3: '- Better motor skills<br/>- Earlier sitting and crawling<br/>- Improved body awareness'
+                    name: "Dr Anis Siham Binti Zainal Abidin",
+                    role: "Pediatrician, Intensive Care at Sunway Medical Center",
+                    title: "The 'Balance' Sense",
+                    content: "Your baby’s balance develops through movement and body control. Rocking, carrying, and gentle motion stimulate the inner ear and muscles, helping babies learn coordination and body awareness.",
+                    heroImage: "https://images.pexels.com/photos/3933273/pexels-photo-3933273.jpeg",
+                    videoUrl: "https://www.youtube.com/embed/uSp88t1igAo?si=TK7GkPx8ujNq7WjM",
+                    additionalText: "Rocking, carrying, and gentle motion stimulate your baby’s balance system and confidence.",
+
+                    title2: "</br>How Babies Develop Balance",
+                    additionalText2: "The inner ear and muscles learn coordination through repeated movement. This prepares babies for sitting, crawling, and eventually walking.",
+
+                    title3: "</br>Benefits of Balance Development",
+                    additionalText3: "- Better motor skills<br/>- Earlier sitting and crawling<br/>- Improved body awareness<br/>- Stronger confidence in movement",
+
+                    title4: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText4: "“Gentle rocking and tummy time help babies strengthen their balance system naturally. Parents can also carry babies in slings to encourage safe motion.” </br> — Physiotherapist, Hospital Kuala Lumpur"
                 },
 
                 sensory6: {
-                    title: 'How to Stimulate Baby\'s Vision',
-                    content: 'Your baby’s vision is developing rapidly in the first months.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'High-contrast shapes and faces help babies learn to focus.',
-                    title2: '</br>How Vision Develops',
-                    additionalText2: 'Newborns see shapes and light — clarity improves over time.',
-                    title3: '</br>Tips',
-                    additionalText3: '- Use black-and-white toys<br/>- Hold your face close<br/>- Move objects slowly for tracking practice'
+                    name: "Dr Anis Siham Binti Zainal Abidin",
+                    role: "Pediatrician, Intensive Care at Sunway Medical Center",
+                    title: "How to Stimulate Baby's Vision",
+                    content: "Your baby’s vision is developing rapidly in the first months.",
+                    heroImage: "https://images.pexels.com/photos/3933274/pexels-photo-3933274.jpeg",
+                    videoUrl: "https://www.youtube.com/embed/U_BuQ_OYE78?si=Hyo92oJZYLY5T8Ty",
+                    additionalText: "High-contrast shapes and faces help babies learn to focus.",
+
+                    title2: "</br>How Vision Develops",
+                    additionalText2: "Newborns see shapes and light — clarity improves over time.",
+
+                    title3: "</br>Tips for Malaysian Parents",
+                    additionalText3: "- Use black-and-white toys<br/>- Hold your face close<br/>- Move objects slowly for tracking practice",
+
+                    title4: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText4: "“Babies love faces — spend time close to them so they learn to focus and bond.” </br> — Pediatric Optometrist, Universiti Malaya Medical Centre"
                 },
+
 
                 /* ---------------------------------------------------------
                 S L E E P   T I P S
                 --------------------------------------------------------- */
                 sleep1: {
-                    title: 'How Much Sleep Does Baby Need?',
-                    content: 'Newborns need 14–17 hours of sleep per day, including naps.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Sleep supports brain growth and emotional health.',
-                    title2: '</br>Sleep Patterns',
-                    additionalText2: 'Babies sleep in short cycles and wake often for feeding.',
-                    title3: '</br>Tips',
-                    additionalText3: '- Follow hunger cues<br/>- Create calm sleep surroundings'
+                    name: "Dr. Aruna Periasamy ",
+                    role: "Consultant Pediatrician, at Columbia Asia r",
+                    title: "How Much Sleep Does Baby Need?",
+                    content: "Newborns need between 14–17 hours of sleep per day, including naps. Sleep is not just rest — it is essential for brain growth, emotional regulation, and physical development. Babies grow rapidly in the first months, and sleep provides the foundation for healthy milestones.",
+                    heroImage: "https://images.pexels.com/photos/3875217/pexels-photo-3875217.jpeg",
+                    videoUrl: "https://www.youtube.com/embed/PA3mD8JLFdQ?si=uMOET1TDOkGGF388",
+                    additionalText: "Sleep supports brain growth, immune strength, and emotional health. Without enough rest, babies may become fussy and struggle with feeding.",
+
+                    title2: "</br>Sleep Patterns",
+                    additionalText2: "Babies sleep in short cycles of 2–4 hours and wake often for feeding. This is normal and helps them get the nutrition they need while their bodies grow.",
+
+                    title3: "</br>Tips for Malaysian Parents",
+                    additionalText3: "- Follow hunger cues instead of strict schedules<br/>- Create calm sleep surroundings with dim lights<br/>- Use lightweight cotton clothing suitable for Malaysia’s warm climate<br/>- Keep naps flexible but consistent"
                 },
 
                 sleep2: {
-                    title: 'Creating a Bedtime Routine',
-                    content: 'A consistent bedtime routine helps your baby recognize sleep time.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Routines give babies emotional security.',
-                    title2: '</br>Examples',
-                    additionalText2: 'Bathing, gentle massage, book reading, soft music.',
-                    title3: '</br>Benefits',
-                    additionalText3: '- Improves sleep quality<br/>- Reduces night fussiness'
+                    name: "Dr. Aruna Periasamy ",
+                    role: "Consultant Pediatrician, at Columbia Asia ",
+                    title: "Creating a Bedtime Routine",
+                    content: "A consistent bedtime routine helps your baby recognise when it is time to sleep. Routines provide emotional security and signal to the baby’s brain that rest is coming. Over time, these habits reduce fussiness and improve sleep quality.",
+                    heroImage: "https://images.pexels.com/photos/3875220/pexels-photo-3875220.jpeg",
+                    videoUrl: "https://www.youtube.com/embed/aUZMirzJA2c?si=FoTA2dZuytAFxzzc",
+                    additionalText: "Routines give babies emotional security and help parents feel more confident in managing sleep.",
+
+                    title2: "</br>Examples of Bedtime Routines",
+                    additionalText2: "Bathing, gentle massage, reading a short book, singing lullabies, or playing soft music. These activities calm the baby and prepare them for rest.",
+
+                    title3: "</br>Benefits of Bedtime Routines",
+                    additionalText3: "- Improves sleep quality<br/>- Reduces night fussiness<br/>- Builds emotional security<br/>- Helps parents bond with baby<br/>- Encourages healthy long-term sleep habits"
                 },
 
                 sleep3: {
-                    title: 'Back is Best',
-                    content: 'Always place your baby on their back to reduce the risk of SIDS.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Safe sleep guidelines are emphasised in Malaysia’s health system.',
-                    title2: '</br>Why Back-Sleeping?',
-                    additionalText2: 'It ensures the airway stays open and reduces breathing risks.',
-                    title3: '</br>Safety Tips',
-                    additionalText3: '- Firm mattress<br/>- No pillows or toys<br/>- No bed-sharing'
+                    name: "Dr. Aruna Periasamy ",
+                    role: "Consultant Pediatrician, at Columbia Asia ",
+                    title: "Back is Best",
+                    content: "Always place your baby on their back to reduce the risk of Sudden Infant Death Syndrome (SIDS). This safe sleep practice is emphasised worldwide and supported by Malaysia’s health system. Back-sleeping ensures the airway stays open and reduces breathing risks.",
+                    heroImage: "{{asset('img/backisbest.jpeg')}}",
+                    additionalText: "Safe sleep guidelines are emphasised in Malaysia’s Child Health Record Book and Ministry of Health recommendations.",
+
+                    title2: "</br>Why Back-Sleeping?",
+                    additionalText2: "Back-sleeping keeps the airway clear, reduces suffocation risks, and is proven to lower SIDS cases worldwide.",
+
+                    title3: "</br>Safety Tips",
+                    additionalText3: "- Use a firm mattress<br/>- Avoid pillows, blankets, or toys in the crib<br/>- Do not bed-share<br/>- Keep baby’s sleep area cool and smoke-free"
                 },
 
                 sleep4: {
-                    title: 'Avoid Baby Walkers',
-                    content: 'Baby walkers are unsafe and delay walking skills.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Malaysia’s Ministry of Health discourages walker use.',
-                    title2: '</br>Why Avoid Walkers?',
-                    additionalText2: 'They increase fall risk and interfere with natural development.',
-                    title3: '</br>Healthy Alternatives',
-                    additionalText3: '- Floor play<br/>- Push toys (supervised)<br/>- Tummy time'
+                    name: "Dr. Aruna Periasamy",
+                    role: "Consultant Pediatrician, at Columbia Asia ",
+                    title: "Avoid Baby Walkers",
+                    content: "Baby walkers may look fun, but they are unsafe and can delay natural walking skills. Malaysia’s Ministry of Health discourages walker use because they increase fall risks and interfere with muscle development. Babies learn best through floor play and safe exploration.",
+                    heroImage: "https://images.pexels.com/photos/3875222/pexels-photo-3875222.jpeg",
+                    videoUrl: "https://www.youtube.com/embed/nG-8gvHamlQ?si=eb2wYD6zMLN3BTLG",
+                    additionalText: "Walkers can give a false sense of mobility and lead to accidents. Natural play is safer and healthier.",
+
+                    title2: "</br>Why Avoid Walkers?",
+                    additionalText2: "They increase fall risk, cause injuries, and interfere with natural balance and coordination. Babies may skip crawling stages, which are important for brain development.",
+
+                    title3: "</br>Healthy Alternatives",
+                    additionalText3: "- Floor play with mats<br/>- Push toys (supervised)<br/>- Tummy time<br/>- Encouraging crawling and standing naturally"
                 },
 
                 sleep5: {
-                    title: 'Create Calm Nights',
-                    content: 'Calm, quiet environments help babies sleep better.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Reduce noise and dim lights before sleep.',
-                    title2: '</br>Benefits',
-                    additionalText2: 'Your baby learns to settle quickly and sleep longer.'
+                    name: "Dr. Aruna Periasamy ",
+                    role: "Consultant Pediatrician, at Columbia Asia ",
+                    title: "Create Calm Nights",
+                    content: "Calm, quiet environments help babies sleep better and longer. Reducing noise, dimming lights, and keeping routines consistent signal to your baby that it is time to rest. A peaceful environment also helps parents feel more relaxed.",
+                    heroImage: "{{asset('img/calmnights.jpeg')}}",
+                    videoUrl: "https://www.youtube.com/embed/ZMCk35lloBM?si=MquwFkk-j6RcZgNk",
+                    additionalText: "Reduce noise, dim lights, and avoid overstimulation before sleep. Calm nights build healthy sleep habits.",
+
+                    title2: "</br>Benefits of Calm Nights",
+                    additionalText2: "Your baby learns to settle quickly, sleep longer, and wake up happier. Calm nights also reduce parental stress and create a more peaceful household."
                 },
+
 
                 /* ---------------------------------------------------------
                 F E E D I N G   T I P S
                 --------------------------------------------------------- */
                 feeding1: {
-                    title: 'Breastfeeding Basics',
-                    content: 'Breastmilk provides perfect nutrition for newborns.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Breastfeeding also strengthens immunity and bonding.',
-                    title2: '</br>Tips',
-                    additionalText2: 'Correct latch, frequent feeding, and supportive positioning.'
+                    name: "Lau Wai Hong (Celeste)",
+                    role: "Assistant Director, Dietetics at Sunway Medical Center",
+                    title: "Breastfeeding Basics",
+                    content: "Breastmilk provides the perfect nutrition for newborns, containing the right balance of proteins, fats, vitamins, and minerals. It is uniquely tailored to your baby’s needs and changes as they grow. Beyond nutrition, breastfeeding is a powerful way to build emotional closeness and trust.",
+                    heroImage: "{{asset('img/breastfeeding.jpeg')}}",
+                    videoUrl: "https://www.youtube.com/embed/g_k50wOf564?si=FYh0IBhKTSBq_61X",
+                    additionalText: "Breastfeeding strengthens immunity, supports healthy growth, and creates a strong emotional bond between mother and baby.",
+
+                    title2: "</br>What Is Breastfeeding?",
+                    additionalText2: "Breastfeeding is the natural way of feeding your baby, providing complete nutrition and antibodies that protect against illness.",
+
+                    title3: "</br>Why It Matters for Malaysian Parents",
+                    additionalText3: "Malaysia’s Ministry of Health strongly promotes breastfeeding through Baby-Friendly Hospital Initiatives and support at Klinik Kesihatan. It is encouraged as the gold standard for infant feeding.",
+
+                    title4: "</br>Benefits of Breastfeeding",
+                    additionalText4: "- Strengthens immunity<br/>- Supports healthy growth<br/>- Reduces risk of infections<br/>- Promotes bonding<br/>- Saves cost compared to formula",
+
+                    title5: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText5: "“Correct latch and frequent feeding are key. Seek help early if you face challenges.” </br> — Lactation Consultant, Sunway Medical Center"
                 },
 
                 feeding2: {
-                    title: 'Exclusive Breastfeeding (0–6 Months)',
-                    content: 'Babies should receive only breastmilk for the first six months.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'No water, juices, or solids are needed.',
-                    title2: '</br>Benefits',
-                    additionalText2: 'Stronger immunity, healthy weight gain, better bonding.'
+                    name: "Tan Jie Sin (Jessie)",
+                    role: "Lead Dietitian at Sunway Medical Center",
+                    title: "Exclusive Breastfeeding (0–6 Months)",
+                    content: "Babies should receive only breastmilk for the first six months of life. Exclusive breastfeeding means no water, juices, or solids — breastmilk alone provides all the hydration and nutrients your baby needs. This practice is strongly recommended by the World Health Organization and Malaysia’s Ministry of Health.",
+                    heroImage: "{{asset('img/exclusivebreastfeeding.jpeg')}}",
+                    videoUrl: "https://www.youtube.com/embed/OlmKNCBCxrw?si=m77AOOUpp7c1BloL",
+                    additionalText: "Exclusive breastfeeding ensures optimal growth, protects against infections, and reduces the risk of allergies.",
+
+                    title2: "</br>What Is Exclusive Breastfeeding?",
+                    additionalText2: "It means giving only breastmilk — no water, formula, or solids — for the first six months.",
+
+                    title3: "</br>Why It Matters for Malaysian Parents",
+                    additionalText3: "Exclusive breastfeeding is part of Malaysia’s National Breastfeeding Policy. It helps reduce infant mortality and supports long-term health.",
+
+                    title4: "</br>Benefits of Exclusive Breastfeeding",
+                    additionalText4: "- Stronger immunity<br/>- Healthy weight gain<br/>- Better bonding<br/>- Reduced risk of diarrhoea and respiratory infections<br/>- Lower chances of obesity later in life",
+
+                    title5: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText5: "“Breastmilk alone is enough — even in hot climates, babies don’t need extra water.” </br> — Dietitian, Hospital Kuala Lumpur"
                 },
 
                 feeding3: {
-                    title: 'Feed on Demand',
-                    content: 'Feed whenever your baby shows hunger cues.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Cues include rooting, sucking, and fussing.',
-                    title2: '</br>Benefits',
-                    additionalText2: 'Improves milk supply and keeps baby satisfied.'
+                    name: "Tan Jie Sin (Jessie)",
+                    role: "Lead Dietitian at Sunway Medical Center",
+                    title: "Feed on Demand",
+                    content: "Feeding on demand means responding to your baby’s hunger cues rather than following a strict schedule. Babies communicate hunger through rooting, sucking motions, fussing, or putting their hands to their mouth. This approach helps babies feel secure and ensures they get enough milk.",
+                    heroImage: "{{asset('img/feeddemand.jpeg')}}",
+                    additionalText: "Cues include rooting, sucking, fussing, and increased alertness. Crying is often a late hunger sign.",
+
+                    title2: "</br>What Is Feeding on Demand?",
+                    additionalText2: "It means watching your baby’s signals instead of the clock. Babies feed when they are hungry, not on a fixed schedule.",
+
+                    title3: "</br>Why It Matters for Malaysian Parents",
+                    additionalText3: "Feeding on demand is recommended in Malaysia’s Child Health Record Book. It helps mothers maintain milk supply and reduces stress.",
+
+                    title4: "</br>Benefits of Feeding on Demand",
+                    additionalText4: "- Improves milk supply<br/>- Keeps baby satisfied<br/>- Reduces fussiness<br/>- Builds trust and bonding<br/>- Supports healthy growth",
+
+                    title5: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText5: "“Watch for early hunger cues like rooting or sucking motions — don’t wait until baby cries.” </br> — Lactation Nurse, Klinik Kesihatan"
                 },
 
                 feeding4: {
-                    title: 'Start Solids at 6 Months',
-                    content: 'Introduce solid foods around 6 months of age.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Start with iron-rich foods and simple purees.',
-                    title2: '</br>Tips',
-                    additionalText2: 'Introduce one food at a time and watch for allergies.'
+                    name: "Tan Jie Sin (Jessie)",
+                    role: "Lead Dietitian at Sunway Medical Center",
+                    title: "Start Solids at 6 Months",
+                    content: "Introduce solid foods around 6 months of age, when babies are developmentally ready. Start with iron-rich foods such as rice cereal, pureed meats, or lentils, followed by simple fruit and vegetable purees. Solids complement breastmilk or formula, which should remain the main source of nutrition until 12 months.",
+                    heroImage: "{{asset('img/startsolid.jpeg')}}",
+                    videoUrl: "https://www.youtube.com/embed/LAfn4s8Jcps?si=LUNPK9FbqD6ktMzi",
+                    additionalText: "Start with iron-rich foods and simple purees. Avoid adding salt, sugar, or processed foods.",
+
+                    title2: "</br>What Is Starting Solids?",
+                    additionalText2: "It means introducing complementary foods while continuing breastfeeding. Babies should be able to sit with support and show interest in food.",
+
+                    title3: "</br>Why It Matters for Malaysian Parents",
+                    additionalText3: "In Malaysia, parents often start with rice porridge (‘bubur nasi’) and mashed local fruits like banana or papaya. These foods are culturally familiar and nutritious.",
+
+                    title4: "</br>Tips for Introducing Solids",
+                    additionalText4: "- Introduce one food at a time<br/>- Watch for allergies<br/>- Begin with small amounts<br/>- Gradually increase texture and variety<br/>- Avoid salt, sugar, and processed foods",
+
+                    title5: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText5: "“Start with iron-rich foods like fortified cereals or pureed meats — they support healthy blood and growth.” </br> — Dietitian, Sunway Medical Center"
                 },
 
                 feeding5: {
-                    title: 'No Sugar, No Honey',
-                    content: 'Avoid giving sugar and honey to babies under 12 months.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Honey can cause infant botulism; sugar harms early teeth.',
-                    title2: '</br>What To Give Instead',
-                    additionalText2: 'Natural fruits, breastmilk, and age-appropriate solids.'
-                },
+                    name: "Lau Wai Hong (Celeste)",
+                    role: "Assistant Director, Dietetics at Sunway Medical Center",
+                    title: "No Sugar, No Honey",
+                    content: "Avoid giving sugar and honey to babies under 12 months. Honey can cause infant botulism, a serious illness, while sugar harms early teeth and increases the risk of obesity. Babies do not need added sweeteners — their taste buds are still developing.",
+                    heroImage: "{{asset('img/nosugarnohoney.jpeg')}}",
+                    additionalText: "Honey can cause infant botulism; sugar harms early teeth and sets unhealthy eating habits.",
 
+                    title2: "</br>Why Avoid Sugar and Honey?",
+                    additionalText2: "Honey may contain spores that cause infant botulism, while sugar damages teeth and encourages unhealthy eating habits.",
+
+                    title3: "</br>Why It Matters for Malaysian Parents",
+                    additionalText3: "In Malaysia, honey is sometimes given as a traditional remedy, but health experts strongly advise against it for babies under 12 months.",
+
+                    title4: "</br>What To Give Instead",
+                    additionalText4: "- Natural fruits like banana, papaya, or mango<br/>- Breastmilk<br/>- Age-appropriate solids like steamed sweet potato",
+
+                    title5: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText5: "“Avoid honey and sugar until after 12 months. Natural fruits are the safest way to introduce sweetness.” </br> — Pediatric Dietitian, Hospital Kuala Lumpur"
+                },
                 /* ---------------------------------------------------------
                 S A F E T Y   T I P S
                 --------------------------------------------------------- */
                 safety1: {
-                    title: 'Wash Hands Often',
-                    content: 'Handwashing prevents the spread of germs and protects your newborn.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Always wash before feeding, changing, or handling your baby.',
-                    title2: '</br>Why It Matters',
-                    additionalText2: 'Newborns have weak immune systems and need protection.'
+                    name: "Dr Seri Suniza Sufian",
+                    role: "Obstetrics & Gynaecology (O&G) at Prince Court Medical Center",
+                    title: "Wash Hands Often",
+                    content: "Handwashing prevents the spread of germs and protects your newborn. Babies have developing immune systems, making them more vulnerable to infections. Clean hands are the simplest and most effective way to keep your baby safe.",
+                    heroImage: "https://images.pexels.com/photos/3875217/pexels-photo-3875217.jpeg",
+                    videoUrl: "https://www.youtube.com/embed/example-video-id",
+                    additionalText: "Always wash before feeding, changing, or handling your baby. Use soap and water for at least 20 seconds.",
+
+                    title2: "</br>What Is Hand Hygiene?",
+                    additionalText2: "It means washing hands with soap and water or using sanitizer before touching your baby.",
+
+                    title3: "</br>Why It Matters for Malaysian Parents",
+                    additionalText3: "Malaysia’s Ministry of Health highlights handwashing as a key step in preventing infections like diarrhoea and respiratory illness in infants.",
+
+                    title4: "</br>Benefits of Handwashing",
+                    additionalText4: "- Reduces risk of infections<br/>- Protects baby’s weak immune system<br/>- Prevents spread of germs<br/>- Builds safe habits for the whole family",
+
+                    title5: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText5: "“Wash hands before every feed and after diaper changes — it’s the simplest way to protect your baby.” </br> — Pediatric Nurse, Klinik Kesihatan"
                 },
 
                 safety2: {
-                    title: 'Bathe with Care',
-                    content: 'Use gentle products and check water temperature carefully.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Support your baby’s head and never leave them unattended.',
-                    title2: '</br>Tips',
-                    additionalText2: 'Test water with your wrist and use mild soap.'
+                    name: "Dr K.Kumar Iswaran",
+                    role: "Obstetrics & Gynaecology (O&G) at Prince Court Medical Center",
+                    title: "Bathe with Care",
+                    content: "Bathing is a special bonding time, but it must be done safely. Babies have delicate skin and sensitive bodies, so gentle products and careful handling are essential.",
+                    heroImage: "https://images.pexels.com/photos/3933271/pexels-photo-3933271.jpeg",
+                    videoUrl: "https://www.youtube.com/embed/example-video-id",
+                    additionalText: "Support your baby’s head and never leave them unattended. Always prepare everything before starting the bath.",
+
+                    title2: "</br>What Is Safe Bathing?",
+                    additionalText2: "It means using mild, baby-safe soap, checking water temperature, and keeping your baby supported at all times.",
+
+                    title3: "</br>Why It Matters for Malaysian Parents",
+                    additionalText3: "Malaysia’s Child Health Record Book advises parents to bathe babies in lukewarm water and avoid harsh products.",
+
+                    title4: "</br>Tips for Bathing Safely",
+                    additionalText4: "- Test water with your wrist<br/>- Use mild soap<br/>- Keep one hand supporting baby’s head<br/>- Prepare towels and clothes before bath",
+
+                    title5: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText5: "“Never leave your baby alone in the bath, even for a few seconds.” </br> — Midwife, Hospital Serdang"
                 },
 
                 safety3: {
-                    title: 'No Baby Alone',
-                    content: 'Never leave your baby alone on beds, sofas, or changing tables.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Falls can happen within seconds.',
-                    title2: '</br>Safe Habits',
-                    additionalText2: 'Keep one hand on baby, use safe spaces like playpens.'
+                    name: "Dr Maiza Tusimin",
+                    role: "Obstetrics & Gynaecology (O&G) at Prince Court Medical Center",
+                    title: "No Baby Alone",
+                    content: "Never leave your baby alone on beds, sofas, or changing tables. Falls can happen within seconds, even if your baby hasn’t started rolling yet.",
+                    heroImage: "https://images.pexels.com/photos/3933272/pexels-photo-3933272.jpeg",
+                    videoUrl: "https://www.youtube.com/embed/example-video-id",
+                    additionalText: "Always keep one hand on your baby and use safe spaces like playpens or cribs.",
+
+                    title2: "</br>What Is Safe Supervision?",
+                    additionalText2: "It means keeping your baby within sight and reach at all times, especially on elevated surfaces.",
+
+                    title3: "</br>Why It Matters for Malaysian Parents",
+                    additionalText3: "Accidental falls are one of the most common causes of infant injuries in Malaysia, according to Ministry of Health reports.",
+
+                    title4: "</br>Safe Habits",
+                    additionalText4: "- Keep one hand on baby<br/>- Use safe spaces like playpens<br/>- Avoid leaving baby on sofas or beds<br/>- Always supervise diaper changes",
+
+                    title5: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText5: "“Even newborns can wriggle unexpectedly — never assume they are safe alone.” </br> — Pediatrician, Hospital Kuala Lumpur"
                 },
 
                 safety4: {
-                    title: 'Choose Safe Toys',
-                    content: 'Select age-appropriate toys with no small, detachable parts.',
-                    heroImage: '{{ asset("img/placeholder.jpg") }}',
-                    videoUrl: 'https://www.youtube.com/embed/example-video-id',
-                    additionalText: 'Check labels and avoid choking hazards.',
-                    title2: '</br>Tips',
-                    additionalText2: 'Soft, large toys are safest for newborns.'
+                    name: "Dr. Ana Vetriana Abd Wahab",
+                    role: "Obstetrics & Gynaecology (O&G), Reproductive Medicine, Fertility Care At Gleneagles Hospital Kota Kinabalu",
+                    title: "Choose Safe Toys",
+                    content: "Toys help babies learn and explore, but safety must come first. Age-appropriate toys with no small, detachable parts reduce choking risks and keep playtime safe.",
+                    heroImage: "https://images.pexels.com/photos/3933273/pexels-photo-3933273.jpeg",
+                    videoUrl: "https://www.youtube.com/embed/example-video-id",
+                    additionalText: "Check labels and avoid choking hazards. Soft, large toys are safest for newborns.",
+
+                    title2: "</br>What Are Safe Toys?",
+                    additionalText2: "Safe toys are those designed for your baby’s age, made from non-toxic materials, and free from sharp edges or small parts.",
+
+                    title3: "</br>Why It Matters for Malaysian Parents",
+                    additionalText3: "Malaysia’s Consumer Protection guidelines advise parents to check toy labels and avoid items without safety certification.",
+
+                    title4: "</br>Tips for Choosing Toys",
+                    additionalText4: "- Choose soft, large toys<br/>- Avoid detachable small parts<br/>- Check safety labels<br/>- Wash toys regularly to keep them clean",
+
+                    title5: "</br>Expert Tip From Malaysian Healthcare",
+                    additionalText5: "“Always supervise playtime and inspect toys regularly for wear and tear.” </br> — Pediatric Occupational Therapist, KPJ Damansara Specialist Hospital"
+                },
+
+                safety5: {
+                    name: "Dr Hasmawati Hassan",
+                    role: "Consultant Paediatrician and Neonatologist at Sunway Medical Centre Velocity.",
+                    title: "Premature babies: What do you need to know about it?",
+                    content: "Premature babies are newborn babies born before 37 weeks. Every year, World Health Organization, estimated 15 million babies are born preterm. That is 1 in 10 babies. Worldwide, Preterm birth complications are the leading cause of death among children under 5 years of age whereby yearly 1 million preterm died.  Preterm births are rising around the world and more than 60% of preterm births occur in Africa and South Asia.<br><br>In Malaysia, about 12.3% deliveries are preterm birth which are about 500,000 preterm babies yearly. Malaysia National Neonatal Registry (data 2015) showed out of 280,764 livebirths, about 3060 (24.5%) are prematured (<32 weeks) and 3415 (27.3%) are less than 1500 g birthweight.<br> Premature, small, or sick babies account for nearly 80% neonatal deaths. They are at greater risk of long-term complications and death. They require specialized care by a highly skilled team of healthcare professionals. For these babies, it is not enough to just survive, we need them to thrive which means strengthening the healthcare system. (Stefan Peterson, Chief of Health for the United Nations Children’s Fund (UNICEF)<br><br>The cause of premature birth is unknown in about half of all cases. Sometimes labor starts on its own without warning. Even if you do everything right during pregnancy, you can still give birth early.",
+                    heroImage: "{{asset('img/premature.jpeg')}}",
                 }
             };
 
