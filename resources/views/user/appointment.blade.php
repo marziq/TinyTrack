@@ -92,6 +92,7 @@
             position: relative;
             transition: margin-left 0.3s ease;
             overflow-y: auto;
+            background-color: #e7e7e7 !important;
         }
 
         .sidebar.hidden + .main {
