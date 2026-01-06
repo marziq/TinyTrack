@@ -1098,6 +1098,8 @@
                 B O N D I N G   T I P S
                 --------------------------------------------------------- */
                 bonding1: {
+                    name: "Dr Amina Binti Ismail",
+                    role: "Pediatrician, Hospital Kuala Lumpur",
                     title: 'Skin-to-Skin Cuddles',
                     content: 'Explore the science and tradition behind skin-to-skin cuddles — a beautiful first step in bonding that supports your baby’s health, emotional well-being and development from the very first hours of life.',
                     additionalText: 'Skin-to-skin contact also helps regulate your baby’s temperature, heart rate, and breathing. It promotes bonding and can even help with breastfeeding success.',
@@ -1114,6 +1116,8 @@
                 },
 
                 bonding2: {
+                    name: '',
+                    role: '',
                     title: 'Gentle Baby Massage',
                     content: 'Baby massage is a calming bonding practice that helps babies feel secure, improves circulation, and reduces fussiness.',
                     heroImage: '{{ asset("img/placeholder.jpg") }}',
@@ -1464,7 +1468,7 @@
                         <div style="display: flex; flex-direction: column; flex: 1;">
                             <h3 style="color: #1976d2; margin: 0;">${topic.title}</h3>
                             <a style="color: #1976d2; margin: 0; font-size: 12px;">
-                            <br> Reviewed By: <br> Dr Aiman Khalid <br> Consultant Pediatrician at Selangor Specialist Hospital
+                            <br> Reviewed By: <br> ${topic.name} <br> ${topic.role}
                             </a>
                         </div>
                         <button id="favouriteButton" class="btn btn-primary" style="margin-left: 20px;">
