@@ -1355,6 +1355,7 @@
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
                         model: 'openai/gpt-oss-120b:free',
@@ -1363,13 +1364,34 @@
                         gender: gender
                     }),
                 });
-                const data = await response.json();
+
+                // Read raw text first to avoid JSON parse errors when server returns HTML (500 pages)
+                const raw = await response.text();
+                let data = null;
+                try {
+                    data = raw ? JSON.parse(raw) : null;
+                } catch (e) {
+                    console.error('Non-JSON response from server:', raw);
+                    recText.innerHTML = 'Server error: ' + (raw.length > 200 ? raw.slice(0,200) + '...' : raw);
+                    recSection.style.display = 'block';
+                    return;
+                }
+
+                if (!response.ok) {
+                    console.error('Recommendation API returned', response.status, data);
+                    const errMsg = data?.error?.message || data?.message || JSON.stringify(data) || ('HTTP ' + response.status);
+                    recText.innerHTML = 'AI service error: ' + errMsg;
+                    recSection.style.display = 'block';
+                    return;
+                }
+
                 console.log("AI API Response:", data);
-                const markdownText = data.choices?.[0]?.message?.content || 'No recommendation received.';
+                const markdownText = data.choices?.[0]?.message?.content || data.choices?.[0]?.content || 'No recommendation received.';
                 recText.innerHTML = marked.parse(markdownText);
             } catch (error) {
-                recText.innerHTML = 'Error: ' + error.message;
-                recSection.style.display = "block";
+                console.error('Fetch error:', error);
+                recText.innerHTML = 'Request failed: ' + error.message;
+                recSection.style.display = 'block';
             }
         }
 
