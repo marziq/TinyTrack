@@ -653,7 +653,7 @@
 
     <!-- Add this modal HTML just before the closing </body> tag -->
     <div id="updateUserModal" class="modal" style="display:none; position:fixed; z-index:2000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.35); align-items:center; justify-content:center;">
-        <div style="background:#fff; border-radius:10px; padding:30px 24px; min-width:320px; max-width:90vw; box-shadow:0 4px 24px rgba(0,0,0,0.15); position:relative;">
+        <div style="background:#fff; border-radius:10px; padding:30px 24px; min-width:700px; max-width:90vw; box-shadow:0 4px 24px rgba(0,0,0,0.15); position:relative;">
             <button id="closeUpdateModal" style="position:absolute; top:12px; right:16px; background:none; border:none; font-size:22px; color:#888; cursor:pointer;">&times;</button>
             <h3 style="margin-bottom:18px;">Update User</h3>
             <form id="updateUserForm" method="POST">

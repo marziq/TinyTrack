@@ -743,7 +743,7 @@
                                     </div>
 
                                     <h4 class="text-center mb-3">{{ Auth::user()->name }}</h4>
-                                    <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important">User ID: {{ Auth::user()->id }}</p>
+                                    <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important; text-align:center">User ID: {{ Auth::user()->id }}</p>
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label">First Name</label>
