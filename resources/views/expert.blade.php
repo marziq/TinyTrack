@@ -194,6 +194,7 @@
         .topic-card {
             flex: 0 0 30%; /* Show 3 cards at a time */
             margin: 10px;
+            margin-top: 0px !important;
             background-color: white;
             padding: 20px;
             border-radius: 12px;
@@ -385,7 +386,7 @@
     {{-- Main content goes here --}}
 
         <div class="container-fluid testimonial">
-            <div class="container py-5">
+            <div class="container py-5" style="padding-bottom: 0px !important">
                 <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
                     <h4 class="mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius" style="color: #393d72; border-bottom: 1px solid #4a92d9 !important;">Our Expert Tips</h4>
                     <h1 class="mb-5 display-3">What Experts Say</h1>

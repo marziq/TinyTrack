@@ -114,11 +114,19 @@
                     </h2>
                     <div id="faqCollapseFive" class="accordion-collapse collapse" aria-labelledby="faqHeadingFive" data-bs-parent="#faqAccordion">
                         <div class="accordion-body" style="color: black;">
-                            Yes, TinyTrack values your privacy. Your data is securely stored and never shared with third parties without your consent.
+                            At TinyTrack, protecting your privacy is our top priority. All personal information you provide is securely stored using industry‑standard safeguards, and we never share your data with third parties without your explicit consent.
+                            <br><br>
+                            As a platform designed for Malaysian parents, TinyTrack complies with the <strong>Personal Data Protection Act (PDPA 2010)</strong>, which governs how personal data is collected, used, and safeguarded in Malaysia. This means:
+                            <ul>
+                                <li>Your data is only used for the purposes you agree to, such as improving your experience on TinyTrack.</li>
+                                <li>You have the right to access, update, or request deletion of your personal information at any time.</li>
+                                <li>We will never sell or misuse your data, and any sharing (for example, with healthcare partners) will only happen with your clear consent.</li>
+                            </ul>
+                            In short, your information is treated with the highest level of confidentiality and respect, in line with Malaysian law and our commitment to earning your trust.
                         </div>
                     </div>
                 </div>
-                <div class="accordion-item mb-3">
+                                <div class="accordion-item mb-3">
                     <h2 class="accordion-header" id="faqHeadingSix">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseSix" aria-expanded="false" aria-controls="faqCollapseSix">
                             Can I access TinyTrack on my mobile device?

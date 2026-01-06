@@ -53,7 +53,9 @@
             /* Make footer stick to bottom: page becomes a column flex container and main expands */
             html, body { height: 100%; }
             body { display: flex; flex-direction: column; min-height: 100vh; }
-            main.site-content { flex: 1 0 auto; }
+            main.site-content { flex: 1 0 auto; padding-bottom: 120px; }
+            /* Ensure footer stays at the bottom when content is short */
+            .site-footer { margin-top: auto; }
         </style>
 
         <!-- Spinner Start -->
@@ -153,15 +155,17 @@
 
 
         <!-- Copyright Start -->
-        <div class="container-fluid copyright bg-dark py-4">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        <span class="text-light"><a href="#" style='color: #4D65F9 !important;'><i class="fas fa-copyright text-light me-2"></i>TinyTrack</a>, All right reserved.</span>
+        <footer class="site-footer">
+            <div class="container-fluid copyright bg-dark py-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                            <span class="text-light"><a href="#" style='color: #4D65F9 !important;'><i class="fas fa-copyright text-light me-2"></i>TinyTrack</a>, All right reserved.</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </footer>
         <!-- Copyright End -->
 
 
@@ -180,6 +184,7 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    @stack('scripts')
     </body>
 
 </html>

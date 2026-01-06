@@ -55,6 +55,64 @@
             border-top-color: #c4fff9;
         }
 
+        /* Make service cards larger and more spacious; responsive adjustments included */
+        .service-item {
+            height: 340px; /* fixed height for consistent centering */
+            padding: 0; /* move padding into inner container for even distribution */
+            width: 100%;
+            max-width: 520px; /* wider cards */
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 20px;
+            overflow: visible; /* allow stage padding / shapes to show */
+            box-sizing: border-box;
+            display: flex; /* center children vertically/horizontally */
+            align-items: center;
+            justify-content: center;
+            box-shadow: none !important; /* remove black shadow coming from global styles */
+            background-clip: padding-box;
+        }
+
+        /* Make inner content a full-height flex column so it's perfectly centered */
+        .service-item .service-content {
+            display: flex !important;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 1.25rem;
+            box-sizing: border-box;
+            text-align: center;
+            width: 100%;
+        }
+
+        .service-item .service-content-inner a.h4 {
+            font-size: 1.25rem;
+            display: block;
+            margin-bottom: .75rem;
+        }
+
+        .service-item .service-content-inner p {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        @media (max-width: 991.98px) {
+            .service-item { min-height: 320px; max-width: 520px; }
+            .service-item .service-content-inner a.h4 { font-size: 1.05rem; }
+        }
+
+        @media (max-width: 575.98px) {
+            .service-item { min-height: auto; }
+        }
+
+        /* Service grid tweaks (partner-style, non-sliding) */
+        /* keep service area inset from page edges */
+        .service-grid { padding-left: 50px; padding-right: 50px; box-sizing: content-box; }
+        .service-grid .service-item { display: block; margin: 0; max-width: none; }
+        .service-grid .service-content-inner { text-align: center; }
+
     </style>
         <!-- Hero Start -->
         <div class="container-fluid py-5 hero-header wow fadeIn d-flex align-items-center" data-wow-delay="0.1s">
@@ -133,9 +191,11 @@
                     <h4 class="mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius" style="border-bottom: 1px solid #4a92d9 !important;">What We Do</h4>
                     <h1 class="mb-5 display-3">Empowering Parenthood with TinyTrack</h1>
                 </div>
-                <div class="row g-5">
-                    <div class="col-md-6 col-lg-6 col-xl-3 wow fadeIn" data-wow-delay="0.1s">
-                        <div class="text-center border-primary border bg-white service-item">
+
+                <!-- Static grid: follow partner card style, non-sliding -->
+                <div class="row g-4 service-grid wow fadeIn" data-wow-delay="0.3s">
+                    <div class="col-lg-3 col-md-6 text-center">
+                        <div class="p-3 border border-primary img-border-radius service-item partner-card bg-white">
                             <div class="service-content d-flex align-items-center justify-content-center p-4">
                                 <div class="service-content-inner">
                                     <a href="#" class="h4">Baby Growth Tracker</a>
@@ -144,8 +204,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3 wow fadeIn" data-wow-delay="0.3s">
-                        <div class="text-center border-primary border bg-white service-item">
+
+                    <div class="col-lg-3 col-md-6 text-center">
+                        <div class="p-3 border border-primary img-border-radius service-item partner-card bg-white">
                             <div class="service-content d-flex align-items-center justify-content-center p-4">
                                 <div class="service-content-inner">
                                     <a href="#" class="h4">Health Check Reminders</a>
@@ -154,19 +215,20 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3 wow fadeIn" data-wow-delay="0.5s">
-                        <div class="text-center border-primary border bg-white service-item">
+
+                    <div class="col-lg-3 col-md-6 text-center">
+                        <div class="p-3 border border-primary img-border-radius service-item partner-card bg-white">
                             <div class="service-content d-flex align-items-center justify-content-center p-4">
                                 <div class="service-content-inner">
                                     <a href="#" class="h4">Expert Insights</a>
-                                    <p class="my-3" style="color: black">Access credible advice and tips from health professionals and parenting experts — all in one place.
-                                    </p>
+                                    <p class="my-3" style="color: black">Access credible advice and tips from health professionals and parenting experts — all in one place.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3 wow fadeIn" data-wow-delay="0.7s">
-                        <div class="text-center border-primary border bg-white service-item">
+
+                    <div class="col-lg-3 col-md-6 text-center">
+                        <div class="p-3 border border-primary img-border-radius service-item partner-card bg-white">
                             <div class="service-content d-flex align-items-center justify-content-center p-4">
                                 <div class="service-content-inner">
                                     <a href="#" class="h4">Learn & Grow</a>
@@ -182,7 +244,7 @@
 
         <!-- Partners Start -->
         <div class="container-fluid py-5">
-            <div class="container py-5">
+            <div class="container py-5" style="padding-top: 0px !important">
                 <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
                     <h4 class="mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius" style="color: #393d72; border-bottom: 1px solid #4a92d9 !important;">Our Partners</h4>
                 </div>
@@ -232,7 +294,7 @@
 
         <!-- Testimonial Start -->
         <div class="container-fluid testimonial py-5">
-            <div class="container py-5">
+            <div class="container py-5" style="padding-top: 0px !important">
                 <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
                     <h4 class="mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius" style="color: #393d72; border-bottom: 1px solid #4a92d9 !important;">Our Testimonials</h4>
                     <h1 class="mb-5 display-3">Parents Say About Us</h1>
@@ -315,6 +377,7 @@
                 </div>
             </div>
         </div>
+        <p style="padding-bottom: 10px !important"></p>
         <!-- Testimonial End -->
 
         <!-- Hidden Modal -->
@@ -393,4 +456,5 @@
         }
     }
     </script>
+    <!-- No service carousel JS - using static grid to match partner style -->
 @endsection
