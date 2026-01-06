@@ -736,7 +736,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #e3f2fd;
+            background-color: #eefadf;
             border-radius: 50%;
             color: #16fc38; /* light green for milestone check icon */
             font-size: 18px;
