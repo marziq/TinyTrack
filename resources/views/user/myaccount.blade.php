@@ -147,6 +147,7 @@
             border: 1px solid #e6eef9;
             padding: 12px 14px;
             position: relative;
+            margin-bottom: 12px;
         }
 
         .toggle-btn {
@@ -758,29 +759,29 @@
                                         </label>
                                     </div>
 
-                                    <h4 class="text-center mb-3">{{ Auth::user()->name }}</h4>
-                                    <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important">User ID: {{ Auth::user()->id }}</p>
+                                    <h4 class="text-center mb-3" style="margin-bottom: 0px !important; margin-top: 25px ">{{ Auth::user()->name }}</h4>
+                                    <p class="text-muted" style="font-size: 15px; color:#0d47a1 !important; text-align:center; margin-bottom: 22px">User ID: {{ Auth::user()->id }}</p>
                                     <div class="row g-3">
                                         <div class="col-md-6">
-                                            <label class="form-label">First Name</label>
+                                            <label class="form-label" style="font-weight: bold">First Name</label>
                                             <input type="text" name="first_name" class="form-control form-input" value="{{ old('first_name', $firstName) }}">
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Last Name</label>
+                                            <label class="form-label" style="font-weight: bold">Last Name</label>
                                             <input type="text" name="last_name" class="form-control form-input" value="{{ old('last_name', $lastName) }}">
                                         </div>
 
                                         <div class="col-md-6">
-                                            <label class="form-label">Email Address</label>
+                                            <label class="form-label" style="font-weight: bold">Email Address</label>
                                             <input type="email" name="email" class="form-control form-input" value="{{ old('email', Auth::user()->email) }}" required>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Phone Number</label>
+                                            <label class="form-label" style="font-weight: bold">Phone Number</label>
                                             <input type="text" name="mobile_number" class="form-control form-input" value="{{ old('mobile_number', Auth::user()->mobile_number) }}">
                                         </div>
 
                                         <div class="col-md-6">
-                                            <label class="form-label">Gender</label>
+                                            <label class="form-label" style="font-weight: bold">Gender</label>
                                             <select name="gender" class="form-control form-input" {{ !isset($isEditing) ? 'disabled' : '' }}>
                                                 <option value="Male" {{ Auth::user()->gender == 'Male' ? 'selected' : '' }}>Male</option>
                                                 <option value="Female" {{ Auth::user()->gender == 'Female' ? 'selected' : '' }}>Female</option>
@@ -788,7 +789,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Total Babies</label>
+                                            <label class="form-label" style="font-weight: bold">Total Babies</label>
                                             <div class="form-control form-input" style="background-color: #f8f9fa;">
                                                 @php
                                                     $boys = Auth::user()->babies()->where('gender', 'Male')->count();

@@ -130,7 +130,7 @@
 
         <!-- About Start -->
         <div class="container-fluid py-5 about" style="background-color: white; !important">
-            <div class="container py-5">
+            <div class="container py-5" style="padding-bottom: 10px !important">
                 <div class="row g-5 align-items-center">
                     <div class="col-lg-5 wow fadeIn" data-wow-delay="0.1s">
                         <div class="video border">
@@ -185,7 +185,7 @@
 
 
         <!-- Service Start -->
-        <div class="container-fluid service py-5">
+        <div class="container-fluid service py-5" style="margin-top: 1px !important;">
             <div class="container py-5">
                 <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
                     <h4 class="mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius" style="border-bottom: 1px solid #4a92d9 !important;">What We Do</h4>
