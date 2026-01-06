@@ -24,7 +24,7 @@ class OpenAIProxyController extends Controller
         $apiKey = config('services.openrouter.key');
 
         // prefer server-configured model to avoid clients forcing disallowed/public/free models
-        $model = config('services.openrouter.default_model') ?: $request->input('model', 'deepseek/deepseek-r1-0528:free');
+        $model = config('services.openrouter.default_model') ?: $request->input('model', 'openai/gpt-oss-120b:free');
 
         $payload = [
             'model' => $model,
@@ -64,7 +64,7 @@ class OpenAIProxyController extends Controller
 
         $apiKey = config('services.openrouter.key');
 
-        $model = config('services.openrouter.default_model') ?: $request->input('model', 'deepseek/deepseek-r1-0528:free');
+        $model = config('services.openrouter.default_model') ?: $request->input('model', 'openai/gpt-oss-120b:free');
 
         $payload = [
             'model' => $model,
@@ -103,7 +103,7 @@ class OpenAIProxyController extends Controller
         $prompt = "A {$request->age} month old {$request->gender} baby has the following growth status:\n{$request->status}. What should the parent do? Give a short, practical, and empathetic recommendation.";
 
         $payload = [
-            'model' => config('services.openrouter.default_model') ?: $request->input('model', 'deepseek/deepseek-r1-0528:free'),
+            'model' => config('services.openrouter.default_model') ?: $request->input('model', 'openai/gpt-oss-120b:free'),
             'messages' => [
                 ['role' => 'system', 'content' => 'You are an expert pediatric assistant.'],
                 ['role' => 'user', 'content' => $prompt],
