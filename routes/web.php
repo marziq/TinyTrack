@@ -102,6 +102,32 @@ Route::post('/admin/run-reminders', function (Request $request) {
 
 //admin routes end
 
+// API for admin: babies per month by year (returns array of 12 counts)
+Route::get('/admin/babies-per-month', function (Request $request) {
+    if (! Auth::check()) {
+        abort(403);
+    }
+    // Optional: restrict to admin email if desired
+    if (Auth::user()->email !== 'support@tinytrack.com') {
+        abort(403);
+    }
+
+    $year = intval($request->query('year', date('Y')));
+    $counts = Baby::whereYear('created_at', $year)
+        ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+        ->groupBy('month')
+        ->pluck('count', 'month')
+        ->toArray();
+
+    $arr = array_fill(0, 12, 0);
+    foreach ($counts as $m => $c) {
+        $idx = intval($m) - 1;
+        if ($idx >= 0 && $idx < 12) $arr[$idx] = (int)$c;
+    }
+
+    return response()->json(['data' => $arr]);
+})->name('admin.babies.per.month')->middleware('auth');
+
 // Authenticated routes
 Route::middleware([
     'auth:sanctum',

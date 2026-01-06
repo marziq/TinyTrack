@@ -398,17 +398,24 @@
         /* Card Container */
         .card-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            margin: 20px auto 0;
+            max-width: 1100px; /* keeps cards centered and constrained */
         }
 
         .card {
             background-color: #ffffff;
             border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease-in-out;
+            padding: 20px; /* increased vertical padding for taller cards */
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.22s ease-in-out;
+            min-height: 160px; /* taller cards */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* keep title at the top */
+            width: 100%;
+            max-width: 320px; /* constrain width so cards appear narrower */
         }
 
         .card:hover {
@@ -417,14 +424,15 @@
 
         .card h3 {
             color: #555;
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 15px;
+            margin-bottom: 6px;
         }
 
         .card p {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
             color: #333;
+            margin: 0;
         }
 
         /* Chart Container */
@@ -433,6 +441,7 @@
             display: flex;
             justify-content: space-between;
             gap: 15px;
+            align-items: flex-start;
         }
 
         .chart-container > div {
@@ -444,8 +453,21 @@
             height: 500px;  /* Set consistent height for both charts */
             display: flex;
             flex-direction: column;
-            justify-content: center;
         }
+
+        /* Chart card header (title + slicer) */
+        .chart-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .chart-card-header h3 { margin: 0; padding-top: 8px !important; }
+
+        .year-slicer { display: flex; gap: 8px; align-items: center; }
+
+        .year-slicer .year-btn { padding: 6px 8px; font-size: 13px; }
 
         .chart-container h3 {
             color: #333;
@@ -734,8 +756,21 @@
 
             <!-- Chart Section -->
             <div class="chart-container">
-                <div>
-                    <h3 style="padding-top: 30px !important;">Babies Added Each Month - {{ $babiesYear ?? date('Y') }}</h3>
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h3>Babies Added Each Month</h3>
+                        @php
+                            $currentBabiesYear = $babiesYear ?? date('Y');
+                            $years = $availableYears ?? range(date('Y'), date('Y') - 5);
+                        @endphp
+                        <div class="year-slicer">
+                            <select id="yearSelect" class="form-select form-select-sm" style="width:110px;">
+                                @foreach($years as $y)
+                                    <option value="{{ $y }}" {{ $y == $currentBabiesYear ? 'selected' : '' }}>{{ $y }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <canvas id="babiesChart"></canvas>
                 </div>
 
@@ -893,40 +928,38 @@
             notifModal.show();
         }
 
-    // Babies chart: data provided by server as $babiesPerMonth (12 values, Jan-Dec)
+    // Babies chart: support year slicer and client-side switching
         const allMonthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const babiesAllData = {!! json_encode($babiesPerMonth ?? array_fill(0,12,0)) !!};
-    // Year for the babies data: use server-provided year if available, else fall back to current year
-    const babiesChartYear = {!! json_encode($babiesYear ?? date('Y')) !!};
 
-        // Determine the visible slice: start from the month before the first month that has a baby,
-        // and end at the last month that has a baby. If there are no babies at all, show the full year.
-        let firstNonZeroIndex = babiesAllData.findIndex(v => v > 0);
-        let lastNonZeroIndex = -1;
-        if (firstNonZeroIndex !== -1) {
-            // find last non-zero index
-            for (let i = babiesAllData.length - 1; i >= 0; i--) {
-                if (babiesAllData[i] > 0) { lastNonZeroIndex = i; break; }
+        @php
+            $babiesByYearServer = $babiesByYear ?? [($babiesYear ?? date('Y')) => ($babiesPerMonth ?? array_fill(0,12,0))];
+        @endphp
+
+        const babiesByYear = {!! json_encode($babiesByYearServer) !!};
+        const initialBabiesYear = {!! json_encode($babiesYear ?? date('Y')) !!};
+
+        function computeSlice(arr) {
+            const firstNonZero = arr.findIndex(v => v > 0);
+            let lastNonZero = -1;
+            if (firstNonZero !== -1) {
+                for (let i = arr.length - 1; i >= 0; i--) { if (arr[i] > 0) { lastNonZero = i; break; } }
+                const start = Math.max(0, firstNonZero - 1);
+                return { labels: allMonthLabels.slice(start, lastNonZero + 1), data: arr.slice(start, lastNonZero + 1) };
             }
-            // include the previous month as starting point when possible
-            firstNonZeroIndex = Math.max(0, firstNonZeroIndex - 1);
-        } else {
-            // no babies: show full 12 months
-            firstNonZeroIndex = 0;
-            lastNonZeroIndex = babiesAllData.length - 1;
+            return { labels: allMonthLabels.slice(0), data: arr.slice(0) };
         }
 
-        const babiesLabels = allMonthLabels.slice(firstNonZeroIndex, lastNonZeroIndex + 1);
-        const babiesData = babiesAllData.slice(firstNonZeroIndex, lastNonZeroIndex + 1);
+        const ctx1 = document.getElementById('babiesChart').getContext('2d');
+        const initialDataArr = babiesByYear[initialBabiesYear] ?? new Array(12).fill(0);
+        const initialSlice = computeSlice(initialDataArr);
 
-        var ctx1 = document.getElementById('babiesChart').getContext('2d');
         var babiesChart = new Chart(ctx1, {
             type: 'line',
             data: {
-                labels: babiesLabels,
+                labels: initialSlice.labels,
                 datasets: [{
                     label: 'Babies Added',
-                    data: babiesData,
+                    data: initialSlice.data,
                     borderColor: 'rgba(54, 162, 235, 1)',
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     fill: true,
@@ -937,14 +970,55 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    title: {
-                        display: true,
-                        text: 'Babies Added (' + babiesChartYear + ')'
-                    }
+                    title: { display: true, text: 'Babies Added (' + initialBabiesYear + ')' }
                 },
                 scales: { y: { beginAtZero: true } }
             }
         });
+
+        // Year select behavior with fetch fallback for missing years
+        function updateBabiesChart(year) {
+            // if we don't have the data for this year client-side, fetch it from server
+            if (typeof babiesByYear[year] === 'undefined') {
+                fetch('/admin/babies-per-month?year=' + encodeURIComponent(year), { headers: { 'Accept': 'application/json' } })
+                    .then(r => {
+                        if (!r.ok) throw new Error('Network response was not ok');
+                        return r.json();
+                    })
+                    .then(json => {
+                        const arr = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : null);
+                        if (arr && arr.length >= 12) {
+                            babiesByYear[year] = arr.slice(0,12);
+                        } else if (arr && arr.length > 0) {
+                            // try to map object {month:count}
+                            let arr12 = new Array(12).fill(0);
+                            Object.keys(arr).forEach(k => { const idx = parseInt(k,10)-1; if (!isNaN(idx) && idx>=0 && idx<12) arr12[idx] = parseInt(arr[k],10)||0 });
+                            babiesByYear[year] = arr12;
+                        } else {
+                            babiesByYear[year] = new Array(12).fill(0);
+                        }
+                        updateBabiesChart(year);
+                    })
+                    .catch(err => { console.error('Failed to fetch babies data for', year, err); babiesByYear[year] = new Array(12).fill(0); updateBabiesChart(year); });
+                return;
+            }
+
+            const arr = babiesByYear[year] ?? new Array(12).fill(0);
+            const slice = computeSlice(arr);
+            babiesChart.data.labels = slice.labels;
+            babiesChart.data.datasets[0].data = slice.data;
+            babiesChart.options.plugins.title.text = 'Babies Added (' + year + ')';
+            babiesChart.update();
+
+            // update select UI
+            const sel = document.getElementById('yearSelect');
+            if (sel) sel.value = year;
+        }
+
+        const yearSelect = document.getElementById('yearSelect');
+        if (yearSelect) {
+            yearSelect.addEventListener('change', function() { updateBabiesChart(this.value); });
+        }
 
         // Gender distribution: server should pass an array [maleCount, femaleCount]
         const genderData = {!! json_encode($genderDistribution ?? [0,0]) !!};
