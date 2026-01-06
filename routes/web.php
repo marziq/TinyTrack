@@ -196,6 +196,7 @@ Route::get('/appointments/baby/{babyId}', [AppointmentController::class, 'getApp
 // Vaccination routes
 Route::get('/vaccinations/baby/{babyId}', [VaccinationController::class, 'getVaccinationsByBaby'])->name('vaccinations.by.baby');
 Route::post('/vaccinations/{id}/toggle', [VaccinationController::class, 'toggle'])->name('vaccinations.toggle');
+Route::put('/vaccinations/{id}', [VaccinationController::class, 'update'])->name('vaccinations.update');
 
 Route::get('/send-appointment-reminder', function () {
     if (! Auth::check()) {

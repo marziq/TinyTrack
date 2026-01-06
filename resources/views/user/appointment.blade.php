@@ -506,7 +506,8 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
             border-radius: 8px !important;
             border: none !important;
-            width: 100% !important;
+            width: auto !important;
+            max-width: 360px !important;
         }
 
         .calendar h4 {
@@ -565,6 +566,28 @@
             border-color: #1976d2;
             box-shadow: 0 0 8px rgba(25, 118, 210, 0.5);
         }
+
+        /* Administered date cell and edit button styling */
+        td.administered-cell { display: flex; align-items: center; justify-content: flex-start; gap: 8px; }
+        .admin-date-text { flex: 1 1 auto; }
+        .admin-edit-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #1976d2;
+            color: #fff !important;
+            border: none;
+            box-shadow: 0 2px 6px rgba(25,118,210,0.2);
+            cursor: pointer;
+            flex: 0 0 auto;
+            padding: 0;
+        }
+        .admin-edit-btn i { color: #fff !important; }
+        .admin-save-btn, .admin-cancel-btn { display: inline-flex; align-items: center; justify-content: center; padding: 6px 8px; }
+        .administered-date-input { width: 140px !important; display: inline-block; }
 
         /* Styling for the "Select Baby" section */
         .form-group {
@@ -996,7 +1019,12 @@
                         <tr>
                             <td>${scheduled}</td>
                             <td>${vaccine.vaccine_name}</td>
-                            <td>${administeredText}</td>
+                            <td class="administered-cell">
+                                <span class="admin-date-text">${administeredText}</span>
+                                <button class="btn btn-sm btn-link p-0 ms-2 admin-edit-btn" data-id="${vaccine.id}" title="Edit administered date">
+                                    <i class="fas fa-pencil-alt text-secondary"></i>
+                                </button>
+                            </td>
                             <td style="text-align:center;">
                                 <button class="btn btn-outline-success vaccination-tick-btn ${btnClass}" data-id="${vaccine.id}">
                                     <i class="${iconClass}"></i>
@@ -1095,6 +1123,121 @@
                     } finally {
                         btn.disabled = false;
                     }
+                });
+
+                // Event delegation for editing administered date
+                vaccinationList.addEventListener('click', function (e) {
+                    const editBtn = e.target.closest('.admin-edit-btn');
+                    if (!editBtn) return;
+                    e.preventDefault();
+                    const id = editBtn.getAttribute('data-id');
+                    if (!id) return;
+
+                    const cell = editBtn.closest('.administered-cell');
+                    if (!cell) return;
+
+                    // Avoid multiple editors
+                    if (cell.querySelector('input')) return;
+
+                    const currentText = cell.querySelector('.admin-date-text')?.textContent?.trim() || '';
+                    // create input
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'form-control form-control-sm administered-date-input';
+                    input.style.display = 'inline-block';
+                    input.style.width = '160px';
+                    // set default value as ISO date if available
+                    let defaultDate = '';
+                    if (currentText && currentText !== 'Pending') {
+                        try {
+                            const d = new Date(currentText);
+                            if (!isNaN(d)) {
+                                const yyyy = d.getFullYear();
+                                const mm = String(d.getMonth()+1).padStart(2,'0');
+                                const dd = String(d.getDate()).padStart(2,'0');
+                                defaultDate = `${yyyy}-${mm}-${dd}`;
+                            }
+                        } catch (err) { /* ignore */ }
+                    }
+                    input.value = defaultDate;
+
+                    const saveBtn = document.createElement('button');
+                    saveBtn.className = 'btn btn-sm btn-success ms-2 admin-save-btn';
+                    saveBtn.innerHTML = '<i class="fas fa-check"></i>';
+
+                    const cancelBtn = document.createElement('button');
+                    cancelBtn.className = 'btn btn-sm btn-secondary ms-1 admin-cancel-btn';
+                    cancelBtn.innerHTML = '<i class="fas fa-times"></i>';
+
+                    // replace display with input + buttons
+                    const span = cell.querySelector('.admin-date-text');
+                    span.style.display = 'none';
+                    editBtn.style.display = 'none';
+                    cell.appendChild(input);
+                    cell.appendChild(saveBtn);
+                    cell.appendChild(cancelBtn);
+
+                    // init flatpickr on input
+                    try {
+                        flatpickr(input, { dateFormat: 'Y-m-d', defaultDate: defaultDate || null });
+                    } catch (err) {
+                        console.warn('flatpickr init failed', err);
+                    }
+
+                    cancelBtn.addEventListener('click', function () {
+                        input.remove(); saveBtn.remove(); cancelBtn.remove();
+                        span.style.display = '';
+                        editBtn.style.display = '';
+                    });
+
+                    saveBtn.addEventListener('click', async function () {
+                        const newDate = input.value; // expected YYYY-MM-DD
+                        saveBtn.disabled = true;
+                        try {
+                            const res = await fetch(`/vaccinations/${id}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify({ administered_at: newDate })
+                            });
+                            if (!res.ok) throw new Error('Failed to save');
+                            const updated = await res.json();
+
+                            // update UI
+                            if (updated.administered_at) {
+                                const d = new Date(updated.administered_at);
+                                span.textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                            } else {
+                                span.textContent = 'Pending';
+                            }
+
+                            // show updated status if returned
+                            const row = cell.closest('tr');
+                            if (row && updated.status) {
+                                const tickBtn = row.querySelector('.vaccination-tick-btn');
+                                if (tickBtn) {
+                                    const icon = tickBtn.querySelector('i');
+                                    if (updated.status === 'administered') { tickBtn.classList.add('active'); icon.className = 'fas fa-check'; }
+                                    else { tickBtn.classList.remove('active'); icon.className = 'fas fa-check-circle'; }
+                                }
+                            }
+
+                            // cleanup
+                            input.remove(); saveBtn.remove(); cancelBtn.remove();
+                            span.style.display = '';
+                            editBtn.style.display = '';
+
+                            // dispatch event for other listeners
+                            try { window.dispatchEvent(new CustomEvent('vaccinationToggled', { detail: updated })); } catch (err) {}
+                        } catch (err) {
+                            console.error(err);
+                            alert('Failed to save administered date.');
+                            saveBtn.disabled = false;
+                        }
+                    });
                 });
             }
         });

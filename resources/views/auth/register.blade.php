@@ -260,7 +260,7 @@
 
         <div style="background:#fff; padding:30px; border-radius:15px; max-width:900px; margin:auto;">
             <div style="display:flex; justify-content:space-between; align-items:center; gap:16px;">
-                <h2 style="margin:0;">Terms &amp; Conditions</h2>
+                <h2 style="margin:0; font-weight:bold;">Terms &amp; Conditions</h2>
                 <small style="color:#666;">Effective date: January 1, 2026</small>
             </div>
 
@@ -271,21 +271,21 @@
                     you use our services. By registering an account, you accept and agree to these terms.
                 </p>
 
-                <h3 style="margin-top:14px;">1. What we collect</h3>
+                <h3 style="margin-top:14px; font-weight:bold;">1. What we collect</h3>
                 <ul>
                     <li>Account details: name, email, password (securely stored), contact number.</li>
                     <li>Child information: name, date of birth, gender, growth measurements, milestones, immunizations and medical notes you choose to record.</li>
                     <li>Usage data: preferences, features used, device and browser information, and logs to help improve the service.</li>
                 </ul>
 
-                <h3 style="margin-top:10px;">2. Purpose and legal basis</h3>
+                <h3 style="margin-top:10px; font-weight:bold;">2. Purpose and legal basis</h3>
                 <p>
                     We process your data to provide and improve TinyTrack features (growth charts, milestone tracking,
                     reminders, and personalized insights), to communicate with you, and to meet legal and security requirements.
                     Where required by law, we rely on your consent or on legitimate interests to process data.
                 </p>
 
-                <h3 style="margin-top:10px;">3. Malaysian Personal Data Protection Act (PDPA 2010)</h3>
+                <h3 style="margin-top:10px; font-weight:bold;">3. Malaysian Personal Data Protection Act (PDPA 2010)</h3>
                 <p>
                     If you are located in Malaysia, the collection and processing of personal data is governed by the
                     Personal Data Protection Act 2010 (PDPA). In accordance with PDPA:
@@ -300,31 +300,31 @@
                     To make a PDPA-related request (access, correction, deletion, or complaint), please contact our Data Protection Officer at the contact details below.
                 </p>
 
-                <h3 style="margin-top:10px;">4. Consent &amp; parental responsibility</h3>
+                <h3 style="margin-top:10px; font-weight:bold;">4. Consent &amp; parental responsibility</h3>
                 <p>
                     By submitting your child's information you confirm that you are the parent or legal guardian authorized to provide such information.
                     You may withdraw consent for certain processing activities at any time by contacting us, subject to legal or contractual restrictions.
                 </p>
 
-                <h3 style="margin-top:10px;">5. Sharing, disclosures and third parties</h3>
+                <h3 style="margin-top:10px; font-weight:bold;">5. Sharing, disclosures and third parties</h3>
                 <p>
                     We do not sell personal data. We may disclose information to service providers who act on our behalf (e.g., hosting, email, analytics),
                     and to comply with legal obligations or to protect rights and safety. We require third parties to safeguard your data.
                 </p>
 
-                <h3 style="margin-top:10px;">6. Data retention and transfers</h3>
+                <h3 style="margin-top:10px; font-weight:bold;">6. Data retention and transfers</h3>
                 <p>
                     We retain personal data only as long as necessary for the purposes described, or to comply with legal obligations. Data may be
                     transferred or stored outside your country of residence; where transfers occur we take steps to ensure appropriate safeguards are in place.
                 </p>
 
-                <h3 style="margin-top:10px;">7. Security</h3>
+                <h3 style="margin-top:10px; font-weight:bold;">7. Security</h3>
                 <p>
                     We use reasonable technical and organisational measures to protect data. However, no internet service is completely secure; you accept
                     the small inherent risks of online services when using TinyTrack.
                 </p>
 
-                <h3 style="margin-top:10px;">8. Your rights</h3>
+                <h3 style="margin-top:10px; font-weight:bold;">8. Your rights</h3>
                 <ul>
                     <li>Access: Request a copy of the personal data we hold about you.</li>
                     <li>Rectification: Request correction of inaccurate or incomplete data.</li>
@@ -335,29 +335,29 @@
                     To exercise these rights, contact our Data Protection Officer. We may require identity verification before fulfilling requests.
                 </p>
 
-                <h3 style="margin-top:10px;">9. Children and parental controls</h3>
+                <h3 style="margin-top:10px; font-weight:bold;">9. Children and parental controls</h3>
                 <p>
                     TinyTrack is designed for parents and guardians. We do not knowingly collect personal data directly from children without parental consent.
                     If you believe a child's personal data has been provided without proper consent, contact us and we will take steps to remove it.
                 </p>
 
-                <h3 style="margin-top:10px;">10. Changes to these terms</h3>
+                <h3 style="margin-top:10px; font-weight:bold;">10. Changes to these terms</h3>
                 <p>
                     We may update these Terms &amp; Conditions periodically. We will post changes within the app and update the effective date. Continued use
                     after changes indicates acceptance of the updated terms.
                 </p>
 
-                <h3 style="margin-top:10px;">11. Contact &amp; complaints</h3>
+                <h3 style="margin-top:10px; font-weight:bold;">11. Contact &amp; complaints</h3>
                 <p>
                     For questions, PDPA requests, or to lodge a privacy complaint, contact:
                 </p>
                 <ul>
                     <li>Data Protection Officer: TinyTrack</li>
                     <li>Email: <a href="mailto:privacy@tinytrack.example">privacy@tinytrack.example</a></li>
-                    <li>Address: TinyTrack Support (use the contact form in the app)</li>
+                    <li>Address: Gombak, Selangor</li>
                 </ul>
 
-                <p style="margin-top:8px;">
+                <p style="margin-top:8px; font-weight:bold;">
                     If you remain unsatisfied after contacting us, you may refer your complaint to the relevant data protection authority
                     (for Malaysia: the Personal Data Protection Commissioner) or the authority in your jurisdiction.
                 </p>
