@@ -57,12 +57,12 @@
 
     </style>
         <!-- Hero Start -->
-        <div class="container-fluid py-5 hero-header wow fadeIn" data-wow-delay="0.1s">
+        <div class="container-fluid py-5 hero-header wow fadeIn d-flex align-items-center" data-wow-delay="0.1s">
             <div class="container py-5">
                 <div class="row g-5">
-                    <div class="col-lg-7 col-md-12">
+                    <div class="col-lg-7 col-md-12 text-start">
                         <h1 class="mb-3 text-white" style="font-weight: bold; font-size: 23px;">Track Your Baby's Growth with Confidence</h1>
-                        <h1 class="mb-5 display-1 text-white" style="font-weight: bold; font-size: 65px !important;">All-in-One Wellness Platform for Malaysian Parents</h1>
+                        <h1 class="mb-5 display-1 text-white" style="font-weight: bold; font-size: 75px !important;">All-in-One Wellness Platform for Malaysian Parents</h1>
                         <a href="{{ route('register') }}" class="btn btn-primary px-4 py-3 px-md-5  me-4 btn-border-radius b" style="background: linear-gradient(to right, #c1c8e4, #c4fff9) !important; color: #4D65F9  !important;">Get Started</a>
                     </div>
                 </div>
