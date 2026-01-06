@@ -1058,6 +1058,7 @@
         <div id="pdfHiddenElements" style="position: absolute; left: -9999px; top: -9999px; width: 1200px; height: 800px; overflow: hidden;">
             <canvas id="heightReportCanvas" width="1200" height="600"></canvas>
             <canvas id="weightReportCanvas" width="1200" height="600"></canvas>
+            <div id="pdfMarkdownRender" style="width:1200px; padding:24px; background:#ffffff; color:#111; font-family: 'Outfit', sans-serif; border-radius:8px; box-sizing:border-box;"></div>
         </div>
         <div id="babyDashboard" style="display: none;">
             <h1 class="babyh1" id="selectedBabyProfileHeading">Select a baby to view their profile</h1>
@@ -1316,6 +1317,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- html2canvas and jsPDF for client-side PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -1413,12 +1415,17 @@
                 const margin = 40;
                 const contentWidth = pageWidth - margin * 2;
 
-                // Header
+                // Colored top bar header
+                const headerH = 48;
+                pdf.setFillColor(25,118,210); // friendly blue
+                pdf.rect(0, 0, pageWidth, headerH, 'F');
                 pdf.setFontSize(18);
-                pdf.text(`${babyName} - Growth Report`, margin, 36);
+                pdf.setTextColor(255,255,255);
+                pdf.text(`${babyName}'s Growth Report`, pageWidth / 2, headerH / 2 + 6, { align: 'center' });
+                pdf.setTextColor(0,0,0);
 
                 // Calculate quadrant areas
-                const startY = 56; // top content start
+                const startY = headerH + 12; // top content start (below header)
                 const availableHeight = pageHeight - margin - startY;
                 const gap = 14; // gap between quadrants
                 const topHeight = Math.floor((availableHeight - gap) / 2);
@@ -1451,22 +1458,29 @@
                 const babyPhotoUrl = selectedOption.dataset.photo || null;
                 const babyPhotoDataUrl = await fetchImageDataUrl(babyPhotoUrl);
 
-                // Top-left quadrant: baby info
+                // Top-left quadrant: baby info (with title)
                 const infoX = margin;
                 const infoY = startY;
-                const photoSize = Math.min(120, topHeight - 16);
+                // Title
+                pdf.setFont(undefined, 'bold');
+                pdf.setFontSize(14);
+                pdf.text('Baby Details', infoX, infoY + 12);
+                pdf.setFont(undefined, 'normal');
+
+                const photoY = infoY + 18; // leave space for title
+                const photoSize = Math.min(120, topHeight - 34);
                 if (babyPhotoDataUrl) {
-                    pdf.addImage(babyPhotoDataUrl, 'PNG', infoX, infoY, photoSize, photoSize);
+                    pdf.addImage(babyPhotoDataUrl, 'PNG', infoX, photoY, photoSize, photoSize);
                 } else {
                     pdf.setDrawColor(200);
-                    pdf.rect(infoX, infoY, photoSize, photoSize);
+                    pdf.rect(infoX, photoY, photoSize, photoSize);
                     pdf.setFontSize(10);
-                    pdf.text('No Image', infoX + 8, infoY + Math.floor(photoSize/2));
+                    pdf.text('No Image', infoX + 8, photoY + Math.floor(photoSize/2));
                 }
 
                 pdf.setFontSize(12);
                 const infoTxtX = infoX + photoSize + 14;
-                let infoTy = infoY + 12;
+                let infoTy = photoY + 10;
                 pdf.text(`Name: ${selectedOption.dataset.name || ''}`, infoTxtX, infoTy);
                 infoTy += 18;
                 pdf.text(`Age: ${selectedOption.dataset.age || ''}`, infoTxtX, infoTy);
@@ -1482,62 +1496,87 @@
                 // Top-right quadrant: Height chart
                 const topRightX = margin + leftWidth + gap;
                 const topRightY = startY;
+                pdf.setFont(undefined, 'bold');
                 pdf.setFontSize(14);
                 pdf.text('Height Chart', topRightX, topRightY + 12);
+                pdf.setFont(undefined, 'normal');
                 const topRightChartY = topRightY + 18;
                 const topRightChartH = topHeight - 22;
                 pdf.addImage(heightDataUrl, 'PNG', topRightX, topRightChartY, rightWidth, topRightChartH);
 
-                // Bottom-left quadrant: Milestones table
+                // Bottom-left quadrant: Growth summary (mini height & weight charts)
                 const bottomLeftX = margin;
                 const bottomLeftY = startY + topHeight + gap;
-                const tableW = leftWidth;
-                const tableH = bottomHeight;
+                const boxW = leftWidth;
+                const boxH = bottomHeight;
+                pdf.setFont(undefined, 'bold');
                 pdf.setFontSize(14);
-                pdf.text('Milestones Achieved', bottomLeftX, bottomLeftY + 12);
+                pdf.text('Growth Summary', bottomLeftX, bottomLeftY + 12);
+                pdf.setFont(undefined, 'normal');
 
-                // Extract milestones rows from DOM
-                const milestoneEls = Array.from(document.querySelectorAll('.milestone-item')) || [];
-                const rows = milestoneEls.map(el => ({
-                    title: (el.querySelector('.milestone-text')?.innerText || '').trim(),
-                    date: (el.querySelector('.milestone-date')?.innerText || '').trim()
-                }));
+                // Draw box for summary
+                pdf.setDrawColor(220);
+                pdf.rect(bottomLeftX, bottomLeftY + 18, boxW, boxH - 18, 'S');
 
-                // Table header
-                const headerStartY = bottomLeftY + 18;
-                const rowH = 18;
-                const col1X = bottomLeftX + 6;
-                const col2X = bottomLeftX + tableW - 110;
-                let curY = headerStartY + 6;
+                // Prepare status explanations (mirrors Growth page)
+                const statusExplanations = {
+                    "Severely Low": "This indicates the baby's growth is far below the normal range. It may be a sign of severe malnutrition or a health issue. Please consult a pediatrician as soon as possible.",
+                    "Low": "The baby's growth is below the normal range. Monitoring and possibly adjusting nutrition or care is recommended. Consider consulting a healthcare professional.",
+                    "Normal": "The baby's growth is within the normal range for their age and gender. Keep up the good care!",
+                    "High": "The baby's growth is above the normal range. This is usually not a concern, but monitor for rapid changes.",
+                    "Very High": "The baby's growth is far above the normal range. If this is unexpected, consult a healthcare professional.",
+                    "No status": "No growth data or status available for this entry."
+                };
 
-                pdf.setFillColor(245,245,245);
-                pdf.rect(bottomLeftX, headerStartY - 6, tableW, rowH, 'F');
-                pdf.setFontSize(11);
-                pdf.setTextColor(40);
-                pdf.text('Milestone', col1X, curY);
-                pdf.text('Date', col2X, curY);
-                curY += rowH;
-
-                pdf.setFontSize(10);
-                for (let i=0;i<rows.length;i++){
-                    const r = rows[i];
-                    if (curY + rowH > bottomLeftY + tableH - 8) {
-                        // stop if table area is full (avoid overlapping charts)
-                        break;
+                // Fetch latest growth entry to summarise
+                try {
+                    const rawRes = await fetch(`/dashboard/growth/${babyId}`);
+                    let lastEntry = null;
+                    if (rawRes.ok) {
+                        const payload = await rawRes.json();
+                        if (Array.isArray(payload) && payload.length) lastEntry = payload[payload.length-1];
+                        else if (payload.growths && payload.growths.length) lastEntry = payload.growths[payload.growths.length-1];
+                        else if (payload.latest) lastEntry = payload.latest;
                     }
-                    if (i % 2 === 0) pdf.setFillColor(255,255,255); else pdf.setFillColor(250,250,250);
-                    pdf.rect(bottomLeftX, curY - 12, tableW, rowH, 'F');
-                    pdf.setTextColor(30);
-                    pdf.text(r.title, col1X, curY);
-                    pdf.text(r.date, col2X, curY);
-                    curY += rowH;
+
+                    const heightStatus = lastEntry ? (lastEntry.height_status || lastEntry.heightStatus || lastEntry.heightStatusLabel || 'No status') : 'No status';
+                    const weightStatus = lastEntry ? (lastEntry.weight_status || lastEntry.weightStatus || lastEntry.weightStatusLabel || 'No status') : 'No status';
+                    const heightVal = lastEntry ? (lastEntry.height || lastEntry.height_cm || lastEntry.height_cm_value || '') : '';
+                    const weightVal = lastEntry ? (lastEntry.weight || lastEntry.weight_kg || lastEntry.weight_value || '') : '';
+                    const ageLabel = lastEntry ? (lastEntry.growthMonth ?? lastEntry.age_months ?? lastEntry.age ?? '') : '';
+
+                    let summaryLines = [];
+                    summaryLines.push(`Height Status: ${heightStatus}`);
+                    if (statusExplanations[heightStatus]) summaryLines.push(statusExplanations[heightStatus]);
+                    if (heightVal) summaryLines.push(`Latest measurement: ${heightVal} ${heightVal && !String(heightVal).toLowerCase().includes('cm') ? 'cm' : ''}`);
+                    if (ageLabel) summaryLines.push(`Age at measurement: ${ageLabel}`);
+                    summaryLines.push('');
+                    summaryLines.push(`Weight Status: ${weightStatus}`);
+                    if (statusExplanations[weightStatus]) summaryLines.push(statusExplanations[weightStatus]);
+                    if (weightVal) summaryLines.push(`Latest measurement: ${weightVal} ${weightVal && !String(weightVal).toLowerCase().includes('kg') ? 'kg' : ''}`);
+
+                    const pad = 10;
+                    const txtX = bottomLeftX + pad;
+                    const txtY = bottomLeftY + 28;
+                    const maxTxtW = boxW - pad * 2;
+                    const textToPrint = summaryLines.join('\n');
+                    pdf.setFontSize(11);
+                    pdf.setTextColor(40);
+                    const linesToPrint = pdf.splitTextToSize(textToPrint, maxTxtW);
+                    pdf.text(linesToPrint, txtX, txtY);
+                } catch (e) {
+                    console.warn('Failed to build growth summary', e);
+                    pdf.setFontSize(10);
+                    pdf.text('No summary available', bottomLeftX + 12, bottomLeftY + 36);
                 }
 
                 // Bottom-right quadrant: Weight chart
                 const bottomRightX = topRightX;
                 const bottomRightY = bottomLeftY;
+                pdf.setFont(undefined, 'bold');
                 pdf.setFontSize(14);
                 pdf.text('Weight Chart', bottomRightX, bottomRightY + 12);
+                pdf.setFont(undefined, 'normal');
                 const bottomRightChartY = bottomRightY + 18;
                 const bottomRightChartH = bottomHeight - 22;
                 pdf.addImage(weightDataUrl, 'PNG', bottomRightX, bottomRightChartY, rightWidth, bottomRightChartH);
