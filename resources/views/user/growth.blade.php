@@ -1350,47 +1350,89 @@
                             empathetic recommendation. Make 'Consult to pediatrician' the last resort. Provide the answer in markdown format.`;
             console.log("AI Prompt:", prompt);
             try {
-                const response = await fetch("{{ url('/proxy/openrouter/recommendation') }}", {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: 'openai/gpt-oss-120b:free',
-                        status: status,
-                        age: age,
-                        gender: gender
-                    }),
-                });
+                const endpoint = "{{ url('/proxy/openrouter/recommendation') }}";
+                const payload = {
+                    model: 'deepseek/deepseek-r1-0528:free',
+                    status: status,
+                    age: age,
+                    gender: gender
+                };
 
-                // Read raw text first to avoid JSON parse errors when server returns HTML (500 pages)
-                const raw = await response.text();
+                const maxAttempts = 3;
+                let attempt = 0;
+                let response = null;
+                let raw = null;
                 let data = null;
-                try {
-                    data = raw ? JSON.parse(raw) : null;
-                } catch (e) {
-                    console.error('Non-JSON response from server:', raw);
-                    recText.innerHTML = 'Server error: ' + (raw.length > 200 ? raw.slice(0,200) + '...' : raw);
-                    recSection.style.display = 'block';
-                    return;
-                }
 
-                if (!response.ok) {
-                    console.error('Recommendation API returned', response.status, data);
-                    const errMsg = data?.error?.message || data?.message || JSON.stringify(data) || ('HTTP ' + response.status);
-                    recText.innerHTML = 'AI service error: ' + errMsg;
-                    recSection.style.display = 'block';
-                    return;
-                }
+                while (attempt < maxAttempts) {
+                    attempt++;
+                    try {
+                        response = await fetch(endpoint, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify(payload),
+                        });
 
-                console.log("AI API Response:", data);
-                const markdownText = data.choices?.[0]?.message?.content || data.choices?.[0]?.content || 'No recommendation received.';
-                recText.innerHTML = marked.parse(markdownText);
+                        raw = await response.text();
+                        try {
+                            data = raw ? JSON.parse(raw) : null;
+                        } catch (e) {
+                            console.error('Non-JSON response from server:', raw);
+                            recText.innerHTML = 'Server error: ' + (raw.length > 200 ? raw.slice(0,200) + '...' : raw);
+                            recSection.style.display = 'block';
+                            return;
+                        }
+
+                        if (response.ok) {
+                            // success
+                            console.log("AI API Response:", data);
+                            const markdownText = data.choices?.[0]?.message?.content || data.choices?.[0]?.content || 'No recommendation received.';
+                            recText.innerHTML = marked.parse(markdownText);
+                            recSection.style.display = 'block';
+                            return;
+                        }
+
+                        // If rate limited, retry with exponential backoff
+                        if (response.status === 429 && attempt < maxAttempts) {
+                            const wait = 500 * Math.pow(2, attempt - 1);
+                            console.warn(`Recommendation API rate limited (429). Retry ${attempt}/${maxAttempts} after ${wait}ms`);
+                            await new Promise(r => setTimeout(r, wait));
+                            continue;
+                        }
+
+                        // For other non-ok statuses or final 429
+                        console.error('Recommendation API returned', response.status, data);
+                        const errMsg = data?.error?.message || data?.message || JSON.stringify(data) || ('HTTP ' + response.status);
+                        // Provide a clearer user message for rate limiting
+                        if (response.status === 429) {
+                            recText.innerHTML = 'AI service busy: too many requests. Please wait a few moments and try again.';
+                        } else {
+                            recText.innerHTML = 'AI service error: ' + errMsg;
+                        }
+                        recSection.style.display = 'block';
+                        return;
+
+                    } catch (innerErr) {
+                        console.error(`Attempt ${attempt} failed:`, innerErr);
+                        if (attempt < maxAttempts) {
+                            const wait = 500 * Math.pow(2, attempt - 1);
+                            await new Promise(r => setTimeout(r, wait));
+                            continue;
+                        }
+                        throw innerErr;
+                    }
+                }
+                // If we reach here, all attempts failed
+                recText.innerHTML = 'AI recommendation unavailable. Please try again later.';
+                recSection.style.display = 'block';
+                return;
             } catch (error) {
                 console.error('Fetch error:', error);
-                recText.innerHTML = 'Request failed: ' + error.message;
+                recText.innerHTML = 'Request failed: ' + (error?.message || error);
                 recSection.style.display = 'block';
             }
         }
