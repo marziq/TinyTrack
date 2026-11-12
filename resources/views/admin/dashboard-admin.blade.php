@@ -150,9 +150,17 @@
             gap: 25px;
         }
 
+        /* Notification Icon */
         .notification-icon {
             position: relative;
             cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .notification-icon:hover {
+            background-color: #e3f2fd;
         }
 
         .notification-icon i {
@@ -162,8 +170,8 @@
 
         .notification-badge {
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: -4px;
+            right: -6px;
             background-color: #e74c3c;
             color: white;
             border-radius: 50%;
@@ -175,6 +183,111 @@
             font-size: 11px;
             font-weight: bold;
         }
+
+        /* Bigger bell icon for the redesigned notification */
+        .notification-btn i {
+            font-size: 22px; /* increase bell size */
+            color: #555;
+        }
+
+        /* Notification Popup Styles — redesigned */
+        .notification-popup {
+            position: absolute;
+            top: 44px;
+            right: 0;
+            width: 560px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(20,30,60,0.12);
+            z-index: 1001;
+            padding: 12px;
+            overflow: hidden;
+        }
+
+        .notification-popup .popup-header {
+            padding: 8px 12px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .notification-popup .popup-header h4 {
+            margin:0;
+            font-size:18px;
+            color:#0f172a;
+        }
+
+        .notification-list {
+            list-style: none;
+            margin: 0;
+            padding: 8px 4px;
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px;
+            border-radius: 10px;
+            background: transparent;
+            transition: background .12s, transform .06s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            background: #fbfdff;
+            transform: translateY(-2px);
+        }
+
+        .notification-item.tint {
+            background: #f1fbff; /* subtle tint */
+        }
+
+        .notification-item + .notification-item {
+            margin-top: 6px;
+        }
+
+        .notif-avatar {
+            width:44px;
+            height:44px;
+            border-radius:50%;
+            overflow:hidden;
+            flex: 0 0 44px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(16,24,40,0.08);
+        }
+
+        .notif-avatar img{ width:100%; height:100%; object-fit:cover; }
+
+        .notif-body { flex:1; min-width:0 }
+
+        .notif-title { font-weight:700; color:#0f172a; margin-bottom:4px; font-size:14px }
+        .notif-message { color:#475569; font-size:13px; margin-bottom:8px; max-height:36px; overflow:hidden; text-overflow:ellipsis }
+
+        .notif-meta { color:#94a3b8; font-size:12px; display:flex; gap:8px; align-items:center }
+
+        /* Dot cue for unread */
+        .notif-dot {
+            width:10px;
+            height:10px;
+            border-radius:50%;
+            background:#06b6d4;
+            position:absolute;
+            left:8px;
+            top:18px;
+            box-shadow: 0 0 0 4px rgba(6,182,212,0.06);
+        }
+
+        .no-notification { padding: 18px; text-align:center; color:#64748b }
+
+        /* scrollbar styling */
+        .notification-list::-webkit-scrollbar{ width:8px }
+        .notification-list::-webkit-scrollbar-thumb{ background:#e2e8f0; border-radius:8px }
+
 
         /* Profile Dropdown Styles */
         .dropdown {
@@ -285,17 +398,24 @@
         /* Card Container */
         .card-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            margin: 20px auto 0;
+            max-width: 1100px; /* keeps cards centered and constrained */
         }
 
         .card {
             background-color: #ffffff;
             border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease-in-out;
+            padding: 20px; /* increased vertical padding for taller cards */
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.22s ease-in-out;
+            min-height: 160px; /* taller cards */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* keep title at the top */
+            width: 100%;
+            max-width: 320px; /* constrain width so cards appear narrower */
         }
 
         .card:hover {
@@ -304,14 +424,15 @@
 
         .card h3 {
             color: #555;
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 15px;
+            margin-bottom: 6px;
         }
 
         .card p {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
             color: #333;
+            margin: 0;
         }
 
         /* Chart Container */
@@ -320,6 +441,7 @@
             display: flex;
             justify-content: space-between;
             gap: 15px;
+            align-items: flex-start;
         }
 
         .chart-container > div {
@@ -331,8 +453,21 @@
             height: 500px;  /* Set consistent height for both charts */
             display: flex;
             flex-direction: column;
-            justify-content: center;
         }
+
+        /* Chart card header (title + slicer) */
+        .chart-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .chart-card-header h3 { margin: 0; padding-top: 8px !important; }
+
+        .year-slicer { display: flex; gap: 8px; align-items: center; }
+
+        .year-slicer .year-btn { padding: 6px 8px; font-size: 13px; }
 
         .chart-container h3 {
             color: #333;
@@ -447,38 +582,6 @@
                 width: 100%;
             }
         }
-        .notification-popup {
-            position: absolute;
-            top: 35px;
-            right: 0;
-            min-width: 260px;
-            background: #fff;
-            border: 1px solid #e3f2fd;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            z-index: 1001;
-            padding: 10px 0;
-        }
-        .notification-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .notification-item {
-            padding: 10px 16px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .notification-item:last-child {
-            border-bottom: none;
-        }
-        .no-notification {
-            padding: 16px;
-            text-align: center;
-            color: #888;
-            font-size: 14px;
-        }
 
         /* Add this to your existing styles */
         #appointmentCalendar {
@@ -549,18 +652,41 @@
                 <i class="fas fa-bars"></i>
             </button>
             <div class="nav-icons">
-                <div class="notification-icon" id="notificationBell" style="position: relative;">
-                    <i class="fas fa-bell"></i>
-                    @if($unreadCount > 0)
-                        <span class="notification-badge">{{ $unreadCount }}</span>
-                    @endif
+                <!-- Notification Icon -->
+                <div class="notification-wrapper" style="position: relative;">
+                    <button id="notificationBell" class="notification-btn" aria-expanded="false" style="background:none;border:none;padding:6px 8px;cursor:pointer;color:inherit;">
+                        <i class="fas fa-bell"></i>
+                        @if($unreadCount > 0)
+                            <span class="notification-badge">{{ $unreadCount }}</span>
+                        @endif
+                    </button>
+
                     <div id="notificationPopup" class="notification-popup" style="display: none;">
+                        <div class="popup-header">
+                            <h4>Notifications</h4>
+                            <button id="markAllRead" class="btn btn-sm" style="background:none;border:none;color:#64748b;font-size:13px;padding:6px;">Mark all read</button>
+                        </div>
+
                         <ul class="notification-list">
                             @forelse($userNotifications as $notif)
-                                <li class="notification-item {{ $notif->status == 'unread' ? 'fw-bold' : '' }}" data-id="{{ $notif->notification_id }}">
-                                    <strong>{{ $notif->title }}</strong><br>
-                                    <span>{{ $notif->message }}</span>
-                                    <div style="font-size: 11px; color: #888;">{{ $notif->dateSent }}</div>
+                                <li class="notification-item {{ $notif->status == 'unread' ? 'tint' : '' }}" data-id="{{ $notif->notification_id }}">
+                                    <div class="notif-avatar">
+                                        <img src="{{ $notif->avatar ?? asset('storage/baby-photos/tinytrack-logo.png') }}" alt="avatar">
+                                    </div>
+
+                                    <div class="notif-body">
+                                        <div class="notif-title">{{ $notif->title }}</div>
+                                        <div class="notif-message">{{ \Illuminate\Support\Str::limit($notif->message, 120) }}</div>
+                                        <div class="notif-meta">
+                                            <span>{{ $notif->category ?? '' }}</span>
+                                            @if(!empty($notif->category))<span>•</span>@endif
+                                            <span>{{ $notif->dateSent }}</span>
+                                        </div>
+                                    </div>
+
+                                    @if($notif->status == 'unread')
+                                        <div class="notif-dot" aria-hidden="true"></div>
+                                    @endif
                                 </li>
                             @empty
                                 <li class="no-notification">No notifications.</li>
@@ -573,7 +699,8 @@
                     <button class="profile-btn" type="button" id="accountDropdown">
                         <div class="profile-img-container">
                             @if (Auth::check())
-                                <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
+                                {{-- Use stored asset if user uploaded a profile photo (profile_photo_path), otherwise fall back to profile_photo_url --}}
+                                <img src="{{ Auth::user()->profile_photo_path ? asset('storage/' . Auth::user()->profile_photo_path) : Auth::user()->profile_photo_url }}" alt="Profile" class="profile-img">
                             @else
                                 <script>
                                     window.location.href = "{{ route('login') }}";  // Redirect to login page
@@ -629,8 +756,21 @@
 
             <!-- Chart Section -->
             <div class="chart-container">
-                <div>
-                    <h3 style="padding-top: 30px !important;">Babies Added Each Month - {{ $babiesYear ?? date('Y') }}</h3>
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h3>Babies Added Each Month</h3>
+                        @php
+                            $currentBabiesYear = $babiesYear ?? date('Y');
+                            $years = $availableYears ?? range(date('Y'), date('Y') - 5);
+                        @endphp
+                        <div class="year-slicer">
+                            <select id="yearSelect" class="form-select form-select-sm" style="width:110px;">
+                                @foreach($years as $y)
+                                    <option value="{{ $y }}" {{ $y == $currentBabiesYear ? 'selected' : '' }}>{{ $y }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <canvas id="babiesChart"></canvas>
                 </div>
 
@@ -788,40 +928,38 @@
             notifModal.show();
         }
 
-    // Babies chart: data provided by server as $babiesPerMonth (12 values, Jan-Dec)
+    // Babies chart: support year slicer and client-side switching
         const allMonthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const babiesAllData = {!! json_encode($babiesPerMonth ?? array_fill(0,12,0)) !!};
-    // Year for the babies data: use server-provided year if available, else fall back to current year
-    const babiesChartYear = {!! json_encode($babiesYear ?? date('Y')) !!};
 
-        // Determine the visible slice: start from the month before the first month that has a baby,
-        // and end at the last month that has a baby. If there are no babies at all, show the full year.
-        let firstNonZeroIndex = babiesAllData.findIndex(v => v > 0);
-        let lastNonZeroIndex = -1;
-        if (firstNonZeroIndex !== -1) {
-            // find last non-zero index
-            for (let i = babiesAllData.length - 1; i >= 0; i--) {
-                if (babiesAllData[i] > 0) { lastNonZeroIndex = i; break; }
+        @php
+            $babiesByYearServer = $babiesByYear ?? [($babiesYear ?? date('Y')) => ($babiesPerMonth ?? array_fill(0,12,0))];
+        @endphp
+
+        const babiesByYear = {!! json_encode($babiesByYearServer) !!};
+        const initialBabiesYear = {!! json_encode($babiesYear ?? date('Y')) !!};
+
+        function computeSlice(arr) {
+            const firstNonZero = arr.findIndex(v => v > 0);
+            let lastNonZero = -1;
+            if (firstNonZero !== -1) {
+                for (let i = arr.length - 1; i >= 0; i--) { if (arr[i] > 0) { lastNonZero = i; break; } }
+                const start = Math.max(0, firstNonZero - 1);
+                return { labels: allMonthLabels.slice(start, lastNonZero + 1), data: arr.slice(start, lastNonZero + 1) };
             }
-            // include the previous month as starting point when possible
-            firstNonZeroIndex = Math.max(0, firstNonZeroIndex - 1);
-        } else {
-            // no babies: show full 12 months
-            firstNonZeroIndex = 0;
-            lastNonZeroIndex = babiesAllData.length - 1;
+            return { labels: allMonthLabels.slice(0), data: arr.slice(0) };
         }
 
-        const babiesLabels = allMonthLabels.slice(firstNonZeroIndex, lastNonZeroIndex + 1);
-        const babiesData = babiesAllData.slice(firstNonZeroIndex, lastNonZeroIndex + 1);
+        const ctx1 = document.getElementById('babiesChart').getContext('2d');
+        const initialDataArr = babiesByYear[initialBabiesYear] ?? new Array(12).fill(0);
+        const initialSlice = computeSlice(initialDataArr);
 
-        var ctx1 = document.getElementById('babiesChart').getContext('2d');
         var babiesChart = new Chart(ctx1, {
             type: 'line',
             data: {
-                labels: babiesLabels,
+                labels: initialSlice.labels,
                 datasets: [{
                     label: 'Babies Added',
-                    data: babiesData,
+                    data: initialSlice.data,
                     borderColor: 'rgba(54, 162, 235, 1)',
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     fill: true,
@@ -832,14 +970,55 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    title: {
-                        display: true,
-                        text: 'Babies Added (' + babiesChartYear + ')'
-                    }
+                    title: { display: true, text: 'Babies Added (' + initialBabiesYear + ')' }
                 },
                 scales: { y: { beginAtZero: true } }
             }
         });
+
+        // Year select behavior with fetch fallback for missing years
+        function updateBabiesChart(year) {
+            // if we don't have the data for this year client-side, fetch it from server
+            if (typeof babiesByYear[year] === 'undefined') {
+                fetch('/admin/babies-per-month?year=' + encodeURIComponent(year), { headers: { 'Accept': 'application/json' } })
+                    .then(r => {
+                        if (!r.ok) throw new Error('Network response was not ok');
+                        return r.json();
+                    })
+                    .then(json => {
+                        const arr = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : null);
+                        if (arr && arr.length >= 12) {
+                            babiesByYear[year] = arr.slice(0,12);
+                        } else if (arr && arr.length > 0) {
+                            // try to map object {month:count}
+                            let arr12 = new Array(12).fill(0);
+                            Object.keys(arr).forEach(k => { const idx = parseInt(k,10)-1; if (!isNaN(idx) && idx>=0 && idx<12) arr12[idx] = parseInt(arr[k],10)||0 });
+                            babiesByYear[year] = arr12;
+                        } else {
+                            babiesByYear[year] = new Array(12).fill(0);
+                        }
+                        updateBabiesChart(year);
+                    })
+                    .catch(err => { console.error('Failed to fetch babies data for', year, err); babiesByYear[year] = new Array(12).fill(0); updateBabiesChart(year); });
+                return;
+            }
+
+            const arr = babiesByYear[year] ?? new Array(12).fill(0);
+            const slice = computeSlice(arr);
+            babiesChart.data.labels = slice.labels;
+            babiesChart.data.datasets[0].data = slice.data;
+            babiesChart.options.plugins.title.text = 'Babies Added (' + year + ')';
+            babiesChart.update();
+
+            // update select UI
+            const sel = document.getElementById('yearSelect');
+            if (sel) sel.value = year;
+        }
+
+        const yearSelect = document.getElementById('yearSelect');
+        if (yearSelect) {
+            yearSelect.addEventListener('change', function() { updateBabiesChart(this.value); });
+        }
 
         // Gender distribution: server should pass an array [maleCount, femaleCount]
         const genderData = {!! json_encode($genderDistribution ?? [0,0]) !!};

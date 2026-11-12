@@ -1,19 +1,26 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BabyController;
-use App\Http\Controllers\GrowthController;
-use App\Http\Controllers\NotificationsController;
-use App\Http\Controllers\MilestoneController;
-use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\VaccinationController;
 use App\Models\Baby;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\BabyController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GrowthController;
+use App\Http\Controllers\MilestoneController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\FavoriteTipController;
 use App\Http\Controllers\OpenAIProxyController;
+use App\Http\Controllers\VaccinationController;
+use App\Http\Controllers\NotificationsController;
+use App\Mail\AppointmentReminder;
+use App\Http\Controllers\ContactController;
+use Illuminate\Support\Facades\Schema;
+
 
 // Public routes
 Route::get('/', function () {
@@ -29,7 +36,7 @@ Route::get('/services', function () {
 })->name('service');
 
 Route::get('/experts', function () {
-    return view('team');
+    return view('expert');
 })->name('expert');
 
 Route::get('/contact', function () {
@@ -86,7 +93,52 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
     Route::resource('notifications', NotificationsController::class);
 });
 
+Route::post('/admin/run-reminders', function (Request $request) {
+    if (! Auth::check()) {
+        abort(403);
+    }
+
+    // Optional: restrict to admin email if desired
+    if (Auth::user()->email !== 'support@tinytrack.com') {
+        abort(403);
+    }
+
+    try {
+        Artisan::call('app:send-appointment-reminders');
+        return redirect()->back()->with('status', 'Appointment reminders dispatched.');
+    } catch (\Throwable $e) {
+        \Log::error('Run reminders failed: '.$e->getMessage());
+        return redirect()->back()->with('error', 'Failed to dispatch reminders.');
+    }
+})->name('admin.run-reminders')->middleware('auth');
+
 //admin routes end
+
+// API for admin: babies per month by year (returns array of 12 counts)
+Route::get('/admin/babies-per-month', function (Request $request) {
+    if (! Auth::check()) {
+        abort(403);
+    }
+    // Optional: restrict to admin email if desired
+    if (Auth::user()->email !== 'support@tinytrack.com') {
+        abort(403);
+    }
+
+    $year = intval($request->query('year', date('Y')));
+    $counts = Baby::whereYear('created_at', $year)
+        ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+        ->groupBy('month')
+        ->pluck('count', 'month')
+        ->toArray();
+
+    $arr = array_fill(0, 12, 0);
+    foreach ($counts as $m => $c) {
+        $idx = intval($m) - 1;
+        if ($idx >= 0 && $idx < 12) $arr[$idx] = (int)$c;
+    }
+
+    return response()->json(['data' => $arr]);
+})->name('admin.babies.per.month')->middleware('auth');
 
 // Authenticated routes
 Route::middleware([
@@ -178,3 +230,45 @@ Route::get('/appointments/baby/{babyId}', [AppointmentController::class, 'getApp
 // Vaccination routes
 Route::get('/vaccinations/baby/{babyId}', [VaccinationController::class, 'getVaccinationsByBaby'])->name('vaccinations.by.baby');
 Route::post('/vaccinations/{id}/toggle', [VaccinationController::class, 'toggle'])->name('vaccinations.toggle');
+Route::put('/vaccinations/{id}', [VaccinationController::class, 'update'])->name('vaccinations.update');
+
+Route::get('/send-appointment-reminder', function () {
+    if (! Auth::check()) {
+        return response('Not authenticated. Please log in to send a test appointment reminder.', 401);
+    }
+
+    $user = Auth::user();
+
+    // Build query: prefer direct appointment.user_id only if column exists, otherwise rely on baby->user_id
+    $query = Appointment::with(['baby', 'user']);
+
+    if (Schema::hasColumn('appointments', 'user_id')) {
+        $query->where(function ($q) use ($user) {
+            $q->where('user_id', $user->id)
+              ->orWhereHas('baby', function ($qb) use ($user) {
+                  $qb->where('user_id', $user->id);
+              });
+        });
+    } else {
+        // appointments table doesn't have user_id, match via baby relation only
+        $query->whereHas('baby', function ($qb) use ($user) {
+            $qb->where('user_id', $user->id);
+        });
+    }
+
+    $appointment = $query->first();
+
+    if (! $appointment) {
+        return response('No appointment found for the current user', 404);
+    }
+
+    try {
+        Mail::to($user->email)->send(new AppointmentReminder($appointment, $user));
+        return 'Appointment reminder sent to '.$user->email;
+    } catch (\Throwable $e) {
+        \Log::error('Send appointment reminder failed: '.$e->getMessage());
+        return response('Failed to send: '.$e->getMessage(), 500);
+    }
+});
+
+Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');

@@ -161,53 +161,123 @@
 
         .notification-badge {
             position: absolute;
-            top: 0;
-            right: 0;
+            top: -4px;
+            right: -6px;
             background-color: #e74c3c;
             color: white;
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: bold;
         }
 
-        /* Notification Popup Styles */
+        /* Bigger bell icon for the redesigned notification */
+        .notification-btn i {
+            font-size: 22px; /* increase bell size */
+            color: #555;
+        }
+
+        /* Notification Popup Styles — redesigned */
         .notification-popup {
             position: absolute;
-            top: 35px;
+            top: 44px;
             right: 0;
-            min-width: 260px;
+            width: 560px;
             background: #fff;
-            border: 1px solid #e3f2fd;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(20,30,60,0.12);
             z-index: 1001;
-            padding: 10px 0;
+            padding: 12px;
+            overflow: hidden;
         }
+
+        .notification-popup .popup-header {
+            padding: 8px 12px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .notification-popup .popup-header h4 {
+            margin:0;
+            font-size:18px;
+            color:#0f172a;
+        }
+
         .notification-list {
             list-style: none;
             margin: 0;
-            padding: 0;
+            padding: 8px 4px;
+            max-height: 420px;
+            overflow-y: auto;
         }
+
         .notification-item {
-            padding: 10px 16px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px;
+            border-radius: 10px;
+            background: transparent;
+            transition: background .12s, transform .06s;
             cursor: pointer;
+            position: relative;
         }
-        .notification-item:last-child {
-            border-bottom: none;
+
+        .notification-item:hover {
+            background: #fbfdff;
+            transform: translateY(-2px);
         }
-        .no-notification {
-            padding: 16px;
-            text-align: center;
-            color: #888;
-            font-size: 14px;
+
+        .notification-item.tint {
+            background: #f1fbff; /* subtle tint */
         }
+
+        .notification-item + .notification-item {
+            margin-top: 6px;
+        }
+
+        .notif-avatar {
+            width:44px;
+            height:44px;
+            border-radius:50%;
+            overflow:hidden;
+            flex: 0 0 44px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(16,24,40,0.08);
+        }
+
+        .notif-avatar img{ width:100%; height:100%; object-fit:cover; }
+
+        .notif-body { flex:1; min-width:0 }
+
+        .notif-title { font-weight:700; color:#0f172a; margin-bottom:4px; font-size:14px }
+        .notif-message { color:#475569; font-size:13px; margin-bottom:8px; max-height:36px; overflow:hidden; text-overflow:ellipsis }
+
+        .notif-meta { color:#94a3b8; font-size:12px; display:flex; gap:8px; align-items:center }
+
+        /* Dot cue for unread */
+        .notif-dot {
+            width:10px;
+            height:10px;
+            border-radius:50%;
+            background:#06b6d4;
+            position:absolute;
+            left:8px;
+            top:18px;
+            box-shadow: 0 0 0 4px rgba(6,182,212,0.06);
+        }
+
+        .no-notification { padding: 18px; text-align:center; color:#64748b }
+
+        /* scrollbar styling */
+        .notification-list::-webkit-scrollbar{ width:8px }
+        .notification-list::-webkit-scrollbar-thumb{ background:#e2e8f0; border-radius:8px }
 
         /* Profile Dropdown */
         .dropdown {
@@ -666,7 +736,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #e3f2fd;
+            background-color: #eefadf;
             border-radius: 50%;
             color: #16fc38; /* light green for milestone check icon */
             font-size: 18px;
@@ -849,19 +919,41 @@
             </button>
             <h1 style="font-weight: bold">My Baby</h1>
             <div class="topbar-right">
-                <!-- Notification Icon -->
-                 <div class="notification-icon" id="notificationBell" style="position: relative;">
-                    <i class="fas fa-bell"></i>
-                    @if($unreadCount > 0)
-                        <span class="notification-badge">{{ $unreadCount }}</span>
-                    @endif
+                <!-- Notification Icon (redesigned) -->
+                <div class="notification-wrapper" style="position: relative;">
+                    <button id="notificationBell" class="notification-btn" aria-expanded="false" style="background:none;border:none;padding:6px 8px;cursor:pointer;color:inherit;">
+                        <i class="fas fa-bell"></i>
+                        @if($unreadCount > 0)
+                            <span class="notification-badge">{{ $unreadCount }}</span>
+                        @endif
+                    </button>
+
                     <div id="notificationPopup" class="notification-popup" style="display: none;">
+                        <div class="popup-header">
+                            <h4>Notifications</h4>
+                            <button id="markAllRead" class="btn btn-sm" style="background:none;border:none;color:#64748b;font-size:13px;padding:6px;">Mark all read</button>
+                        </div>
+
                         <ul class="notification-list">
                             @forelse($userNotifications as $notif)
-                                <li class="notification-item {{ $notif->status == 'unread' ? 'fw-bold' : '' }}" data-id="{{ $notif->notification_id }}">
-                                    <strong>{{ $notif->title }}</strong><br>
-                                    <span>{{ $notif->message }}</span>
-                                    <div style="font-size: 11px; color: #888;">{{ $notif->dateSent }}</div>
+                                <li class="notification-item {{ $notif->status == 'unread' ? 'tint' : '' }}" data-id="{{ $notif->notification_id }}">
+                                    <div class="notif-avatar">
+                                        <img src="{{ $notif->avatar ?? asset('storage/baby-photos/tinytrack-logo.png') }}" alt="avatar">
+                                    </div>
+
+                                    <div class="notif-body">
+                                        <div class="notif-title">{{ $notif->title }}</div>
+                                        <div class="notif-message">{{ \Illuminate\Support\Str::limit($notif->message, 120) }}</div>
+                                        <div class="notif-meta">
+                                            <span>{{ $notif->category ?? '' }}</span>
+                                            @if(!empty($notif->category))<span>•</span>@endif
+                                            <span>{{ $notif->dateSent }}</span>
+                                        </div>
+                                    </div>
+
+                                    @if($notif->status == 'unread')
+                                        <div class="notif-dot" aria-hidden="true"></div>
+                                    @endif
                                 </li>
                             @empty
                                 <li class="no-notification">No notifications.</li>
@@ -957,7 +1049,17 @@
 
         @endforeach
         </select>
+        <button id="generatePdfBtn" class="btn btn-primary" style="margin-left: 16px; vertical-align: middle;" onclick="generatePDFReport()">
+            <i class="fas fa-file-pdf"></i>&nbsp; Generate Report
+        </button>
         <hr>
+
+        <!-- Hidden canvases used to render charts for PDF export -->
+        <div id="pdfHiddenElements" style="position: absolute; left: -9999px; top: -9999px; width: 1200px; height: 800px; overflow: hidden;">
+            <canvas id="heightReportCanvas" width="1200" height="600"></canvas>
+            <canvas id="weightReportCanvas" width="1200" height="600"></canvas>
+            <div id="pdfMarkdownRender" style="width:1200px; padding:24px; background:#ffffff; color:#111; font-family: 'Outfit', sans-serif; border-radius:8px; box-sizing:border-box;"></div>
+        </div>
         <div id="babyDashboard" style="display: none;">
             <h1 class="babyh1" id="selectedBabyProfileHeading">Select a baby to view their profile</h1>
                 <div class="dashboard-grid">
@@ -994,7 +1096,7 @@
                 <div class="chart-container">
                     <h3 class="chart-title" id="growthChartTitle">Growth</h3>
                     <div style="position: absolute; bottom: 20px; right: 30px; z-index:3; display:flex; gap:8px;">
-                        <button id="toggleHeight" class="btn btn-sm" style="background:#43a047;color:#fff;border-radius:8px;">Height</button>
+                        <button id="toggleHeight" class="btn btn-sm" style="background:#6D94C5;color:#fff;border-radius:8px;">Height</button>
                         <button id="toggleWeight" class="btn btn-sm" style="background:#FC8EAC;color:#fff;border-radius:8px;">Weight</button>
                     </div>
                     <div class="chart-column">
@@ -1137,7 +1239,7 @@
                                         $babyOptions = ['baby1.png','baby2.png','baby3.png','baby4.png','baby5.png','baby6.png'];
                                     @endphp
 
-                                    <div id="babyOptionsGallery" style="display:flex; gap:12px; overflow-x:auto; padding:8px 4px;">
+                                    <div id="babyOptionsGallery" style="display:flex; gap:12px; overflow-x:auto; padding:18px 4px;">
                                         @foreach($babyOptions as $opt)
                                             <label class="gallery-item" style="flex:0 0 auto; cursor:pointer;">
                                                 <input type="radio" name="baby_photo_option" class="d-none" value="{{ $opt }}">
@@ -1146,8 +1248,10 @@
                                         @endforeach
                                     </div>
 
-                                    <div id="photoPreview" class="mt-3 text-center"></div>
+                                    <div id="photoPreview" style="margin-top:3.5rem !important;" class="text-center"></div>
+                                    <br>
                                     <small class="form-text text-muted">Select one of the provided baby images. Parents can't upload personal photos.</small>
+                                    <br>
                                 </div>
 
                                 <div class="row">
@@ -1194,7 +1298,13 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-primary">Save</button>
-                                <button type="button" class="btn btn-danger" id="deleteBabyButton" onclick="deleteSelectedBaby()" style="display: none;">Delete</button>
+                            <button type="button"
+                                    class="btn btn-danger"
+                                    id="deleteBabyButton"
+                                    onclick="deleteSelectedBaby()"
+                                    style="display: none;">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                             </div>
                         </form>
                     </div>
@@ -1207,6 +1317,293 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- html2canvas and jsPDF for client-side PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        async function generatePDFReport() {
+            const btn = document.getElementById('generatePdfBtn');
+            const selector = document.getElementById('babySelector');
+            const selectedOption = selector && selector.options[selector.selectedIndex];
+            if (!selectedOption || !selectedOption.value) {
+                alert('Please select a baby to generate the report.');
+                return;
+            }
+
+            const babyId = selectedOption.value;
+            const babyName = selectedOption.dataset.name || selectedOption.text || 'baby';
+
+            try {
+                btn.disabled = true;
+                btn.innerText = 'Generating...';
+
+                // Ensure growth data is loaded for selected baby
+                if (!window._lastGrowthData || window._lastGrowthData.babyId != babyId) {
+                    if (typeof window.loadGrowthChart === 'function') {
+                        await window.loadGrowthChart(babyId);
+                    }
+                }
+
+                const data = window._lastGrowthData;
+                if (!data) {
+                    alert('No growth data available to build the report.');
+                    return;
+                }
+
+                // Render height & weight charts into hidden canvases
+                if (window._heightReportChart) { try { window._heightReportChart.destroy(); } catch(e){} }
+                if (window._weightReportChart) { try { window._weightReportChart.destroy(); } catch(e){} }
+
+                const hCtx = document.getElementById('heightReportCanvas').getContext('2d');
+                const wCtx = document.getElementById('weightReportCanvas').getContext('2d');
+
+                window._heightReportChart = new Chart(hCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.labels || [],
+                        datasets: [{
+                            label: 'Height (cm)',
+                            data: data.height || [],
+                            borderColor: '#80A1BA',
+                            backgroundColor: 'rgba(128,161,186,0.12)',
+                            fill: true,
+                            pointRadius: 3
+                        }]
+                    },
+                    options: { responsive: false, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+                });
+
+                window._weightReportChart = new Chart(wCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.labels || [],
+                        datasets: [{
+                            label: 'Weight (kg)',
+                            data: data.weight || [],
+                            borderColor: '#FC8EAC',
+                            backgroundColor: 'rgba(252,142,172,0.12)',
+                            fill: true,
+                            pointRadius: 3
+                        }]
+                    },
+                    options: { responsive: false, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+                });
+
+                // wait briefly for charts to render
+                await new Promise(r => setTimeout(r, 450));
+
+                const heightDataUrl = document.getElementById('heightReportCanvas').toDataURL('image/png', 1.0);
+                const weightDataUrl = document.getElementById('weightReportCanvas').toDataURL('image/png', 1.0);
+
+                // Try to capture milestones section (if present) otherwise capture whole dashboard
+                const milestonesEl = document.querySelector('.milestones-container') || document.getElementById('babyDashboard');
+                let milestonesImg = null;
+                try {
+                    const canvas = await html2canvas(milestonesEl, { scale: 2 });
+                    milestonesImg = canvas.toDataURL('image/png', 1.0);
+                } catch (err) {
+                    console.warn('Failed to capture milestones for PDF', err);
+                }
+
+                // Build PDF with a balanced 2x2 quadrant layout
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 40;
+                const contentWidth = pageWidth - margin * 2;
+
+                // Colored top bar header
+                const headerH = 48;
+                pdf.setFillColor(25,118,210); // friendly blue
+                pdf.rect(0, 0, pageWidth, headerH, 'F');
+                pdf.setFontSize(18);
+                pdf.setTextColor(255,255,255);
+                pdf.text(`${babyName}'s Growth Report`, pageWidth / 2, headerH / 2 + 6, { align: 'center' });
+                pdf.setTextColor(0,0,0);
+
+                // Calculate quadrant areas
+                const startY = headerH + 12; // top content start (below header)
+                const availableHeight = pageHeight - margin - startY;
+                const gap = 14; // gap between quadrants
+                const topHeight = Math.floor((availableHeight - gap) / 2);
+                const bottomHeight = availableHeight - topHeight - gap;
+
+                const leftWidth = Math.floor((contentWidth - gap) / 2);
+                const rightWidth = contentWidth - leftWidth - gap;
+
+                // Helper to fetch image as dataURL (may return null on CORS/auth issues)
+                async function fetchImageDataUrl(url) {
+                    return new Promise((resolve) => {
+                        if (!url) return resolve(null);
+                        const img = new Image();
+                        img.crossOrigin = 'anonymous';
+                        img.onload = function() {
+                            try {
+                                const c = document.createElement('canvas');
+                                c.width = img.width;
+                                c.height = img.height;
+                                const ctx = c.getContext('2d');
+                                ctx.drawImage(img, 0, 0);
+                                resolve(c.toDataURL('image/png'));
+                            } catch (e) { resolve(null); }
+                        };
+                        img.onerror = function() { resolve(null); };
+                        img.src = url;
+                    });
+                }
+
+                const babyPhotoUrl = selectedOption.dataset.photo || null;
+                const babyPhotoDataUrl = await fetchImageDataUrl(babyPhotoUrl);
+
+                // Top-left quadrant: baby info (with title)
+                const infoX = margin;
+                const infoY = startY;
+                // Title
+                pdf.setFont(undefined, 'bold');
+                pdf.setFontSize(14);
+                pdf.text('Baby Details', infoX, infoY + 12);
+                pdf.setFont(undefined, 'normal');
+
+                const photoY = infoY + 18; // leave space for title
+                const photoSize = Math.min(120, topHeight - 34);
+                if (babyPhotoDataUrl) {
+                    pdf.addImage(babyPhotoDataUrl, 'PNG', infoX, photoY, photoSize, photoSize);
+                } else {
+                    pdf.setDrawColor(200);
+                    pdf.rect(infoX, photoY, photoSize, photoSize);
+                    pdf.setFontSize(10);
+                    pdf.text('No Image', infoX + 8, photoY + Math.floor(photoSize/2));
+                }
+
+                pdf.setFontSize(12);
+                const infoTxtX = infoX + photoSize + 14;
+                let infoTy = photoY + 10;
+                pdf.text(`Name: ${selectedOption.dataset.name || ''}`, infoTxtX, infoTy);
+                infoTy += 18;
+                pdf.text(`Age: ${selectedOption.dataset.age || ''}`, infoTxtX, infoTy);
+                infoTy += 16;
+                pdf.text(`Birth Date: ${selectedOption.dataset.birthdate || ''}`, infoTxtX, infoTy);
+                infoTy += 16;
+                pdf.text(`Gender: ${selectedOption.dataset.gender || ''}`, infoTxtX, infoTy);
+                infoTy += 16;
+                pdf.text(`Ethnicity: ${selectedOption.dataset.ethnicity || ''}`, infoTxtX, infoTy);
+                infoTy += 16;
+                pdf.text(`Premature: ${selectedOption.dataset.premature == '1' ? 'Yes' : 'No'}`, infoTxtX, infoTy);
+
+                // Top-right quadrant: Height chart
+                const topRightX = margin + leftWidth + gap;
+                const topRightY = startY;
+                pdf.setFont(undefined, 'bold');
+                pdf.setFontSize(14);
+                pdf.text('Height Chart', topRightX, topRightY + 12);
+                pdf.setFont(undefined, 'normal');
+                const topRightChartY = topRightY + 18;
+                const topRightChartH = topHeight - 22;
+                pdf.addImage(heightDataUrl, 'PNG', topRightX, topRightChartY, rightWidth, topRightChartH);
+
+                // Bottom-left quadrant: Growth summary (mini height & weight charts)
+                const bottomLeftX = margin;
+                const bottomLeftY = startY + topHeight + gap;
+                const boxW = leftWidth;
+                const boxH = bottomHeight;
+                pdf.setFont(undefined, 'bold');
+                pdf.setFontSize(14);
+                pdf.text('Growth Summary', bottomLeftX, bottomLeftY + 12);
+                pdf.setFont(undefined, 'normal');
+
+                // Draw box for summary
+                pdf.setDrawColor(220);
+                pdf.rect(bottomLeftX, bottomLeftY + 18, boxW, boxH - 18, 'S');
+
+                // Prepare status explanations (mirrors Growth page)
+                const statusExplanations = {
+                    "Severely Low": "This indicates the baby's growth is far below the normal range. It may be a sign of severe malnutrition or a health issue. Please consult a pediatrician as soon as possible.",
+                    "Low": "The baby's growth is below the normal range. Monitoring and possibly adjusting nutrition or care is recommended. Consider consulting a healthcare professional.",
+                    "Normal": "The baby's growth is within the normal range for their age and gender. Keep up the good care!",
+                    "High": "The baby's growth is above the normal range. This is usually not a concern, but monitor for rapid changes.",
+                    "Very High": "The baby's growth is far above the normal range. If this is unexpected, consult a healthcare professional.",
+                    "No status": "No growth data or status available for this entry."
+                };
+
+                // Fetch latest growth entry to summarise
+                try {
+                    const rawRes = await fetch(`/dashboard/growth/${babyId}`);
+                    let lastEntry = null;
+                    if (rawRes.ok) {
+                        const payload = await rawRes.json();
+                        if (Array.isArray(payload) && payload.length) lastEntry = payload[payload.length-1];
+                        else if (payload.growths && payload.growths.length) lastEntry = payload.growths[payload.growths.length-1];
+                        else if (payload.latest) lastEntry = payload.latest;
+                    }
+
+                    const heightStatus = lastEntry ? (lastEntry.height_status || lastEntry.heightStatus || lastEntry.heightStatusLabel || 'No status') : 'No status';
+                    const weightStatus = lastEntry ? (lastEntry.weight_status || lastEntry.weightStatus || lastEntry.weightStatusLabel || 'No status') : 'No status';
+                    const heightVal = lastEntry ? (lastEntry.height || lastEntry.height_cm || lastEntry.height_cm_value || '') : '';
+                    const weightVal = lastEntry ? (lastEntry.weight || lastEntry.weight_kg || lastEntry.weight_value || '') : '';
+                    const ageLabel = lastEntry ? (lastEntry.growthMonth ?? lastEntry.age_months ?? lastEntry.age ?? '') : '';
+
+                    let summaryLines = [];
+                    summaryLines.push(`Height Status: ${heightStatus}`);
+                    if (statusExplanations[heightStatus]) summaryLines.push(statusExplanations[heightStatus]);
+                    if (heightVal) summaryLines.push(`Latest measurement: ${heightVal} ${heightVal && !String(heightVal).toLowerCase().includes('cm') ? 'cm' : ''}`);
+                    if (ageLabel) summaryLines.push(`Age at measurement: ${ageLabel}`);
+                    summaryLines.push('');
+                    summaryLines.push(`Weight Status: ${weightStatus}`);
+                    if (statusExplanations[weightStatus]) summaryLines.push(statusExplanations[weightStatus]);
+                    if (weightVal) summaryLines.push(`Latest measurement: ${weightVal} ${weightVal && !String(weightVal).toLowerCase().includes('kg') ? 'kg' : ''}`);
+
+                    const pad = 10;
+                    const txtX = bottomLeftX + pad;
+                    const txtY = bottomLeftY + 28;
+                    const maxTxtW = boxW - pad * 2;
+                    const textToPrint = summaryLines.join('\n');
+                    pdf.setFontSize(11);
+                    pdf.setTextColor(40);
+                    const linesToPrint = pdf.splitTextToSize(textToPrint, maxTxtW);
+                    pdf.text(linesToPrint, txtX, txtY);
+                } catch (e) {
+                    console.warn('Failed to build growth summary', e);
+                    pdf.setFontSize(10);
+                    pdf.text('No summary available', bottomLeftX + 12, bottomLeftY + 36);
+                }
+
+                // Bottom-right quadrant: Weight chart
+                const bottomRightX = topRightX;
+                const bottomRightY = bottomLeftY;
+                pdf.setFont(undefined, 'bold');
+                pdf.setFontSize(14);
+                pdf.text('Weight Chart', bottomRightX, bottomRightY + 12);
+                pdf.setFont(undefined, 'normal');
+                const bottomRightChartY = bottomRightY + 18;
+                const bottomRightChartH = bottomHeight - 22;
+                pdf.addImage(weightDataUrl, 'PNG', bottomRightX, bottomRightChartY, rightWidth, bottomRightChartH);
+
+                // Additional pages with full charts
+                pdf.addPage();
+                pdf.setFontSize(18);
+                pdf.text('Height Chart (Full)', margin, 36);
+                pdf.addImage(heightDataUrl, 'PNG', margin, 56, contentWidth, pageHeight - 120);
+
+                pdf.addPage();
+                pdf.setFontSize(18);
+                pdf.text('Weight Chart (Full)', margin, 36);
+                pdf.addImage(weightDataUrl, 'PNG', margin, 56, contentWidth, pageHeight - 120);
+
+                const filename = `${(babyName || 'baby').replace(/\s+/g, '_')}_report.pdf`;
+                pdf.save(filename);
+
+            } catch (err) {
+                console.error('Error generating PDF:', err);
+                alert('An error occurred while generating the PDF. See console for details.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-file-pdf"></i>&nbsp; Generate Report';
+            }
+        }
+    </script>
 
     <script>
         // Growth chart: single canvas that toggles between Height and Weight
@@ -1230,7 +1627,7 @@
                 }
             });
 
-            const GREEN = '#43a047';
+            const BLUE = '#80A1BA';
             const PINK = '#FC8EAC';
 
             function renderGrowth(type, labels, values) {
@@ -1238,8 +1635,8 @@
                 growthChart.data.datasets = [{
                     label: type === 'height' ? 'Height (cm)' : 'Weight (g)',
                     data: values,
-                    borderColor: type === 'height' ? GREEN : PINK,
-                    backgroundColor: type === 'height' ? 'rgba(67,160,71,0.12)' : 'rgba(252,142,172,0.15)',
+                    borderColor: type === 'height' ? BLUE : PINK,
+                    backgroundColor: type === 'height' ? 'rgba(109, 148, 197, 0.15)' : 'rgba(252,142,172,0.15)',
                     borderWidth: 2,
                     tension: 0.4,
                     fill: true
@@ -1789,53 +2186,86 @@
             const bell = document.getElementById('notificationBell');
             const popup = document.getElementById('notificationPopup');
 
-            bell.addEventListener('click', function(e) {
-                e.stopPropagation();
-                popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-            });
-
-            document.addEventListener('click', function() {
-                popup.style.display = 'none';
-            });
-
-            // Mark notification as read and show full message
-            document.querySelectorAll('.notification-item').forEach(item => {
-                item.addEventListener('click', function(e) {
+            if (bell && popup) {
+                bell.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    const notifId = this.getAttribute('data-id');
-                    fetch(`/notifications/${notifId}/mark-read`, {
+                    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+                });
+
+                document.addEventListener('click', function() {
+                    popup.style.display = 'none';
+                });
+
+                // Clicking a notification item — mark read and show modal
+                document.querySelectorAll('.notification-item').forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const notifId = this.getAttribute('data-id');
+
+                        // Optimistic UI: hide dot and tint
+                        this.classList.remove('tint');
+                        const dot = this.querySelector('.notif-dot');
+                        if (dot) dot.remove();
+
+                        // Update badge count locally
+                        let badge = document.querySelector('.notification-badge');
+                        if (badge) {
+                            let count = parseInt(badge.innerText || '0') - 1;
+                            count = isNaN(count) ? 0 : count;
+                            badge.innerText = count > 0 ? count : '';
+                            if (count <= 0) badge.style.display = 'none';
+                        }
+
+                        // Show full notification in modal using new markup
+                        const title = this.querySelector('.notif-title')?.innerText || '';
+                        const message = this.querySelector('.notif-message')?.innerText || '';
+                        const metaSpan = this.querySelector('.notif-meta span:last-child');
+                        const date = metaSpan ? metaSpan.innerText : '';
+                        showNotificationModal(title, message, date);
+
+                        // Send request to backend to mark read (best-effort)
+                        fetch(`/notifications/${notifId}/mark-read`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        }).catch(err => {
+                            // silently ignore errors — UI already updated optimistically
+                            console.warn('Mark-read failed', err);
+                        });
+
+                        // Remove item from DOM after showing
+                        setTimeout(() => {
+                            this.remove();
+                            if (document.querySelectorAll('.notification-item').length === 0) {
+                                const list = document.querySelector('.notification-list');
+                                list.innerHTML = '<li class="no-notification">No notifications.</li>';
+                            }
+                        }, 200);
+                    });
+                });
+
+                // Mark all read button
+                const markAllBtn = document.getElementById('markAllRead');
+                markAllBtn && markAllBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // Update UI
+                    document.querySelectorAll('.notif-dot').forEach(d => d.remove());
+                    document.querySelectorAll('.notification-item').forEach(it => it.classList.remove('tint'));
+                    const badge = document.querySelector('.notification-badge');
+                    if (badge) { badge.innerText = ''; badge.style.display = 'none'; }
+
+                    // Best-effort backend call
+                    fetch('/notifications/mark-all-read', {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             'Accept': 'application/json'
                         }
-                    }).then(() => {
-                        // Remove the notification from the popup view
-                        this.remove();
-
-                        // Show full notification in a modal
-                        showNotificationModal(
-                            this.querySelector('strong').innerText,
-                            this.querySelector('span').innerText,
-                            this.querySelector('div').innerText
-                        );
-
-                        // Optionally update badge count
-                        let badge = document.querySelector('.notification-badge');
-                        if (badge) {
-                            let count = parseInt(badge.innerText) - 1;
-                            badge.innerText = count > 0 ? count : '';
-                            if (count <= 0) badge.style.display = 'none';
-                        }
-
-                        // If no notifications left, show "No notifications."
-                        if (document.querySelectorAll('.notification-item').length === 0) {
-                            const list = document.querySelector('.notification-list');
-                            list.innerHTML = '<li class="no-notification">No notifications.</li>';
-                        }
-                    });
+                    }).catch(err => console.warn('Mark-all-read failed', err));
                 });
-            });
+            }
         });
         // Show notification modal
         function showNotificationModal(title, message, date) {

@@ -92,6 +92,7 @@
             position: relative;
             transition: margin-left 0.3s ease;
             overflow-y: auto;
+            background-color: #e7e7e7 !important;
         }
 
         .sidebar.hidden + .main {
@@ -158,52 +159,124 @@
 
         .notification-badge {
             position: absolute;
-            top: 0;
-            right: 0;
+            top: -4px;
+            right: -6px;
             background-color: #e74c3c;
             color: white;
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: bold;
         }
-        /* Notification Popup Styles */
+
+        /* Bigger bell icon for the redesigned notification */
+        .notification-btn i {
+            font-size: 22px; /* increase bell size */
+            color: #555;
+        }
+
+        /* Notification Popup Styles — redesigned */
         .notification-popup {
             position: absolute;
-            top: 35px;
+            top: 44px;
             right: 0;
-            min-width: 260px;
+            width: 560px;
             background: #fff;
-            border: 1px solid #e3f2fd;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(20,30,60,0.12);
             z-index: 1001;
-            padding: 10px 0;
+            padding: 12px;
+            overflow: hidden;
         }
+
+        .notification-popup .popup-header {
+            padding: 8px 12px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .notification-popup .popup-header h4 {
+            margin:0;
+            font-size:18px;
+            color:#0f172a;
+        }
+
         .notification-list {
             list-style: none;
             margin: 0;
-            padding: 0;
+            padding: 8px 4px;
+            max-height: 420px;
+            overflow-y: auto;
         }
+
         .notification-item {
-            padding: 10px 16px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px;
+            border-radius: 10px;
+            background: transparent;
+            transition: background .12s, transform .06s;
             cursor: pointer;
+            position: relative;
         }
-        .notification-item:last-child {
-            border-bottom: none;
+
+        .notification-item:hover {
+            background: #fbfdff;
+            transform: translateY(-2px);
         }
-        .no-notification {
-            padding: 16px;
-            text-align: center;
-            color: #888;
-            font-size: 14px;
+
+        .notification-item.tint {
+            background: #f1fbff; /* subtle tint */
         }
+
+        .notification-item + .notification-item {
+            margin-top: 6px;
+        }
+
+        .notif-avatar {
+            width:44px;
+            height:44px;
+            border-radius:50%;
+            overflow:hidden;
+            flex: 0 0 44px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(16,24,40,0.08);
+        }
+
+        .notif-avatar img{ width:100%; height:100%; object-fit:cover; }
+
+        .notif-body { flex:1; min-width:0 }
+
+        .notif-title { font-weight:700; color:#0f172a; margin-bottom:4px; font-size:14px }
+        .notif-message { color:#475569; font-size:13px; margin-bottom:8px; max-height:36px; overflow:hidden; text-overflow:ellipsis }
+
+        .notif-meta { color:#94a3b8; font-size:12px; display:flex; gap:8px; align-items:center }
+
+        /* Dot cue for unread */
+        .notif-dot {
+            width:10px;
+            height:10px;
+            border-radius:50%;
+            background:#06b6d4;
+            position:absolute;
+            left:8px;
+            top:18px;
+            box-shadow: 0 0 0 4px rgba(6,182,212,0.06);
+        }
+
+        .no-notification { padding: 18px; text-align:center; color:#64748b }
+
+        /* scrollbar styling */
+        .notification-list::-webkit-scrollbar{ width:8px }
+        .notification-list::-webkit-scrollbar-thumb{ background:#e2e8f0; border-radius:8px }
+
         /* Profile Dropdown */
         .dropdown {
             position: relative;
@@ -433,7 +506,8 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
             border-radius: 8px !important;
             border: none !important;
-            width: 100% !important;
+            width: auto !important;
+            max-width: 360px !important;
         }
 
         .calendar h4 {
@@ -493,6 +567,32 @@
             box-shadow: 0 0 8px rgba(25, 118, 210, 0.5);
         }
 
+        /* Administered date cell and edit button styling */
+        td.administered-cell { display: block; position: relative; padding-right: 56px; }
+        .admin-date-text { display: block; color: #6b7280; line-height: 1.4; padding: 10px 0; }
+        .admin-edit-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #1976d2;
+            color: #fff !important;
+            border: none;
+            box-shadow: 0 2px 6px rgba(25,118,210,0.2);
+            cursor: pointer;
+            padding: 0;
+            z-index: 2;
+        }
+        .admin-edit-btn i { color: #fff !important; }
+        .admin-save-btn, .admin-cancel-btn { display: inline-flex; align-items: center; justify-content: center; padding: 6px 8px; }
+        .administered-date-input { width: 140px !important; display: inline-block; }
+
         /* Styling for the "Select Baby" section */
         .form-group {
             margin-bottom: 20px;
@@ -520,37 +620,7 @@
         .btn:hover {
             background-color: #1565c0;
         }
-        .notification-popup {
-            position: absolute;
-            top: 35px;
-            right: 0;
-            min-width: 260px;
-            background: #fff;
-            border: 1px solid #e3f2fd;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            z-index: 1001;
-            padding: 10px 0;
-        }
-        .notification-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .notification-item {
-            padding: 10px 16px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-        }
-        .notification-item:last-child {
-            border-bottom: none;
-        }
-        .no-notification {
-            padding: 16px;
-            text-align: center;
-            color: #888;
-            font-size: 14px;
-        }
+
         .sidebar a.active {
             background-color: #1976d2;
             color: #fff !important;
@@ -577,6 +647,7 @@
         .dark .topbar h1 {
             color: #ffffff !important;
         }
+        .dark .admin-date-text { color: #cbd5e1 !important; }
         .dark select {
             color: #ffffff !important;
         }
@@ -620,19 +691,41 @@
             </button>
             <h1 style="font-weight: bold">Appointment</h1>
             <div class="topbar-right">
-                <!-- Notification Icon -->
-                 <div class="notification-icon" id="notificationBell" style="position: relative;">
-                    <i class="fas fa-bell"></i>
-                    @if($unreadCount > 0)
-                        <span class="notification-badge">{{ $unreadCount }}</span>
-                    @endif
+                <!-- Notification Icon (redesigned) -->
+                <div class="notification-wrapper" style="position: relative;">
+                    <button id="notificationBell" class="notification-btn" aria-expanded="false" style="background:none;border:none;padding:6px 8px;cursor:pointer;color:inherit;">
+                        <i class="fas fa-bell"></i>
+                        @if($unreadCount > 0)
+                            <span class="notification-badge">{{ $unreadCount }}</span>
+                        @endif
+                    </button>
+
                     <div id="notificationPopup" class="notification-popup" style="display: none;">
+                        <div class="popup-header">
+                            <h4>Notifications</h4>
+                            <button id="markAllRead" class="btn btn-sm" style="background:none;border:none;color:#64748b;font-size:13px;padding:6px;">Mark all read</button>
+                        </div>
+
                         <ul class="notification-list">
                             @forelse($userNotifications as $notif)
-                                <li class="notification-item {{ $notif->status == 'unread' ? 'fw-bold' : '' }}" data-id="{{ $notif->notification_id }}" data-title="{{ $notif->title }}" data-message="{{ $notif->message }}" data-date="{{ $notif->dateSent }}">
-                                    <strong>{{ $notif->title }}</strong><br>
-                                    <span>{{ $notif->message }}</span>
-                                    <div style="font-size: 11px; color: #888;">{{ $notif->dateSent }}</div>
+                                <li class="notification-item {{ $notif->status == 'unread' ? 'tint' : '' }}" data-id="{{ $notif->notification_id }}">
+                                    <div class="notif-avatar">
+                                        <img src="{{ $notif->avatar ?? asset('storage/baby-photos/tinytrack-logo.png') }}" alt="avatar">
+                                    </div>
+
+                                    <div class="notif-body">
+                                        <div class="notif-title">{{ $notif->title }}</div>
+                                        <div class="notif-message">{{ \Illuminate\Support\Str::limit($notif->message, 120) }}</div>
+                                        <div class="notif-meta">
+                                            <span>{{ $notif->category ?? '' }}</span>
+                                            @if(!empty($notif->category))<span>•</span>@endif
+                                            <span>{{ $notif->dateSent }}</span>
+                                        </div>
+                                    </div>
+
+                                    @if($notif->status == 'unread')
+                                        <div class="notif-dot" aria-hidden="true"></div>
+                                    @endif
                                 </li>
                             @empty
                                 <li class="no-notification">No notifications.</li>
@@ -729,12 +822,18 @@
                 <div class="calendar">
                     <h4>Select Appointment Time</h4>
                     <div class="time-options">
+                        <button class="appointment-time-btn">7:00 AM</button>
+                        <button class="appointment-time-btn">8:00 AM</button>
                         <button class="appointment-time-btn">9:00 AM</button>
                         <button class="appointment-time-btn">10:00 AM</button>
                         <button class="appointment-time-btn">11:00 AM</button>
+                        <button class="appointment-time-btn">12:00 PM</button>
+                        <button class="appointment-time-btn">1:00 PM</button>
                         <button class="appointment-time-btn">2:00 PM</button>
                         <button class="appointment-time-btn">3:00 PM</button>
                         <button class="appointment-time-btn">4:00 PM</button>
+                        <button class="appointment-time-btn">5:00 PM</button>
+
                     </div>
                 </div>
             </div>
@@ -921,11 +1020,17 @@
                     const btnClass = isAdmin ? 'active' : '';
                     const scheduled = vaccine.scheduled_date ? (new Date(vaccine.scheduled_date)).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
                     const administeredText = vaccine.administered_at ? (new Date(vaccine.administered_at)).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Pending';
+                    const editBtnStyle = isAdmin ? '' : 'style="display:none;"';
                     const row = `
                         <tr>
                             <td>${scheduled}</td>
                             <td>${vaccine.vaccine_name}</td>
-                            <td>${administeredText}</td>
+                            <td class="administered-cell">
+                                <span class="admin-date-text">${administeredText}</span>
+                                <button class="btn btn-sm p-0 admin-edit-btn" data-id="${vaccine.id}" title="Edit administered date" ${editBtnStyle}>
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                            </td>
                             <td style="text-align:center;">
                                 <button class="btn btn-outline-success vaccination-tick-btn ${btnClass}" data-id="${vaccine.id}">
                                     <i class="${iconClass}"></i>
@@ -991,7 +1096,7 @@
                             icon.className = 'fas fa-check-circle';
                         }
 
-                        // Also update the Administered Date cell in the same row immediately
+                        // Update the Administered Date cell in the same row immediately
                         try {
                             const row = btn.closest('tr');
                             if (row) {
@@ -999,11 +1104,32 @@
                                 // Administered Date is the 3rd column (index 2)
                                 const adminCell = tds[2];
                                 if (adminCell) {
+                                    const span = adminCell.querySelector('.admin-date-text');
                                     if (updated.administered_at) {
                                         const d = new Date(updated.administered_at);
-                                        adminCell.textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                                        const formatted = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                                        if (span) span.textContent = formatted;
+                                        else {
+                                            const newSpan = document.createElement('span');
+                                            newSpan.className = 'admin-date-text';
+                                            newSpan.textContent = formatted;
+                                            adminCell.insertBefore(newSpan, adminCell.firstChild);
+                                        }
                                     } else {
-                                        adminCell.textContent = 'Pending';
+                                        if (span) span.textContent = 'Pending';
+                                        else {
+                                            const newSpan = document.createElement('span');
+                                            newSpan.className = 'admin-date-text';
+                                            newSpan.textContent = 'Pending';
+                                            adminCell.insertBefore(newSpan, adminCell.firstChild);
+                                        }
+                                    }
+
+                                    // toggle edit button visibility based on updated status
+                                    const editBtn = adminCell.querySelector('.admin-edit-btn');
+                                    if (editBtn) {
+                                        if (updated.status === 'administered') editBtn.style.display = '';
+                                        else editBtn.style.display = 'none';
                                     }
                                 }
                             }
@@ -1024,6 +1150,130 @@
                     } finally {
                         btn.disabled = false;
                     }
+                });
+
+                // Event delegation for editing administered date
+                vaccinationList.addEventListener('click', function (e) {
+                    const editBtn = e.target.closest('.admin-edit-btn');
+                    if (!editBtn) return;
+                    e.preventDefault();
+                    const id = editBtn.getAttribute('data-id');
+                    if (!id) return;
+
+                    const cell = editBtn.closest('.administered-cell');
+                    if (!cell) return;
+
+                    // Avoid multiple editors
+                    if (cell.querySelector('input')) return;
+
+                    const currentText = cell.querySelector('.admin-date-text')?.textContent?.trim() || '';
+                    // create input
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'form-control form-control-sm administered-date-input';
+                    input.style.display = 'inline-block';
+                    input.style.width = '160px';
+                    // set default value as ISO date if available
+                    let defaultDate = '';
+                    if (currentText && currentText !== 'Pending') {
+                        try {
+                            const d = new Date(currentText);
+                            if (!isNaN(d)) {
+                                const yyyy = d.getFullYear();
+                                const mm = String(d.getMonth()+1).padStart(2,'0');
+                                const dd = String(d.getDate()).padStart(2,'0');
+                                defaultDate = `${yyyy}-${mm}-${dd}`;
+                            }
+                        } catch (err) { /* ignore */ }
+                    }
+                    input.value = defaultDate;
+
+                    const saveBtn = document.createElement('button');
+                    saveBtn.className = 'btn btn-sm btn-success ms-2 admin-save-btn';
+                    saveBtn.innerHTML = '<i class="fas fa-check"></i>';
+
+                    const cancelBtn = document.createElement('button');
+                    cancelBtn.className = 'btn btn-sm btn-secondary ms-1 admin-cancel-btn';
+                    cancelBtn.innerHTML = '<i class="fas fa-times"></i>';
+
+                    // replace display with input + buttons
+                    const span = cell.querySelector('.admin-date-text');
+                    span.style.display = 'none';
+                    editBtn.style.display = 'none';
+                    cell.appendChild(input);
+                    cell.appendChild(saveBtn);
+                    cell.appendChild(cancelBtn);
+
+                    // init flatpickr on input
+                    try {
+                        flatpickr(input, { dateFormat: 'Y-m-d', defaultDate: defaultDate || null });
+                    } catch (err) {
+                        console.warn('flatpickr init failed', err);
+                    }
+
+                    cancelBtn.addEventListener('click', function () {
+                        input.remove(); saveBtn.remove(); cancelBtn.remove();
+                        span.style.display = '';
+                        editBtn.style.display = '';
+                    });
+
+                    saveBtn.addEventListener('click', async function () {
+                        const newDate = input.value; // expected YYYY-MM-DD
+                        saveBtn.disabled = true;
+                        try {
+                            const res = await fetch(`/vaccinations/${id}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify({ administered_at: newDate })
+                            });
+                            if (!res.ok) throw new Error('Failed to save');
+                            const updated = await res.json();
+
+                            // update UI
+                            if (updated.administered_at) {
+                                const d = new Date(updated.administered_at);
+                                span.textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                            } else {
+                                span.textContent = 'Pending';
+                            }
+
+                            // show updated status if returned
+                            const row = cell.closest('tr');
+                            if (row && updated.status) {
+                                const tickBtn = row.querySelector('.vaccination-tick-btn');
+                                if (tickBtn) {
+                                    const icon = tickBtn.querySelector('i');
+                                    if (updated.status === 'administered') { tickBtn.classList.add('active'); icon.className = 'fas fa-check'; }
+                                    else { tickBtn.classList.remove('active'); icon.className = 'fas fa-check-circle'; }
+                                }
+                            }
+
+                            // ensure edit button visibility matches updated status
+                            try {
+                                const editBtn = cell.querySelector('.admin-edit-btn') || (row ? row.querySelector('.admin-edit-btn') : null);
+                                if (editBtn) {
+                                    if (updated.status === 'administered') editBtn.style.display = '';
+                                    else editBtn.style.display = 'none';
+                                }
+                            } catch (err) { /* ignore */ }
+
+                            // cleanup
+                            input.remove(); saveBtn.remove(); cancelBtn.remove();
+                            span.style.display = '';
+                            editBtn.style.display = '';
+
+                            // dispatch event for other listeners
+                            try { window.dispatchEvent(new CustomEvent('vaccinationToggled', { detail: updated })); } catch (err) {}
+                        } catch (err) {
+                            console.error(err);
+                            alert('Failed to save administered date.');
+                            saveBtn.disabled = false;
+                        }
+                    });
                 });
             }
         });

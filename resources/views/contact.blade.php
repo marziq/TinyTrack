@@ -40,10 +40,11 @@
                     </div>
                     <div class="row g-5">
                         <div class="col-lg-6 wow fadeIn" data-wow-delay="0.3s">
-                            <form action="">
-                                <input type="text" class="w-100 form-control py-3 mb-5 border-primary" placeholder="Your Name">
-                                <input type="email" class="w-100 form-control py-3 mb-5 border-primary" placeholder="Enter Your Email">
-                                <textarea class="w-100 form-control mb-5 border-primary" rows="8" cols="10" placeholder="Your Message"></textarea>
+                            <form method="POST" action="{{ route('contact.send') }}">
+                                @csrf
+                                <input type="text" name="name" class="w-100 form-control py-3 mb-5 border-primary" placeholder="Your Name">
+                                <input type="email" name="email" class="w-100 form-control py-3 mb-5 border-primary" placeholder="Enter Your Email">
+                                <textarea name="message" class="w-100 form-control mb-5 border-primary" rows="8" cols="10" placeholder="Your Message"></textarea>
                                 <button class="w-100 btn btn-primary form-control py-3 border-primary text-white bg-primary" type="submit">Submit</button>
                             </form>
                         </div>

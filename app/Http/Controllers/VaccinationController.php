@@ -92,4 +92,38 @@ class VaccinationController extends Controller
 
         return response()->json($vaccination);
     }
+
+    /**
+     * Update administered date for a vaccination.
+     */
+    public function update(Request $request, $id)
+    {
+        $vaccination = Vaccination::findOrFail($id);
+
+        $baby = $vaccination->baby;
+        if (Auth::check() && $baby->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $data = $request->only(['administered_at']);
+
+        // Allow empty/null to clear the administered date
+        if (empty($data['administered_at'])) {
+            $vaccination->administered_at = null;
+            $vaccination->status = 'pending';
+        } else {
+            // Expecting YYYY-MM-DD or ISO date
+            try {
+                $dt = Carbon::parse($data['administered_at']);
+                $vaccination->administered_at = $dt->toDateString();
+                $vaccination->status = 'administered';
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Invalid date format'], 422);
+            }
+        }
+
+        $vaccination->save();
+
+        return response()->json($vaccination);
+    }
 }

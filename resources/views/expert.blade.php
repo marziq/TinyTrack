@@ -1,12 +1,159 @@
 @extends('master.layout')
 @section('content')
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <style>
-         /* Explore Content */
-         .explore-header {
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Outfit:wght@100..900&family=Sigmar&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=IM+Fell+Great+Primer+SC&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+        .arrow-icon {
+            font-size: 12px;
+            transition: transform 0.2s;
+            color: #777;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: white !important;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            padding: 8px 0;
+            margin-top: 8px;
+            z-index: 1000;
+            display: none;
+            list-style: none;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .dropdown-item i {
+            margin-right: 10px;
+            width: 18px;
+            text-align: center;
+            color: #555;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: #e9ecef;
+            margin: 8px 0;
+        }
+
+        .text-danger {
+            color: #dc3545 !important;
+        }
+
+        .text-danger:hover {
+            color: #c82333 !important;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 18px;
+        }
+
+        .card p {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 0;
+        }
+
+        .welcome-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .welcome-section h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section p {
+            color: #666;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                height: 100vh;
+                z-index: 100;
+            }
+
+            .sidebar.hidden {
+                transform: translateX(-100%);
+            }
+
+            .main {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .topbar h1 {
+                position: static;
+                transform: none;
+                margin-right: auto;
+                margin-left: 15px;
+                font-size: 20px;
+            }
+
+            .topbar {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .topbar-right {
+                margin-left: auto;
+            }
+        }
+        /* Explore Content */
+        .explore-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            text-align: center;
         }
 
         .explore-header h2 {
@@ -47,6 +194,7 @@
         .topic-card {
             flex: 0 0 30%; /* Show 3 cards at a time */
             margin: 10px;
+            margin-top: 0px !important;
             background-color: white;
             padding: 20px;
             border-radius: 12px;
@@ -59,7 +207,7 @@
 
         .topic-card img {
             width: 100%;
-            height: 150px;
+            height: 250px;
             object-fit: cover;
             border-radius: 10px;
             margin-bottom: 15px;
@@ -86,18 +234,33 @@
 
         .topic-card ul li button {
             width: 100%;
-            padding: 10px;
-            font-size: 14px;
+            padding: 12px 14px; /* slightly bigger for better tap targets */
+            font-size: 15px; /* increased for readability */
             color: #1976d2;
             background-color: #e3f2fd;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.2s ease, transform 0.15s ease;
         }
 
         .topic-card ul li button:hover {
             background-color: #bbdefb;
+            transform: translateY(-2px);
+        }
+
+        /* Make the "All" or primary filter button slightly more prominent if used */
+        .btn-filter-all {
+            padding: 14px 18px;
+            font-size: 16px;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .topic-card ul li button {
+                padding: 14px; /* slightly larger touch area on mobile */
+                font-size: 16px;
+            }
         }
 
         /* Info Section */
@@ -166,17 +329,80 @@
                 height: 40px; /* Smaller buttons for smaller screens */
             }
         }
+        .sidebar a.active {
+            background-color: #1976d2;
+            color: #fff !important;
+            font-weight: bold;
+            box-shadow: 0 2px 12px rgba(25, 118, 210, 0.18); /* stronger shadow for active */
+            border: 2px solid #1976d2; /* darker outline for active */
+        }
+        #tipInfoModal .modal-dialog.modal-lg {
+            max-width: 1200px !important;
+            width: 95vw !important;
+        }
+        @media (max-width: 768px) {
+            #tipInfoModal .modal-dialog.modal-lg {
+                max-width: 98vw !important;
+                width: 98vw !important;
+                margin: 0;
+            }
+        }
+        #tipInfoModal .modal-content {
+            padding: 0 !important;
+        }
+        #tipInfoModal .modal-body {
+            padding: 32px 32px 24px 32px !important;
+        }
+
+        /*Dark mode sidebar*/
+        .dark .sidebar {
+            background-color: var(--surface, #111317) !important;
+            color: var(--text, #e6eef8) !important;
+            box-shadow: none;
+        }
+        .dark .sidebar a {
+            color: var(--text, #e6eef8) !important;
+        }
+        .dark .sidebar a.active {
+            background-color: var(--accent, #60a5fa) !important;
+            color: #fff !important;
+            box-shadow: 0 6px 18px rgba(25,118,210,0.18);
+            border-color: var(--accent, #60a5fa) !important;
+        }
+        /*Dark mode Text*/
+        .dark .topbar h1 {
+            color: #ffffff !important;
+        }
+
+        /* Font size adjustment */
+        body.font-large * {
+            font-size: 1.15rem !important;
+        }
+        body.font-xlarge * {
+            font-size: 1.3rem !important;
+        }
+
     </style>
-    <h1 style="text-align: center; font-weight: bold; padding: 32px 0 24px 0; letter-spacing: 1px; color: #1976d2;">Our Experts Tips</h1>
-    <div class="topics-section">
-        <button class="slider-btn prev-btn" onclick="moveSlide(-1)">&#10094;</button>
-        <div class="slider-container">
-            <div class="slider-track">
-                <!-- Bonding Topic -->
-                <div class="topic-card">
-                    <img src="{{ asset('img/bonding.jpg') }}" alt="Bonding" class="topic-image">
-                    <h3>Bonding</h3>
-                    <ul class="topic-list">
+    {{-- Main content goes here --}}
+
+        <div class="container-fluid testimonial">
+            <div class="container py-5" style="padding-bottom: 0px !important">
+                <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+                    <h4 class="mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius" style="color: #393d72; border-bottom: 1px solid #4a92d9 !important;">Our Expert Tips</h4>
+                    <h1 class="mb-5 display-3">What Experts Say</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="topics-section">
+            <button class="slider-btn prev-btn" onclick="moveSlide(-1)">&#10094;</button>
+            <div class="slider-container">
+                <div class="slider-track">
+                    <!-- Bonding Topic -->
+                    <div class="topic-card">
+                        <img src="{{ asset('img/bonding.jpg') }}" alt="Bonding" class="topic-image">
+                        <h3>Bonding</h3>
+                        <ul class="topic-list">
                             <li>
                                 <button onclick="showInfo('bonding1')">
                                     <i class="fa-solid fa-hand-holding-heart" style="margin-right:8px; color: rgb(250, 115, 138);"></i>
@@ -213,14 +439,14 @@
                                     How to Build Trust with Your Baby
                                 </button>
                             </li>
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
 
-                <!-- Early Sensory Topic -->
-                <div class="topic-card">
-                    <img src="{{ asset('img/earlysensory.jpg') }}" alt="Early Senses" class="topic-image">
-                    <h3>Early Sensory</h3>
-                    <ul class="topic-list">
+                    <!-- Early Sensory Topic -->
+                    <div class="topic-card">
+                        <img src="{{ asset('img/earlysensory.jpg') }}" alt="Early Senses" class="topic-image">
+                        <h3>Early Sensory</h3>
+                        <ul class="topic-list">
                             <li>
                                 <button onclick="showInfo('sensory1')">
                                     <i class="fa-regular fa-face-smile" style="margin-right:8px; color: #fbc02d;"></i>
@@ -257,14 +483,14 @@
                                     How to Stimulate Baby's Vision
                                 </button>
                             </li>
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
 
-                <!-- Sleep and Routines Topic -->
-                <div class="topic-card">
-                    <img src="{{ asset('img/sleep.jpeg') }}" alt="sleep" class="topic-image">
-                    <h3>Sleep and Routines</h3>
-                    <ul class="topic-list">
+                    <!-- Sleep and Routines Topic -->
+                    <div class="topic-card">
+                        <img src="{{ asset('img/sleep.jpeg') }}" alt="sleep" class="topic-image">
+                        <h3>Sleep and Routines</h3>
+                        <ul class="topic-list">
                             <li>
                                 <button onclick="showInfo('sleep1')">
                                     <i class="fa-solid fa-bed" style="margin-right:8px; color: #1976d2;"></i>
@@ -295,14 +521,14 @@
                                     Create Calm Nights
                                 </button>
                             </li>
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
 
-                <!-- Feeding and Nutrition Topic -->
-                <div class="topic-card">
-                    <img src="{{ asset('img/feeding.jpg') }}" alt="feeding" class="topic-image">
-                    <h3>Feeding and Nutrition</h3>
-                    <ul class="topic-list">
+                    <!-- Feeding and Nutrition Topic -->
+                    <div class="topic-card">
+                        <img src="{{ asset('img/feeding.jpg') }}" alt="feeding" class="topic-image">
+                        <h3>Feeding and Nutrition</h3>
+                        <ul class="topic-list">
                             <li>
                                 <button onclick="showInfo('feeding1')">
                                     <i class="fa-solid fa-droplet"></i>
@@ -333,14 +559,14 @@
                                     No Sugar, No Honey
                                 </button>
                             </li>
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
 
-                <!-- Safety and Hygiene Topic -->
-                <div class="topic-card">
-                    <img src="{{ asset('img/hygiene.jpg') }}" alt="Safety and Hygiene" class="topic-image">
-                    <h3>Safety & Hygiene</h3>
-                    <ul class="topic-list">
+                    <!-- Safety and Hygiene Topic -->
+                    <div class="topic-card">
+                        <img src="{{ asset('img/hygiene.jpg') }}" alt="Safety and Hygiene" class="topic-image">
+                        <h3>Safety & Hygiene</h3>
+                        <ul class="topic-list">
                             <li>
                                 <button onclick="showInfo('safety1')">
                                     <i class="fa-solid fa-hands-bubbles" style="margin-right:8px; color: #42a5f5;"></i>
@@ -365,28 +591,36 @@
                                     Choose Safe Toys
                                 </button>
                             </li>
-                    </ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <button class="slider-btn next-btn" onclick="moveSlide(1)">&#10095;</button>
+        </div>
+
+        <!-- Section to display more information -->
+        <!---<div id="info-section" class="info-section">
+            <h3 id="info-title"></h3>
+            <p id="info-content"></p>
+        </div>--->
+        {{--Main  content ends here--}}
+
+        <!-- Tip Info Modal -->
+        <div class="modal fade" id="tipInfoModal" tabindex="-1" aria-labelledby="tipInfoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tipInfoModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="tipInfoModalBody"></div>
                 </div>
             </div>
         </div>
-        <button class="slider-btn next-btn" onclick="moveSlide(1)">&#10095;</button>
     </div>
 
-    <!-- Tip Info Modal (replacing the inline info section) -->
-    <div class="modal fade" id="tipInfoModal" tabindex="-1" aria-labelledby="tipInfoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tipInfoModalLabel"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="tipInfoModalBody">
-                    <!-- Filled dynamically -->
-                </div>
-            </div>
-        </div>
-    </div>
-    {{--Main  content ends here--}}
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -468,8 +702,6 @@
         function showInfo(topicId) {
             const modalTitle = document.getElementById('tipInfoModalLabel');
             const modalBody = document.getElementById('tipInfoModalBody');
-
-            // Define the content for each topic (full mapping copied from tips.blade.php)
             const topics = {
                 /* ---------------------------------------------------------
                 B O N D I N G   T I P S
@@ -825,11 +1057,8 @@
                 }
             };
 
-            if (!topics[topicId]) {
-                // If topic not found in this trimmed object, fall back to a simple message
-                modalTitle.innerHTML = 'Tip';
-                modalBody.innerHTML = '<p>Details not available for this tip right now.</p>';
-            } else {
+
+            if (topics[topicId]) {
                 const topic = topics[topicId];
                 const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
                 const isFavourite = favourites.includes(topicId);
@@ -847,9 +1076,6 @@
                             <br> Reviewed By: <br> Dr Aiman Khalid <br> Consultant Pediatrician at Selangor Specialist Hospital
                             </a>
                         </div>
-                        <button id="favouriteButton" class="btn btn-primary" style="margin-left: 20px;">
-                            ${isFavourite ? 'Remove from Favourites' : 'Add to Favourites'}
-                        </button>
                     </div>
                     <p><br>${topic.content}</p>
                     ${topic.additionalText ? `
@@ -927,7 +1153,7 @@
                                         title: topic.title || topicId,
                                         content: topic.content || '',
                                         category: topic.category || 'General',
-                                        rich_content: topic.content,
+                                        rich_content: topic.content, // Full content with formatting
                                         image_url: topic.heroImage || '',
                                         video_url: topic.videoUrl || '',
                                     })
@@ -960,6 +1186,105 @@
                     }
                 }, 100);
             }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const bell = document.getElementById('notificationBell');
+            const popup = document.getElementById('notificationPopup');
+
+            bell.addEventListener('click', function(e) {
+                e.stopPropagation();
+                popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+            });
+
+            document.addEventListener('click', function() {
+                popup.style.display = 'none';
+            });
+
+            // Mark notification as read and show full message
+            document.querySelectorAll('.notification-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const notifId = this.getAttribute('data-id');
+                    fetch(`/notifications/${notifId}/mark-read`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    }).then(() => {
+                        // Remove the notification from the popup view
+                        this.remove();
+
+                        // Show full notification in a modal
+                        showNotificationModal(
+                            this.querySelector('strong').innerText,
+                            this.querySelector('span').innerText,
+                            this.querySelector('div').innerText
+                        );
+
+                        // Optionally update badge count
+                        let badge = document.querySelector('.notification-badge');
+                        if (badge) {
+                            let count = parseInt(badge.innerText) - 1;
+                            badge.innerText = count > 0 ? count : '';
+                            if (count <= 0) badge.style.display = 'none';
+                        }
+
+                        // If no notifications left, show "No notifications."
+                        if (document.querySelectorAll('.notification-item').length === 0) {
+                            const list = document.querySelector('.notification-list');
+                            list.innerHTML = '<li class="no-notification">No notifications.</li>';
+                        }
+                    });
+                });
+            });
+    });
+    // Show notification modal
+        function showNotificationModal(title, message, date) {
+            let modalHtml = `
+            <div class="modal fade" id="notifModal" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="notifModalLabel">${title}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>${message}</p>
+                    <div style="font-size: 12px; color: #888;">${date}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            `;
+            // Remove existing modal if any
+            document.getElementById('notifModal')?.remove();
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            let notifModal = new bootstrap.Modal(document.getElementById('notifModal'));
+            notifModal.show();
+        }
+
+        // --- Font Size Logic ---
+        const fontStorageKey = 'userFontSize';
+        const body = document.body;
+
+        function applyFontSize(size) {
+            // Reset all font classes
+            body.classList.remove('font-large', 'font-xlarge');
+
+            if (size === 'large') {
+                body.classList.add('font-large');
+            } else if (size === 'xlarge') {
+                body.classList.add('font-xlarge');
+            }
+            // 'normal' = no class
+        }
+
+        // Load saved font size preference on page load
+        const savedSize = localStorage.getItem(fontStorageKey);
+        if (savedSize) {
+            applyFontSize(savedSize);
         }
     </script>
 @endsection

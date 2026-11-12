@@ -22,7 +22,9 @@ class GrowthSeeder extends Seeder
 
         foreach ($babies as $baby) {
             $growthData = [];
-            $monthCount = rand(6, 18); // Simulate 6-18 months of data
+            // Seed growth records up to the baby's age in months. Cap to 18 months to avoid excessive data.
+            $ageMonths = (int) ($baby->age ?? 0);
+            $monthCount = max(1, min($ageMonths, 18));
             $baseHeight = rand(48, 54); // cm, newborn
             $baseWeight = rand(2800, 4000); // g, newborn
             $lastHeight = $baseHeight;
