@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Baby;
+use App\Models\User;
 use App\Policies\BabyPolicy;
 
 class AuthServiceProvider extends ServiceProvider
@@ -27,7 +28,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // Optional: Define additional gates if needed
+        Gate::define('admin', fn (User $user): bool => $user->isAdmin());
+
         Gate::define('view-baby', function ($user, $baby) {
             return $user->id === $baby->user_id;
         });

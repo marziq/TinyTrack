@@ -50,29 +50,41 @@ Route::get('/login-admin', function () {
     return view('admin.login-admin');
 })->name('login-admin');
 Route::post('/login-admin', function (Request $request) {
-    $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-        if (Auth::user()->email === 'support@tinytrack.com') {
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|string',
+    ]);
+
+    if (Auth::attempt($credentials)) {
+        if (Auth::user()->isAdmin()) {
+            $request->session()->regenerate();
             return redirect()->route('dashboard-admin');
         }
-        // Ensure we log out using the session (web) guard — avoid calling logout on a RequestGuard
-        Auth::guard('web')->logout(); // Log out the non-admin user
+
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return back()->withErrors(['email' => 'You are not authorized to access the admin dashboard.']);
     }
+
     return back()->withErrors(['email' => 'Invalid credentials.']);
 })->name('admin.login.submit');
 
-Route::get('/admin/calendar', [AdminController::class, 'calendar'])->name('admincalendar');
-Route::get('/api/admin/appointments', [AdminController::class, 'getAppointments'])->name('api.admin.appointments');
+Route::middleware(['auth', 'can:admin'])->group(function () {
+    Route::get('/admin/calendar', [AdminController::class, 'calendar'])->name('admincalendar');
+    Route::get('/api/admin/appointments', [AdminController::class, 'getAppointments'])->name('api.admin.appointments');
 
-Route::get('/admin/settings', [AdminController::class, 'settings'])->name('adminsettings');
-Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
+    Route::get('/admin/settings', [AdminController::class, 'settings'])->name('adminsettings');
+    Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
 
-Route::get('admin/dashboard', [AdminController::class, 'index'])->name('dashboard-admin');
-Route::get('admin/users', [AdminController::class, 'usersAdmin'])->name('users-admin');
-Route::delete('admin/users/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
-Route::put('/admin/users/{user}', [AdminController::class, 'update'])->name('admin.users.update');
-Route::get('/admin/messages', [NotificationsController::class, 'index'])->name('messages-admin');
+    Route::get('admin/dashboard', [AdminController::class, 'index'])->name('dashboard-admin');
+    Route::get('admin/users', [AdminController::class, 'usersAdmin'])->name('users-admin');
+    Route::delete('admin/users/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
+    Route::put('/admin/users/{user}', [AdminController::class, 'update'])->name('admin.users.update');
+    Route::get('/admin/messages', [NotificationsController::class, 'index'])->name('messages-admin');
+
+    Route::resource('notifications', NotificationsController::class);
+});
 
 //admin routes end
 
@@ -147,13 +159,9 @@ Route::get('/babies/{baby}', function(Baby $baby) {
     return response()->json($baby);
 })->middleware('auth');
 
-Route::resource('notifications', NotificationsController::class);
-Route::post('/notifications/{id}/mark-read', [NotificationsController::class, 'markRead'])->name('notifications.markRead');
-Route::put('/notifications/{notification}', [NotificationsController::class, 'update'])->name('notifications.update');
-Route::get('/notifications/{id}', [NotificationsController::class, 'getNotification']);
-
 // Notification API endpoints for frontend
 Route::middleware(['auth'])->group(function () {
+    Route::post('/notifications/{id}/mark-read', [NotificationsController::class, 'markRead'])->name('notifications.markRead');
     Route::get('/api/notifications', [NotificationsController::class, 'getUserNotifications'])->name('api.notifications.all');
     Route::get('/api/notifications/unread', [NotificationsController::class, 'getUnreadNotifications'])->name('api.notifications.unread');
     Route::post('/api/notifications/{id}/mark-read', [NotificationsController::class, 'markNotificationRead'])->name('api.notifications.mark-read');

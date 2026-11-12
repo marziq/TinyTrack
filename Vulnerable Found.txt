@@ -1,0 +1,610 @@
+Ran terminal command: git --no-pager status --short; git --no-pager diff --staged; git --no-pager diff; git --no-pager log --oneline -10
+
+Ran terminal command: git --no-pager diff --stat main...HEAD; git --no-pager diff --name-status main...HEAD; git --no-pager diff main...HEAD
+
+Ran terminal command: git ls-files
+
+Ran terminal command: git branch --show-current; git branch -avv; git --no-pager diff --stat main...HEAD; git --no-pager diff --name-status main...HEAD
+
+Ran terminal command: Get-ChildItem app,routes,config,database,resources,public,bootstrap -Recurse -File | Select-Object -ExpandProperty FullName
+
+Ran terminal command: Get-ChildItem -Force -File | Select-Object -ExpandProperty Name; Get-ChildItem -Force -Directory | Select-Object -ExpandProperty Name
+
+Ran terminal command: Get-ChildItem app/Http,app/Models,app/Policies,app/Providers,app/Actions,routes -Recurse -File | ForEach-Object { $_.FullName.Substring((Get-Location).Path.Length + 1) }
+
+Ran terminal command: Get-ChildItem resources/views,resources/js,public -Recurse -File | ForEach-Object { $_.FullName.Substring((Get-Location).Path.Length + 1) }
+
+Ran terminal command: Get-ChildItem config,database,bootstrap -Recurse -File | ForEach-Object { $_.FullName.Substring((Get-Location).Path.Length + 1) }; Get-Content composer.json; Get-Content package.json; Get-Content .gitignore
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\routes\\web.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\routes\\api.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\bootstrap\\app.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\AdminController.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\AppointmentController.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\BabyController.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\OpenAIProxyController.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\UserController.php"
+}
+
+Read , lines 1 to 240
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\AdminController.php",
+  "view_range": [
+    1,
+    240
+  ]
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\GrowthController.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\MilestoneController.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\VaccinationController.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\NotificationsController.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\FavoriteTipController.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Models\\Baby.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Policies\\BabyPolicy.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Models\\User.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Models\\Notification.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Models\\Appointment.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Models\\Growth.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Models\\Milestone.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Models\\Vaccination.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Providers\\AuthServiceProvider.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Providers\\FortifyServiceProvider.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Actions\\Fortify\\CreateNewUser.php"
+}
+
+Ran terminal command: $n=0; Get-Content routes/web.php | ForEach-Object { $n++; '{0,4}: {1}' -f $n, $_ }
+
+Ran terminal command: $n=0; Get-Content app/Http/Controllers/AdminController.php | ForEach-Object { $n++; '{0,4}: {1}' -f $n, $_ }
+
+Ran terminal command: $n=0; Get-Content app/Http/Controllers/MilestoneController.php | ForEach-Object { $n++; '{0,4}: {1}' -f $n, $_ }
+
+Ran terminal command: $n=0; Get-Content app/Http/Controllers/BabyController.php | ForEach-Object { $n++; '{0,4}: {1}' -f $n, $_ }
+
+Search for `Route::(get|post|put|patch|delete|resource)|middleware|authorize|Gate::|can\(`
+
+Search for `\{!!|innerHTML|outerHTML|insertAdjacentHTML|document\.write|v-html|eval\(|new...`
+
+Search for `auth\(\)->id\(\)|Auth::id\(\)|Auth::check\(\)|where\('user_id'|user_id|findOr...`
+
+Search for `store\(|hasFile|image|mimes|baby_photo|Storage::|file_get_contents|Http::|cur...`
+
+Ran terminal command: Get-Content bootstrap/providers.php; Get-Content config/auth.php; Get-Content config/session.php; Get-Content config/filesystems.php; Get-Content config/services.php; Get-Content config/fortify.php; Get-Content .env.example
+
+Read , lines 20 to 140
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\MilestoneController.php",
+  "view_range": [
+    20,
+    140
+  ]
+}
+
+Read , lines 180 to 330
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\MilestoneController.php",
+  "view_range": [
+    180,
+    330
+  ]
+}
+
+Read , lines 650 to 900
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\admin\\messages-admin.blade.php",
+  "view_range": [
+    650,
+    900
+  ]
+}
+
+Read , lines 1360 to 1420
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\user\\tips.blade.php",
+  "view_range": [
+    1360,
+    1420
+  ]
+}
+
+Read , lines 480 to 550
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\admin\\users-admin.blade.php",
+  "view_range": [
+    480,
+    550
+  ]
+}
+
+Read , lines 820 to 885
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\admin\\settings.blade.php",
+  "view_range": [
+    820,
+    885
+  ]
+}
+
+Search for `notifications as|notifications->|\$notification->(title|message)|\$n->(title|...`
+
+Read , lines 185 to 235
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\MilestoneController.php",
+  "view_range": [
+    185,
+    235
+  ]
+}
+
+Read , lines 180 to 270
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\AdminController.php",
+  "view_range": [
+    180,
+    270
+  ]
+}
+
+Read , lines 180 to 225
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\BabyController.php",
+  "view_range": [
+    180,
+    225
+  ]
+}
+
+Read , lines 1 to 220
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\admin\\messages-admin.blade.php",
+  "view_range": [
+    1,
+    220
+  ]
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\config\\session.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\config\\filesystems.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\config\\auth.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\config\\services.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Actions\\Fortify\\UpdateUserProfileInformation.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Actions\\Fortify\\PasswordValidationRules.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Actions\\Fortify\\UpdateUserPassword.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Actions\\Fortify\\ResetUserPassword.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Actions\\Jetstream\\DeleteUser.php"
+}
+
+Ran terminal command: php artisan route:list --except-vendor --compact
+
+Ran terminal command: git grep -n -I -E 'support@tinytrack|password|api[_-]?key|secret|APP_DEBUG|APP_KEY' -- ':!composer.lock' ':!package-lock.json' ':!.env' ':!vendor/**' ':!node_modules/**'
+
+Ran terminal command: $lines = Get-Content .env; $names = foreach ($line in $lines) { if ($line -match '^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=') { $Matches[1] } }; 'ENV variable names only: ' + ($names -join ', '); $debugLine = $lines | Where-Object { $_ -match '^\s*APP_DEBUG\s*=' } | Select-Object -First 1; if ($debugLine) { if ($debugLine -match '=\s*(true|1|yes|on)\s*$') { 'APP_DEBUG status: enabled' } else { 'APP_DEBUG status: not enabled' } }; 'Tracked .env status: ' + (git ls-files --error-unmatch .env 2>$null ? 'tracked' : 'not tracked')
+
+Ran terminal command: Get-Content database/seeders/UserSeeder.php; Get-Content database/factories/UserFactory.php; Get-Content .gitignore
+
+Search for `showNotificationModal|notification-item|modalHtml|function toggle|innerHTML\s...`
+
+Read Terminal
+Completed with input: {
+  "shellId": "14",
+  "delay": 60
+}
+
+Read , lines 635 to 665
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\dashboard.blade.php",
+  "view_range": [
+    635,
+    665
+  ]
+}
+
+Read , lines 1370 to 1410
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\dashboard.blade.php",
+  "view_range": [
+    1370,
+    1410
+  ]
+}
+
+Read , lines 385 to 415
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\admin\\messages-admin.blade.php",
+  "view_range": [
+    385,
+    415
+  ]
+}
+
+Read , lines 710 to 740
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\admin\\messages-admin.blade.php",
+  "view_range": [
+    710,
+    740
+  ]
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\admin\\notifications-create.blade.php",
+  "view_range": [
+    1,
+    200
+  ]
+}
+Tool execution failed: Path does not exist
+
+Read , lines 35 to 125
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Http\\Controllers\\NotificationsController.php",
+  "view_range": [
+    35,
+    125
+  ]
+}
+
+Ran terminal command: php artisan route:list --path=admin --except-vendor --columns=method,uri,name,middleware
+Tool execution failed with exit code 1
+
+Ran terminal command: php artisan route:list --path=babies --except-vendor --columns=method,uri,name,middleware; php artisan route:list --path=notifications --except-vendor --columns=method,uri,name,middleware
+Tool execution failed with exit code 1
+
+Search for `function (show|update|destroy|getBaby|getGrowthData|store|getAppointmentsByBa...`
+
+Ran terminal command: Get-ChildItem public -Force | Select-Object Name,Mode,Length; git check-ignore -v .env; git ls-files | Select-String -Pattern '(^|/)(Dockerfile|docker-compose|nginx|apache|Caddyfile|Procfile|\.htaccess|web\.config|deploy|workflow|\.github)'
+
+Read , lines 48 to 80
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\routes\\web.php",
+  "view_range": [
+    48,
+    80
+  ]
+}
+
+Read , lines 130 to 174
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\routes\\web.php",
+  "view_range": [
+    130,
+    174
+  ]
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Providers\\AppServiceProvider.php"
+}
+
+Read , lines 850 to 870
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\user\\mybaby.blade.php",
+  "view_range": [
+    850,
+    870
+  ]
+}
+
+Read , lines 1838 to 1865
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\user\\mybaby.blade.php",
+  "view_range": [
+    1838,
+    1865
+  ]
+}
+
+Search for `userNotifications|unreadCount|View::composer|share\(`
+
+Search for `showNotificationModal\(title, message, date\)|function showNotificationModal|...`
+
+Search for `\$notifications|foreach\(\$notifications|notifications as`
+
+Search for `csrf-token|csrf_field|@csrf`
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\public\\.htaccess"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\database\\migrations\\2025_05_01_033306_create_babies_table.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\database\\migrations\\2025_05_13_114309_create_appointments_table.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\database\\migrations\\2025_05_20_075940_create_notifications_table.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\database\\migrations\\2025_11_08_000001_create_vaccinations_table.php"
+}
+
+Search for `function (usersAdmin|update\(|destroy\(|calendar|getAppointments)`
+
+Search for `function (show|update\(|destroy\()|function getGrowthData|function store\(|fu...`
+
+Search for `function (index|store|update|destroy|getNotification)|findOrFail|Notification...`
+
+Search for `showNotificationModal\(title, message, date\)|insertAdjacentHTML\('beforeend'...`
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\app\\Models\\FavoriteTip.php"
+}
+
+Read , lines 140 to 185
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\resources\\views\\admin\\login-admin.blade.php",
+  "view_range": [
+    140,
+    185
+  ]
+}
+
+Search for `hasFile\('baby_photo'\)|->store\('baby-photos'|photo_url|public_path\('storag...`
+
+Search for `registration|features`
+
+Ran terminal command: $n=0; Get-Content public/.htaccess | ForEach-Object { $n++; if ($n -le 40) { '{0}: {1}' -f $n, $_ } }; $n=0; Get-Content config/filesystems.php | ForEach-Object { $n++; if ($n -ge 35 -and $n -le 82) { '{0}: {1}' -f $n, $_ } }
+
+Read , lines 45 to 100
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\config\\fortify.php",
+  "view_range": [
+    45,
+    100
+  ]
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\config\\app.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\config\\database.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\config\\sanctum.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\config\\cache.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\config\\logging.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\config\\queue.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\database\\migrations\\0001_01_01_000000_create_users_table.php"
+}
+
+Read
+Completed with input: {
+  "path": "C:\\xampp\\htdocs\\TinyTrack\\README.md"
+}
+
+## Security Findings
+
+### Alert 1
+**File:** `C:\xampp\htdocs\TinyTrack\routes\web.php:65-75`; `C:\xampp\htdocs\TinyTrack\app\Http\Controllers\AdminController.php:86-88,173-201,204-249`
+**Category:** BrokenAccessControl
+**Severity: HIGH | Confidence: 10/10**
+**Problem:** Admin routes have no authentication or role middleware. Anyone can access the user list and appointment data, and update or delete users by ID. The admin login check does not protect these separate routes.
+**Evidence:** The routes are declared outside the authenticated group. `usersAdmin()` returns all users, while `update()` and `destroy()` operate on the route-selected user without an authorization check.
+**Suggested fix:** Put every admin route behind authentication and an explicit admin-role/policy check; do not rely on an email-address comparison as the role boundary.
+
+### Alert 2
+**File:** `C:\xampp\htdocs\TinyTrack\routes\web.php:150-153`; `C:\xampp\htdocs\TinyTrack\app\Http\Controllers\NotificationsController.php:14-16,41-54,80-103,116-123`
+**Category:** BrokenAccessControl
+**Severity: HIGH | Confidence: 9/10**
+**Problem:** Notification routes are public. An unauthenticated caller can read a notification by ID, create notifications for any user, and update or delete any notification. The index also loads all notifications.
+**Evidence:** `Route::resource('notifications', ...)` and the separate notification GET route are outside authentication middleware. The controller performs global lookups and accepts a caller-selected `user_id` when creating or updating records.
+**Suggested fix:** Restrict global notification management to authorized administrators and scope user-facing reads and changes to the authenticated user. Add authorization checks for each notification.
+
+### Alert 3
+**File:** `C:\xampp\htdocs\TinyTrack\routes\web.php:80-82,135-148`; `C:\xampp\htdocs\TinyTrack\app\Http\Controllers\BabyController.php:120-121,136-183,208-215`; `C:\xampp\htdocs\TinyTrack\app\Http\Controllers\GrowthController.php:41-74`
+**Category:** BrokenAccessControl
+**Severity: HIGH | Confidence: 9/10**
+**Problem:** Authentication is required for these baby routes, but ownership is not enforced. Any signed-in user can retrieve another user’s baby record, update or delete that baby, and read or create growth records using another baby’s ID.
+**Evidence:** The `/babies/{baby}` route checks only `auth`; `BabyController` does not authorize the bound model before returning, updating, or deleting it. Growth endpoints accept `baby_id` or query by `babyId` without checking the baby’s owner.
+**Suggested fix:** Authorize every baby operation with the policy, scope lookups and writes through the authenticated user’s babies relationship, and apply the same ownership check to growth records.
+
+### Alert 4
+**File:** `C:\xampp\htdocs\TinyTrack\routes\web.php:168-172`; `C:\xampp\htdocs\TinyTrack\app\Http\Controllers\AppointmentController.php:11-27,39-66`; `C:\xampp\htdocs\TinyTrack\app\Http\Controllers\VaccinationController.php:16-21,74-81`
+**Category:** BrokenAccessControl
+**Severity: HIGH | Confidence: 10/10**
+**Problem:** Appointment and vaccination endpoints are available without authentication. Callers can retrieve appointment or vaccination data by baby ID; they can create appointments for any existing baby and toggle vaccination status. The vaccination ownership checks explicitly skip authorization when the caller is a guest.
+**Evidence:** All four routes are outside an auth middleware group. Appointment creation validates only that the baby exists; vaccination checks use `Auth::check() && ...`, allowing unauthenticated requests through.
+**Suggested fix:** Require authentication on these routes, then authorize the authenticated user against the baby associated with every read or write.
+
+### Alert 5
+**File:** `C:\xampp\htdocs\TinyTrack\app\Http\Controllers\NotificationsController.php:41-54`; `C:\xampp\htdocs\TinyTrack\resources\views\user\mybaby.blade.php:862-863,1817-1860`
+**Category:** StringInjection
+**Severity: HIGH | Confidence: 9/10**
+**Problem:** Stored notification content can execute as JavaScript in a recipient’s session. The Blade view initially escapes title and message, but the click handler reads them as text and interpolates them into an HTML template that is inserted with `insertAdjacentHTML`. Public notification creation lets an attacker target a user with crafted content.
+**Evidence:** The controller accepts caller-supplied title/message and user ID; the modal inserts those values into HTML without escaping or sanitizing them.
+**Suggested fix:** Insert notification text using safe DOM text APIs, or apply context-appropriate sanitization before rendering. Restrict notification creation and recipient selection to authorized callers.
+
+### Alert 6
+**File:** `C:\xampp\htdocs\TinyTrack\app\Http\Controllers\BabyController.php:52-64,136-158`; `C:\xampp\htdocs\TinyTrack\app\Models\Baby.php:25-30`; `C:\xampp\htdocs\TinyTrack\config\filesystems.php:41-47,76-78`; `C:\xampp\htdocs\TinyTrack\public\.htaccess:22-32`
+**Category:** DataIntegrityFailure
+**Severity: HIGH | Confidence: 8/10**
+**Problem:** Baby-photo uploads have no server-side file-type validation and are stored on the public disk. The configured public storage link and web-server rules make uploaded files directly reachable; an HTML upload can therefore be served from the application’s origin. A victim who opens the returned photo URL can execute attacker-controlled JavaScript in that origin.
+**Evidence:** `baby_photo` is omitted from the validation rules, then stored directly on the public disk. The model exposes a photo URL, and the repository contains the public storage link.
+**Suggested fix:** Enforce server-side image-only validation and verify content, store uploads outside the web root where possible, and serve user content from a separate origin or as a non-executable download.
+
+## Coverage and limitations
+
+Reviewed routes and middleware, controllers, models and policies, authentication actions, migrations, security-relevant configuration, upload and notification handling, relevant Blade/JavaScript sinks, dependency manifests and lockfiles, and available deployment-sensitive files. The working tree was clean on `main`.
+
+No external-target testing was performed. No current dependency-advisory database was consulted, so dependency CVE status is not confirmed. Deployed infrastructure, TLS/headers, and production environment settings could not be verified. No `.env` secret values are included in this report.
+
+#	Severity	File	Lines	Vulnerability	Confidence
+1	🟠 HIGH	routes/web.php; AdminController.php	65–75; 86–88, 173–201, 204–249	Fixed: Admin routes now require an authenticated admin role.	10/10
+2	🟠 HIGH	routes/web.php; NotificationsController.php	150–153; 14–16, 41–54, 80–103, 116–123	Fixed: Notification management is admin-only; user notification actions require authentication and remain scoped to the user.	9/10
+3	🟠 HIGH	routes/web.php; BabyController.php; GrowthController.php	80–82, 135–148; 120–121, 136–183, 208–215; 41–74	Missing ownership checks may allow authenticated users to access or modify other users’ baby and growth records.	9/10
+4	🟠 HIGH	routes/web.php; AppointmentController.php; VaccinationController.php	168–172; 11–27, 39–66; 16–21, 74–81	Public appointment and vaccination endpoints may expose data and permit unauthorized changes.	10/10
+5	🟠 HIGH	NotificationsController.php; mybaby.blade.php	41–54; 862–863, 1817–1860	Stored notification content may be inserted as HTML, enabling stored XSS.	9/10
+6	🟠 HIGH	BabyController.php; Baby.php; filesystems.php; public/.htaccess	52–64, 136–158; 25–30; 41–47, 76–78; 22–32	Unvalidated baby-photo uploads are stored publicly and could enable same-origin script execution.	8/10
+The fixes add an is_admin role flag, preserve admin access for the existing support account during migration, protect admin routes with authorization, and prevent non-admin views from loading other users’ notifications. The related changes are in routes/web.php, User.php, AuthServiceProvider.php, AppServiceProvider.php, and the new migration. Added coverage is in AdminAuthorizationTest.php.
+
+Validation: Full Laravel suite passed: 29 passed, 7 skipped. PHP syntax checks passed, and the new migration and tests pass Pint. Pint reports existing style issues in other modified PHP files; I left unrelated formatting untouched.
+
+Findings #3–#6 remain unaddressed, as requested by the selected scope. The audit did not perform external-target testing or consult a current dependency-advisory database; deployed infrastructure and production settings were not verified. No .env secret values are included.
+
+
++168
+-22
+10:13 AM
+19m 59s
+•
+Copilot Fusion (gpt-6-luna) • 6.1 credits

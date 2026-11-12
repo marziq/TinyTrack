@@ -61,7 +61,9 @@ class NotificationsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $notification = Notification::findOrFail($id);
+
+        return response()->json($notification);
     }
 
     /**
@@ -113,14 +115,6 @@ class NotificationsController extends Controller
 
         return response()->json(['success' => true]);
     }
-    public function getNotification($id) {
-    $notification = Notification::find($id); // Assuming Notification model is used
-    if ($notification) {
-        return response()->json($notification); // Return the notification as JSON
-    }
-    return response()->json(['error' => 'Notification not found'], 404); // Return error if not found
-}
-
     /**
      * Get all unread notifications for the authenticated user (API endpoint)
      */

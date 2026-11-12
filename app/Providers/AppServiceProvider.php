@@ -25,12 +25,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer(['admin.messages-admin', 'admin.dashboard-admin', 'admin.users-admin', 'admin.calendar','admin.settings', 'user.mybaby', 'dashboard', 'user.growth', 'user.settings', 'user.appointment', 'user.milestone', 'user.myaccount', 'user.tips', 'user.chatbot', 'user.checkup'], function ($view) {
-            $notifications = Notification::with('user')->orderByDesc('dateSent')->get();
+            $user = Auth::user();
+            $notifications = $user?->isAdmin()
+                ? Notification::with('user')->orderByDesc('dateSent')->get()
+                : collect();
 
-            $userNotifications = Notification::where('user_id', auth()->id())
+            $userNotifications = $user
+                ? $user->notifications()
                 ->where('status', 'unread')
                 ->orderByDesc('dateSent')
-                ->get();
+                ->get()
+                : collect();
 
             $unreadCount = $userNotifications->count();
 
